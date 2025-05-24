@@ -32,7 +32,7 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative h-[70vh] bg-gradient-to-r from-primary via-primary/90 to-primary bg-cover bg-center flex items-center justify-center text-white">
-        <div className="absolute inset-0 bg-img"></div>
+        <div className="absolute inset-0 bg-transparent px-0 py-[100px]"></div>
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
             {t('home.hero_title')}
