@@ -209,7 +209,7 @@ const Index = () => {
             </div>
             <div className="lg:w-2/3">
               <h3 className="text-2xl font-bold text-primary mb-6">Notre Publication Trimestrielle</h3>
-              <p className="text-gray-700 leading-relaxed mb-6">
+              <p className="text-gray-700 leading-relaxed mb-6 text-justify">
                 Perspectives 49 est le journal officiel de notre réseau, publié chaque trimestre. 
                 Il présente les actualités de nos membres, les analyses sur l'administration publique, 
                 les interviews d'experts et les événements marquants de notre communauté.
@@ -228,7 +228,7 @@ const Index = () => {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 bg-accent/30">
+      <section className="py-16 bg-accent/30 px-[100px]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl font-bold text-primary">Galerie Photos</h2>

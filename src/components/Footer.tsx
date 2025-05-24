@@ -1,23 +1,17 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
-
 const Footer = () => {
-  const { t } = useLanguage();
-
-  return (
-    <footer className="bg-primary text-white py-12">
+  const {
+    t
+  } = useLanguage();
+  return <footer className="bg-primary text-white py-12 px-[100px]">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <img 
-                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
-                alt="P49 ENA Logo" 
-                className="h-12 w-12 object-contain"
-              />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-12 w-12 object-contain" />
               <div className="text-2xl font-bold">P49 ENA</div>
             </div>
             <p className="text-gray-300 leading-relaxed mb-4">
@@ -50,8 +44,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
