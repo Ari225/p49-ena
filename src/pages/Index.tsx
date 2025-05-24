@@ -112,7 +112,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
-              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-50 h-50 object-contain mx-auto" />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-40 h-40 mx-auto object-contain" />
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-3xl font-bold text-primary mb-6">{t('home.about_title')}</h2>
