@@ -1,0 +1,57 @@
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useLanguage } from '@/context/LanguageContext';
+
+const Footer = () => {
+  const { t } = useLanguage();
+
+  return (
+    <footer className="bg-primary text-white py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Logo and Description */}
+          <div className="col-span-1 md:col-span-2">
+            <div className="flex items-center space-x-3 mb-4">
+              <img 
+                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
+                alt="P49 ENA Logo" 
+                className="h-12 w-12 object-contain"
+              />
+              <div className="text-2xl font-bold">P49 ENA</div>
+            </div>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              {t('home.about_description')}
+            </p>
+            <div className="text-sm text-gray-400">
+              © 2024 P49 ENA. {t('footer.rights')}.
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
+            <ul className="space-y-2">
+              <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors">Historique</Link></li>
+              <li><Link to="/actualites" className="text-gray-300 hover:text-secondary transition-colors">Actualités</Link></li>
+              <li><Link to="/agenda" className="text-gray-300 hover:text-secondary transition-colors">Agenda</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors">Contact</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+            <div className="space-y-2 text-gray-300">
+              <p>Abidjan, Côte d'Ivoire</p>
+              <p>Email: contact@p49ena.ci</p>
+              <p>Tél: +225 XX XX XX XX</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
