@@ -187,7 +187,7 @@ const Index = () => {
       </section>
 
       {/* Journal Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white px-[100px]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Perspectives 49 - Notre Journal</h2>
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
