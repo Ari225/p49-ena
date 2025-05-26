@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -101,20 +102,22 @@ const Header = () => {
         label: t('menu.suggestions'),
         href: '/suggestions'
       }]
-    }]
+    }
   ];
-  return <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+
+  return (
+    <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto py-[10px] px-[100px]">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
-            
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
-            {menuItems.map((menu, index) => <DropdownMenu key={index}>
+            {menuItems.map((menu, index) => (
+              <DropdownMenu key={index}>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="text-gray-700 hover:text-primary hover:bg-accent transition-colors duration-200 flex items-center space-x-1">
                     <span className="font-medium">{menu.title}</span>
@@ -122,13 +125,16 @@ const Header = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg">
-                  {menu.items.map((item, itemIndex) => <DropdownMenuItem key={itemIndex} asChild>
+                  {menu.items.map((item, itemIndex) => (
+                    <DropdownMenuItem key={itemIndex} asChild>
                       <Link to={item.href} className="w-full px-4 py-2 text-gray-700 hover:bg-accent hover:text-primary transition-colors duration-200">
                         {item.label}
                       </Link>
-                    </DropdownMenuItem>)}
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
-              </DropdownMenu>)}
+              </DropdownMenu>
+            ))}
           </nav>
 
           {/* Right side buttons */}
@@ -144,7 +150,8 @@ const Header = () => {
             </div>
 
             {/* Contact/Login Button */}
-            {user ? <DropdownMenu>
+            {user ? (
+              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 rounded-md transition-colors duration-200">
                     {user.username}
@@ -160,7 +167,9 @@ const Header = () => {
                     Déconnexion
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu> : <div className="flex space-x-2">
+              </DropdownMenu>
+            ) : (
+              <div className="flex space-x-2">
                 <Link to="/contact">
                   <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 rounded-md transition-colors duration-200 hidden sm:block">
                     {t('header.contact')}
@@ -171,7 +180,8 @@ const Header = () => {
                     {t('header.login')}
                   </Button>
                 </Link>
-              </div>}
+              </div>
+            )}
 
             {/* Mobile Menu Button */}
             <Button variant="ghost" className="lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -181,15 +191,23 @@ const Header = () => {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && <div className="lg:hidden bg-white border-t border-gray-200 py-4">
-            {menuItems.map((menu, index) => <div key={index} className="mb-4">
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-white border-t border-gray-200 py-4">
+            {menuItems.map((menu, index) => (
+              <div key={index} className="mb-4">
                 <div className="font-medium text-primary mb-2 px-4">{menu.title}</div>
-                {menu.items.map((item, itemIndex) => <Link key={itemIndex} to={item.href} className="block px-8 py-2 text-gray-700 hover:bg-accent hover:text-primary transition-colors duration-200" onClick={() => setIsMobileMenuOpen(false)}>
+                {menu.items.map((item, itemIndex) => (
+                  <Link key={itemIndex} to={item.href} className="block px-8 py-2 text-gray-700 hover:bg-accent hover:text-primary transition-colors duration-200" onClick={() => setIsMobileMenuOpen(false)}>
                     {item.label}
-                  </Link>)}
-              </div>)}
-          </div>}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </header>;
+    </header>
+  );
 };
+
 export default Header;
