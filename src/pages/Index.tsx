@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -78,7 +79,7 @@ const Index = () => {
       <PresidentWelcomeModal />
       
       {/* Hero Section with Background Carousel */}
-      <section className="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
+      <section className="relative h-[80vh] flex items-center justify-center text-white overflow-hidden">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
           {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-30' : 'opacity-0'}`}>
@@ -88,7 +89,7 @@ const Index = () => {
         </div>
         
         {/* Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <div className="relative z-10 text-center w-full px-4">
           <h1 className="text-4xl font-bold mb-6 animate-fade-in md:text-6xl">
             {t('home.hero_title')}
           </h1>
