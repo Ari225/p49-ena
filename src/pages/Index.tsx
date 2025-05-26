@@ -267,7 +267,7 @@ const Index = () => {
           </div>
           <div className="flex gap-8">
             {/* Image container on the left with A4 aspect ratio */}
-            <div className="w-[500px] bg-white">
+            <div className="w-[500px] bg-white flex items-center">
               <div className="w-[500px] bg-white shadow-xl p-6">
                 <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-full h-auto rounded-lg object-contain" />
               </div>
