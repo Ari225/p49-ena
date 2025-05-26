@@ -267,13 +267,13 @@ const Index = () => {
           </div>
           <div className="flex gap-8">
             {/* Image container on the left with A4 aspect ratio */}
-            <div className="w-full bg-white">
+            <div className="w-[500px] bg-white">
               <div className="w-[500px]  bg-white shadow-xl p-6">
                 <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-100 h-auto rounded-lg object-contain" />
               </div>
             </div>
             {/* Communiqués stacked on the right */}
-            <div className="w-[500px] space-y-4">
+            <div className="w-[700px] space-y-4">
               <Card className="bg-red-50 border-red-200">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-red-800 mb-2 text-lg">Communiqué urgent</h3>
