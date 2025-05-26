@@ -139,12 +139,12 @@ const Index = () => {
       </section>
 
       {/* Achievements Section */}
-      <section className="py-16 bg-primary text-white">
+      <section className="bg-primary text-white py-[50px] px-[100px]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Nos Réalisations</h2>
+          
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {achievements.map((achievement, index) => <div key={index} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">
+                <div className="text-3xl md:text-5xl font-bold text-secondary mb-2">
                   {achievement.number}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{achievement.title}</h3>
