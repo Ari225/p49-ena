@@ -166,13 +166,13 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="bg-red-50 border-red-200">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-red-800 mb-2">Communiqué Urgent</h3>
+                <h3 className="font-semibold text-red-800 mb-2 text-lg">Communiqué urgent</h3>
                 <p className="text-sm text-red-600">Report de l'événement prévu le 25 mars 2024.</p>
               </CardContent>
             </Card>
             <Card className="bg-blue-50 border-blue-200">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-blue-800 mb-2">Nouvelle Inscription</h3>
+                <h3 className="font-semibold text-blue-800 mb-2 text-lg">Nouvelle inscription</h3>
                 <p className="text-sm text-blue-600">Ouverture des inscriptions pour la formation de mars.</p>
               </CardContent>
             </Card>
