@@ -250,7 +250,7 @@ const Index = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <Heart className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-primary">{t('header.social_events')}</CardTitle>
+                <CardTitle className="text-lg text-primary">{t('header.social_events')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-4">
