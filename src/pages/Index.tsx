@@ -102,7 +102,7 @@ const Index = () => {
       </section>
 
       {/* News Carousel Section */}
-      <section className="bg-accent/30 px-[100px] py-[50px]">
+      <section className="bg-accent/30 px-[100px] py-[100px]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-primary">{t('home.news_title')}</h2>
