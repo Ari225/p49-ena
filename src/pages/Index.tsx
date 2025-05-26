@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -85,11 +84,11 @@ const Index = () => {
           {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-30' : 'opacity-0'}`}>
               <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
             </div>)}
-          <div className="absolute inset-0 bg-[#192130]/65 py-0"></div>
+          <div className="absolute inset-0 py-0 px-0 bg-[#192130]/[0.36]"></div>
         </div>
         
         {/* Content */}
-        <div className="relative z-10 text-center w-full px-4">
+        <div className="relative z-10 text-center w-full px-[100px] my-0 py-0">
           <h1 className="text-4xl font-bold mb-6 animate-fade-in md:text-6xl">
             {t('home.hero_title')}
           </h1>
@@ -97,7 +96,7 @@ const Index = () => {
             {t('home.hero_subtitle')}
           </p>
           <Button asChild className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-3 text-lg">
-            <Link to="/historique">Découvrir notre histoire</Link>
+            <Link to="/historique" className="text-white">Découvrir notre histoire</Link>
           </Button>
         </div>
       </section>
