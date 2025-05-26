@@ -178,7 +178,7 @@ const Index = () => {
             </Card>
             <Card className="bg-green-50 border-green-200">
               <CardContent className="p-6">
-                <h3 className="font-semibold text-green-800 mb-2">Félicitations</h3>
+                <h3 className="font-semibold text-green-800 mb-2 text-lg">Félicitations</h3>
                 <p className="text-sm text-green-600">Promotion de plusieurs membres à de nouveaux postes.</p>
               </CardContent>
             </Card>
