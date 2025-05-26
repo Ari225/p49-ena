@@ -101,7 +101,7 @@ const Header = () => {
     }]
   }];
   return <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
-      <div className="container mx-auto py-[10px] px-[100px]">
+      <div className="container mx-auto px-[100px] py-[25px]">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
