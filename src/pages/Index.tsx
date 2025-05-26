@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock } from 'lucide-react';
-
 const Index = () => {
   const {
     t
@@ -188,7 +187,7 @@ const Index = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-16 bg-accent/30">
+      <section className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
