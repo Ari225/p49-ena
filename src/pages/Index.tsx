@@ -415,7 +415,7 @@ const Index = () => {
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Perspectives 49 - Notre Journal</h2>
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
-              <div className="bg-gradient-to-br from-primary to-primary/80 p-8 rounded-lg shadow-xl">
+              <div className="bg-gradient-to-br from-primary to-primary/80 p-8 rounded-lg shadow-xl px-0 py-0">
                 <div className="bg-white p-6 rounded-lg">
                   <img src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" alt="Perspectives 49 Journal" className="w-full h-auto object-contain" />
                 </div>
