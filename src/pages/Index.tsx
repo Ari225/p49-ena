@@ -273,7 +273,7 @@ const Index = () => {
                 <p className="text-gray-600 mb-4">
                   Formations, coaching et actualités des concours.
                 </p>
-                <Link to="/formations" className="text-secondary hover:text-primary/80 font-medium">
+                <Link to="/formations" className="text-primary hover:text-secondary/80 font-medium">
                   Explorer →
                 </Link>
               </CardContent>
