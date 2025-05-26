@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock } from 'lucide-react';
+
 const Index = () => {
   const {
     t
@@ -47,21 +48,21 @@ const Index = () => {
   }];
   const galleryImages = ["https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"];
   const achievements = [{
-    number: "150+",
-    title: "Membres Actifs",
-    description: "Dans l'administration publique"
+    number: "800+",
+    title: "Membres",
+    description: "appartenant au Réseau"
   }, {
-    number: "25",
-    title: "Années d'Excellence",
-    description: "Au service de la nation"
+    number: "15",
+    title: "Années",
+    description: "d'excellence et d'entraide"
   }, {
     number: "50+",
     title: "Événements Organisés",
-    description: "Formations et rencontres"
+    description: "Régionales, formations et réunions"
   }, {
     number: "12",
     title: "Régions Représentées",
-    description: "Présence nationale"
+    description: "sur le territoire ivoirien"
   }];
   const testimonials = [{
     name: "Dr. Kouassi Marie",
