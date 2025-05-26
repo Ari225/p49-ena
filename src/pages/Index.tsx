@@ -290,7 +290,7 @@ const Index = () => {
                 <p className="text-gray-600 mb-4">
                   Notre journal, actualités et archives.
                 </p>
-                <Link to="/derniere-edition" className="text-secondary hover:text-secondary/80 font-medium">
+                <Link to="/derniere-edition" className="text-secondary hover:text-primary font-medium">
                   Explorer →
                 </Link>
               </CardContent>
