@@ -412,7 +412,7 @@ const Index = () => {
       {/* Journal Section */}
       <section className="bg-white py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-12">Perspectives 49 - Notre Journal</h2>
+          <h2 className="text-3xl font-bold text-center text-primary mb-12">Notre Journal</h2>
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
               <div className="bg-gradient-to-br from-primary to-primary/80 p-8 rounded-lg shadow-xl px-0 py-0">
@@ -422,12 +422,13 @@ const Index = () => {
               </div>
             </div>
             <div className="lg:w-2/3">
-              <h3 className="text-2xl font-bold text-primary mb-6">Notre Publication Trimestrielle</h3>
-              <p className="text-gray-700 leading-relaxed mb-6 text-justify">
-                Perspectives 49 est le journal officiel de notre réseau, publié chaque trimestre.
-                Il présente les actualités de nos membres, les analyses sur l'administration publique,
-                les interviews d'experts et les événements marquants de notre communauté.
-              </p>
+              <h3 className="text-2xl font-bold text-primary mb-6">Perspectives 49 - Bulletin n°1</h3>
+              <p className="text-gray-700 leading-relaxed mb-6 text-justify">Ce premier numéro de Perspectives 49 inaugure un journal d’information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes. Quatre rubriques structurent ce bulletin :
+– Actualités citoyennes : décryptage des faits marquants et des enjeux sociaux.
+– Dossier spécial : un éclairage sur l’entrepreneuriat des jeunes et les dynamiques économiques émergentes.
+– Vie associative : retour sur les actions communautaires et les projets de terrain.
+– Culture & expressions : valorisation des talents locaux et des pratiques artistiques.
+Avec une approche rigoureuse et accessible, Perspectives 49 ambitionne d’informer, de questionner et d’inspirer.</p>
               <div className="flex space-x-4">
                 <Button asChild className="bg-primary hover:bg-primary/90">
                   <Link to="/derniere-edition">Dernière édition</Link>
