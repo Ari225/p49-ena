@@ -189,12 +189,12 @@ const Index = () => {
       </section>
 
       {/* Values Section */}
-      <section className="bg-white py-[80px] px-[100px]">
+      <section className="bg-white px-[100px] py-[100px]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Valeurs de la P49</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[#dfbe36]/[0.43]">
                   <value.icon className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold text-primary mb-3">{value.title}</h3>
