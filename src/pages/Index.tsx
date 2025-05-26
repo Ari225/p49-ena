@@ -472,7 +472,7 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <div className="lg:w-2/3 bg-primary px-[15px] rounded-xl py-[75px]">
+            <div className="lg:w-2/3 bg-primary rounded-xl py-[75px] px-[20px]">
               <h3 className="text-2xl font-bold mb-6 text-center text-white">Perspectives 49 - Bulletin n°1</h3>
               <p className="leading-relaxed mb-6 text-justify text-white">
                 Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
