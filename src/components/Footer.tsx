@@ -15,13 +15,13 @@ const Footer = () => {
     console.log('Newsletter subscription for:', email);
     setEmail('');
   };
-  return <footer className="bg-primary text-white py-12 px-[100px]">
+  return <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center space-x-3 mb-4">
-              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-12 w-12 object-contain" />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
               
             </div>
             <p className="text-gray-300 leading-relaxed mb-4 max-w-xs">
