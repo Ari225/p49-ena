@@ -284,7 +284,7 @@ const Index = () => {
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
                   <BookOpen className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-primary">{t('header.perspectives')}</CardTitle>
+                <CardTitle className="text-primary text-lg">{t('header.perspectives')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-4">
