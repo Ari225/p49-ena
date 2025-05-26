@@ -49,7 +49,7 @@ const Index = () => {
         </div>
         
         {/* Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-[100px] py-0 my-[240px]">
+        <div className="relative z-10 text-center max-w-4xl mx-auto py-0 my-0 px-0">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
             {t('home.hero_title')}
           </h1>
