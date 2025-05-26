@@ -155,7 +155,7 @@ const Index = () => {
       </section>
 
       {/* Communiques Section */}
-      <section className="bg-white py-[50px] px-[100px]">
+      <section className="bg-white px-[100px] py-[100px]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
