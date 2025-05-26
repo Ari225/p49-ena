@@ -499,7 +499,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl font-bold text-primary">Galerie Photos</h2>
-            <Link to="/galerie" className="text-secondary hover:text-secondary/80 flex items-center">
+            <Link to="/galerie" className="text-primary hover:text-secondary/80 flex items-center">
               <Camera className="mr-2 h-5 w-5" />
               Voir plus
             </Link>
