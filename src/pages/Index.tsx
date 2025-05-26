@@ -473,7 +473,7 @@ const Index = () => {
               </div>
             </div>
             <div className="lg:w-2/3">
-              <h3 className="text-2xl font-bold text-primary mb-6">Perspectives 49 - Bulletin n°1</h3>
+              <h3 className="text-2xl font-bold text-primary mb-6 text-center">Perspectives 49 - Bulletin n°1</h3>
               <p className="text-gray-700 leading-relaxed mb-6 text-justify">
                 Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
 
@@ -481,7 +481,7 @@ const Index = () => {
 
                 Avec une approche rigoureuse et accessible, Perspectives 49 ambitionne d'informer, de questionner et d'inspirer.
               </p>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 flex justify-center">
                 <Button asChild className="bg-primary hover:bg-primary/90">
                   <Link to="/derniere-edition">Dernière édition</Link>
                 </Button>
