@@ -379,7 +379,7 @@ const Index = () => {
 
       {/* Testimonials Section */}
       <section className="bg-accent/30 py-[100px] px-[100px]">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-0">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
           <div className="relative flex items-center justify-center">
             <div className="flex items-center space-x-8 w-full max-w-6xl">
