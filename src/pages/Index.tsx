@@ -258,7 +258,7 @@ const Index = () => {
 
       {/* Communiques Section */}
       <section className="bg-white px-[100px] py-[100px]">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-0">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
             <Link to="/communiques" className="text-secondary hover:text-secondary/80 flex items-center">
@@ -267,9 +267,9 @@ const Index = () => {
           </div>
           <div className="flex gap-8">
             {/* Image container on the left with A4 aspect ratio */}
-            <div className="w-1/2">
+            <div className="w-full aspect-video bg-white">
               <div className="bg-gray-100 rounded-lg aspect-[16/9] flex items-center justify-center">
-                <img alt="Communiqué" src="/lovable-uploads/9aa41856-cd91-4b61-8d0a-66648876643e.png" className="w-full h-full rounded-lg object-contain" />
+                <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-100 h-auto rounded-lg object-contain" />
               </div>
             </div>
             {/* Communiqués stacked on the right */}
