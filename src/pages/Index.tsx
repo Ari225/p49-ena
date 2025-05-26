@@ -92,7 +92,7 @@ const Index = () => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
             {t('home.hero_title')}
           </h1>
-          <p className="text-xl md:text-2xl italic mb-8 text-secondary animate-fade-in">
+          <p className="text-xl md:text-2xl italic mb-8 animate-fade-in text-white">
             {t('home.hero_subtitle')}
           </p>
           <Button asChild className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-3 text-lg">
