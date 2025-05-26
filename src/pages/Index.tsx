@@ -222,7 +222,7 @@ const Index = () => {
                 <p className="text-gray-600 mb-4">
                   Découvrez l'histoire, la structure et les membres de notre réseau.
                 </p>
-                <Link to="/historique" className="text-secondary hover:text-secondary/80 font-medium">
+                <Link to="/historique" className="text-primary hover:text-secondary/80 font-medium">
                   Explorer →
                 </Link>
               </CardContent>
