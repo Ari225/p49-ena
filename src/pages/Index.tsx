@@ -323,7 +323,7 @@ const Index = () => {
               <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-60 h-60 mx-auto object-contain" />
             </div>
             <div className="lg:w-2/3">
-              <h2 className="text-3xl font-bold text-primary mb-6 text-center">{t('home.about_title')}</h2>
+              <h2 className="text-3xl font-bold text-primary mb-6 text-right">{t('home.about_title')}</h2>
               <p className="text-gray-700 leading-relaxed mb-6 text-base text-justify">
                 {t('home.about_description')}
               </p>
