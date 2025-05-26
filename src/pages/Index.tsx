@@ -472,9 +472,9 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            <div className="lg:w-2/3 bg-primary rounded-xl py-[75px] px-[20px]">
-              <h3 className="text-2xl font-bold mb-6 text-center text-white">Perspectives 49 - Bulletin n°1</h3>
-              <p className="leading-relaxed mb-6 text-justify text-white">
+            <div className="lg:w-2/3 rounded-xl py-[75px] px-[20px] bg-transparent">
+              <h3 className="text-2xl font-bold mb-6 text-center text-secondary-foreground">Perspectives 49 - Bulletin n°1</h3>
+              <p className="leading-relaxed mb-6 text-justify text-secondary-foreground">
                 Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
 
                 Le bulletin s'organise autour de quatre rubriques principales. La rubrique Actualités citoyennes propose un décryptage des faits marquants et des enjeux sociaux. Le Dossier spécial offre un éclairage sur l'entrepreneuriat des jeunes et les dynamiques économiques émergentes. La rubrique Vie associative met en avant les actions communautaires et les projets de terrain. Enfin, Culture & expressions valorise les talents locaux et les pratiques artistiques.
