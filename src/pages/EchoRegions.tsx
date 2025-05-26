@@ -147,7 +147,7 @@ const EchoRegions = () => {
       </section>
 
       {/* Coordination Section */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Coordination Nationale</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
