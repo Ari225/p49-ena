@@ -495,7 +495,7 @@ const Index = () => {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 bg-accent/30">
+      <section className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl font-bold text-primary">Galerie Photos</h2>
