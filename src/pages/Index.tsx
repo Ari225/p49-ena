@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -8,204 +7,153 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock } from 'lucide-react';
-
 const Index = () => {
-  const { t } = useLanguage();
-  const backgroundImages = [
-    '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
-    '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
-    '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'
-  ];
-  
+  const {
+    t
+  } = useLanguage();
+  const backgroundImages = ['/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png', '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png', '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
-
   useEffect(() => {
     const newsInterval = setInterval(() => {
       setCurrentNewsIndex(prevIndex => (prevIndex + 1) % newsItems.length);
     }, 4000);
     return () => clearInterval(newsInterval);
   }, []);
-
   useEffect(() => {
     const testimonialInterval = setInterval(() => {
       setCurrentTestimonialIndex(prevIndex => (prevIndex + 1) % (testimonials.length - 2));
     }, 5000);
     return () => clearInterval(testimonialInterval);
   }, []);
-
-  const newsItems = [
-    {
-      title: "Assemblée Générale 2024",
-      date: "15 Mars 2024",
-      excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
-      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
-      category: "Événement"
-    },
-    {
-      title: "Nouveau Partenariat Stratégique",
-      date: "10 Mars 2024",
-      excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
-      category: "Partenariat"
-    },
-    {
-      title: "Programme de Formation Continue 2024",
-      date: "5 Mars 2024",
-      excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
-      category: "Formation"
-    },
-    {
-      title: "Régionale de l'Ouest 2024",
-      date: "28 Février 2024",
-      excerpt: "Rencontre régionale réussie avec plus de 50 membres présents à Man.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop",
-      category: "Régionale"
-    },
-    {
-      title: "Reconnaissance Internationale",
-      date: "20 Février 2024",
-      excerpt: "Notre réseau reconnu par l'IIAS comme modèle de coopération entre énarques.",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop",
-      category: "Reconnaissance"
-    }
-  ];
-
-  const galleryImages = [
-    "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"
-  ];
-
-  const achievements = [
-    {
-      number: "800+",
-      title: "Membres",
-      description: "appartenant au Réseau"
-    },
-    {
-      number: "15",
-      title: "Années",
-      description: "d'excellence et d'entraide"
-    },
-    {
-      number: "50+",
-      title: "Événements Organisés",
-      description: "Régionales, formations et réunions"
-    },
-    {
-      number: "12",
-      title: "Régions Représentées",
-      description: "sur le territoire ivoirien"
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Dr. Kouassi Marie",
-      position: "Directrice Générale, Ministère de l'Économie",
-      quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Yao Jean-Baptiste",
-      position: "Préfet de Région",
-      quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Mme. Touré Fatou",
-      position: "Directrice des Ressources Humaines",
-      quote: "L'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien.",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Dr. Diallo Mamadou",
-      position: "Conseiller du Président",
-      quote: "La formation continue proposée par le réseau est de très haute qualité.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Mme. Kone Awa",
-      position: "Secrétaire Générale de Ministère",
-      quote: "Les échanges d'expériences enrichissent notre pratique professionnelle quotidienne.",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Bamba Seydou",
-      position: "Sous-Préfet",
-      quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
-      image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Dr. Assi Brigitte",
-      position: "Directrice de Cabinet",
-      quote: "Les mentors de la P49 m'ont accompagnée dans ma progression de carrière.",
-      image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Kouakou Ernest",
-      position: "Ambassadeur",
-      quote: "L'excellence de la P49 rayonne bien au-delà de nos frontières nationales.",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Mme. Ouattara Salimata",
-      position: "Inspectrice Générale",
-      quote: "La P49 incarne les valeurs de service public et d'intégrité.",
-      image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Traoré Ibrahim",
-      position: "Gouverneur",
-      quote: "Fier d'appartenir à cette promotion qui marque l'histoire de l'administration ivoirienne.",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face"
-    }
-  ];
-
+  const newsItems = [{
+    title: "Assemblée Générale 2024",
+    date: "15 Mars 2024",
+    excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
+    image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
+    category: "Événement"
+  }, {
+    title: "Nouveau Partenariat Stratégique",
+    date: "10 Mars 2024",
+    excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
+    category: "Partenariat"
+  }, {
+    title: "Programme de Formation Continue 2024",
+    date: "5 Mars 2024",
+    excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
+    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
+    category: "Formation"
+  }, {
+    title: "Régionale de l'Ouest 2024",
+    date: "28 Février 2024",
+    excerpt: "Rencontre régionale réussie avec plus de 50 membres présents à Man.",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop",
+    category: "Régionale"
+  }, {
+    title: "Reconnaissance Internationale",
+    date: "20 Février 2024",
+    excerpt: "Notre réseau reconnu par l'IIAS comme modèle de coopération entre énarques.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop",
+    category: "Reconnaissance"
+  }];
+  const galleryImages = ["https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"];
+  const achievements = [{
+    number: "800+",
+    title: "Membres",
+    description: "appartenant au Réseau"
+  }, {
+    number: "15",
+    title: "Années",
+    description: "d'excellence et d'entraide"
+  }, {
+    number: "50+",
+    title: "Événements Organisés",
+    description: "Régionales, formations et réunions"
+  }, {
+    number: "12",
+    title: "Régions Représentées",
+    description: "sur le territoire ivoirien"
+  }];
+  const testimonials = [{
+    name: "Dr. Kouassi Marie",
+    position: "Directrice Générale, Ministère de l'Économie",
+    quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
+    image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "M. Yao Jean-Baptiste",
+    position: "Préfet de Région",
+    quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "Mme. Touré Fatou",
+    position: "Directrice des Ressources Humaines",
+    quote: "L'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien.",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "Dr. Diallo Mamadou",
+    position: "Conseiller du Président",
+    quote: "La formation continue proposée par le réseau est de très haute qualité.",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "Mme. Kone Awa",
+    position: "Secrétaire Générale de Ministère",
+    quote: "Les échanges d'expériences enrichissent notre pratique professionnelle quotidienne.",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "M. Bamba Seydou",
+    position: "Sous-Préfet",
+    quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
+    image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "Dr. Assi Brigitte",
+    position: "Directrice de Cabinet",
+    quote: "Les mentors de la P49 m'ont accompagnée dans ma progression de carrière.",
+    image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "M. Kouakou Ernest",
+    position: "Ambassadeur",
+    quote: "L'excellence de la P49 rayonne bien au-delà de nos frontières nationales.",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "Mme. Ouattara Salimata",
+    position: "Inspectrice Générale",
+    quote: "La P49 incarne les valeurs de service public et d'intégrité.",
+    image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "M. Traoré Ibrahim",
+    position: "Gouverneur",
+    quote: "Fier d'appartenir à cette promotion qui marque l'histoire de l'administration ivoirienne.",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face"
+  }];
   const getVisibleTestimonials = () => {
     const visible = [];
     for (let i = 0; i < 3; i++) {
       const index = (currentTestimonialIndex + i) % testimonials.length;
-      visible.push({ ...testimonials[index], position: i });
+      visible.push({
+        ...testimonials[index],
+        position: i
+      });
     }
     return visible;
   };
-
-  return (
-    <Layout>
+  return <Layout>
       <PresidentWelcomeModal />
       
       {/* Hero Section with Background Carousel */}
       <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
-          {backgroundImages.map((image, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              <img
-                src={image}
-                alt={`Background ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
+          {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
+              <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
+            </div>)}
           <div className="absolute inset-0 bg-primary/50"></div>
         </div>
         
@@ -234,18 +182,8 @@ const Index = () => {
           </div>
           
           <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {newsItems.map((item, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentNewsIndex ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                />
+            {newsItems.map((item, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                   <div className="max-w-2xl">
@@ -260,20 +198,11 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>)}
             
             {/* Navigation dots */}
             <div className="absolute bottom-4 right-4 flex space-x-2">
-              {newsItems.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentNewsIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'
-                  }`}
-                />
-              ))}
+              {newsItems.map((_, index) => <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />)}
             </div>
           </div>
         </div>
@@ -283,15 +212,13 @@ const Index = () => {
       <section className="bg-primary text-white py-[50px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {achievements.map((achievement, index) => (
-              <div key={index} className="text-center">
+            {achievements.map((achievement, index) => <div key={index} className="text-center">
                 <div className="text-3xl md:text-3xl font-bold text-secondary mb-2">
                   {achievement.number}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{achievement.title}</h3>
                 <p className="text-white/80">{achievement.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -309,11 +236,7 @@ const Index = () => {
             {/* Image container on the left */}
             <div className="w-1/2">
               <div className="bg-gray-100 rounded-lg h-80 flex items-center justify-center">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop" 
-                  alt="Communiqué" 
-                  className="w-full h-full object-cover rounded-lg"
-                />
+                <img alt="Communiqué" src="/lovable-uploads/9aa41856-cd91-4b61-8d0a-66648876643e.png" className="w-full h-full rounded-lg object-cover" />
               </div>
             </div>
             {/* Communiqués stacked on the right */}
@@ -346,11 +269,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
-              <img
-                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-                alt="P49 ENA Logo"
-                className="w-60 h-60 mx-auto object-contain"
-              />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-60 h-60 mx-auto object-contain" />
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-3xl font-bold text-primary mb-6 text-center">{t('home.about_title')}</h2>
@@ -464,22 +383,10 @@ const Index = () => {
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
           <div className="relative flex items-center justify-center">
             <div className="flex items-center space-x-8 w-full max-w-6xl">
-              {getVisibleTestimonials().map((testimonial, index) => (
-                <Card 
-                  key={`${testimonial.name}-${index}`} 
-                  className={`transition-all duration-500 ${
-                    index === 1 
-                      ? 'scale-110 opacity-100 z-10 shadow-xl' 
-                      : 'scale-90 opacity-60 z-0'
-                  } flex-1 max-w-sm`}
-                >
+              {getVisibleTestimonials().map((testimonial, index) => <Card key={`${testimonial.name}-${index}`} className={`transition-all duration-500 ${index === 1 ? 'scale-110 opacity-100 z-10 shadow-xl' : 'scale-90 opacity-60 z-0'} flex-1 max-w-sm`}>
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-full object-cover flex-shrink-0"
-                      />
+                      <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
                       <div className="flex-1">
                         <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
                         <div>
@@ -489,21 +396,14 @@ const Index = () => {
                       </div>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
             
             {/* Navigation dots */}
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex space-x-2 mt-6">
-              {Array.from({ length: testimonials.length - 2 }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonialIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
+              {Array.from({
+              length: testimonials.length - 2
+            }).map((_, index) => <button key={index} onClick={() => setCurrentTestimonialIndex(index)} className={`w-2 h-2 rounded-full transition-colors ${index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'}`} />)}
             </div>
           </div>
         </div>
@@ -517,11 +417,7 @@ const Index = () => {
             <div className="lg:w-1/3">
               <div className="bg-gradient-to-br from-primary to-primary/80 p-8 rounded-lg shadow-xl">
                 <div className="bg-white p-6 rounded-lg">
-                  <img
-                    src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"
-                    alt="Perspectives 49 Journal"
-                    className="w-full h-auto object-contain"
-                  />
+                  <img src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" alt="Perspectives 49 Journal" className="w-full h-auto object-contain" />
                 </div>
               </div>
             </div>
@@ -556,20 +452,12 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {galleryImages.map((image, index) => (
-              <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <img
-                  src={image}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            ))}
+            {galleryImages.map((image, index) => <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              </div>)}
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Index;
