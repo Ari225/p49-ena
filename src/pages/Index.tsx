@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -8,123 +7,84 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock } from 'lucide-react';
-
 const Index = () => {
-  const { t } = useLanguage();
-  
-  const backgroundImages = [
-    '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
-    '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
-    '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'
-  ];
-  
+  const {
+    t
+  } = useLanguage();
+  const backgroundImages = ['/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png', '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png', '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
-
   useEffect(() => {
     const newsInterval = setInterval(() => {
       setCurrentNewsIndex(prevIndex => (prevIndex + 1) % newsItems.length);
     }, 4000);
     return () => clearInterval(newsInterval);
   }, []);
-
-  const newsItems = [
-    {
-      title: "Assemblée Générale 2024",
-      date: "15 Mars 2024",
-      excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
-      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
-      category: "Événement"
-    },
-    {
-      title: "Nouveau Partenariat Stratégique",
-      date: "10 Mars 2024",
-      excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
-      category: "Partenariat"
-    },
-    {
-      title: "Programme de Formation Continue 2024",
-      date: "5 Mars 2024",
-      excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
-      category: "Formation"
-    }
-  ];
-
-  const galleryImages = [
-    "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"
-  ];
-
-  const achievements = [
-    {
-      number: "150+",
-      title: "Membres Actifs",
-      description: "Dans l'administration publique"
-    },
-    {
-      number: "25",
-      title: "Années d'Excellence",
-      description: "Au service de la nation"
-    },
-    {
-      number: "50+",
-      title: "Événements Organisés",
-      description: "Formations et rencontres"
-    },
-    {
-      number: "12",
-      title: "Régions Représentées",
-      description: "Présence nationale"
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Dr. Kouassi Marie",
-      position: "Directrice Générale, Ministère de l'Économie",
-      quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Yao Jean-Baptiste",
-      position: "Préfet de Région",
-      quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-    }
-  ];
-
-  return (
-    <Layout>
+  const newsItems = [{
+    title: "Assemblée Générale 2024",
+    date: "15 Mars 2024",
+    excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
+    image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
+    category: "Événement"
+  }, {
+    title: "Nouveau Partenariat Stratégique",
+    date: "10 Mars 2024",
+    excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
+    category: "Partenariat"
+  }, {
+    title: "Programme de Formation Continue 2024",
+    date: "5 Mars 2024",
+    excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
+    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
+    category: "Formation"
+  }];
+  const galleryImages = ["https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"];
+  const achievements = [{
+    number: "150+",
+    title: "Membres Actifs",
+    description: "Dans l'administration publique"
+  }, {
+    number: "25",
+    title: "Années d'Excellence",
+    description: "Au service de la nation"
+  }, {
+    number: "50+",
+    title: "Événements Organisés",
+    description: "Formations et rencontres"
+  }, {
+    number: "12",
+    title: "Régions Représentées",
+    description: "Présence nationale"
+  }];
+  const testimonials = [{
+    name: "Dr. Kouassi Marie",
+    position: "Directrice Générale, Ministère de l'Économie",
+    quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
+    image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
+  }, {
+    name: "M. Yao Jean-Baptiste",
+    position: "Préfet de Région",
+    quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+  }];
+  return <Layout>
       <PresidentWelcomeModal />
       
       {/* Hero Section with Background Carousel */}
       <section className="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
-          {backgroundImages.map((image, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentImageIndex ? 'opacity-30' : 'opacity-0'
-              }`}
-            >
+          {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-30' : 'opacity-0'}`}>
               <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
-            </div>
-          ))}
-          <div className="absolute inset-0 bg-[#192130]/65"></div>
+            </div>)}
+          <div className="absolute inset-0 bg-[#192130]/65 py-0"></div>
         </div>
         
         {/* Content */}
@@ -142,7 +102,7 @@ const Index = () => {
       </section>
 
       {/* News Carousel Section */}
-      <section className="py-16 bg-accent/30">
+      <section className="bg-accent/30 px-[100px] py-[50px]">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-primary">{t('home.news_title')}</h2>
@@ -152,18 +112,8 @@ const Index = () => {
           </div>
           
           <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {newsItems.map((item, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentNewsIndex ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                />
+            {newsItems.map((item, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                   <div className="max-w-2xl">
@@ -178,20 +128,11 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>)}
             
             {/* Navigation dots */}
             <div className="absolute bottom-4 right-4 flex space-x-2">
-              {newsItems.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentNewsIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'
-                  }`}
-                />
-              ))}
+              {newsItems.map((_, index) => <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />)}
             </div>
           </div>
         </div>
@@ -202,15 +143,13 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Nos Réalisations</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {achievements.map((achievement, index) => (
-              <div key={index} className="text-center">
+            {achievements.map((achievement, index) => <div key={index} className="text-center">
                 <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">
                   {achievement.number}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{achievement.title}</h3>
                 <p className="text-white/80">{achievement.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -252,11 +191,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
-              <img
-                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-                alt="P49 ENA Logo"
-                className="w-40 h-40 mx-auto object-contain"
-              />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-40 h-40 mx-auto object-contain" />
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-3xl font-bold text-primary mb-6">{t('home.about_title')}</h2>
@@ -386,15 +321,10 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-6">
+            {testimonials.map((testimonial, index) => <Card key={index} className="p-6">
                 <CardContent className="p-0">
                   <div className="flex items-start space-x-4">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover"
-                    />
+                    <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover" />
                     <div className="flex-1">
                       <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
                       <div>
@@ -404,8 +334,7 @@ const Index = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -462,23 +391,12 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {galleryImages.map((image, index) => (
-              <div
-                key={index}
-                className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
-              >
-                <img
-                  src={image}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            ))}
+            {galleryImages.map((image, index) => <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              </div>)}
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Index;
