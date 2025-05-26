@@ -117,7 +117,7 @@ const Index = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
                   <div className="max-w-2xl">
-                    <span className="inline-block bg-secondary text-primary px-3 py-1 rounded-full text-sm font-semibold mb-3">
+                    <span className="inline-block bg-secondary px-3 py-1 rounded-full text-sm font-semibold mb-3 text-white">
                       {item.category}
                     </span>
                     <h3 className="text-3xl font-bold mb-3">{item.title}</h3>
