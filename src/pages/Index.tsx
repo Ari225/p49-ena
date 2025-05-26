@@ -207,7 +207,7 @@ const Index = () => {
       </section>
 
       {/* Site Sections */}
-      <section className="py-16 bg-white">
+      <section className="bg-white py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Explorez nos Rubriques</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -296,22 +296,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow duration-300 group">
-              <CardHeader>
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <GraduationCap className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl text-primary">Excellence</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">
-                  Promotion de l'excellence dans la fonction publique.
-                </p>
-                <Link to="/formations" className="text-secondary hover:text-secondary/80 font-medium">
-                  Explorer →
-                </Link>
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
       </section>
