@@ -43,7 +43,7 @@ const Index = () => {
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
           {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-30' : 'opacity-0'}`}>
-              <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
+              <img src={image} alt={`Background ${index + 1}`} className="w-300 h-50 object-none" />
             </div>)}
           <div className="flex bg-[#192130]/65 my-0 py-0"></div>
         </div>
