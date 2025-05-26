@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
 import Historique from "./pages/Historique";
+import Galerie from "./pages/Galerie";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/historique" element={<Historique />} />
+              <Route path="/galerie" element={<Galerie />} />
               
               {/* Presentation Routes */}
               <Route path="/textes-officiels" element={<div>Textes Officiels - Page en construction</div>} />
