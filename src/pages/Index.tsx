@@ -191,11 +191,11 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
-              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-40 h-40 mx-auto object-contain" />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-60 h-60 mx-auto object-contain" />
             </div>
             <div className="lg:w-2/3">
-              <h2 className="text-3xl font-bold text-primary mb-6">{t('home.about_title')}</h2>
-              <p className="text-gray-700 leading-relaxed text-lg mb-6 text-justify">
+              <h2 className="text-3xl font-bold text-primary mb-6 text-center">{t('home.about_title')}</h2>
+              <p className="text-gray-700 leading-relaxed mb-6 text-justify text-base">
                 {t('home.about_description')}
               </p>
               <Button asChild className="bg-primary hover:bg-primary/90">
@@ -209,7 +209,7 @@ const Index = () => {
       {/* Site Sections */}
       <section className="bg-white py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-12">Explorez nos Rubriques</h2>
+          <h2 className="text-3xl font-bold text-center text-primary mb-12">Nos rubriques</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="hover:shadow-xl transition-shadow duration-300 group">
               <CardHeader>
