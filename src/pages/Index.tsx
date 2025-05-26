@@ -239,7 +239,7 @@ const Index = () => {
                 <p className="text-gray-600 mb-4">
                   Agenda, événements régionaux et assemblées générales.
                 </p>
-                <Link to="/agenda" className="text-secondary hover:text-secondary/80 font-medium">
+                <Link to="/agenda" className="text-primary hover:text-secondary/80 font-medium">
                   Explorer →
                 </Link>
               </CardContent>
