@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -7,85 +6,50 @@ import PresidentWelcomeModal from '@/components/PresidentWelcomeModal';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight } from 'lucide-react';
-
 const Index = () => {
-  const { t } = useLanguage();
-  
-  const backgroundImages = [
-    '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
-    '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
-    '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'
-  ];
-  
+  const {
+    t
+  } = useLanguage();
+  const backgroundImages = ['/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png', '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png', '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        (prevIndex + 1) % backgroundImages.length
-      );
+      setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
-    
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
-
-  const newsItems = [
-    {
-      title: "Assemblée Générale 2024",
-      date: "15 Mars 2024",
-      excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
-      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=250&fit=crop"
-    },
-    {
-      title: "Nouveau Partenariat",
-      date: "10 Mars 2024",
-      excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public.",
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400&h=250&fit=crop"
-    },
-    {
-      title: "Formation Continue",
-      date: "5 Mars 2024",
-      excerpt: "Lancement du programme de formation continue pour nos membres.",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=250&fit=crop"
-    }
-  ];
-
-  const galleryImages = [
-    "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop",
-    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"
-  ];
-
-  return (
-    <Layout>
+  const newsItems = [{
+    title: "Assemblée Générale 2024",
+    date: "15 Mars 2024",
+    excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
+    image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=250&fit=crop"
+  }, {
+    title: "Nouveau Partenariat",
+    date: "10 Mars 2024",
+    excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public.",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=400&h=250&fit=crop"
+  }, {
+    title: "Formation Continue",
+    date: "5 Mars 2024",
+    excerpt: "Lancement du programme de formation continue pour nos membres.",
+    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=250&fit=crop"
+  }];
+  const galleryImages = ["https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"];
+  return <Layout>
       <PresidentWelcomeModal />
       
       {/* Hero Section with Background Carousel */}
       <section className="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
-          {backgroundImages.map((image, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentImageIndex ? 'opacity-30' : 'opacity-0'
-              }`}
-            >
-              <img 
-                src={image} 
-                alt={`Background ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-          <div className="absolute inset-0 bg-primary/60"></div>
+          {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-30' : 'opacity-0'}`}>
+              <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
+            </div>)}
+          <div className="flex bg-[#192130]/65 my-0 py-0"></div>
         </div>
         
         {/* Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-[100px] py-0 my-[240px]">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
             {t('home.hero_title')}
           </h1>
@@ -111,15 +75,10 @@ const Index = () => {
                 </Link>
               </div>
               <div className="space-y-6">
-                {newsItems.map((item, index) => (
-                  <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+                {newsItems.map((item, index) => <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
                     <CardContent className="p-6">
                       <div className="flex space-x-4">
-                        <img 
-                          src={item.image} 
-                          alt={item.title} 
-                          className="w-24 h-24 object-cover rounded-lg flex-shrink-0" 
-                        />
+                        <img src={item.image} alt={item.title} className="w-24 h-24 object-cover rounded-lg flex-shrink-0" />
                         <div className="flex-1">
                           <h3 className="font-semibold text-lg text-primary mb-2">{item.title}</h3>
                           <p className="text-sm text-gray-500 mb-2">{item.date}</p>
@@ -127,8 +86,7 @@ const Index = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
 
@@ -170,11 +128,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
-              <img 
-                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
-                alt="P49 ENA Logo" 
-                className="w-40 h-40 mx-auto object-contain" 
-              />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-40 h-40 mx-auto object-contain" />
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-3xl font-bold text-primary mb-6">{t('home.about_title')}</h2>
@@ -300,20 +254,12 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {galleryImages.map((image, index) => (
-              <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <img 
-                  src={image} 
-                  alt={`Gallery ${index + 1}`} 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
-                />
-              </div>
-            ))}
+            {galleryImages.map((image, index) => <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              </div>)}
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Index;
