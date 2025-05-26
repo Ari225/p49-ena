@@ -209,7 +209,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-primary text-3xl font-bold">{t('home.news_title')}</h2>
-            <Link to="/actualites" className="text-secondary hover:text-secondary/80 flex items-center">
+            <Link to="/actualites" className="text-primary hover:text-secondary/80 flex items-center">
               Voir tout <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
