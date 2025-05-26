@@ -121,7 +121,7 @@ const Index = () => {
                       {item.category}
                     </span>
                     <h3 className="text-3xl font-bold mb-3">{item.title}</h3>
-                    <p className="text-lg mb-4 opacity-90">{item.excerpt}</p>
+                    <p className="text-lg mb-4 opacity-90 text-white">{item.excerpt}</p>
                     <div className="flex items-center text-sm opacity-75">
                       <Clock className="w-4 h-4 mr-2" />
                       {item.date}
