@@ -463,7 +463,7 @@ const Index = () => {
       {/* Journal Section */}
       <section className="bg-white py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-12">Notre Journal</h2>
+          <h2 className="text-3xl font-bold text-primary mb-12 text-left">Notre Journal</h2>
           <div className="flex flex-col lg:flex-row items-center space-y-8 lg:space-y-0 lg:space-x-12">
             <div className="lg:w-1/3">
               <div className="bg-gradient-to-br from-primary to-primary/80 p-8 rounded-lg shadow-xl px-0 py-0">
