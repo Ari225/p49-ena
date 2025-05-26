@@ -311,7 +311,7 @@ const Index = () => {
                   <div className="flex items-start space-x-4">
                     <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover" />
                     <div className="flex-1">
-                      <p className="text-gray-700 italic mb-4">"{testimonial.quote}"</p>
+                      <p className="italic mb-4 text-gray-600">"{testimonial.quote}"</p>
                       <div>
                         <h4 className="font-semibold text-primary">{testimonial.name}</h4>
                         <p className="text-sm text-gray-600">{testimonial.position}</p>
