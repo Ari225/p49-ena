@@ -195,7 +195,7 @@ const Index = () => {
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-3xl font-bold text-primary mb-6 text-center">{t('home.about_title')}</h2>
-              <p className="text-gray-700 leading-relaxed mb-6 text-justify text-base">
+              <p className="text-gray-700 leading-relaxed mb-6 text-base text-justify">
                 {t('home.about_description')}
               </p>
               <Button asChild className="bg-primary hover:bg-primary/90">
