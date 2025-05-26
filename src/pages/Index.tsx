@@ -233,7 +233,7 @@ const Index = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <Calendar className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-xl text-primary">{t('header.activities')}</CardTitle>
+                <CardTitle className="text-primary text-lg">{t('header.activities')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-4">
