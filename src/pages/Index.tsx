@@ -256,7 +256,7 @@ const Index = () => {
                 <p className="text-gray-600 mb-4">
                   Événements heureux, départs à la retraite et nécrologie.
                 </p>
-                <Link to="/evenements-heureux" className="text-secondary hover:text-secondary/80 font-medium">
+                <Link to="/evenements-heureux" className="text-primary hover:text-secondary/80 font-medium">
                   Explorer →
                 </Link>
               </CardContent>
