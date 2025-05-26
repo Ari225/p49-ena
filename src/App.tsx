@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Contact from "./pages/Contact";
 import Historique from "./pages/Historique";
 import Galerie from "./pages/Galerie";
+import EchoRegions from "./pages/EchoRegions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/historique" element={<Historique />} />
               <Route path="/galerie" element={<Galerie />} />
+              <Route path="/echo-regions" element={<EchoRegions />} />
               
               {/* Presentation Routes */}
               <Route path="/textes-officiels" element={<div>Textes Officiels - Page en construction</div>} />

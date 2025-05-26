@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Menu, ChevronDown } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+
 const Header = () => {
   const {
     language,
@@ -21,82 +22,87 @@ const Header = () => {
     logout();
     navigate('/');
   };
-  const menuItems = [{
-    title: t('header.presentation'),
-    items: [{
-      label: t('menu.history'),
-      href: '/historique'
+  const menuItems = [
+    {
+      title: t('header.presentation'),
+      items: [{
+        label: t('menu.history'),
+        href: '/historique'
+      }, {
+        label: t('menu.official_texts'),
+        href: '/textes-officiels'
+      }, {
+        label: t('menu.leadership'),
+        href: '/instances-dirigeantes'
+      }, {
+        label: t('menu.directory'),
+        href: '/repertoire-membres'
+      }]
     }, {
-      label: t('menu.official_texts'),
-      href: '/textes-officiels'
+      title: t('header.activities'),
+      items: [{
+        label: t('menu.agenda'),
+        href: '/agenda'
+      }, {
+        label: t('menu.regional'),
+        href: '/regionales'
+      }, {
+        label: t('menu.assemblies'),
+        href: '/assemblees-generales'
+      }, {
+        label: t('menu.constitution_meetings'),
+        href: '/reunions-constitution'
+      }]
     }, {
-      label: t('menu.leadership'),
-      href: '/instances-dirigeantes'
+      title: t('header.social_events'),
+      items: [{
+        label: t('menu.happy_events'),
+        href: '/evenements-heureux'
+      }, {
+        label: t('menu.retirement'),
+        href: '/departs-retraite'
+      }, {
+        label: t('menu.necrology'),
+        href: '/necrologie'
+      }]
     }, {
-      label: t('menu.directory'),
-      href: '/repertoire-membres'
+      title: t('header.careers'),
+      items: [{
+        label: t('menu.training'),
+        href: '/formations'
+      }, {
+        label: t('menu.capacity_building'),
+        href: '/renforcement-capacites'
+      }, {
+        label: t('menu.coaching'),
+        href: '/coaching-mentorat'
+      }, {
+        label: t('menu.competition_news'),
+        href: '/actualites-concours'
+      }]
+    }, {
+      title: t('header.perspectives'),
+      items: [{
+        label: t('menu.latest_edition'),
+        href: '/derniere-edition'
+      }, {
+        label: t('menu.editorial_team'),
+        href: '/equipe-editoriale'
+      }, {
+        label: 'Écho des régions',
+        href: '/echo-regions'
+      }, {
+        label: t('menu.news'),
+        href: '/actualites'
+      }, {
+        label: t('menu.archives'),
+        href: '/archives'
+      }, {
+        label: t('menu.suggestions'),
+        href: '/suggestions'
+      }]
     }]
-  }, {
-    title: t('header.activities'),
-    items: [{
-      label: t('menu.agenda'),
-      href: '/agenda'
-    }, {
-      label: t('menu.regional'),
-      href: '/regionales'
-    }, {
-      label: t('menu.assemblies'),
-      href: '/assemblees-generales'
-    }, {
-      label: t('menu.constitution_meetings'),
-      href: '/reunions-constitution'
-    }]
-  }, {
-    title: t('header.social_events'),
-    items: [{
-      label: t('menu.happy_events'),
-      href: '/evenements-heureux'
-    }, {
-      label: t('menu.retirement'),
-      href: '/departs-retraite'
-    }, {
-      label: t('menu.necrology'),
-      href: '/necrologie'
-    }]
-  }, {
-    title: t('header.careers'),
-    items: [{
-      label: t('menu.training'),
-      href: '/formations'
-    }, {
-      label: t('menu.capacity_building'),
-      href: '/renforcement-capacites'
-    }, {
-      label: t('menu.coaching'),
-      href: '/coaching-mentorat'
-    }, {
-      label: t('menu.competition_news'),
-      href: '/actualites-concours'
-    }]
-  }, {
-    title: t('header.perspectives'),
-    items: [{
-      label: t('menu.latest_edition'),
-      href: '/derniere-edition'
-    }, {
-      label: t('menu.editorial_team'),
-      href: '/equipe-editoriale'
-    }, {
-      label: t('menu.news'),
-      href: '/actualites'
-    }, {
-      label: t('menu.archives'),
-      href: '/archives'
-    }, {
-      label: t('menu.suggestions'),
-      href: '/suggestions'
-    }]
-  }];
+  ];
   return <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto py-[10px] px-[100px]">
         <div className="flex items-center justify-between h-20">

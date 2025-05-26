@@ -7,149 +7,196 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock, Handshake, Activity, Zap, Shield } from 'lucide-react';
+
 const Index = () => {
-  const {
-    t
-  } = useLanguage();
-  const backgroundImages = ['/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png', '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png', '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'];
+  const { t } = useLanguage();
+  const backgroundImages = [
+    '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
+    '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
+    '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'
+  ];
+  
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
+
   useEffect(() => {
     const newsInterval = setInterval(() => {
-      setCurrentNewsIndex(prevIndex => (prevIndex + 1) % newsItems.length);
+      setCurrentNewsIndex((prevIndex) => (prevIndex + 1) % newsItems.length);
     }, 4000);
     return () => clearInterval(newsInterval);
   }, []);
+
   useEffect(() => {
     const testimonialInterval = setInterval(() => {
-      setCurrentTestimonialIndex(prevIndex => (prevIndex + 1) % (testimonials.length - 2));
+      setCurrentTestimonialIndex((prevIndex) => (prevIndex + 1) % (testimonials.length - 2));
     }, 5000);
     return () => clearInterval(testimonialInterval);
   }, []);
-  const newsItems = [{
-    title: "Assemblée Générale 2024",
-    date: "15 Mars 2024",
-    excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
-    image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
-    category: "Événement"
-  }, {
-    title: "Nouveau Partenariat Stratégique",
-    date: "10 Mars 2024",
-    excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
-    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
-    category: "Partenariat"
-  }, {
-    title: "Programme de Formation Continue 2024",
-    date: "5 Mars 2024",
-    excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
-    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
-    category: "Formation"
-  }, {
-    title: "Régionale de l'Ouest 2024",
-    date: "28 Février 2024",
-    excerpt: "Rencontre régionale réussie avec plus de 50 membres présents à Man.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop",
-    category: "Régionale"
-  }, {
-    title: "Reconnaissance Internationale",
-    date: "20 Février 2024",
-    excerpt: "Notre réseau reconnu par l'IIAS comme modèle de coopération entre énarques.",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop",
-    category: "Reconnaissance"
-  }];
-  const galleryImages = ["https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop", "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"];
-  const achievements = [{
-    number: "800+",
-    title: "Membres",
-    description: "appartenant au Réseau"
-  }, {
-    number: "15",
-    title: "Années",
-    description: "d'excellence et d'entraide"
-  }, {
-    number: "50+",
-    title: "Événements Organisés",
-    description: "Régionales, formations et réunions"
-  }, {
-    number: "12",
-    title: "Régions Représentées",
-    description: "sur le territoire ivoirien"
-  }];
-  const testimonials = [{
-    name: "Dr. Kouassi Marie",
-    position: "Directrice Générale, Ministère de l'Économie",
-    quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "M. Yao Jean-Baptiste",
-    position: "Préfet de Région",
-    quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "Mme. Touré Fatou",
-    position: "Directrice des Ressources Humaines",
-    quote: "L'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "Dr. Diallo Mamadou",
-    position: "Conseiller du Président",
-    quote: "La formation continue proposée par le réseau est de très haute qualité.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "Mme. Kone Awa",
-    position: "Secrétaire Générale de Ministère",
-    quote: "Les échanges d'expériences enrichissent notre pratique professionnelle quotidienne.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "M. Bamba Seydou",
-    position: "Sous-Préfet",
-    quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
-    image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "Dr. Assi Brigitte",
-    position: "Directrice de Cabinet",
-    quote: "Les mentors de la P49 m'ont accompagnée dans ma progression de carrière.",
-    image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "M. Kouakou Ernest",
-    position: "Ambassadeur",
-    quote: "L'excellence de la P49 rayonne bien au-delà de nos frontières nationales.",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "Mme. Ouattara Salimata",
-    position: "Inspectrice Générale",
-    quote: "La P49 incarne les valeurs de service public et d'intégrité.",
-    image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop&crop=face"
-  }, {
-    name: "M. Traoré Ibrahim",
-    position: "Gouverneur",
-    quote: "Fier d'appartenir à cette promotion qui marque l'histoire de l'administration ivoirienne.",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face"
-  }];
-  const values = [{
-    title: "Connexion",
-    description: "Maintenir des liens solides entre tous les membres du réseau",
-    icon: Handshake
-  }, {
-    title: "Action",
-    description: "Agir ensemble pour le développement et l'excellence",
-    icon: Zap
-  }, {
-    title: "Solidarité",
-    description: "Soutenir et accompagner chaque membre dans sa carrière",
-    icon: Heart
-  }, {
-    title: "Dévouement",
-    description: "Servir avec engagement au profit de la nation",
-    icon: Shield
-  }];
+
+  const newsItems = [
+    {
+      title: "Assemblée Générale 2024",
+      date: "15 Mars 2024",
+      excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
+      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
+      category: "Événement"
+    },
+    {
+      title: "Nouveau Partenariat Stratégique",
+      date: "10 Mars 2024",
+      excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
+      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
+      category: "Partenariat"
+    },
+    {
+      title: "Programme de Formation Continue 2024",
+      date: "5 Mars 2024",
+      excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
+      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
+      category: "Formation"
+    },
+    {
+      title: "Régionale de l'Ouest 2024",
+      date: "28 Février 2024",
+      excerpt: "Rencontre régionale réussie avec plus de 50 membres présents à Man.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop",
+      category: "Régionale"
+    },
+    {
+      title: "Reconnaissance Internationale",
+      date: "20 Février 2024",
+      excerpt: "Notre réseau reconnu par l'IIAS comme modèle de coopération entre énarques.",
+      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop",
+      category: "Reconnaissance"
+    }
+  ];
+
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=200&fit=crop",
+    "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=300&h=200&fit=crop",
+    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=300&h=200&fit=crop",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=300&h=200&fit=crop",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop"
+  ];
+
+  const achievements = [
+    {
+      number: "800+",
+      title: "Membres",
+      description: "appartenant au Réseau"
+    },
+    {
+      number: "15",
+      title: "Années",
+      description: "d'excellence et d'entraide"
+    },
+    {
+      number: "50+",
+      title: "Événements Organisés",
+      description: "Régionales, formations et réunions"
+    },
+    {
+      number: "12",
+      title: "Régions Représentées",
+      description: "sur le territoire ivoirien"
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Dr. Kouassi Marie",
+      position: "Directrice Générale, Ministère de l'Économie",
+      quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "M. Yao Jean-Baptiste",
+      position: "Préfet de Région",
+      quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "Mme. Touré Fatou",
+      position: "Directrice des Ressources Humaines",
+      quote: "L'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "Dr. Diallo Mamadou",
+      position: "Conseiller du Président",
+      quote: "La formation continue proposée par le réseau est de très haute qualité.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "Mme. Kone Awa",
+      position: "Secrétaire Générale de Ministère",
+      quote: "Les échanges d'expériences enrichissent notre pratique professionnelle quotidienne.",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "M. Bamba Seydou",
+      position: "Sous-Préfet",
+      quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
+      image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "Dr. Assi Brigitte",
+      position: "Directrice de Cabinet",
+      quote: "Les mentors de la P49 m'ont accompagnée dans ma progression de carrière.",
+      image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "M. Kouakou Ernest",
+      position: "Ambassadeur",
+      quote: "L'excellence de la P49 rayonne bien au-delà de nos frontières nationales.",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "Mme. Ouattara Salimata",
+      position: "Inspectrice Générale",
+      quote: "La P49 incarne les valeurs de service public et d'intégrité.",
+      image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop&crop=face"
+    },
+    {
+      name: "M. Traoré Ibrahim",
+      position: "Gouverneur",
+      quote: "Fier d'appartenir à cette promotion qui marque l'histoire de l'administration ivoirienne.",
+      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face"
+    }
+  ];
+
+  const values = [
+    {
+      title: "Connexion",
+      description: "Maintenir des liens solides entre tous les membres du réseau",
+      icon: Handshake
+    },
+    {
+      title: "Action",
+      description: "Agir ensemble pour le développement et l'excellence",
+      icon: Zap
+    },
+    {
+      title: "Solidarité",
+      description: "Soutenir et accompagner chaque membre dans sa carrière",
+      icon: Heart
+    },
+    {
+      title: "Dévouement",
+      description: "Servir avec engagement au profit de la nation",
+      icon: Shield
+    }
+  ];
+
   const getVisibleTestimonials = () => {
     const visible = [];
     for (let i = 0; i < 3; i++) {
@@ -161,16 +208,20 @@ const Index = () => {
     }
     return visible;
   };
-  return <Layout>
+
+  return (
+    <Layout>
       <PresidentWelcomeModal />
       
       {/* Hero Section with Background Carousel */}
       <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
-          {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
+          {backgroundImages.map((image, index) => (
+            <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
               <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
-            </div>)}
+            </div>
+          ))}
           <div className="absolute inset-0 bg-primary/50"></div>
         </div>
         
@@ -193,13 +244,15 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl text-center text-primary mb-12 font-bold">Valeurs de la P49</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => <div key={index} className="text-center">
+            {values.map((value, index) => (
+              <div key={index} className="text-center">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[#dfbe36]/[0.43]">
                   <value.icon className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="font-semibold text-primary mb-3 text-lg">{value.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{value.description}</p>
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -215,7 +268,8 @@ const Index = () => {
           </div>
           
           <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {newsItems.map((item, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
+            {newsItems.map((item, index) => (
+              <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
@@ -231,11 +285,14 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </div>)}
+              </div>
+            ))}
             
             {/* Navigation dots */}
             <div className="absolute bottom-4 right-4 flex space-x-2">
-              {newsItems.map((_, index) => <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />)}
+              {newsItems.map((_, index) => (
+                <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />
+              ))}
             </div>
           </div>
         </div>
@@ -245,13 +302,15 @@ const Index = () => {
       <section className="bg-primary text-white py-[50px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {achievements.map((achievement, index) => <div key={index} className="text-center">
+            {achievements.map((achievement, index) => (
+              <div key={index} className="text-center">
                 <div className="text-3xl md:text-3xl font-bold text-secondary mb-2">
                   {achievement.number}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{achievement.title}</h3>
                 <p className="text-white/80">{achievement.description}</p>
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -268,12 +327,16 @@ const Index = () => {
           <div className="flex gap-8">
             {/* Image container on the left with A4 aspect ratio */}
             <div className="w-[500px] bg-white">
-              <div className="w-[500px]  bg-white shadow-xl p-6">
-                <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-100 h-auto rounded-lg object-contain" />
+              <div className="w-[500px] bg-white shadow-xl p-6">
+                <img 
+                  alt="Communiqué" 
+                  src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" 
+                  className="w-full h-auto rounded-lg object-contain" 
+                />
               </div>
             </div>
             {/* Communiqués stacked on the right */}
-            <div className="w-[700px] space-y-4">
+            <div className="flex-1 space-y-4">
               <Card className="bg-red-50 border-red-200">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-red-800 mb-2 text-lg">Communiqué urgent</h3>
@@ -290,6 +353,24 @@ const Index = () => {
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-green-800 mb-2 text-lg">Félicitations</h3>
                   <p className="text-sm text-green-600">Promotion de plusieurs membres à de nouveaux postes.</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-purple-50 border-purple-200">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-purple-800 mb-2 text-lg">Communiqué de presse</h3>
+                  <p className="text-sm text-purple-600">Publication des résultats du dernier concours interne.</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-orange-50 border-orange-200">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-orange-800 mb-2 text-lg">Communiqué ENA</h3>
+                  <p className="text-sm text-orange-600">Nouvelles directives pour les formations continues.</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-indigo-50 border-indigo-200">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-indigo-800 mb-2 text-lg">Communiqué P49</h3>
+                  <p className="text-sm text-indigo-600">Assemblée générale extraordinaire du réseau P49.</p>
                 </CardContent>
               </Card>
             </div>
@@ -321,8 +402,8 @@ const Index = () => {
       <section className="bg-white py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Nos rubriques</h2>
-          <div className="flex flex-wrap justify-center gap-6">
-            <Card className="hover:shadow-xl transition-shadow duration-300 group flex-1 min-w-[280px]">
+          <div className="grid grid-cols-5 gap-6">
+            <Card className="hover:shadow-xl transition-shadow duration-300 group">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
                   <Users className="h-6 w-6 text-primary" />
@@ -339,7 +420,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow duration-300 group flex-1 min-w-[280px]">
+            <Card className="hover:shadow-xl transition-shadow duration-300 group">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
                   <Calendar className="h-6 w-6 text-primary" />
@@ -356,7 +437,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow duration-300 group flex-1 min-w-[280px]">
+            <Card className="hover:shadow-xl transition-shadow duration-300 group">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
                   <Heart className="h-6 w-6 text-primary" />
@@ -373,7 +454,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow duration-300 group flex-1 min-w-[280px]">
+            <Card className="hover:shadow-xl transition-shadow duration-300 group">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
                   <Briefcase className="h-6 w-6 text-primary" />
@@ -390,7 +471,7 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-xl transition-shadow duration-300 group flex-1 min-w-[280px]">
+            <Card className="hover:shadow-xl transition-shadow duration-300 group">
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
                   <BookOpen className="h-6 w-6 text-primary" />
@@ -410,37 +491,44 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Testimonials Section with Auto-sliding Carousel */}
       <section className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-0">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
-          <div className="relative flex items-center justify-center">
-            <div className="flex items-center space-x-8 w-full max-w-6xl">
-              {getVisibleTestimonials().map((testimonial, index) => <Card key={`${testimonial.name}-${currentTestimonialIndex}-${index}`} className={`transition-all duration-500 transform ${index === 1 ? 'scale-110 opacity-100 z-10 shadow-xl' : 'scale-90 opacity-60 z-0'} flex-1 max-w-sm`} style={{
-              transform: `translateX(${(index - 1) * 20}px) scale(${index === 1 ? 1.1 : 0.9})`
-            }}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
-                        <div>
-                          <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
-                          
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full max-w-5xl mx-auto"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/3">
+                  <Card className="h-full">
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <img 
+                          src={testimonial.image} 
+                          alt={testimonial.name} 
+                          className="w-16 h-16 rounded-full object-cover flex-shrink-0" 
+                        />
+                        <div className="flex-1">
+                          <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
+                          <div>
+                            <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
+                            <p className="text-xs text-gray-500">{testimonial.position}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>)}
-            </div>
-            
-            {/* Navigation dots */}
-            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-3">
-              {Array.from({
-              length: testimonials.length - 2
-            }).map((_, index) => <button key={index} onClick={() => setCurrentTestimonialIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'}`} />)}
-            </div>
-          </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </div>
       </section>
 
@@ -489,12 +577,16 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {galleryImages.map((image, index) => <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+            {galleryImages.map((image, index) => (
+              <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
                 <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-              </div>)}
+              </div>
+            ))}
           </div>
         </div>
       </section>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Index;
