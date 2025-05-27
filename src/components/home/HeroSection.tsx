@@ -32,14 +32,14 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 text-center w-full px-[100px] my-0 py-0">
-        <h1 className="text-4xl font-bold mb-6 animate-fade-in md:text-6xl">
+      <div className="relative z-10 text-center w-full px-4 md:px-8 lg:px-[100px] my-0 py-0">
+        <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in">
           {t('home.hero_title')}
         </h1>
-        <p className="text-xl italic mb-8 animate-fade-in text-white md:text-xl font-normal">
+        <p className="text-sm md:text-lg lg:text-xl italic mb-6 md:mb-8 animate-fade-in text-white font-normal px-4">
           {t('home.hero_subtitle')}
         </p>
-        <Button asChild className="bg-primary text-white hover:bg-primary/80 border-2 border-white font-semibold px-8 py-3 text-lg">
+        <Button asChild className="bg-primary text-white hover:bg-primary/80 border-2 border-white font-semibold px-4 md:px-8 py-2 md:py-3 text-sm md:text-lg">
           <Link to="/historique" className="text-white">Notre histoire</Link>
         </Button>
       </div>

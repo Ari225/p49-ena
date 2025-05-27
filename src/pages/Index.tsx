@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Layout from '@/components/Layout';
+import Preloader from '@/components/Preloader';
 import PresidentWelcomeModal from '@/components/PresidentWelcomeModal';
 import HeroSection from '@/components/home/HeroSection';
 import ValuesSection from '@/components/home/ValuesSection';
@@ -26,24 +27,27 @@ const Index = () => {
   ];
 
   return (
-    <Layout>
-      <PresidentWelcomeModal />
-      <HeroSection backgroundImages={backgroundImages} />
-      <ValuesSection />
-      <NewsCarousel />
-      <AchievementsSection />
-      <CommuniquesSection />
-      <AboutSection />
-      <SiteSectionsGrid />
-      <EchoRegionsSection />
-      <CarrierePlusSection />
-      <TestimonialsSection />
-      <EvenementsSociauxSection />
-      <ActivitesSection />
-      <BlogSection />
-      <JournalSection />
-      <GallerySection />
-    </Layout>
+    <>
+      <Preloader />
+      <Layout>
+        <PresidentWelcomeModal />
+        <HeroSection backgroundImages={backgroundImages} />
+        <ValuesSection />
+        <NewsCarousel />
+        <AchievementsSection />
+        <CommuniquesSection />
+        <AboutSection />
+        <SiteSectionsGrid />
+        <EchoRegionsSection />
+        <CarrierePlusSection />
+        <TestimonialsSection />
+        <EvenementsSociauxSection />
+        <ActivitesSection />
+        <BlogSection />
+        <JournalSection />
+        <GallerySection />
+      </Layout>
+    </>
   );
 };
 

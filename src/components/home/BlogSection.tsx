@@ -52,20 +52,20 @@ const BlogSection = () => {
   };
 
   return (
-    <section className="bg-gray-50 py-[100px] px-[100px]">
+    <section className="bg-gray-50 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-0">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Articles de Blog</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Articles de Blog</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
             Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
           {articles.map((article) => (
             <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
               {article.image_url && (
-                <div className="h-48">
+                <div className="h-32 md:h-48">
                   <img 
                     src={article.image_url} 
                     alt={article.title} 
@@ -73,13 +73,19 @@ const BlogSection = () => {
                   />
                 </div>
               )}
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-primary mb-3 line-clamp-2">{article.title}</h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{article.summary}</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-primary mb-2 md:mb-3 line-clamp-2 text-sm md:text-base">
+                  {article.title}
+                </h3>
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-3">
+                  {article.summary}
+                </p>
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center">
                     <User className="w-3 h-3 mr-1" />
-                    {article.author?.first_name} {article.author?.last_name}
+                    <span className="truncate">
+                      {article.author?.first_name} {article.author?.last_name}
+                    </span>
                   </div>
                   <div className="flex items-center">
                     <Calendar className="w-3 h-3 mr-1" />
@@ -92,7 +98,7 @@ const BlogSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
+          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-6 md:px-8 py-2 md:py-3 text-sm md:text-base">
             <Link to="/blog">
               <PenTool className="mr-2 h-4 w-4" />
               Voir tous les articles

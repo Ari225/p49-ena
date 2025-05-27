@@ -47,34 +47,40 @@ const EchoRegionsSection = () => {
   }, []);
 
   return (
-    <section className="bg-white py-[100px] px-[100px]">
+    <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-0">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold text-primary">Écho des Régions</h2>
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-12 gap-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary">Écho des Régions</h2>
+          <Button asChild className="bg-primary hover:bg-primary/90 text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
             <Link to="/echo-regions">
-              Voir toutes les actualités régionales <ChevronRight className="ml-2 h-4 w-4" />
+              <span className="hidden sm:inline">Voir toutes les actualités régionales</span>
+              <span className="sm:hidden">Voir tout</span>
+              <ChevronRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {regionalNews.map((news, index) => (
             <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="relative h-48">
+              <div className="relative h-32 md:h-48">
                 <img 
                   src={news.image} 
                   alt={news.title} 
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-3 left-3 bg-primary text-white px-2 py-1 rounded-full text-xs flex items-center">
+                <div className="absolute top-2 md:top-3 left-2 md:left-3 bg-primary text-white px-2 py-1 rounded-full text-xs flex items-center">
                   <MapPin className="w-3 h-3 mr-1" />
                   {news.region}
                 </div>
               </div>
-              <CardContent className="p-4">
-                <h3 className="font-semibold text-primary mb-2 text-sm">{news.title}</h3>
-                <p className="text-gray-600 text-xs mb-3">{news.excerpt}</p>
+              <CardContent className="p-3 md:p-4">
+                <h3 className="font-semibold text-primary mb-2 text-xs md:text-sm line-clamp-2">
+                  {news.title}
+                </h3>
+                <p className="text-gray-600 text-xs mb-2 md:mb-3 line-clamp-2">
+                  {news.excerpt}
+                </p>
                 <p className="text-xs text-gray-500">{news.date}</p>
               </CardContent>
             </Card>

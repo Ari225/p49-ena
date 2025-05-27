@@ -37,33 +37,37 @@ const EvenementsSociauxSection = () => {
   ];
 
   return (
-    <section className="bg-white py-[100px] px-[100px]">
+    <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-0">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Événements Sociaux</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Événements Sociaux</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
             Partageons ensemble les moments importants de la vie de nos membres
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
           {socialEvents.map((event, index) => {
             const IconComponent = event.icon;
             return (
               <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative h-48">
+                <div className="relative h-32 md:h-48">
                   <img 
                     src={event.image} 
                     alt={event.title} 
                     className="w-full h-full object-cover"
                   />
-                  <div className={`absolute top-3 right-3 ${event.color} text-white p-2 rounded-full`}>
-                    <IconComponent className="w-5 h-5" />
+                  <div className={`absolute top-2 md:top-3 right-2 md:right-3 ${event.color} text-white p-2 rounded-full`}>
+                    <IconComponent className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-primary mb-2">{event.title}</h3>
-                  <p className="text-gray-600 text-sm mb-3">{event.description}</p>
+                <CardContent className="p-4 md:p-6">
+                  <h3 className="font-semibold text-primary mb-2 text-sm md:text-base line-clamp-2">
+                    {event.title}
+                  </h3>
+                  <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3 line-clamp-2">
+                    {event.description}
+                  </p>
                   <p className="text-xs text-gray-500">{event.date}</p>
                 </CardContent>
               </Card>
@@ -72,8 +76,11 @@ const EvenementsSociauxSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
-            <Link to="/evenements-heureux">Consulter les annonces sociales</Link>
+          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-6 md:px-8 py-2 md:py-3 text-sm md:text-base">
+            <Link to="/evenements-heureux">
+              <span className="hidden sm:inline">Consulter les annonces sociales</span>
+              <span className="sm:hidden">Annonces sociales</span>
+            </Link>
           </Button>
         </div>
       </div>

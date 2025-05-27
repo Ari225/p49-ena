@@ -26,16 +26,16 @@ const AchievementsSection = () => {
   ];
 
   return (
-    <section className="bg-primary text-white py-[50px] px-[100px]">
+    <section className="bg-primary text-white py-8 md:py-12 lg:py-[50px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {achievements.map((achievement, index) => (
             <div key={index} className="text-center">
-              <div className="text-3xl md:text-3xl font-bold text-secondary mb-2">
+              <div className="text-2xl md:text-3xl font-bold text-secondary mb-2">
                 {achievement.number}
               </div>
-              <h3 className="text-xl font-semibold mb-2">{achievement.title}</h3>
-              <p className="text-white/80">{achievement.description}</p>
+              <h3 className="text-lg md:text-xl font-semibold mb-2">{achievement.title}</h3>
+              <p className="text-white/80 text-sm md:text-base">{achievement.description}</p>
             </div>
           ))}
         </div>

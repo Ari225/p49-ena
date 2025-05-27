@@ -32,16 +32,19 @@ const GallerySection = () => {
   ];
 
   return (
-    <section className="bg-accent/30 py-[100px] px-[100px]">
+    <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-3xl font-bold text-primary">Galerie Photos</h2>
-          <Link to="/galerie" className="text-primary hover:text-secondary/80 flex items-center">
-            <Camera className="mr-2 h-5 w-5" />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-12 gap-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary">Galerie Photos</h2>
+          <Link 
+            to="/galerie" 
+            className="text-primary hover:text-secondary/80 flex items-center text-sm md:text-base"
+          >
+            <Camera className="mr-2 h-4 w-4 md:h-5 md:w-5" />
             Voir plus
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
           {galleryImages.map((image, index) => (
             <div 
               key={index} 
@@ -53,7 +56,7 @@ const GallerySection = () => {
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
               />
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <p className="text-white text-sm text-center px-2">{image.title}</p>
+                <p className="text-white text-xs md:text-sm text-center px-2">{image.title}</p>
               </div>
             </div>
           ))}

@@ -9,57 +9,63 @@ const CommuniquesSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="bg-white px-[100px] py-[100px]">
+    <section className="bg-white px-4 md:px-8 lg:px-[100px] py-12 md:py-16 lg:py-[100px]">
       <div className="container mx-auto px-0">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
-          <Link to="/communiques" className="text-primary hover:text-secondary/80 flex items-center">
+        <div className="flex items-center justify-between mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
+          <Link to="/communiques" className="text-primary hover:text-secondary/80 flex items-center text-sm md:text-base">
             Voir tout <ChevronRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
-        <div className="flex gap-8">
-          {/* Image container on the left with A4 aspect ratio */}
-          <div className="w-[500px] bg-white flex items-center">
-            <div className="w-[500px] bg-white shadow-xl p-6">
-              <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-full h-auto object-contain" />
+        
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          {/* Image container */}
+          <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
+            <div className="w-full max-w-[400px] lg:w-[500px] bg-white shadow-xl p-4 md:p-6">
+              <img 
+                alt="Communiqué" 
+                src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" 
+                className="w-full h-auto object-contain" 
+              />
             </div>
           </div>
-          {/* Communiqués stacked on the right */}
-          <div className="flex-1 space-y-4">
+          
+          {/* Communiqués stacked */}
+          <div className="flex-1 space-y-3 md:space-y-4">
             <Card className="bg-red-50 border-red-200">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-red-800 mb-2 text-lg">Communiqué urgent</h3>
-                <p className="text-sm text-red-600">Report de l'événement prévu le 25 mars 2024.</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-red-800 mb-2 text-base md:text-lg">Communiqué urgent</h3>
+                <p className="text-xs md:text-sm text-red-600">Report de l'événement prévu le 25 mars 2024.</p>
               </CardContent>
             </Card>
             <Card className="bg-blue-50 border-blue-200">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-blue-800 mb-2 text-lg">Nouvelle inscription</h3>
-                <p className="text-sm text-blue-600">Ouverture des inscriptions pour la formation de mars.</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-blue-800 mb-2 text-base md:text-lg">Nouvelle inscription</h3>
+                <p className="text-xs md:text-sm text-blue-600">Ouverture des inscriptions pour la formation de mars.</p>
               </CardContent>
             </Card>
             <Card className="bg-green-50 border-green-200">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-green-800 mb-2 text-lg">Félicitations</h3>
-                <p className="text-sm text-green-600">Promotion de plusieurs membres à de nouveaux postes.</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-green-800 mb-2 text-base md:text-lg">Félicitations</h3>
+                <p className="text-xs md:text-sm text-green-600">Promotion de plusieurs membres à de nouveaux postes.</p>
               </CardContent>
             </Card>
             <Card className="bg-purple-50 border-purple-200">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-purple-800 mb-2 text-lg">Communiqué de presse</h3>
-                <p className="text-sm text-purple-600">Publication des résultats du dernier concours interne.</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-purple-800 mb-2 text-base md:text-lg">Communiqué de presse</h3>
+                <p className="text-xs md:text-sm text-purple-600">Publication des résultats du dernier concours interne.</p>
               </CardContent>
             </Card>
             <Card className="bg-orange-50 border-orange-200">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-orange-800 mb-2 text-lg">Communiqué ENA</h3>
-                <p className="text-sm text-orange-600">Nouvelles directives pour les formations continues.</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-orange-800 mb-2 text-base md:text-lg">Communiqué ENA</h3>
+                <p className="text-xs md:text-sm text-orange-600">Nouvelles directives pour les formations continues.</p>
               </CardContent>
             </Card>
             <Card className="bg-indigo-50 border-indigo-200">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-indigo-800 mb-2 text-lg">Communiqué P49</h3>
-                <p className="text-sm text-indigo-600">Assemblée générale extraordinaire du réseau P49.</p>
+              <CardContent className="p-4 md:p-6">
+                <h3 className="font-semibold text-indigo-800 mb-2 text-base md:text-lg">Communiqué P49</h3>
+                <p className="text-xs md:text-sm text-indigo-600">Assemblée générale extraordinaire du réseau P49.</p>
               </CardContent>
             </Card>
           </div>
