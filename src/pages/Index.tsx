@@ -183,7 +183,7 @@ const Index = () => {
             {t('home.hero_subtitle')}
           </p>
           <Button asChild className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-3 text-lg">
-            <Link to="/historique" className="text-white">Découvrir notre histoire</Link>
+            <Link to="/historique" className="text-white">Notre histoire</Link>
           </Button>
         </div>
       </section>
