@@ -1,50 +1,38 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
-
 const Historique = () => {
-  const timeline = [
-    {
-      year: '2009',
-      title: 'Création de la Promotion',
-      description: 'Entrée de la 49ème promotion à l\'École Nationale d\'Administration de Côte d\'Ivoire.'
-    },
-    {
-      year: '2010',
-      title: 'Fin de Formation',
-      description: 'Sortie officielle de la promotion avec l\'obtention du diplôme d\'Énarque.'
-    },
-    {
-      year: '2012',
-      title: 'Premier Rassemblement',
-      description: 'Organisation de la première rencontre post-formation des membres de la P49.'
-    },
-    {
-      year: '2015',
-      title: 'Création du Réseau',
-      description: 'Formalisation du réseau P49 avec l\'adoption des statuts et règlements.'
-    },
-    {
-      year: '2018',
-      title: 'Lancement du Journal',
-      description: 'Publication du premier numéro de "Perspectives 49", le journal officiel du réseau.'
-    },
-    {
-      year: '2020',
-      title: 'Plateforme Numérique',
-      description: 'Lancement de la plateforme digitale pour renforcer les échanges entre membres.'
-    },
-    {
-      year: '2024',
-      title: 'Nouveau Site Web',
-      description: 'Mise en ligne du nouveau site web officiel du réseau P49 ENA.'
-    }
-  ];
-
-  return (
-    <Layout>
-      <div className="py-16 bg-accent/30">
+  const timeline = [{
+    year: '2009',
+    title: 'Création de la Promotion',
+    description: 'Entrée de la 49ème promotion à l\'École Nationale d\'Administration de Côte d\'Ivoire.'
+  }, {
+    year: '2010',
+    title: 'Fin de Formation',
+    description: 'Sortie officielle de la promotion avec l\'obtention du diplôme d\'Énarque.'
+  }, {
+    year: '2012',
+    title: 'Premier Rassemblement',
+    description: 'Organisation de la première rencontre post-formation des membres de la P49.'
+  }, {
+    year: '2015',
+    title: 'Création du Réseau',
+    description: 'Formalisation du réseau P49 avec l\'adoption des statuts et règlements.'
+  }, {
+    year: '2018',
+    title: 'Lancement du Journal',
+    description: 'Publication du premier numéro de "Perspectives 49", le journal officiel du réseau.'
+  }, {
+    year: '2020',
+    title: 'Plateforme Numérique',
+    description: 'Lancement de la plateforme digitale pour renforcer les échanges entre membres.'
+  }, {
+    year: '2024',
+    title: 'Nouveau Site Web',
+    description: 'Mise en ligne du nouveau site web officiel du réseau P49 ENA.'
+  }];
+  return <Layout>
+      <div className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-primary mb-4">Historique du Réseau</h1>
@@ -75,11 +63,7 @@ const Historique = () => {
                 </p>
               </div>
               <div>
-                <img 
-                  src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
-                  alt="Logo P49" 
-                  className="w-full max-w-md mx-auto"
-                />
+                <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="Logo P49" className="w-full max-w-md mx-auto" />
               </div>
             </div>
           </div>
@@ -91,8 +75,7 @@ const Historique = () => {
               {/* Timeline Line */}
               <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-secondary"></div>
               
-              {timeline.map((event, index) => (
-                <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   {/* Timeline Dot */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg z-10"></div>
                   
@@ -108,8 +91,7 @@ const Historique = () => {
                       <p className="text-gray-700 leading-relaxed">{event.description}</p>
                     </CardContent>
                   </Card>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
 
@@ -156,8 +138,6 @@ const Historique = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Historique;
