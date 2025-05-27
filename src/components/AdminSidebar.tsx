@@ -10,7 +10,8 @@ import {
   PenTool,
   MessageSquare,
   BarChart3,
-  Bell
+  Bell,
+  BookOpen
 } from 'lucide-react';
 
 const AdminSidebar = () => {
@@ -36,6 +37,11 @@ const AdminSidebar = () => {
       title: 'Articles Blog',
       href: '/dashboard/blog',
       icon: PenTool
+    },
+    {
+      title: 'Journal',
+      href: '/dashboard/journal',
+      icon: BookOpen
     },
     {
       title: 'Événements',

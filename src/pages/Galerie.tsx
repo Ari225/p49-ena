@@ -1,12 +1,14 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { X } from 'lucide-react';
 
 const Galerie = () => {
   const [selectedCategory, setSelectedCategory] = useState('Toutes');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   
   const categories = [
     'Toutes',
@@ -167,13 +169,31 @@ const Galerie = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPhotos.map((photo) => (
                 <Card key={photo.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={photo.url}
-                      alt={photo.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="aspect-video overflow-hidden cursor-pointer">
+                        <img
+                          src={photo.url}
+                          alt={photo.title}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl max-h-[90vh] p-0">
+                      <div className="relative">
+                        <img
+                          src={photo.url.replace('w=400&h=300', 'w=1200&h=800')}
+                          alt={photo.title}
+                          className="w-full h-auto object-contain max-h-[80vh]"
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                          <h3 className="text-xl font-bold mb-2">{photo.title}</h3>
+                          <p className="text-sm opacity-90 mb-1">{photo.description}</p>
+                          <p className="text-xs opacity-75">{photo.date}</p>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                   <CardContent className="p-4">
                     <div className="mb-2">
                       <Badge variant="secondary" className="text-xs">
