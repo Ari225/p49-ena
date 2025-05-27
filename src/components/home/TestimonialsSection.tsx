@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const TestimonialsSection = () => {
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   
   const testimonials = [
     {
@@ -44,91 +44,89 @@ const TestimonialsSection = () => {
       position: "Sous-Préfet",
       quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
       image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Dr. Assi Brigitte",
-      position: "Directrice de Cabinet",
-      quote: "Les mentors de la P49 m'ont accompagnée dans ma progression de carrière.",
-      image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Kouakou Ernest",
-      position: "Ambassadeur",
-      quote: "L'excellence de la P49 rayonne bien au-delà de nos frontières nationales.",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "Mme. Ouattara Salimata",
-      position: "Inspectrice Générale",
-      quote: "La P49 incarne les valeurs de service public et d'intégrité.",
-      image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=100&h=100&fit=crop&crop=face"
-    },
-    {
-      name: "M. Traoré Ibrahim",
-      position: "Gouverneur",
-      quote: "Fier d'appartenir à cette promotion qui marque l'histoire de l'administration ivoirienne.",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face"
     }
   ];
 
   useEffect(() => {
-    const testimonialInterval = setInterval(() => {
-      setCurrentTestimonialIndex(prevIndex => (prevIndex + 1) % testimonials.length);
-    }, 7000);
-    return () => clearInterval(testimonialInterval);
-  }, []);
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(testimonials.length / 3));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(testimonials.length / 3));
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? Math.ceil(testimonials.length / 3) - 1 : prevIndex - 1
+    );
+  };
+
+  const getVisibleTestimonials = () => {
+    const startIndex = currentIndex * 3;
+    return testimonials.slice(startIndex, startIndex + 3);
+  };
 
   return (
     <section className="bg-accent/30 py-[100px] px-[100px]">
       <div className="container mx-auto px-0">
         <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
+        
         <div className="relative">
-          <Carousel opts={{
-            align: "start",
-            loop: true
-          }} className="w-full max-w-5xl mx-auto">
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index} className={`pl-2 md:pl-4 md:basis-1/3 transition-transform duration-700 ease-in-out ${index === currentTestimonialIndex ? 'translate-x-0' : index < currentTestimonialIndex ? '-translate-x-full' : 'translate-x-full'}`}>
-                  <Card className="h-full">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
-                        <div className="flex-1">
-                          <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
-                          <div>
-                            <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
-                            <p className="text-xs text-gray-500">{testimonial.position}</p>
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, slideIndex) => (
+                <div key={slideIndex} className="w-full flex-shrink-0">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {testimonials.slice(slideIndex * 3, slideIndex * 3 + 3).map((testimonial, index) => (
+                      <Card key={index} className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
+                        <CardContent className="p-6">
+                          <div className="flex items-start space-x-4">
+                            <img 
+                              src={testimonial.image} 
+                              alt={testimonial.name} 
+                              className="w-16 h-16 rounded-full object-cover flex-shrink-0" 
+                            />
+                            <div className="flex-1">
+                              <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
+                              <div>
+                                <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
+                                <p className="text-xs text-gray-500">{testimonial.position}</p>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-          
-          {/* Navigation dots */}
-          <div className="flex justify-center mt-6 space-x-2">
-            {testimonials.map((_, index) => (
-              <button 
-                key={index} 
-                onClick={() => setCurrentTestimonialIndex(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'
-                }`}
-              />
-            ))}
+            </div>
           </div>
+          
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6 text-primary" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-primary" />
+          </button>
         </div>
         
-        {/* View Testimonials Button */}
         <div className="text-center mt-8">
           <Button asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
-            <Link to="/temoignages">Voir les Témoignages</Link>
+            <Link to="/temoignages">Voir tous les témoignages</Link>
           </Button>
         </div>
       </div>
