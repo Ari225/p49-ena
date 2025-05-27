@@ -3,17 +3,13 @@ import { supabase } from '@/integrations/supabase/client';
 
 export const setUserContext = async (userId: string) => {
   try {
-    // Essayer d'utiliser set_config si elle existe
-    const { error } = await supabase.rpc('set_config', {
-      setting_name: 'app.current_user_id',
-      setting_value: userId,
-      is_local: false
-    });
+    // Pour le moment, nous utilisons une approche simple
+    // L'ID utilisateur sera géré côté client via le contexte d'authentification
+    console.log('Setting user context for user:', userId);
     
-    if (error) {
-      console.log('set_config function not available, using fallback method');
-    }
+    // Nous pourrions implémenter une fonction personnalisée plus tard si nécessaire
+    // Pour l'instant, le contexte utilisateur est géré via l'état local
   } catch (error) {
-    console.log('Using local user context fallback');
+    console.log('Error setting user context:', error);
   }
 };

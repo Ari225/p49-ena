@@ -13,6 +13,7 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { BookOpen, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { setUserContext } from '@/utils/supabaseHelpers';
 
 interface JournalFormData {
   title: string;

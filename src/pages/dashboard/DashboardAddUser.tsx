@@ -12,6 +12,7 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { setUserContext } from '@/utils/supabaseHelpers';
 
 interface UserFormData {
   username: string;

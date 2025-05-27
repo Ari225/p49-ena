@@ -12,6 +12,7 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { FileText, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { setUserContext } from '@/utils/supabaseHelpers';
 
 interface NewsFormData {
   title: string;
