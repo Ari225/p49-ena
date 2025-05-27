@@ -13,13 +13,18 @@ import Contact from "./pages/Contact";
 import Historique from "./pages/Historique";
 import Galerie from "./pages/Galerie";
 import EchoRegions from "./pages/EchoRegions";
+import Actualites from "./pages/Actualites";
 import NotFound from "./pages/NotFound";
 
 // Dashboard pages
 import DashboardUsers from "./pages/dashboard/DashboardUsers";
 import DashboardNews from "./pages/dashboard/DashboardNews";
+import DashboardAddNews from "./pages/dashboard/DashboardAddNews";
+import DashboardAddUser from "./pages/dashboard/DashboardAddUser";
 import DashboardBlog from "./pages/dashboard/DashboardBlog";
+import DashboardPendingArticles from "./pages/dashboard/DashboardPendingArticles";
 import DashboardJournal from "./pages/dashboard/DashboardJournal";
+import DashboardAddJournal from "./pages/dashboard/DashboardAddJournal";
 import DashboardEvents from "./pages/dashboard/DashboardEvents";
 import DashboardMyArticles from "./pages/dashboard/DashboardMyArticles";
 import DashboardNewArticle from "./pages/dashboard/DashboardNewArticle";
@@ -43,12 +48,17 @@ const App = () => (
               <Route path="/historique" element={<Historique />} />
               <Route path="/galerie" element={<Galerie />} />
               <Route path="/echo-regions" element={<EchoRegions />} />
+              <Route path="/actualites" element={<Actualites />} />
               
               {/* Dashboard Routes */}
               <Route path="/dashboard/users" element={<DashboardUsers />} />
+              <Route path="/dashboard/add-user" element={<DashboardAddUser />} />
               <Route path="/dashboard/news" element={<DashboardNews />} />
+              <Route path="/dashboard/add-news" element={<DashboardAddNews />} />
               <Route path="/dashboard/blog" element={<DashboardBlog />} />
+              <Route path="/dashboard/pending-articles" element={<DashboardPendingArticles />} />
               <Route path="/dashboard/journal" element={<DashboardJournal />} />
+              <Route path="/dashboard/add-journal" element={<DashboardAddJournal />} />
               <Route path="/dashboard/events" element={<DashboardEvents />} />
               <Route path="/dashboard/my-articles" element={<DashboardMyArticles />} />
               <Route path="/dashboard/new-article" element={<DashboardNewArticle />} />
@@ -79,9 +89,8 @@ const App = () => (
               {/* Perspectives Routes */}
               <Route path="/derniere-edition" element={<div>Dernière Édition - Page en construction</div>} />
               <Route path="/equipe-editoriale" element={<div>Équipe Éditoriale - Page en construction</div>} />
-              <Route path="/actualites" element={<div>Actualités - Page en construction</div>} />
-              <Route path="/archives" element={<div>Archives - Page en construction</div>} />
               <Route path="/suggestions" element={<div>Suggestions - Page en construction</div>} />
+              <Route path="/archives" element={<div>Archives - Page en construction</div>} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
