@@ -7,7 +7,7 @@ const Preloader = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -15,14 +15,14 @@ const Preloader = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-primary/60 z-50 flex items-center justify-center">
       <div className="relative">
         {/* Logo */}
-        <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
+        <div className="w-24 h-24 md:w-28 md:h-28 flex items-center justify-center">
           <img 
             src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
             alt="P49 ENA Logo" 
-            className="w-24 h-24 md:w-32 md:h-32 object-contain"
+            className="w-16 h-16 md:w-20 md:h-20 object-contain"
           />
         </div>
         
@@ -35,7 +35,7 @@ const Preloader = () => {
               r="45"
               fill="none"
               stroke="#DFBE36"
-              strokeWidth="3"
+              strokeWidth="1"
               strokeLinecap="round"
               strokeDasharray="70 200"
               strokeDashoffset="0"
@@ -46,7 +46,7 @@ const Preloader = () => {
       
       {/* Loading text */}
       <div className="absolute bottom-20 text-center">
-        <p className="text-primary text-lg font-medium animate-pulse">Chargement...</p>
+        <p className="text-white text-lg font-medium animate-pulse">Chargement...</p>
       </div>
     </div>
   );
