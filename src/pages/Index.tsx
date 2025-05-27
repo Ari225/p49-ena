@@ -171,8 +171,8 @@ const Index = () => {
           <p className="text-xl italic mb-8 animate-fade-in text-white md:text-xl font-normal">
             {t('home.hero_subtitle')}
           </p>
-          <Button asChild className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-3 text-lg">
-            <Link to="/historique" className="text-white bg-primary">Notre histoire</Link>
+          <Button asChild className="bg-primary text-white hover:bg-primary/80 font-semibold px-8 py-3 text-lg">
+            <Link to="/historique" className="text-white">Notre histoire</Link>
           </Button>
         </div>
       </section>
