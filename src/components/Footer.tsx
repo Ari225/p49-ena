@@ -58,7 +58,7 @@ const Footer = () => {
             </div>
 
             {/* Newsletter */}
-            <div>
+            <div className="w-[200px]">
               <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
               <p className="text-gray-300 text-sm mb-4">
                 Restez informé de nos actualités et événements
