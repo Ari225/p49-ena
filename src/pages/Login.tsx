@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -9,56 +8,51 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
-  const { t } = useLanguage();
+  const {
+    login
+  } = useAuth();
+  const {
+    t
+  } = useLanguage();
   const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       const success = await login(username, password);
       if (success) {
         toast({
           title: "Connexion réussie",
-          description: "Bienvenue dans votre espace personnel",
+          description: "Bienvenue dans votre espace personnel"
         });
         navigate('/dashboard');
       } else {
         toast({
           title: "Erreur de connexion",
           description: "Nom d'utilisateur ou mot de passe incorrect",
-          variant: "destructive",
+          variant: "destructive"
         });
       }
     } catch (error) {
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de la connexion",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
-
-  return (
-    <Layout>
-      <div className="min-h-[80vh] flex items-center justify-center bg-accent/30 py-12">
+  return <Layout>
+      <div className="min-h-[80vh] flex items-center justify-center bg-accent/30 py-[100px]">
         <div className="w-full max-w-md">
           <Card>
             <CardHeader className="text-center">
-              <img 
-                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
-                alt="P49 ENA Logo" 
-                className="h-16 w-16 object-contain mx-auto mb-4"
-              />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
               <CardTitle className="text-2xl font-bold text-primary">
                 {t('login.title')}
               </CardTitle>
@@ -67,31 +61,13 @@ const Login = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="username">{t('login.username')}</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="admin ou redacteur"
-                    required
-                  />
+                  <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="admin ou redacteur" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">{t('login.password')}</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Mot de passe"
-                    required
-                  />
+                  <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" required />
                 </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-primary hover:bg-primary/90"
-                  disabled={isLoading}
-                >
+                <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isLoading}>
                   {isLoading ? 'Connexion...' : t('login.submit')}
                 </Button>
                 <div className="text-sm text-gray-600 text-center">
@@ -104,8 +80,6 @@ const Login = () => {
           </Card>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Login;
