@@ -19,9 +19,11 @@ const AboutSection = () => {
             <p className="text-gray-700 leading-relaxed mb-6 text-base text-justify">
               {t('home.about_description')}
             </p>
-            <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link to="/historique">En savoir plus</Link>
-            </Button>
+            <div className="flex justify-end">
+              <Button asChild className="bg-primary hover:bg-primary/90 border border-primary/20">
+                <Link to="/historique">En savoir plus</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
