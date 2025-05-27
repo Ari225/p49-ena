@@ -1,6 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { setUserContext } from '@/utils/supabaseHelpers';
 
 interface User {
   id: string;
@@ -45,22 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const setCurrentUserId = async (userId: string) => {
-    try {
-      // Set the current user ID in Supabase context
-      await supabase.rpc('set_config', {
-        setting_name: 'app.current_user_id',
-        setting_value: userId,
-        is_local: false
-      });
-    } catch (error) {
-      console.log('Note: set_config function not available, using direct SQL execution');
-      // Fallback: set the configuration directly
-      try {
-        await supabase.from('app_users').select('id').eq('id', userId).limit(1);
-      } catch (fallbackError) {
-        console.error('Error setting user context:', fallbackError);
-      }
-    }
+    await setUserContext(userId);
   };
 
   const login = async (username: string, password: string): Promise<boolean> => {

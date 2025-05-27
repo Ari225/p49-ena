@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -43,13 +42,7 @@ const DashboardAddNews = () => {
     setIsLoading(true);
     try {
       // Définir l'utilisateur actuel pour cette session
-      await supabase.rpc('set_config', {
-        setting_name: 'app.current_user_id',
-        setting_value: user.id,
-        is_local: false
-      }).catch(() => {
-        console.log('Using local user context');
-      });
+      await setUserContext(user.id);
 
       const { error } = await supabase
         .from('news')

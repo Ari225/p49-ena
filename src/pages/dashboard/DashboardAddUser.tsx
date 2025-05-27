@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -47,13 +46,7 @@ const DashboardAddUser = () => {
     setIsLoading(true);
     try {
       // Définir l'utilisateur actuel pour cette session
-      await supabase.rpc('set_config', {
-        setting_name: 'app.current_user_id',
-        setting_value: user.id,
-        is_local: false
-      }).catch(() => {
-        console.log('Using local user context');
-      });
+      await setUserContext(user.id);
 
       // Hash du mot de passe simple (en production, utilisez bcrypt)
       const password_hash = btoa(data.password); // Simple base64, à remplacer par bcrypt
