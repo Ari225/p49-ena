@@ -15,6 +15,16 @@ import Galerie from "./pages/Galerie";
 import EchoRegions from "./pages/EchoRegions";
 import NotFound from "./pages/NotFound";
 
+// Dashboard pages
+import DashboardUsers from "./pages/dashboard/DashboardUsers";
+import DashboardNews from "./pages/dashboard/DashboardNews";
+import DashboardBlog from "./pages/dashboard/DashboardBlog";
+import DashboardJournal from "./pages/dashboard/DashboardJournal";
+import DashboardEvents from "./pages/dashboard/DashboardEvents";
+import DashboardMyArticles from "./pages/dashboard/DashboardMyArticles";
+import DashboardNewArticle from "./pages/dashboard/DashboardNewArticle";
+import DashboardJournalArticles from "./pages/dashboard/DashboardJournalArticles";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -33,6 +43,16 @@ const App = () => (
               <Route path="/historique" element={<Historique />} />
               <Route path="/galerie" element={<Galerie />} />
               <Route path="/echo-regions" element={<EchoRegions />} />
+              
+              {/* Dashboard Routes */}
+              <Route path="/dashboard/users" element={<DashboardUsers />} />
+              <Route path="/dashboard/news" element={<DashboardNews />} />
+              <Route path="/dashboard/blog" element={<DashboardBlog />} />
+              <Route path="/dashboard/journal" element={<DashboardJournal />} />
+              <Route path="/dashboard/events" element={<DashboardEvents />} />
+              <Route path="/dashboard/my-articles" element={<DashboardMyArticles />} />
+              <Route path="/dashboard/new-article" element={<DashboardNewArticle />} />
+              <Route path="/dashboard/journal-articles" element={<DashboardJournalArticles />} />
               
               {/* Presentation Routes */}
               <Route path="/textes-officiels" element={<div>Textes Officiels - Page en construction</div>} />
