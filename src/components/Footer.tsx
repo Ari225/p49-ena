@@ -20,9 +20,25 @@ const Footer = () => {
   return (
     <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left Section - Quick Links, Contact, Newsletter */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+          {/* Left Section - Logo and Description */}
+          <div className="flex flex-col">
+            <div className="flex items-center space-x-3 mb-6">
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
+            </div>
+            <p className="text-gray-300 leading-relaxed mb-4 max-w-[350px]">
+              La P49, des Leaders d'excellence au service de la Nation.
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-8 max-w-[350px]">
+              Plus qu'une promo, une famille unie et solidaire.
+            </p>
+            <div className="text-sm text-gray-400">
+              © 2024 P49 ENA. {t('footer.rights')}.
+            </div>
+          </div>
+
+          {/* Right Section - Quick Links, Contact, Newsletter */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {/* Quick Links */}
             <div>
               <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
@@ -65,22 +81,6 @@ const Footer = () => {
                   </Button>
                 </div>
               </form>
-            </div>
-          </div>
-
-          {/* Right Section - Logo and Description */}
-          <div className="flex flex-col items-end text-right">
-            <div className="flex items-center space-x-3 mb-4">
-              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
-            </div>
-            <p className="text-gray-300 leading-relaxed mb-3 max-w-[300px]">
-              La P49, des Leaders d'excellence au service de la Nation.
-            </p>
-            <p className="text-gray-300 leading-relaxed mb-6 max-w-[300px]">
-              Plus qu'une promo, une famille unie et solidaire.
-            </p>
-            <div className="text-sm text-gray-400">
-              © 2024 P49 ENA. {t('footer.rights')}.
             </div>
           </div>
         </div>
