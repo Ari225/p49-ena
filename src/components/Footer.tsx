@@ -16,14 +16,14 @@ const Footer = () => {
     setEmail('');
   };
   return <footer className="bg-primary text-white px-[100px] py-[50px]">
-      <div className="container mx-auto flex w-full w-[40%] w-[60%]">
+      <div className="container mx-auto px-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 flex w-full w-[40%] w-[60%]">
           {/* Left Section - Logo and Description */}
-          <div className="flex flex-col w-[340px]">
+          <div className="flex flex-col">
             <div className="flex items-center space-x-3 mb-6">
               <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
             </div>
-            <p className="text-gray-300 leading-relaxed mb-4 max-w-[420px]">
+            <p className="text-gray-300 leading-relaxed mb-4 max-w-[400px]">
               La P49, des Leaders d'excellence au service de la Nation.
             </p>
             <p className="text-gray-300 leading-relaxed mb-8 max-w-[350px]">
@@ -35,9 +35,9 @@ const Footer = () => {
           </div>
 
           {/* Right Section - Quick Links, Contact, Newsletter */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 w-[500px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {/* Quick Links */}
-            <div className="w-[120px]">
+            <div className="w-50">
               <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
               <ul className="space-y-2">
                 <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors">Historique</Link></li>
@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="w-[250px]">
+            <div className="w-100">
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-gray-300">
                 <p>Abidjan, Côte d'Ivoire</p>
@@ -58,7 +58,7 @@ const Footer = () => {
             </div>
 
             {/* Newsletter */}
-            <div className="w-[200px]">
+            <div>
               <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
               <p className="text-gray-300 text-sm mb-4">
                 Restez informé de nos actualités et événements
