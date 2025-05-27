@@ -12,7 +12,7 @@ interface BlogArticle {
   summary: string;
   image_url: string;
   published_date: string;
-  app_users: {
+  author: {
     first_name: string;
     last_name: string;
   };
@@ -35,7 +35,7 @@ const BlogSection = () => {
           summary,
           image_url,
           published_date,
-          app_users (
+          author:app_users!author_id (
             first_name,
             last_name
           )
@@ -79,7 +79,7 @@ const BlogSection = () => {
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center">
                     <User className="w-3 h-3 mr-1" />
-                    {article.app_users?.first_name} {article.app_users?.last_name}
+                    {article.author?.first_name} {article.author?.last_name}
                   </div>
                   <div className="flex items-center">
                     <Calendar className="w-3 h-3 mr-1" />

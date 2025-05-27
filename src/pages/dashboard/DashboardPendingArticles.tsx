@@ -16,7 +16,7 @@ interface PendingArticle {
   summary: string;
   author_id: string;
   created_at: string;
-  app_users: {
+  author: {
     first_name: string;
     last_name: string;
   };
@@ -47,7 +47,7 @@ const DashboardPendingArticles = () => {
           summary,
           author_id,
           created_at,
-          app_users (
+          author:app_users!author_id (
             first_name,
             last_name
           )
@@ -155,7 +155,7 @@ const DashboardPendingArticles = () => {
                       <div className="flex-1">
                         <h3 className="font-medium">{article.title}</h3>
                         <p className="text-sm text-gray-600">
-                          Par {article.app_users?.first_name} {article.app_users?.last_name} - 
+                          Par {article.author?.first_name} {article.author?.last_name} - 
                           {new Date(article.created_at).toLocaleDateString('fr-FR')}
                         </p>
                         {article.summary && (

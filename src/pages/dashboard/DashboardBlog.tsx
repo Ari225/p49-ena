@@ -14,7 +14,7 @@ interface BlogArticle {
   title: string;
   summary: string;
   published_date: string;
-  app_users: {
+  author: {
     first_name: string;
     last_name: string;
   };
@@ -41,7 +41,7 @@ const DashboardBlog = () => {
           title,
           summary,
           published_date,
-          app_users (
+          author:app_users!author_id (
             first_name,
             last_name
           )
@@ -95,7 +95,7 @@ const DashboardBlog = () => {
                       <div className="flex-1">
                         <h3 className="font-medium">{article.title}</h3>
                         <p className="text-sm text-gray-600">
-                          Par {article.app_users?.first_name} {article.app_users?.last_name} - 
+                          Par {article.author?.first_name} {article.author?.last_name} - 
                           Publié le {new Date(article.published_date).toLocaleDateString('fr-FR')}
                         </p>
                         {article.summary && (

@@ -12,6 +12,8 @@ import { UserPlus, Save } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
+type UserRole = 'admin_principal' | 'admin_secondaire' | 'redacteur';
+
 const DashboardAddUser = () => {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -19,7 +21,7 @@ const DashboardAddUser = () => {
     username: '',
     email: '',
     password: '',
-    role: 'redacteur',
+    role: 'redacteur' as UserRole,
     first_name: '',
     last_name: '',
     address: ''
@@ -33,6 +35,10 @@ const DashboardAddUser = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleRoleChange = (value: UserRole) => {
+    setFormData(prev => ({ ...prev, role: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -43,8 +49,13 @@ const DashboardAddUser = () => {
       const { error } = await supabase
         .from('app_users')
         .insert([{
-          ...formData,
-          password_hash
+          username: formData.username,
+          email: formData.email,
+          password_hash,
+          role: formData.role,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          address: formData.address
         }]);
 
       if (error) {
@@ -137,7 +148,7 @@ const DashboardAddUser = () => {
                   
                   <div>
                     <label className="block text-sm font-medium mb-2">Rôle</label>
-                    <Select value={formData.role} onValueChange={(value) => handleInputChange('role', value)}>
+                    <Select value={formData.role} onValueChange={handleRoleChange}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
