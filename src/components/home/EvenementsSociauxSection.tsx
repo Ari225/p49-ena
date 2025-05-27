@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PartyPopper, GraduationCap, Dove } from 'lucide-react';
+import { PartyPopper, GraduationCap, Heart } from 'lucide-react';
 
 const EvenementsSociauxSection = () => {
   const socialEvents = [
@@ -27,7 +27,7 @@ const EvenementsSociauxSection = () => {
     },
     {
       type: 'deuil',
-      icon: Dove,
+      icon: Heart,
       title: 'Hommage à Mme Traoré Fatou',
       date: '10 Mars 2024',
       description: 'Nos pensées accompagnent sa famille',
