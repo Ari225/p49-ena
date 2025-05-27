@@ -35,7 +35,7 @@ const Footer = () => {
           </div>
 
           {/* Right Section - Quick Links, Contact, Newsletter */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-[450px]">
             {/* Quick Links */}
             <div className="w-50">
               <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
