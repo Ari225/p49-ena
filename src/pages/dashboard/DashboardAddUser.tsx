@@ -53,6 +53,13 @@ const DashboardAddUser = () => {
       // Hash du mot de passe simple (cohérent avec le système de connexion)
       const password_hash = btoa(data.password); // Simple base64
 
+      console.log('Création utilisateur avec données:', {
+        username: data.username,
+        email: data.email,
+        role: data.role,
+        password_hash
+      });
+
       const { error } = await supabase
         .from('app_users')
         .insert({

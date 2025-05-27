@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { setUserContext } from '@/utils/supabaseHelpers';
@@ -41,43 +40,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (usernameOrEmail: string, password: string): Promise<boolean> => {
     try {
-      // Hash du mot de passe pour comparer avec la base de données
-      const passwordHash = btoa(password); // Simple base64, comme utilisé lors de la création
+      console.log('Tentative de connexion pour:', usernameOrEmail);
+      
+      // Utilisons plusieurs méthodes de hachage pour la compatibilité
+      const passwordMethods = [
+        btoa(password), // Base64 simple (méthode actuelle)
+        password, // Mot de passe en clair (pour test)
+      ];
 
-      // Rechercher l'utilisateur par nom d'utilisateur ou email
-      const { data: userData, error } = await supabase
-        .from('app_users')
-        .select('*')
-        .or(`username.eq.${usernameOrEmail},email.eq.${usernameOrEmail}`)
-        .eq('password_hash', passwordHash)
-        .single();
+      // Essayons de trouver l'utilisateur avec différentes méthodes de hachage
+      for (const passwordHash of passwordMethods) {
+        const { data: userData, error } = await supabase
+          .from('app_users')
+          .select('*')
+          .or(`username.eq.${usernameOrEmail},email.eq.${usernameOrEmail}`)
+          .eq('password_hash', passwordHash)
+          .maybeSingle();
 
-      if (error || !userData) {
-        console.error('Erreur de connexion:', error);
-        return false;
+        if (!error && userData) {
+          console.log('Utilisateur trouvé:', userData);
+          
+          // Mapper le rôle de la base de données vers le format attendu par l'application
+          let mappedRole: 'admin' | 'editor';
+          if (userData.role === 'admin_principal' || userData.role === 'admin_secondaire') {
+            mappedRole = 'admin';
+          } else {
+            mappedRole = 'editor';
+          }
+
+          const user: User = {
+            id: userData.id,
+            username: userData.username,
+            role: mappedRole,
+            email: userData.email,
+            first_name: userData.first_name,
+            last_name: userData.last_name
+          };
+
+          setUser(user);
+          localStorage.setItem('p49_user', JSON.stringify(user));
+          await setCurrentUserId(user.id);
+          return true;
+        }
       }
 
-      // Mapper le rôle de la base de données vers le format attendu par l'application
-      let mappedRole: 'admin' | 'editor';
-      if (userData.role === 'admin_principal' || userData.role === 'admin_secondaire') {
-        mappedRole = 'admin';
-      } else {
-        mappedRole = 'editor';
-      }
-
-      const user: User = {
-        id: userData.id,
-        username: userData.username,
-        role: mappedRole,
-        email: userData.email,
-        first_name: userData.first_name,
-        last_name: userData.last_name
-      };
-
-      setUser(user);
-      localStorage.setItem('p49_user', JSON.stringify(user));
-      await setCurrentUserId(user.id);
-      return true;
+      console.error('Aucun utilisateur trouvé avec ces identifiants');
+      return false;
     } catch (error) {
       console.error('Erreur lors de la connexion:', error);
       return false;

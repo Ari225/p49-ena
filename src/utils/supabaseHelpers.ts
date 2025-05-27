@@ -7,9 +7,17 @@ export const setUserContext = async (userId: string) => {
     // L'ID utilisateur sera géré côté client via le contexte d'authentification
     console.log('Setting user context for user:', userId);
     
-    // Nous pourrions implémenter une fonction personnalisée plus tard si nécessaire
-    // Pour l'instant, le contexte utilisateur est géré via l'état local
+    // Nous stockons l'ID utilisateur localement pour éviter les problèmes de récursion RLS
+    localStorage.setItem('current_user_id', userId);
+    
+    // Note: Une fois que les politiques RLS seront corrigées dans Supabase,
+    // nous pourrons implémenter une fonction personnalisée plus robuste
   } catch (error) {
     console.log('Error setting user context:', error);
   }
+};
+
+// Fonction utilitaire pour obtenir l'ID utilisateur actuel
+export const getCurrentUserId = (): string | null => {
+  return localStorage.getItem('current_user_id');
 };
