@@ -450,7 +450,7 @@ const Index = () => {
             
             {/* Navigation dots */}
             <div className="flex justify-center mt-6 space-x-2">
-              {testimonials.map((_, index) => <button key={index} onClick={() => setCurrentTestimonialIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'}`} />)}
+              {testimonials.map((_, index) => {})}
             </div>
           </div>
           
