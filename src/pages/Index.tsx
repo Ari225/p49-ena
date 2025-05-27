@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock, Handshake, Activity, Zap, Shield } from 'lucide-react';
+
 const Index = () => {
   const {
     t
@@ -15,6 +16,7 @@ const Index = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
@@ -33,6 +35,7 @@ const Index = () => {
     }, 7000);
     return () => clearInterval(testimonialInterval);
   }, []);
+  
   const newsItems = [{
     title: "Assemblée Générale 2024",
     date: "15 Mars 2024",
@@ -150,6 +153,7 @@ const Index = () => {
     description: "Servir avec engagement au profit de la nation",
     icon: Shield
   }];
+  
   return <Layout>
       <PresidentWelcomeModal />
       
@@ -258,7 +262,7 @@ const Index = () => {
             {/* Image container on the left with A4 aspect ratio */}
             <div className="w-[500px] bg-white flex items-center">
               <div className="w-[500px] bg-white shadow-xl p-6">
-                <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-full h-auto rounded-lg object-contain" />
+                <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-full h-auto object-contain" />
               </div>
             </div>
             {/* Communiqués stacked on the right */}
@@ -450,7 +454,15 @@ const Index = () => {
             
             {/* Navigation dots */}
             <div className="flex justify-center mt-6 space-x-2">
-              {testimonials.map((_, index) => {})}
+              {testimonials.map((_, index) => (
+                <button 
+                  key={index} 
+                  onClick={() => setCurrentTestimonialIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
             </div>
           </div>
           
@@ -516,4 +528,5 @@ const Index = () => {
       </section>
     </Layout>;
 };
+
 export default Index;
