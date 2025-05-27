@@ -16,7 +16,7 @@ const Footer = () => {
     setEmail('');
   };
   return <footer className="bg-primary text-white px-[100px] py-[50px]">
-      <div className="container mx-auto px-0">
+      <div className="container mx-auto flex w-full w-[40%] w-[60%]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 flex w-full w-[40%] w-[60%]">
           {/* Left Section - Logo and Description */}
           <div className="flex flex-col w-[340px]">
