@@ -19,7 +19,7 @@ const ValuesSection = () => {
     icon: Shield
   }];
   return <section className="bg-white px-[100px] py-[100px]">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-0">
         <h2 className="text-3xl text-center text-primary mb-12 font-bold">Valeurs de la P49</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((value, index) => <div key={index} className="text-center grid place-items-center">
