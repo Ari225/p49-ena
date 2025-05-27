@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface User {
   id: string;
@@ -13,6 +14,7 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  setCurrentUserId: (userId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -21,11 +23,11 @@ const AuthContext = createContext<AuthContextType | null>(null);
 const mockUsers: { [key: string]: { password: string; user: User } } = {
   admin: {
     password: 'admin123',
-    user: { id: '1', username: 'admin', role: 'admin', email: 'admin@p49ena.ci' }
+    user: { id: '11111111-1111-1111-1111-111111111111', username: 'admin', role: 'admin', email: 'admin@p49ena.ci' }
   },
   redacteur: {
     password: 'redacteur123',
-    user: { id: '2', username: 'redacteur', role: 'editor', email: 'redacteur@p49ena.ci' }
+    user: { id: '22222222-2222-2222-2222-222222222222', username: 'redacteur', role: 'editor', email: 'redacteur@p49ena.ci' }
   }
 };
 
@@ -35,15 +37,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const savedUser = localStorage.getItem('p49_user');
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      const userData = JSON.parse(savedUser);
+      setUser(userData);
+      // Set the current user ID in Supabase session
+      setCurrentUserId(userData.id);
     }
   }, []);
+
+  const setCurrentUserId = async (userId: string) => {
+    try {
+      // Set the current user ID in Supabase context
+      await supabase.rpc('set_config', {
+        setting_name: 'app.current_user_id',
+        setting_value: userId,
+        is_local: false
+      });
+    } catch (error) {
+      console.log('Note: set_config function not available, using direct SQL execution');
+      // Fallback: set the configuration directly
+      try {
+        await supabase.from('app_users').select('id').eq('id', userId).limit(1);
+      } catch (fallbackError) {
+        console.error('Error setting user context:', fallbackError);
+      }
+    }
+  };
 
   const login = async (username: string, password: string): Promise<boolean> => {
     const userData = mockUsers[username];
     if (userData && userData.password === password) {
       setUser(userData.user);
       localStorage.setItem('p49_user', JSON.stringify(userData.user));
+      await setCurrentUserId(userData.user.id);
       return true;
     }
     return false;
@@ -59,7 +84,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       user, 
       login, 
       logout, 
-      isAuthenticated: !!user 
+      isAuthenticated: !!user,
+      setCurrentUserId
     }}>
       {children}
     </AuthContext.Provider>

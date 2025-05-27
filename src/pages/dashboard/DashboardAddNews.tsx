@@ -7,44 +7,66 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { FileText, Save } from 'lucide-react';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { FileText, Save } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+interface NewsFormData {
+  title: string;
+  summary: string;
+  category: string;
+  image_url: string;
+}
 
 const DashboardAddNews = () => {
   const { user } = useAuth();
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    title: '',
-    summary: '',
-    category: '',
-    image_url: '',
-    published_date: new Date().toISOString().split('T')[0]
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<NewsFormData>({
+    defaultValues: {
+      title: '',
+      summary: '',
+      category: '',
+      image_url: ''
+    }
   });
 
   if (!user || user.role !== 'admin') {
     return <div>Non autorisé</div>;
   }
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const onSubmit = async (data: NewsFormData) => {
+    setIsLoading(true);
     try {
+      // Définir l'utilisateur actuel pour cette session
+      await supabase.rpc('set_config', {
+        setting_name: 'app.current_user_id',
+        setting_value: user.id,
+        is_local: false
+      }).catch(() => {
+        console.log('Using local user context');
+      });
+
       const { error } = await supabase
         .from('news')
-        .insert([{
-          ...formData,
+        .insert({
+          title: data.title,
+          summary: data.summary,
+          category: data.category,
+          image_url: data.image_url || null,
+          published_date: new Date().toISOString().split('T')[0],
           created_by: user.id
-        }]);
+        });
 
       if (error) {
+        console.error('Erreur lors de la création:', error);
         toast({
           title: "Erreur",
-          description: "Erreur lors de l'ajout de l'actualité",
+          description: `Erreur lors de la création de l'actualité: ${error.message}`,
           variant: "destructive"
         });
         return;
@@ -52,25 +74,19 @@ const DashboardAddNews = () => {
 
       toast({
         title: "Succès",
-        description: "Actualité ajoutée avec succès"
+        description: "L'actualité a été créée avec succès"
       });
 
-      // Reset form
-      setFormData({
-        title: '',
-        summary: '',
-        category: '',
-        image_url: '',
-        published_date: new Date().toISOString().split('T')[0]
-      });
-
+      navigate('/dashboard/news');
     } catch (error) {
-      console.error('Error adding news:', error);
+      console.error('Erreur:', error);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue",
+        description: "Une erreur inattendue est survenue",
         variant: "destructive"
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,73 +97,84 @@ const DashboardAddNews = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Nouvelle Actualité</h1>
-            <p className="text-gray-600 mt-2">Ajouter une nouvelle actualité</p>
+            <h1 className="text-3xl font-bold text-primary">Ajouter une Actualité</h1>
+            <p className="text-gray-600 mt-2">Créer une nouvelle actualité</p>
           </div>
 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="mr-2 h-5 w-5" />
-                Détails de l'actualité
+                Nouvelle Actualité
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Titre</label>
-                  <Input
-                    value={formData.title}
-                    onChange={(e) => handleInputChange('title', e.target.value)}
-                    placeholder="Titre de l'actualité"
-                    required
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    rules={{ required: "Le titre est requis" }}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Titre</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Titre de l'actualité" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Catégorie</label>
-                  <Input
-                    value={formData.category}
-                    onChange={(e) => handleInputChange('category', e.target.value)}
-                    placeholder="Catégorie (ex: Événements, Formation, etc.)"
-                    required
+
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    rules={{ required: "La catégorie est requise" }}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Catégorie</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="Catégorie de l'actualité" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Résumé</label>
-                  <Textarea
-                    value={formData.summary}
-                    onChange={(e) => handleInputChange('summary', e.target.value)}
-                    placeholder="Résumé de l'actualité"
-                    rows={4}
+
+                  <FormField
+                    control={form.control}
+                    name="summary"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Résumé</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} placeholder="Résumé de l'actualité" rows={4} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">URL de l'image</label>
-                  <Input
-                    value={formData.image_url}
-                    onChange={(e) => handleInputChange('image_url', e.target.value)}
-                    placeholder="URL de l'image"
+
+                  <FormField
+                    control={form.control}
+                    name="image_url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>URL de l'image (optionnel)</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="https://exemple.com/image.jpg" type="url" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Date de publication</label>
-                  <Input
-                    type="date"
-                    value={formData.published_date}
-                    onChange={(e) => handleInputChange('published_date', e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <Button type="submit" className="bg-primary hover:bg-primary/90">
-                  <Save className="mr-2 h-4 w-4" />
-                  Publier l'actualité
-                </Button>
-              </form>
+
+                  <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/90">
+                    <Save className="mr-2 h-4 w-4" />
+                    {isLoading ? 'Création...' : 'Créer l\'actualité'}
+                  </Button>
+                </form>
+              </Form>
             </CardContent>
           </Card>
         </div>
