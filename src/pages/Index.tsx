@@ -7,35 +7,32 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Calendar, Users, FileText, BookOpen, Camera, ChevronRight, Award, MapPin, Briefcase, GraduationCap, Heart, Clock, Handshake, Activity, Zap, Shield } from 'lucide-react';
-
 const Index = () => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const backgroundImages = ['/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png', '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png', '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
-
   useEffect(() => {
     const newsInterval = setInterval(() => {
       setCurrentNewsIndex(prevIndex => (prevIndex + 1) % newsItems.length);
     }, 4000);
     return () => clearInterval(newsInterval);
   }, []);
-
   useEffect(() => {
     const testimonialInterval = setInterval(() => {
       setCurrentTestimonialIndex(prevIndex => (prevIndex + 1) % testimonials.length);
     }, 7000);
     return () => clearInterval(testimonialInterval);
   }, []);
-
   const newsItems = [{
     title: "Assemblée Générale 2024",
     date: "15 Mars 2024",
@@ -153,20 +150,16 @@ const Index = () => {
     description: "Servir avec engagement au profit de la nation",
     icon: Shield
   }];
-
-  return (
-    <Layout>
+  return <Layout>
       <PresidentWelcomeModal />
       
       {/* Hero Section with Background Carousel */}
       <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
-          {backgroundImages.map((image, index) => (
-            <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
+          {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
               <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
-            </div>
-          ))}
+            </div>)}
           <div className="absolute inset-0 bg-primary/80"></div>
         </div>
         
@@ -179,7 +172,7 @@ const Index = () => {
             {t('home.hero_subtitle')}
           </p>
           <Button asChild className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-3 text-lg">
-            <Link to="/historique" className="text-white">Notre histoire</Link>
+            <Link to="/historique" className="text-white bg-primary">Notre histoire</Link>
           </Button>
         </div>
       </section>
@@ -189,15 +182,13 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl text-center text-primary mb-12 font-bold">Valeurs de la P49</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <div key={index} className="text-center">
+            {values.map((value, index) => <div key={index} className="text-center">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[#dfbe36]/[0.43]">
                   <value.icon className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-primary mb-3 text-xl font-semibold">{value.title}</h3>
                 <p className="text-sm leading-relaxed text-gray-700">{value.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -213,8 +204,7 @@ const Index = () => {
           </div>
           
           <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {newsItems.map((item, index) => (
-              <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
+            {newsItems.map((item, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
@@ -230,14 +220,11 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>)}
             
             {/* Navigation dots */}
             <div className="absolute bottom-4 right-4 flex space-x-2">
-              {newsItems.map((_, index) => (
-                <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />
-              ))}
+              {newsItems.map((_, index) => <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />)}
             </div>
           </div>
         </div>
@@ -247,15 +234,13 @@ const Index = () => {
       <section className="bg-primary text-white py-[50px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {achievements.map((achievement, index) => (
-              <div key={index} className="text-center">
+            {achievements.map((achievement, index) => <div key={index} className="text-center">
                 <div className="text-3xl md:text-3xl font-bold text-secondary mb-2">
                   {achievement.number}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{achievement.title}</h3>
                 <p className="text-white/80">{achievement.description}</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -437,22 +422,12 @@ const Index = () => {
         <div className="container mx-auto px-0">
           <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
           <div className="relative">
-            <Carousel 
-              opts={{
-                align: "start",
-                loop: true
-              }} 
-              className="w-full max-w-5xl mx-auto"
-            >
+            <Carousel opts={{
+            align: "start",
+            loop: true
+          }} className="w-full max-w-5xl mx-auto">
               <CarouselContent className="-ml-2 md:-ml-4">
-                {testimonials.map((testimonial, index) => (
-                  <CarouselItem 
-                    key={index} 
-                    className={`pl-2 md:pl-4 md:basis-1/3 transition-transform duration-700 ease-in-out ${
-                      index === currentTestimonialIndex ? 'translate-x-0' : 
-                      index < currentTestimonialIndex ? '-translate-x-full' : 'translate-x-full'
-                    }`}
-                  >
+                {testimonials.map((testimonial, index) => <CarouselItem key={index} className={`pl-2 md:pl-4 md:basis-1/3 transition-transform duration-700 ease-in-out ${index === currentTestimonialIndex ? 'translate-x-0' : index < currentTestimonialIndex ? '-translate-x-full' : 'translate-x-full'}`}>
                     <Card className="h-full">
                       <CardContent className="p-6">
                         <div className="flex items-start space-x-4">
@@ -467,8 +442,7 @@ const Index = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  </CarouselItem>
-                ))}
+                  </CarouselItem>)}
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
@@ -476,15 +450,7 @@ const Index = () => {
             
             {/* Navigation dots */}
             <div className="flex justify-center mt-6 space-x-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonialIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
+              {testimonials.map((_, index) => <button key={index} onClick={() => setCurrentTestimonialIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentTestimonialIndex ? 'bg-primary' : 'bg-gray-300'}`} />)}
             </div>
           </div>
           
@@ -542,16 +508,12 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {galleryImages.map((image, index) => (
-              <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+            {galleryImages.map((image, index) => <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
                 <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Index;
