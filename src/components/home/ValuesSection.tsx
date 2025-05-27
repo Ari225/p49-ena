@@ -27,7 +27,7 @@ const ValuesSection = () => {
                 <value.icon className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-primary mb-3 text-xl font-semibold">{value.title}</h3>
-              <p className="text-sm leading-relaxed text-gray-700 w-[150px] text-center">{value.description}</p>
+              <p className="text-sm leading-relaxed text-gray-700 w-[220px] text-center">{value.description}</p>
             </div>)}
         </div>
       </div>
