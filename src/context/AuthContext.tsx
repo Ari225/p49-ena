@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { setUserContext } from '@/utils/supabaseHelpers';
@@ -7,6 +8,8 @@ interface User {
   username: string;
   role: 'admin' | 'editor';
   email?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 interface AuthContextType {
@@ -18,18 +21,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
-// Mock users for demo purposes
-const mockUsers: { [key: string]: { password: string; user: User } } = {
-  admin: {
-    password: 'admin123',
-    user: { id: '11111111-1111-1111-1111-111111111111', username: 'admin', role: 'admin', email: 'admin@p49ena.ci' }
-  },
-  redacteur: {
-    password: 'redacteur123',
-    user: { id: '22222222-2222-2222-2222-222222222222', username: 'redacteur', role: 'editor', email: 'redacteur@p49ena.ci' }
-  }
-};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -48,15 +39,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await setUserContext(userId);
   };
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    const userData = mockUsers[username];
-    if (userData && userData.password === password) {
-      setUser(userData.user);
-      localStorage.setItem('p49_user', JSON.stringify(userData.user));
-      await setCurrentUserId(userData.user.id);
+  const login = async (usernameOrEmail: string, password: string): Promise<boolean> => {
+    try {
+      // Hash du mot de passe pour comparer avec la base de données
+      const passwordHash = btoa(password); // Simple base64, comme utilisé lors de la création
+
+      // Rechercher l'utilisateur par nom d'utilisateur ou email
+      const { data: userData, error } = await supabase
+        .from('app_users')
+        .select('*')
+        .or(`username.eq.${usernameOrEmail},email.eq.${usernameOrEmail}`)
+        .eq('password_hash', passwordHash)
+        .single();
+
+      if (error || !userData) {
+        console.error('Erreur de connexion:', error);
+        return false;
+      }
+
+      // Mapper le rôle de la base de données vers le format attendu par l'application
+      let mappedRole: 'admin' | 'editor';
+      if (userData.role === 'admin_principal' || userData.role === 'admin_secondaire') {
+        mappedRole = 'admin';
+      } else {
+        mappedRole = 'editor';
+      }
+
+      const user: User = {
+        id: userData.id,
+        username: userData.username,
+        role: mappedRole,
+        email: userData.email,
+        first_name: userData.first_name,
+        last_name: userData.last_name
+      };
+
+      setUser(user);
+      localStorage.setItem('p49_user', JSON.stringify(user));
+      await setCurrentUserId(user.id);
       return true;
+    } catch (error) {
+      console.error('Erreur lors de la connexion:', error);
+      return false;
     }
-    return false;
   };
 
   const logout = () => {

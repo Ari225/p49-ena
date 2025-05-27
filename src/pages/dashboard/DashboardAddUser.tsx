@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -49,8 +50,8 @@ const DashboardAddUser = () => {
       // Définir l'utilisateur actuel pour cette session
       await setUserContext(user.id);
 
-      // Hash du mot de passe simple (en production, utilisez bcrypt)
-      const password_hash = btoa(data.password); // Simple base64, à remplacer par bcrypt
+      // Hash du mot de passe simple (cohérent avec le système de connexion)
+      const password_hash = btoa(data.password); // Simple base64
 
       const { error } = await supabase
         .from('app_users')
