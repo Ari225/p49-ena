@@ -1,0 +1,107 @@
+
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PenTool, Calendar, User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+
+interface BlogArticle {
+  id: string;
+  title: string;
+  summary: string;
+  image_url: string;
+  published_date: string;
+  app_users: {
+    first_name: string;
+    last_name: string;
+  };
+}
+
+const BlogSection = () => {
+  const [articles, setArticles] = useState<BlogArticle[]>([]);
+
+  useEffect(() => {
+    fetchBlogArticles();
+  }, []);
+
+  const fetchBlogArticles = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blog_articles')
+        .select(`
+          id,
+          title,
+          summary,
+          image_url,
+          published_date,
+          app_users (
+            first_name,
+            last_name
+          )
+        `)
+        .eq('status', 'valide')
+        .order('published_date', { ascending: false })
+        .limit(3);
+
+      if (error) throw error;
+      setArticles(data || []);
+    } catch (error) {
+      console.error('Error fetching blog articles:', error);
+    }
+  };
+
+  return (
+    <section className="bg-gray-50 py-[100px] px-[100px]">
+      <div className="container mx-auto px-0">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-primary mb-4">Articles de Blog</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {articles.map((article) => (
+            <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              {article.image_url && (
+                <div className="h-48">
+                  <img 
+                    src={article.image_url} 
+                    alt={article.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-primary mb-3 line-clamp-2">{article.title}</h3>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{article.summary}</p>
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div className="flex items-center">
+                    <User className="w-3 h-3 mr-1" />
+                    {article.app_users?.first_name} {article.app_users?.last_name}
+                  </div>
+                  <div className="flex items-center">
+                    <Calendar className="w-3 h-3 mr-1" />
+                    {new Date(article.published_date).toLocaleDateString('fr-FR')}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        
+        <div className="text-center">
+          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
+            <Link to="/blog">
+              <PenTool className="mr-2 h-4 w-4" />
+              Voir tous les articles
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default BlogSection;

@@ -1,95 +1,109 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useLanguage } from '@/context/LanguageContext';
-import { ChevronRight, Clock } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+
+interface NewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  category: string;
+  image_url: string;
+  published_date: string;
+}
 
 const NewsCarousel = () => {
-  const { t } = useLanguage();
-  const [currentNewsIndex, setCurrentNewsIndex] = useState(0);
-  
-  const newsItems = [
-    {
-      title: "Assemblée Générale 2024",
-      date: "15 Mars 2024",
-      excerpt: "La prochaine assemblée générale aura lieu le 30 mars 2024 à l'hôtel Ivoire.",
-      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=800&h=500&fit=crop",
-      category: "Événement"
-    },
-    {
-      title: "Nouveau Partenariat Stratégique",
-      date: "10 Mars 2024",
-      excerpt: "Signature d'un accord de partenariat avec l'Institut de Management Public pour renforcer nos capacités.",
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=500&fit=crop",
-      category: "Partenariat"
-    },
-    {
-      title: "Programme de Formation Continue 2024",
-      date: "5 Mars 2024",
-      excerpt: "Lancement du programme de formation continue pour nos membres avec des modules spécialisés.",
-      image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop",
-      category: "Formation"
-    },
-    {
-      title: "Régionale de l'Ouest 2024",
-      date: "28 Février 2024",
-      excerpt: "Rencontre régionale réussie avec plus de 50 membres présents à Man.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=500&fit=crop",
-      category: "Régionale"
-    },
-    {
-      title: "Reconnaissance Internationale",
-      date: "20 Février 2024",
-      excerpt: "Notre réseau reconnu par l'IIAS comme modèle de coopération entre énarques.",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop",
-      category: "Reconnaissance"
-    }
-  ];
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const newsInterval = setInterval(() => {
-      setCurrentNewsIndex(prevIndex => (prevIndex + 1) % newsItems.length);
-    }, 4000);
-    return () => clearInterval(newsInterval);
+    fetchNews();
   }, []);
 
+  const fetchNews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('published_date', { ascending: false })
+        .limit(6);
+
+      if (error) throw error;
+      setNews(data || []);
+    } catch (error) {
+      console.error('Error fetching news:', error);
+    }
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % Math.max(1, news.length - 2));
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + Math.max(1, news.length - 2)) % Math.max(1, news.length - 2));
+  };
+
+  if (news.length === 0) {
+    return null;
+  }
+
   return (
-    <section className="bg-accent/30 px-[100px] py-[100px]">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-primary text-3xl font-bold">{t('home.news_title')}</h2>
-          <Link to="/actualites" className="text-primary hover:text-secondary/80 flex items-center">
-            Voir tout <ChevronRight className="ml-1 h-4 w-4" />
-          </Link>
+    <section className="bg-white py-[100px] px-[100px]">
+      <div className="container mx-auto px-0">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-primary mb-4">Actualités</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Restez informés des dernières nouvelles et événements de notre réseau
+          </p>
         </div>
         
-        <div className="relative h-[400px] rounded-lg overflow-hidden">
-          {newsItems.map((item, index) => (
-            <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentNewsIndex ? 'opacity-100' : 'opacity-0'}`}>
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                <div className="max-w-2xl">
-                  <span className="inline-block bg-primary px-3 py-1 rounded-full text-sm font-semibold mb-3 text-white">
-                    {item.category}
-                  </span>
-                  <h3 className="text-3xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-lg mb-4 opacity-90 text-white">{item.excerpt}</p>
-                  <div className="flex items-center text-sm opacity-75">
-                    <Clock className="w-4 h-4 mr-2" />
-                    {item.date}
+        <div className="relative">
+          <div className="flex space-x-6 overflow-hidden">
+            {news.slice(currentIndex, currentIndex + 3).map((item) => (
+              <Card key={item.id} className="flex-1 min-w-0 overflow-hidden hover:shadow-lg transition-shadow">
+                {item.image_url && (
+                  <div className="h-48">
+                    <img 
+                      src={item.image_url} 
+                      alt={item.title} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
-              </div>
-            </div>
-          ))}
-          
-          {/* Navigation dots */}
-          <div className="absolute bottom-4 right-4 flex space-x-2">
-            {newsItems.map((_, index) => (
-              <button key={index} onClick={() => setCurrentNewsIndex(index)} className={`w-3 h-3 rounded-full transition-colors ${index === currentNewsIndex ? 'bg-secondary' : 'bg-white/50'}`} />
+                )}
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="px-2 py-1 bg-primary/10 text-primary rounded text-sm">
+                      {item.category}
+                    </span>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {new Date(item.published_date).toLocaleDateString('fr-FR')}
+                    </div>
+                  </div>
+                  <h3 className="font-semibold text-primary mb-3 line-clamp-2">{item.title}</h3>
+                  <p className="text-gray-600 text-sm line-clamp-3">{item.summary}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
+          
+          {news.length > 3 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <ChevronLeft className="h-6 w-6 text-primary" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <ChevronRight className="h-6 w-6 text-primary" />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </section>

@@ -14,6 +14,7 @@ import CarrierePlusSection from '@/components/home/CarrierePlusSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import EvenementsSociauxSection from '@/components/home/EvenementsSociauxSection';
 import ActivitesSection from '@/components/home/ActivitesSection';
+import BlogSection from '@/components/home/BlogSection';
 import JournalSection from '@/components/home/JournalSection';
 import GallerySection from '@/components/home/GallerySection';
 
@@ -39,6 +40,7 @@ const Index = () => {
       <TestimonialsSection />
       <EvenementsSociauxSection />
       <ActivitesSection />
+      <BlogSection />
       <JournalSection />
       <GallerySection />
     </Layout>

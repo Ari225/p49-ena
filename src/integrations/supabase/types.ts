@@ -9,16 +9,210 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      app_users: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          password_hash: string
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          password_hash: string
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          password_hash?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      blog_articles: {
+        Row: {
+          author_id: string | null
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          published_date: string | null
+          status: Database["public"]["Enums"]["article_status"]
+          summary: string | null
+          title: string
+          updated_at: string
+          validated_by: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published_date?: string | null
+          status?: Database["public"]["Enums"]["article_status"]
+          summary?: string | null
+          title: string
+          updated_at?: string
+          validated_by?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published_date?: string | null
+          status?: Database["public"]["Enums"]["article_status"]
+          summary?: string | null
+          title?: string
+          updated_at?: string
+          validated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_articles_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_articles_validated_by_fkey"
+            columns: ["validated_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journal_editions: {
+        Row: {
+          cover_image_url: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          page_count: number | null
+          pdf_url: string | null
+          publish_date: string
+          status: Database["public"]["Enums"]["journal_status"]
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          page_count?: number | null
+          pdf_url?: string | null
+          publish_date: string
+          status?: Database["public"]["Enums"]["journal_status"]
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_image_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          page_count?: number | null
+          pdf_url?: string | null
+          publish_date?: string
+          status?: Database["public"]["Enums"]["journal_status"]
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journal_editions_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      news: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          id: string
+          image_url: string | null
+          published_date: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string | null
+          published_date: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string | null
+          published_date?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      article_status: "en_attente" | "valide" | "refuse"
+      journal_status: "publie" | "archive"
+      user_role: "admin_principal" | "admin_secondaire" | "redacteur"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +327,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      article_status: ["en_attente", "valide", "refuse"],
+      journal_status: ["publie", "archive"],
+      user_role: ["admin_principal", "admin_secondaire", "redacteur"],
+    },
   },
 } as const
