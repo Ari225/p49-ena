@@ -171,7 +171,7 @@ const Index = () => {
           {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
               <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
             </div>)}
-          <div className="absolute inset-0 bg-primary/50"></div>
+          <div className="absolute inset-0 bg-primary/80"></div>
         </div>
         
         {/* Content */}
