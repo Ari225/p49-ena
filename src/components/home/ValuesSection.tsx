@@ -22,7 +22,7 @@ const ValuesSection = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-3xl text-center text-primary mb-12 font-bold">Valeurs de la P49</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {values.map((value, index) => <div key={index} className="text-center">
+          {values.map((value, index) => <div key={index} className="text-center grid place-items-center">
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-[#dfbe36]/[0.43]">
                 <value.icon className="h-8 w-8 text-primary" />
               </div>
