@@ -31,7 +31,7 @@ const ValuesSection = () => {
               <h3 className="text-primary mb-2 md:mb-3 text-lg md:text-xl font-semibold">
                 {value.title}
               </h3>
-              <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2">
+              <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
                 {value.description}
               </p>
             </div>)}
