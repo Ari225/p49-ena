@@ -39,7 +39,7 @@ const translations = {
     'home.hero_title': 'RÉSEAU DES ÉNARQUES DE LA P49',
     'home.hero_subtitle': 'La P49, une famille unie et solidaire',
     'home.about_title': 'À propos de la P49-ENA',
-    'home.about_description': 'Le Réseau des Énarques de la 49ème Promotion de l\'École Nationale d\'Administration de Côte d\'Ivoire est une association qui regroupe les diplômés de cette promotion prestigieuse. Notre mission est de maintenir les liens de fraternité, de promouvoir l\'excellence dans la fonction publique et de contribuer au développement de notre pays.',
+    'home.about_description': 'Le Réseau des Énarques de la 49e Promotion de l\’École Nationale d\’Administration (ENA) de Côte d\’Ivoire est une association qui réunit les diplômés de cette promotion emblématique. Fondé sur des valeurs de fraternité, de solidarité et d’engagement, le réseau vise à entretenir les liens entre ses membres et à prolonger l\’esprit de cohésion au-delà de la formation. Notre mission est double : d\’une part, renforcer les relations humaines et professionnelles entre les membres à travers des initiatives collectives ; d\’autre part, promouvoir l\’excellence dans la fonction publique en encourageant l\’éthique, la compétence et le service à la nation. À travers ses actions, le réseau entend contribuer activement au développement de la Côte d\’Ivoire et faire rayonner les valeurs qui ont forgé l\’identité de la 49e promotion.',
     'home.news_title': 'Actualités',
     'home.communiques_title': 'Communiqués',
     'footer.rights': 'Tous droits réservés',
