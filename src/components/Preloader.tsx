@@ -28,16 +28,16 @@ const Preloader = () => {
         
         {/* Animated Circle */}
         <div className="absolute inset-0">
-          <svg className="w-250 h-250 animate-spin" viewBox="0 0 100 100">
+          <svg className="w-full h-full animate-spin" viewBox="0 0 100 100">
             <circle
-              cx="100"
-              cy="100"
-              r="90"
+              cx="50"
+              cy="50"
+              r="45"
               fill="none"
               stroke="#DFBE36"
-              strokeWidth="2"
+              strokeWidth="1"
               strokeLinecap="round"
-              strokeDasharray="70 100"
+              strokeDasharray="70 200"
               strokeDashoffset="0"
             />
           </svg>
