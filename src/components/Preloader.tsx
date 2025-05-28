@@ -30,8 +30,8 @@ const Preloader = () => {
         <div className="absolute inset-0">
           <svg className="w-full h-full animate-spin" viewBox="0 0 100 100">
             <circle
-              cx="50"
-              cy="50"
+              cx="100"
+              cy="100"
               r="45"
               fill="none"
               stroke="#DFBE36"
