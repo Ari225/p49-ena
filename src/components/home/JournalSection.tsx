@@ -27,7 +27,7 @@ const JournalSection = () => {
               Avec une approche rigoureuse et accessible, Perspectives 49 ambitionne d'informer, de questionner et d'inspirer.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-              <Button asChild className="bg-primary hover:bg-primary/90 text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
+              <Button asChild className="text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
                 <Link to="/derniere-edition" className="bg-primary text-white hover:bg-primary transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">Dernière édition</Link>
               </Button>
               <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
