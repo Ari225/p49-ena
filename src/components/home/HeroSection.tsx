@@ -36,7 +36,7 @@ const HeroSection = ({
           {t('home.hero_subtitle')}
         </p>
         <Button asChild className="bg-primary text-white hover:bg-primary/80 border-2 border-white font-semibold px-4 md:px-8 py-2 md:py-3 text-sm md:text-lg">
-          <Link to="/historique" className="text-white">Notre histoire</Link>
+          <Link to="/historique" className="text-white bg-secondary/80">Notre histoire</Link>
         </Button>
       </div>
     </section>;
