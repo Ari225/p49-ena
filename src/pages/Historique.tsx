@@ -72,7 +72,7 @@ const Historique = () => {
                   <Card className={`w-5/12 ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'} shadow-lg hover:shadow-xl transition-shadow duration-300`}>
                     <CardContent className="p-6">
                       <div className="flex items-center mb-3">
-                        <div className="bg-secondary text-primary font-bold text-lg px-3 py-1 rounded-full">
+                        <div className="bg-primary text-white font-bold text-lg px-3 py-1 rounded-ss">
                           {event.year}
                         </div>
                       </div>
