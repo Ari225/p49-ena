@@ -29,7 +29,7 @@ const HeroSection = ({
       
       {/* Content */}
       <div className="relative z-10 text-center w-full px-4 md:px-8 lg:px-[100px] my-0 py-0">
-        <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in">
+        <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in mt-10">
           {t('home.hero_title')}
         </h1>
         <p className="text-sm md:text-lg italic mb-6 md:mb-8 animate-fade-in text-white font-normal px-4 lg:text-lg">
