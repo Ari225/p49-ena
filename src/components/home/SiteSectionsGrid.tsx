@@ -52,9 +52,7 @@ Répertoire des membres.</p>
               <CardTitle className="text-lg text-primary">{t('header.social_events')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">
-                Événements heureux, départs à la retraite et nécrologie.
-              </p>
+              <p className="mb-4 text-gray-700">Événements heureux, Départs à la retraite et Nécrologie relatifs aux membres de la P49.</p>
               <Link to="/evenements-heureux" className="text-primary hover:text-secondary/80 font-medium">
                 Explorer →
               </Link>
