@@ -20,7 +20,7 @@ const AchievementsSection = () => {
     },
     {
       number: "12",
-      title: "Sections ségionales",
+      title: "Sections régionales",
       description: "sur le territoire ivoirien"
     }
   ];
@@ -35,7 +35,7 @@ const AchievementsSection = () => {
                 {achievement.number}
               </div>
               <h3 className="text-lg md:text-xl font-semibold mb-2">{achievement.title}</h3>
-              <p className="text-white/80 text-sm md:text-base">{achievement.description}</p>
+              <p className="text-white-700 text-sm md:text-base">{achievement.description}</p>
             </div>
           ))}
         </div>
