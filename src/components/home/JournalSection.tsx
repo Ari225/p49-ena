@@ -16,7 +16,7 @@ const JournalSection = () => {
             </div>
           </div>
           <div className="lg:w-2/3 w-full rounded-xl py-6 md:py-12 px-4 md:px-[20px] bg-transparent lg:py-0">
-            <h3 className="font-bold mb-10 md:mb-6 text-center bg-primary text-white py-2 md:py-[10px] rounded-lg text-lg md:text-xl">
+            <h3 className="font-bold mb-10 md:mb-10 text-center bg-primary text-white py-2 md:py-[10px] rounded-lg text-lg md:text-xl">
               Perspectives 49 - Bulletin n°1
             </h3>
             <p className="leading-relaxed mb-10 md:mb-6 text-justify text-secondary-foreground text-sm md:text-base">
