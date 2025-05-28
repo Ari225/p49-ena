@@ -37,9 +37,7 @@ Répertoire des membres.</p>
               <CardTitle className="text-primary text-lg">{t('header.activities')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">
-                Agenda, événements régionaux et assemblées générales.
-              </p>
+              <p className="mb-4 text-gray-700">Agenda, Régionales, Assemblées Générales, Réunions de constitution.</p>
               <Link to="/agenda" className="text-primary hover:text-secondary/80 font-medium">
                 Explorer →
               </Link>
