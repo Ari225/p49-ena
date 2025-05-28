@@ -16,11 +16,11 @@ const AchievementsSection = () => {
     {
       number: "50+",
       title: "Événements tenus",
-      description: "Régionales, formations, réunions, etc."
+      description: "Régionales, formations, réunions"
     },
     {
       number: "12",
-      title: "Sections Régionales",
+      title: "Sections ségionales",
       description: "sur le territoire ivoirien"
     }
   ];
