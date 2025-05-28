@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronRight } from 'lucide-react';
-
 const CommuniquesSection = () => {
-  const { t } = useLanguage();
-
-  return (
-    <section className="bg-white px-4 md:px-8 lg:px-[100px] py-12 md:py-16 lg:py-[100px]">
+  const {
+    t
+  } = useLanguage();
+  return <section className="px-4 md:px-8 lg:px-[100px] py-12 md:py-16 lg:py-[100px] bg-accent-DEFAULT">
       <div className="container mx-auto px-0">
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
@@ -21,11 +20,7 @@ const CommuniquesSection = () => {
           {/* Image container */}
           <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
             <div className="w-full max-w-[400px] lg:w-[500px] bg-white shadow-xl p-4 md:p-6">
-              <img 
-                alt="Communiqué" 
-                src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" 
-                className="w-full h-auto object-contain" 
-              />
+              <img alt="Communiqué" src="/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" className="w-full h-auto object-contain" />
             </div>
           </div>
           
@@ -70,8 +65,6 @@ const CommuniquesSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CommuniquesSection;
