@@ -28,8 +28,8 @@ const CommuniquesSection = () => {
           <div className="flex-1 space-y-3 md:space-y-4">
             <Card className="bg-red-50 border-red-200">
               <CardContent className="p-4 md:p-6">
-                <h3 className="font-semibold text-red-800 mb-2 text-base md:text-lg">Communiqué urgent</h3>
-                <p className="text-xs md:text-sm text-red-600">Report de l'événement prévu le 25 mars 2024.</p>
+                <h3 className="font-semibold text-red-800 mb-2 text-base md:text-xl">Communiqué urgent</h3>
+                <p className="text-sm md:text-sm text-red-600 font-normal">Report de l'événement prévu le 25 mars 2024.</p>
               </CardContent>
             </Card>
             <Card className="bg-blue-50 border-blue-200">
