@@ -47,11 +47,7 @@ const Historique = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="text-3xl font-bold text-primary mb-6">La P49 : Une Promotion d'Excellence</h2>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  La 49ème promotion de l'École Nationale d'Administration de Côte d'Ivoire, 
-                  formée entre 2009 et 2010, représente une génération d'énarques déterminés 
-                  à servir leur pays avec excellence et intégrité.
-                </p>
+                <p className="text-gray-700 leading-relaxed mb-4 text-justify">L’idée de la création de la P49 ENA est née de la volonté de sauvegarder et de consolider les relations entre les 800 anciens élèves de la promotion 2009-2010 de l’Ecole Nationale d’Administration.</p>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   Forte de plus de 150 membres répartis dans tous les secteurs de l'administration 
                   publique et privée, la P49 s'est distinguée par son engagement, sa solidarité 
