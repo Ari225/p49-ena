@@ -53,7 +53,7 @@ const SiteSectionsGrid = () => {
               <CardTitle className="text-lg text-primary">{t('header.social_events')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4 text-gray-700">
                 Événements heureux, départs à la retraite et nécrologie.
               </p>
               <Link to="/evenements-heureux" className="text-primary hover:text-secondary/80 font-medium">
