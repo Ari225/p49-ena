@@ -10,7 +10,7 @@ const JournalSection = () => {
         <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-12">
           <div className="lg:w-1/3 w-full">
             <div className="bg-gradient-to-br from-primary to-primary/80 rounded-lg shadow-xl">
-              <div className="bg-white p-3 md:p-6 rounded-lg">
+              <div className="bg-white p-3 md:p-6 rounded-lg px-0 py-0">
                 <img src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" alt="Perspectives 49 Journal" className="w-full h-auto object-contain" />
               </div>
             </div>
