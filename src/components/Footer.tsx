@@ -26,7 +26,7 @@ const Footer = () => {
             <p className="text-gray-300 leading-relaxed mb-2 max-w-[240px]">
               La P49, des Leaders d'excellence au service de la Nation.
             </p>
-            <p className="text-gray-300 leading-relaxed mb-8 max-w-[230px]">
+            <p className="text-gray-300 leading-relaxed mb-5 max-w-[230px]">
               Plus qu'une promo, une famille unie et solidaire.
             </p>
             <div className="text-sm text-gray-400">
