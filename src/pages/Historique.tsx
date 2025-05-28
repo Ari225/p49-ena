@@ -43,7 +43,7 @@ const Historique = () => {
           </div>
 
           {/* Hero Section */}
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-12 px-[35px] py-[35px]">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="font-bold text-primary mb-6 text-2xl">La P49 : une promotion d'excellence</h2>
