@@ -24,7 +24,7 @@ const Historique = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-primary mb-4">Historique du Réseau</h1>
-            <p className="max-w-3xl mx-auto text-gray-700 text-lg">Historique, création et situation administrative de l'association</p>
+            <p className="max-w-3xl mx-auto text-gray-700 text-base">Historique, création et situation administrative de l'association</p>
           </div>
 
           {/* Hero Section */}
