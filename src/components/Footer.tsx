@@ -52,8 +52,8 @@ const Footer = () => {
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-gray-300">
                 <p>Abidjan, Côte d'Ivoire</p>
-                <p>Email : communication@p49-ena.ci</p>
-                <p>Tél : +225 07 79 05 47 16</p>
+                <p>communication@p49-ena.ci</p>
+                <p>+225 07 79 05 47 16</p>
               </div>
             </div>
 
