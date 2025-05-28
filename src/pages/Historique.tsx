@@ -63,7 +63,7 @@ const Historique = () => {
                 </p>
               </div>
               <div>
-                <img alt="Logo P49" className="w-full max-w-md mx-auto" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" />
+                <img alt="Logo P49" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" className="w-full max-w-md mx-auto rounded-lg" />
               </div>
             </div>
           </div>
