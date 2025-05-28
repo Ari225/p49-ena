@@ -17,7 +17,7 @@ const Footer = () => {
   };
   return <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Left Section - Logo and Description */}
           <div className="flex flex-col w-[50%]">
             <div className="flex items-center  mb-5 w-40">
@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="w-full min-w-[160px]">
+            <div className="w-full min-w-[200px]">
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <div className="space-y-2 text-gray-300">
                 <p>Abidjan, Côte d'Ivoire</p>
