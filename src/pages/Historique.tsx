@@ -7,9 +7,10 @@ const Historique = () => {
     title: 'Assemblée générale élective',
     description: 'À l\'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d’échanges.'
   }, {
-    year: '2010',
-    title: 'Fin de Formation',
-    description: 'Sortie officielle de la promotion avec l\'obtention du diplôme d\'Énarque.'
+    year: '25 novembre 2023',
+    title: 'Adoption des statuts et règlements intérieurs',
+    description: 'À l\’occasion d’une assemblée générale qui s’est tenue lors des Régionales de Yamoussoukro, en vue d\’officialiser l\’existence de l\’association.
+'
   }, {
     year: '2012',
     title: 'Premier Rassemblement',
