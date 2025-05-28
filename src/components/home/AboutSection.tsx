@@ -13,7 +13,7 @@ const AboutSection = () => {
             <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="w-40 h-40 md:w-60 md:h-60 mx-auto object-contain" />
           </div>
           <div className="lg:w-2/3 w-full">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4 md:mb-6 text-center lg:text-right">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-10 md:mb-10 text-center lg:text-right">
               {t('home.about_title')}
             </h2>
             <p className="text-gray-700 leading-relaxed mb-4 md:mb-6 text-sm md:text-base text-justify">
