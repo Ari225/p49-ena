@@ -26,8 +26,8 @@ const Preloader = () => {
           />
         </div>
         
-        {/* Animated Circle */}
-        <div className="absolute inset-0 scale-125">
+        {/* Animated Circle with increased padding */}
+        <div className="absolute inset-0 scale-150">
           <svg className="w-full h-full animate-spin" viewBox="0 0 100 100">
             <circle
               cx="50"

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -13,7 +12,7 @@ const CommuniquesSection = () => {
       <div className="container mx-auto px-0">
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
-          <Link to="/communiques" className="text-primary hover:text-secondary/80 flex items-center text-sm md:text-base">
+          <Link to="/communiques" className="bg-primary text-white hover:bg-primary/90 px-4 py-2 rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
             Voir tout <ChevronRight className="ml-1 h-4 w-4" />
           </Link>
         </div>

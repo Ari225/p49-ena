@@ -50,7 +50,7 @@ const TestimonialsSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
@@ -64,15 +64,6 @@ const TestimonialsSection = () => {
     );
   };
 
-  const getVisibleTestimonials = () => {
-    const visibleTestimonials = [];
-    for (let i = 0; i < 3; i++) {
-      const index = (currentIndex + i) % testimonials.length;
-      visibleTestimonials.push(testimonials[index]);
-    }
-    return visibleTestimonials;
-  };
-
   return (
     <section className="bg-accent/30 py-[100px] px-[100px]">
       <div className="container mx-auto px-0">
@@ -81,9 +72,10 @@ const TestimonialsSection = () => {
         <div className="relative overflow-hidden">
           <div 
             className="flex transition-transform duration-[1500ms] ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }}
+            style={{ transform: `translateX(-${(currentIndex * 100) / 3}%)` }}
           >
-            {testimonials.map((testimonial, index) => (
+            {/* Créer une boucle infinie en dupliquant les témoignages */}
+            {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
               <div key={index} className="w-1/3 flex-shrink-0 px-3">
                 <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
                   <CardContent className="p-6">
