@@ -33,7 +33,7 @@ const CommuniquesSection = () => {
               </CardContent>
             </Card>
             <Card className="bg-blue-50 border-blue-200">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-6 py-[20px]">
                 <h3 className="font-semibold text-blue-800 mb-2 text-xl md:text-xl">Nouvelle inscription</h3>
                 <p className="text-sm md:text-sm text-blue-600 font-normal">Ouverture des inscriptions pour la formation de mars.</p>
               </CardContent>
