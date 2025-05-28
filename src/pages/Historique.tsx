@@ -1,16 +1,17 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
+
 const Historique = () => {
   const timeline = [{
     year: '24 juin 2023',
     title: 'Assemblée générale élective',
-    description: 'À l\'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d’échanges.'
+    description: "À l'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d'échanges."
   }, {
     year: '25 novembre 2023',
     title: 'Adoption des statuts et règlements intérieurs',
-    description: 'À l\’occasion d’une assemblée générale qui s’est tenue lors des Régionales de Yamoussoukro, en vue d\’officialiser l\’existence de l\’association.
-'
+    description: "À l'occasion d'une assemblée générale qui s'est tenue lors des Régionales de Yamoussoukro, en vue d'officialiser l'existence de l'association."
   }, {
     year: '2012',
     title: 'Premier Rassemblement',
@@ -18,7 +19,7 @@ const Historique = () => {
   }, {
     year: '2015',
     title: 'Création du Réseau',
-    description: 'Formalisation du réseau P49 avec l\'adoption des statuts et règlements.'
+    description: "Formalisation du réseau P49 avec l'adoption des statuts et règlements."
   }, {
     year: '2018',
     title: 'Lancement du Journal',
@@ -32,7 +33,9 @@ const Historique = () => {
     title: 'Nouveau Site Web',
     description: 'Mise en ligne du nouveau site web officiel du réseau P49 ENA.'
   }];
-  return <Layout>
+
+  return (
+    <Layout>
       <div className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -48,12 +51,16 @@ const Historique = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="font-bold text-primary mb-6 text-2xl">La P49 : une promotion d'excellence</h2>
-                <p className="text-gray-700 leading-relaxed mb-4 text-justify">L’association P49 ENA a été créée dans le but de préserver et renforcer les liens entre les anciens élèves de la 49e promotion de l’École Nationale d’Administration. Cette initiative est le fruit de plusieurs rencontres entre membres fondateurs et de cadres d’échanges ayant conduit à une assemblée générale élective. Pour officialiser l’existence de l’association, les statuts et le règlement intérieur ont été adoptés lors d’une assemblée générale. Une déclaration a ensuite été faite à la Préfecture d’Abidjan, suivie de la délivrance d’un récépissé de dépôt de dossier. Cette déclaration a été publiée au Journal Officiel de la République de Côte d’Ivoire. La procédure pour l’obtention de l’arrêté est actuellement en cours.</p>
-                
-                
+                <p className="text-gray-700 leading-relaxed mb-4 text-justify">
+                  L'association P49 ENA a été créée dans le but de préserver et renforcer les liens entre les anciens élèves de la 49e promotion de l'École Nationale d'Administration. Cette initiative est le fruit de plusieurs rencontres entre membres fondateurs et de cadres d'échanges ayant conduit à une assemblée générale élective. Pour officialiser l'existence de l'association, les statuts et le règlement intérieur ont été adoptés lors d'une assemblée générale. Une déclaration a ensuite été faite à la Préfecture d'Abidjan, suivie de la délivrance d'un récépissé de dépôt de dossier. Cette déclaration a été publiée au Journal Officiel de la République de Côte d'Ivoire. La procédure pour l'obtention de l'arrêté est actuellement en cours.
+                </p>
               </div>
               <div>
-                <img alt="Logo P49" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" className="w-full max-w-md mx-auto rounded-lg" />
+                <img 
+                  alt="Logo P49" 
+                  src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+                  className="w-full max-w-md mx-auto rounded-lg" 
+                />
               </div>
             </div>
           </div>
@@ -65,7 +72,8 @@ const Historique = () => {
               {/* Timeline Line */}
               <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-[900px] bg-primary"></div>
               
-              {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              {timeline.map((event, index) => (
+                <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   {/* Timeline Dot */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg z-10"></div>
                   
@@ -81,7 +89,8 @@ const Historique = () => {
                       <p className="text-gray-700 leading-relaxed">{event.description}</p>
                     </CardContent>
                   </Card>
-                </div>)}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -128,6 +137,8 @@ const Historique = () => {
           </div>
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Historique;
