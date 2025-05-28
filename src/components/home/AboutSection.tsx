@@ -20,7 +20,7 @@ const AboutSection = () => {
               {t('home.about_description')}
             </p>
             <div className="flex justify-center lg:justify-end">
-              <Button asChild className="bg-primary hover:bg-primary/90 border border-primary/20 text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
+              <Button asChild className="bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                 <Link to="/historique">En savoir plus</Link>
               </Button>
             </div>
