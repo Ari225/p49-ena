@@ -40,7 +40,7 @@ const CommuniquesSection = () => {
             </Card>
             <Card className="bg-green-50 border-green-200">
               <CardContent className="p-4 md:p-6">
-                <h3 className="font-semibold text-green-800 mb-2 text-base md:text-lg">Félicitations</h3>
+                <h3 className="font-semibold text-green-800 mb-2 text-xl md:text-xl">Félicitations</h3>
                 <p className="text-xs md:text-sm text-green-600">Promotion de plusieurs membres à de nouveaux postes.</p>
               </CardContent>
             </Card>
