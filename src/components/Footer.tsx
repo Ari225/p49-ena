@@ -17,7 +17,7 @@ const Footer = () => {
   };
   return <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
-        <div className="flex grid-cols-1 lg:grid-cols-2 gap-[10px]">
+        <div className="flex grid-cols-1 lg:grid-cols-2 gap-[10px] w-full">
           {/* Left Section - Logo and Description */}
           <div className="flex flex-col w-[50%]">
             <div className="flex items-center  mb-5 w-40">
