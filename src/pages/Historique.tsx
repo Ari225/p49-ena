@@ -48,7 +48,7 @@ const Historique = () => {
               <div>
                 <h2 className="text-3xl font-bold text-primary mb-6">La P49 : Une Promotion d'Excellence</h2>
                 <p className="text-gray-700 leading-relaxed mb-4 text-justify">L’association P49 ENA a été créée dans le but de préserver et renforcer les liens entre les anciens élèves de la 49e promotion de l’École Nationale d’Administration. Cette initiative est le fruit de plusieurs rencontres entre membres fondateurs et de cadres d’échanges ayant conduit à une assemblée générale élective. Pour officialiser l’existence de l’association, les statuts et le règlement intérieur ont été adoptés lors d’une assemblée générale. Une déclaration a ensuite été faite à la Préfecture d’Abidjan, suivie de la délivrance d’un récépissé de dépôt de dossier. Cette déclaration a été publiée au Journal Officiel de la République de Côte d’Ivoire. La procédure pour l’obtention de l’arrêté est actuellement en cours.</p>
-                <p className="text-gray-700 leading-relaxed mb-4 text-justify">Cette volonté s’est traduite par des réunions tenues par les membres fondateurs en 2017 et en 2019 ainsi que par plusieurs cadres d’échanges qui ont abouti à l’assemblée générale élective du 24 juin 2023, à l’ENA.</p>
+                
                 
               </div>
               <div>
