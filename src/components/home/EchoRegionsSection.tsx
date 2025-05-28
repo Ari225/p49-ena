@@ -51,9 +51,9 @@ const EchoRegionsSection = () => {
       <div className="container mx-auto px-0">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-12 gap-4">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">Écho des Régions</h2>
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
+          <Button asChild className="bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
             <Link to="/echo-regions">
-              <span className="hidden sm:inline">Voir toutes les actualités régionales</span>
+              <span className="hidden sm:inline">Actualités régionales</span>
               <span className="sm:hidden">Voir tout</span>
               <ChevronRight className="ml-2 h-4 w-4" />
             </Link>
