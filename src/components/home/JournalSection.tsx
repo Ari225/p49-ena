@@ -11,7 +11,7 @@ const JournalSection = () => {
           <div className="lg:w-1/3 w-full">
             <div className="bg-white rounded-lg shadow-xl">
               <div className="bg-white p-3 md:p-6 rounded-lg py-0 px-0 mx-0">
-                <img src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" alt="Perspectives 49 Journal" className="w-full h-auto object-contain" />
+                <img alt="Perspectives 49 Journal" className="w-full h-auto object-contain" src="/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg" />
               </div>
             </div>
           </div>
