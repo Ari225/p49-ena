@@ -43,12 +43,12 @@ const Historique = () => {
           </div>
 
           {/* Hero Section */}
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-12">
+          <div className="bg-white rounded-lg shadow-lg p-8 mb-12 py-[50px] px-[50px]">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="text-3xl font-bold text-primary mb-6">La P49 : Une Promotion d'Excellence</h2>
+                <h2 className="font-bold text-primary mb-6 text-2xl">La P49 : Une promotion d'excellence</h2>
                 <p className="text-gray-700 leading-relaxed mb-4 text-justify">L’association P49 ENA a été créée dans le but de préserver et renforcer les liens entre les anciens élèves de la 49e promotion de l’École Nationale d’Administration. Cette initiative est le fruit de plusieurs rencontres entre membres fondateurs et de cadres d’échanges ayant conduit à une assemblée générale élective. Pour officialiser l’existence de l’association, les statuts et le règlement intérieur ont été adoptés lors d’une assemblée générale. Une déclaration a ensuite été faite à la Préfecture d’Abidjan, suivie de la délivrance d’un récépissé de dépôt de dossier. Cette déclaration a été publiée au Journal Officiel de la République de Côte d’Ivoire. La procédure pour l’obtention de l’arrêté est actuellement en cours.</p>
-                <p className="text-gray-700 leading-relaxed mb-4 text-justify">Cette volonté s’est traduite par des réunions tenues par les membres fondateurs en 2017 et en 2019 ainsi que par plusieurs cadres d’échanges qui ont abouti à l’assemblée générale élective du 24 juin 2023, à l’ENA.</p>
+                
                 
               </div>
               <div>
@@ -62,7 +62,7 @@ const Historique = () => {
             <h2 className="text-3xl font-bold text-center text-primary mb-12">Chronologie</h2>
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-secondary"></div>
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-100 bg-primary"></div>
               
               {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   {/* Timeline Dot */}
