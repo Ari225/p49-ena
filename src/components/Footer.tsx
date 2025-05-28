@@ -19,7 +19,7 @@ const Footer = () => {
       <div className="container mx-auto px-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Left Section - Logo and Description */}
-          <div className="flex flex-col w-[70%]">
+          <div className="flex flex-col w-[50%]">
             <div className="flex items-center  mb-5 w-40">
               <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
             </div>
