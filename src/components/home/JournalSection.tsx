@@ -1,11 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-
 const JournalSection = () => {
-  return (
-    <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+  return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-8 md:mb-12 text-center lg:text-left">
           Notre Journal
@@ -14,11 +11,7 @@ const JournalSection = () => {
           <div className="lg:w-1/3 w-full">
             <div className="bg-gradient-to-br from-primary to-primary/80 p-4 md:p-8 rounded-lg shadow-xl">
               <div className="bg-white p-3 md:p-6 rounded-lg">
-                <img 
-                  src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" 
-                  alt="Perspectives 49 Journal" 
-                  className="w-full h-auto object-contain" 
-                />
+                <img src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" alt="Perspectives 49 Journal" className="w-full h-auto object-contain" />
               </div>
             </div>
           </div>
@@ -44,8 +37,6 @@ const JournalSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default JournalSection;
