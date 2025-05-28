@@ -70,7 +70,7 @@ const SiteSectionsGrid = () => {
               <CardTitle className="text-primary text-lg">{t('header.careers')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4 text-gray-700 font-normal">
                 Formations, coaching et actualités des concours.
               </p>
               <Link to="/formations" className="text-primary hover:text-secondary/80 font-medium">
