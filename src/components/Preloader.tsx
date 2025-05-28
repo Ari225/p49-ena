@@ -22,7 +22,7 @@ const Preloader = () => {
           <img 
             src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
             alt="P49 ENA Logo" 
-            className="w-20 h-20 md:w-50 md:h-50 object-contain"
+            className="w-50 h-50 md:w-50 md:h-50 object-contain"
           />
         </div>
         
