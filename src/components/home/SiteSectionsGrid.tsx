@@ -82,7 +82,7 @@ const SiteSectionsGrid = () => {
           <Card className="hover:shadow-xl transition-shadow duration-300 group">
             <CardHeader>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
-                <BookOpen className="h-6 w-6 text-primary" />
+                <BookOpen className="h-5 w-5 text-primary" />
               </div>
               <CardTitle className="text-primary text-lg">{t('header.perspectives')}</CardTitle>
             </CardHeader>
