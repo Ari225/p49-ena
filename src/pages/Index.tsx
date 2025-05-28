@@ -9,13 +9,13 @@ import AchievementsSection from '@/components/home/AchievementsSection';
 import CommuniquesSection from '@/components/home/CommuniquesSection';
 import AboutSection from '@/components/home/AboutSection';
 import SiteSectionsGrid from '@/components/home/SiteSectionsGrid';
+import JournalSection from '@/components/home/JournalSection';
 import EchoRegionsSection from '@/components/home/EchoRegionsSection';
 import CarrierePlusSection from '@/components/home/CarrierePlusSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import EvenementsSociauxSection from '@/components/home/EvenementsSociauxSection';
 import ActivitesSection from '@/components/home/ActivitesSection';
 import BlogSection from '@/components/home/BlogSection';
-import JournalSection from '@/components/home/JournalSection';
 import GallerySection from '@/components/home/GallerySection';
 
 const Index = () => {
@@ -35,13 +35,13 @@ const Index = () => {
       <CommuniquesSection />
       <AboutSection />
       <SiteSectionsGrid />
+      <JournalSection />
       <EchoRegionsSection />
       <CarrierePlusSection />
       <TestimonialsSection />
       <EvenementsSociauxSection />
       <ActivitesSection />
       <BlogSection />
-      <JournalSection />
       <GallerySection />
     </Layout>
   );

@@ -15,7 +15,7 @@ const Preloader = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-primary/60 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-primary/80 z-50 flex items-center justify-center">
       <div className="relative">
         {/* Logo */}
         <div className="w-24 h-24 md:w-28 md:h-28 flex items-center justify-center">
@@ -45,7 +45,7 @@ const Preloader = () => {
       </div>
       
       {/* Loading text */}
-      <div className="absolute bottom-20 text-center">
+      <div className="absolute bottom-16 text-center">
         <p className="text-white text-lg font-medium animate-pulse">Chargement...</p>
       </div>
     </div>
