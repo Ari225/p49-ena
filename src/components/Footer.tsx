@@ -37,7 +37,7 @@ const Footer = () => {
           {/* Right Section - Quick Links, Contact, Newsletter */}
           <div className="flex grid-cols-1 md:grid-cols-3 gap-10 w-[1200px] mt-8">
             {/* Quick Links */}
-            <div className="w-[300px]">
+            <div className="w-full">
               <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
               <ul className="space-y-2">
                 <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors">Historique</Link></li>
