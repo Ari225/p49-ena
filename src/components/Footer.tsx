@@ -20,7 +20,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Left Section - Logo and Description */}
           <div className="flex flex-col w-[70%]">
-            <div className="flex items-center space-x-3 mb-6">
+            <div className="flex items-center  mb-5 w-40">
               <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
             </div>
             <p className="text-gray-300 leading-relaxed mb-4 max-w-[240px]">
