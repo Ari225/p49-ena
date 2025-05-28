@@ -87,7 +87,7 @@ const SiteSectionsGrid = () => {
               <CardTitle className="text-primary text-lg">{t('header.perspectives')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4 text-gray-700">
                 Notre journal, actualités et archives.
               </p>
               <Link to="/derniere-edition" className="text-primary hover:text-secondary/80 font-medium">
