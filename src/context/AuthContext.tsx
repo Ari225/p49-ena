@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { setUserContext } from '@/utils/supabaseHelpers';
@@ -42,7 +43,59 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('Tentative de connexion pour:', usernameOrEmail);
       
-      // Utilisons plusieurs méthodes de hachage pour la compatibilité
+      // Créons un système de comptes prédéfinis pour les tests
+      const predefinedAccounts = [
+        {
+          id: '1',
+          username: 'admin',
+          password: 'admin123',
+          role: 'admin_principal',
+          email: 'admin@p49ena.com',
+          first_name: 'Admin',
+          last_name: 'Principal'
+        },
+        {
+          id: '2', 
+          username: 'redacteur',
+          password: 'redacteur123',
+          role: 'editor',
+          email: 'redacteur@p49ena.com',
+          first_name: 'Rédacteur',
+          last_name: 'Principal'
+        }
+      ];
+
+      // Vérifier d'abord les comptes prédéfinis
+      const predefinedUser = predefinedAccounts.find(
+        account => account.username === usernameOrEmail && account.password === password
+      );
+
+      if (predefinedUser) {
+        console.log('Utilisateur prédéfini trouvé:', predefinedUser);
+        
+        let mappedRole: 'admin' | 'editor';
+        if (predefinedUser.role === 'admin_principal' || predefinedUser.role === 'admin_secondaire') {
+          mappedRole = 'admin';
+        } else {
+          mappedRole = 'editor';
+        }
+
+        const user: User = {
+          id: predefinedUser.id,
+          username: predefinedUser.username,
+          role: mappedRole,
+          email: predefinedUser.email,
+          first_name: predefinedUser.first_name,
+          last_name: predefinedUser.last_name
+        };
+
+        setUser(user);
+        localStorage.setItem('p49_user', JSON.stringify(user));
+        await setCurrentUserId(user.id);
+        return true;
+      }
+
+      // Si pas trouvé dans les comptes prédéfinis, essayer la base de données
       const passwordMethods = [
         btoa(password), // Base64 simple (méthode actuelle)
         password, // Mot de passe en clair (pour test)
@@ -58,7 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .maybeSingle();
 
         if (!error && userData) {
-          console.log('Utilisateur trouvé:', userData);
+          console.log('Utilisateur trouvé dans la base:', userData);
           
           // Mapper le rôle de la base de données vers le format attendu par l'application
           let mappedRole: 'admin' | 'editor';
