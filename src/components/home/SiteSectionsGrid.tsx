@@ -19,7 +19,7 @@ const SiteSectionsGrid = () => {
               <CardTitle className="text-primary text-lg">{t('header.presentation')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4 text-gray-700">
                 Découvrez l'histoire, la structure et les membres de notre réseau.
               </p>
               <Link to="/historique" className="text-primary hover:text-secondary/80 font-medium">
