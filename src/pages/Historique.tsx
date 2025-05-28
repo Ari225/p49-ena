@@ -13,9 +13,9 @@ const Historique = () => {
     title: 'Adoption des statuts et règlements intérieurs',
     description: "À l'occasion d'une assemblée générale qui s'est tenue lors des Régionales de Yamoussoukro, en vue d'officialiser l'existence de l'association."
   }, {
-    year: '2012',
-    title: 'Premier Rassemblement',
-    description: 'Organisation de la première rencontre post-formation des membres de la P49.'
+    year: '20 mars 2024',
+    title: 'Récépissé de dépôt de dossier d\'association',
+    description: 'N°0412/PA/SG/D1, il a été délivré par la Préfecture d\'Abidjan, après une déclaration faite. '
   }, {
     year: '2015',
     title: 'Création du Réseau',
