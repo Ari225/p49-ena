@@ -13,7 +13,7 @@ const SiteSectionsGrid = () => {
         <div className="grid grid-cols-5 gap-6">
           <Card className="hover:shadow-xl transition-shadow duration-300 group">
             <CardHeader>
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-[#dfbe36]/[0.43]">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
                 <Users className="h-6 w-6 text-primary" />
               </div>
               <CardTitle className="text-primary text-lg">{t('header.presentation')}</CardTitle>
