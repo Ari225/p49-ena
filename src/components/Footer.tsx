@@ -52,7 +52,7 @@ const Footer = () => {
               <h3 className="text-lg font-semibold mb-4 w-20">Contact</h3>
               <div className="space-y-2 text-gray-300">
                 <p>Abidjan, Côte d'Ivoire</p>
-                <p>communication@p49-ena.ci</p>
+                <p className="w-[200px]">communication@p49-ena.ci</p>
                 <p>+225 07 79 05 47 16</p>
               </div>
             </div>
