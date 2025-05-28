@@ -23,7 +23,7 @@ const SiteSectionsGrid = () => {
 Textes officiels,
 Instances dirigeantes,
 Répertoire des membres.</p>
-              <Link to="/historique" className="text-primary hover:text-secondary/80 font-medium">
+              <Link to="/historique" className="text-primary hover:text-secondary/80 font-medium text-sm">
                 Explorer →
               </Link>
             </CardContent>
