@@ -3,9 +3,9 @@ import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 const Historique = () => {
   const timeline = [{
-    year: '2009',
-    title: 'Création de la Promotion',
-    description: 'Entrée de la 49ème promotion à l\'École Nationale d\'Administration de Côte d\'Ivoire.'
+    year: '24 juin 2023',
+    title: 'Assemblée générale élective',
+    description: 'À l\'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d’échanges.'
   }, {
     year: '2010',
     title: 'Fin de Formation',
