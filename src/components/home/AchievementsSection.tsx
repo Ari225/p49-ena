@@ -9,7 +9,7 @@ const AchievementsSection = () => {
     title: "Années",
     description: "d'excellence et d'action"
   }, {
-    number: "50+",
+    number: "+50",
     title: "Événements tenus",
     description: "Régionales, formations, réunions"
   }, {
