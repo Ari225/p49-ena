@@ -51,7 +51,7 @@ const CommuniquesSection = () => {
               </CardContent>
             </Card>
             <Card className="bg-orange-50 border-orange-200">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-6 py-[20px]">
                 <h3 className="font-semibold text-orange-800 mb-2 text-xl md:text-xl">Communiqué ENA</h3>
                 <p className="text-sm md:text-sm text-orange-600 font-normal">Nouvelles directives pour les formations continues.</p>
               </CardContent>
