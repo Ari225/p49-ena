@@ -28,7 +28,7 @@ const Preloader = () => {
         
         {/* Animated Circle */}
         <div className="absolute inset-0">
-          <svg className="w-full h-full animate-spin" viewBox="0 0 100 100">
+          <svg className="w-full h-full px-[100px] py-[100px] animate-spin" viewBox="0 0 100 100">
             <circle
               cx="50"
               cy="50"
