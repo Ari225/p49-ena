@@ -4,23 +4,23 @@ import React from 'react';
 const AchievementsSection = () => {
   const achievements = [
     {
-      number: "800+",
+      number: "+800",
       title: "Membres",
-      description: "appartenant au Réseau"
+      description: "appartenant au réseau"
     },
     {
       number: "15",
       title: "Années",
-      description: "d'excellence et d'entraide"
+      description: "d'excellence et d'ction"
     },
     {
       number: "50+",
-      title: "Événements Organisés",
-      description: "Régionales, formations et réunions"
+      title: "Événements tenus",
+      description: "Régionales, formations, réunions, etc."
     },
     {
       number: "12",
-      title: "Régions Représentées",
+      title: "Sections Régionales",
       description: "sur le territoire ivoirien"
     }
   ];
