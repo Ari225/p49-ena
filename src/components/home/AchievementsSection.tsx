@@ -25,7 +25,7 @@ const AchievementsSection = () => {
                 {achievement.number}
               </div>
               <h3 className="text-lg md:text-xl font-semibold mb-2">{achievement.title}</h3>
-              <p className="text-white-700 text-sm md:text-sm">{achievement.description}</p>
+              <p className="text-white-700 text-sm md:text-sm font-normal">{achievement.description}</p>
             </div>)}
         </div>
       </div>
