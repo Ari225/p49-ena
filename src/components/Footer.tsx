@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="w-full max-w-[10px]">
+            <div className="w-full min-w-[50px]">
               <h3 className="text-lg font-semibold mb-4 w-20">Contact</h3>
               <div className="space-y-2 text-gray-300">
                 <p>Abidjan, Côte d'Ivoire</p>
