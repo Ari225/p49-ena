@@ -6,6 +6,7 @@ import HeroSection from '@/components/home/HeroSection';
 import ValuesSection from '@/components/home/ValuesSection';
 import NewsCarousel from '@/components/home/NewsCarousel';
 import AchievementsSection from '@/components/home/AchievementsSection';
+import ActualitesSection from '@/components/home/ActualitesSection';
 import CommuniquesSection from '@/components/home/CommuniquesSection';
 import AboutSection from '@/components/home/AboutSection';
 import SiteSectionsGrid from '@/components/home/SiteSectionsGrid';
@@ -32,6 +33,7 @@ const Index = () => {
       <ValuesSection />
       <NewsCarousel />
       <AchievementsSection />
+      <ActualitesSection />
       <CommuniquesSection />
       <AboutSection />
       <SiteSectionsGrid />

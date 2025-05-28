@@ -18,16 +18,16 @@ const Preloader = () => {
     <div className="fixed inset-0 bg-primary/90 z-50 flex items-center justify-center">
       <div className="relative">
         {/* Logo */}
-        <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+        <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
           <img 
             src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
             alt="P49 ENA Logo" 
-            className="w-50 h-50 md:w-100 md:h-100 object-contain"
+            className="w-full h-full object-contain"
           />
         </div>
         
         {/* Animated Circle */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 scale-125">
           <svg className="w-full h-full animate-spin" viewBox="0 0 100 100">
             <circle
               cx="50"

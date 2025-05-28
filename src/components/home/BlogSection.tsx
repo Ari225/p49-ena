@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PenTool, Calendar, User } from 'lucide-react';
+import { PenTool, Calendar, User, ArrowRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface BlogArticle {
@@ -98,10 +98,10 @@ const BlogSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-6 md:px-8 py-2 md:py-3 text-sm md:text-base">
-            <Link to="/blog">
-              <PenTool className="mr-2 h-4 w-4" />
+          <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium px-6 md:px-8 py-2 md:py-3 text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+            <Link to="/blog" className="flex items-center">
               Voir tous les articles
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
         </div>

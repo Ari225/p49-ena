@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,24 +49,28 @@ const TestimonialsSection = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(testimonials.length / 3));
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % Math.ceil(testimonials.length / 3));
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? Math.ceil(testimonials.length / 3) - 1 : prevIndex - 1
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
     );
   };
 
   const getVisibleTestimonials = () => {
-    const startIndex = currentIndex * 3;
-    return testimonials.slice(startIndex, startIndex + 3);
+    const visibleTestimonials = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentIndex + i) % testimonials.length;
+      visibleTestimonials.push(testimonials[index]);
+    }
+    return visibleTestimonials;
   };
 
   return (
@@ -74,39 +78,33 @@ const TestimonialsSection = () => {
       <div className="container mx-auto px-0">
         <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
         
-        <div className="relative">
-          <div className="overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, slideIndex) => (
-                <div key={slideIndex} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {testimonials.slice(slideIndex * 3, slideIndex * 3 + 3).map((testimonial, index) => (
-                      <Card key={index} className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
-                        <CardContent className="p-6">
-                          <div className="flex items-start space-x-4">
-                            <img 
-                              src={testimonial.image} 
-                              alt={testimonial.name} 
-                              className="w-16 h-16 rounded-full object-cover flex-shrink-0" 
-                            />
-                            <div className="flex-1">
-                              <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
-                              <div>
-                                <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
-                                <p className="text-xs text-gray-500">{testimonial.position}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div className="relative overflow-hidden">
+          <div 
+            className="flex transition-transform duration-[1500ms] ease-in-out"
+            style={{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }}
+          >
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="w-1/3 flex-shrink-0 px-3">
+                <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4">
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.name} 
+                        className="w-16 h-16 rounded-full object-cover flex-shrink-0" 
+                      />
+                      <div className="flex-1">
+                        <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
+                        <div>
+                          <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
+                          <p className="text-xs text-gray-500">{testimonial.position}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
           </div>
           
           {/* Navigation Arrows */}
@@ -125,8 +123,11 @@ const TestimonialsSection = () => {
         </div>
         
         <div className="text-center mt-8">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
-            <Link to="/temoignages">Voir tous les témoignages</Link>
+          <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium px-6 md:px-8 py-2 md:py-3 text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+            <Link to="/temoignages" className="flex items-center">
+              Voir tous les témoignages
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
           </Button>
         </div>
       </div>
