@@ -120,7 +120,7 @@ const Header = () => {
                       <ChevronDown className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg">
+                  <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg mt-8">
                     {menu.items.map((item, itemIndex) => <DropdownMenuItem key={itemIndex} asChild>
                         <Link to={item.href} className="w-full text-gray-700 hover:bg-accent hover:text-primary transition-colors duration-200 px-[20px] py-[10px]">
                           {item.label}
