@@ -57,7 +57,7 @@ const CommuniquesSection = () => {
               </CardContent>
             </Card>
             <Card className="bg-indigo-50 border-indigo-200">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-6 py-[20px]">
                 <h3 className="font-semibold text-indigo-800 mb-2 text-xl md:text-xl">Communiqué P49</h3>
                 <p className="text-sm md:text-sm text-indigo-600 font-normal">Assemblée générale extraordinaire du réseau P49.</p>
               </CardContent>
