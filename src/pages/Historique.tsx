@@ -62,7 +62,7 @@ const Historique = () => {
             <h2 className="text-3xl font-bold text-center text-primary mb-12">Chronologie</h2>
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-secondary"></div>
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-[900px] bg-primary"></div>
               
               {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   {/* Timeline Dot */}
