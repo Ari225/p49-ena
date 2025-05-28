@@ -1,8 +1,6 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
-
 const Historique = () => {
   const timeline = [{
     year: '24 juin 2023',
@@ -21,9 +19,7 @@ const Historique = () => {
     title: 'Suite de la procédure',
     description: "La procédure pour l\’obtention de l\’arrêté est en cours."
   }];
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -44,11 +40,7 @@ const Historique = () => {
                 </p>
               </div>
               <div>
-                <img 
-                  alt="Logo P49" 
-                  src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
-                  className="w-full max-w-md mx-auto rounded-lg" 
-                />
+                <img alt="Logo P49" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" className="w-full max-w-md mx-auto rounded-lg" />
               </div>
             </div>
           </div>
@@ -58,10 +50,9 @@ const Historique = () => {
             <h2 className="text-3xl font-bold text-center text-primary mb-12">Chronologie</h2>
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-[900px] bg-primary"></div>
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-primary"></div>
               
-              {timeline.map((event, index) => (
-                <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   {/* Timeline Dot */}
                   <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg z-10"></div>
                   
@@ -77,8 +68,7 @@ const Historique = () => {
                       <p className="text-gray-700 leading-relaxed">{event.description}</p>
                     </CardContent>
                   </Card>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
 
@@ -125,8 +115,6 @@ const Historique = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Historique;
