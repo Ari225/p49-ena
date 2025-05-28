@@ -32,7 +32,7 @@ const Preloader = () => {
             <circle
               cx="100"
               cy="100"
-              r="95"
+              r="45"
               fill="none"
               stroke="#DFBE36"
               strokeWidth="1"
