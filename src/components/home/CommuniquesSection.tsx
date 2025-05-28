@@ -27,7 +27,7 @@ const CommuniquesSection = () => {
           {/* Communiqués stacked */}
           <div className="flex-1 space-y-3 md:space-y-4">
             <Card className="bg-red-50 border-red-200">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
                 <h3 className="font-semibold text-red-800 mb-2 text-xl md:text-xl">Communiqué urgent</h3>
                 <p className="text-sm md:text-sm text-red-600 font-normal">Report de l'événement prévu le 25 mars 2024.</p>
               </CardContent>
