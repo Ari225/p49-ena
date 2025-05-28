@@ -17,21 +17,9 @@ const Historique = () => {
     title: 'Récépissé de dépôt de dossier d\'association',
     description: 'N°0412/PA/SG/D1, il a été délivré par la Préfecture d\'Abidjan, après une déclaration faite. '
   }, {
-    year: '2015',
-    title: 'Création du Réseau',
-    description: "Formalisation du réseau P49 avec l'adoption des statuts et règlements."
-  }, {
-    year: '2018',
-    title: 'Lancement du Journal',
-    description: 'Publication du premier numéro de "Perspectives 49", le journal officiel du réseau.'
-  }, {
-    year: '2020',
-    title: 'Plateforme Numérique',
-    description: 'Lancement de la plateforme digitale pour renforcer les échanges entre membres.'
-  }, {
-    year: '2024',
-    title: 'Nouveau Site Web',
-    description: 'Mise en ligne du nouveau site web officiel du réseau P49 ENA.'
+    year: 'À ce jour',
+    title: 'Suite de la procédure',
+    description: "La procédure pour l\’obtention de l\’arrêté est en cours."
   }];
 
   return (
