@@ -53,7 +53,7 @@ const Footer = () => {
               <div className="space-y-2 text-gray-300">
                 <p className="w-[200px]">Abidjan, Côte d'Ivoire</p>
                 <p className="w-[200px]">communication@p49-ena.ci</p>
-                <p>+225 07 79 05 47 16</p>
+                <p className="w-[200px]">+225 07 79 05 47 16</p>
               </div>
             </div>
 
