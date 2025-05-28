@@ -36,7 +36,7 @@ const SiteSectionsGrid = () => {
               <CardTitle className="text-primary text-lg">{t('header.activities')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4 text-gray-700">
                 Agenda, événements régionaux et assemblées générales.
               </p>
               <Link to="/agenda" className="text-primary hover:text-secondary/80 font-medium">
