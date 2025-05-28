@@ -19,7 +19,7 @@ const CommuniquesSection = () => {
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Image container */}
           <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
-            <div className="w-full lg:w-[500px] bg-white shadow-xl p-4 md:p-6 rounded-lg">
+            <div className="w-full lg:w-[500px] bg-white shadow-xl p-4 md:p-6 rounded-lg px-0 py-0">
               <img alt="Communiqué" src="/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg" className="w-full h-full object-cover" />
             </div>
           </div>
