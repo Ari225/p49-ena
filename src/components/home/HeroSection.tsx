@@ -35,7 +35,7 @@ const HeroSection = ({
         <p className="text-sm md:text-lg italic mb-6 md:mb-8 animate-fade-in text-white font-normal px-4 lg:text-lg">
           {t('home.hero_subtitle')}
         </p>
-        <Button asChild className="bg-primary text-white hover:bg-primary/80 border-2 border-white font-semibold px-4 md:px-8 py-2 md:py-3 text-sm md:text-lg">
+        <Button asChild className="bg-primary text-white hover:bg-primary/80 font-semibold px-4 md:px-8 py-2 md:py-3 text-sm md:text-lg">
           <Link to="/historique" className="text-white bg-secondary/80">Notre histoire</Link>
         </Button>
       </div>
