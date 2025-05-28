@@ -15,14 +15,14 @@ const Preloader = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-primary/80 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-primary/90 z-50 flex items-center justify-center">
       <div className="relative">
         {/* Logo */}
-        <div className="w-24 h-24 md:w-28 md:h-28 flex items-center justify-center">
+        <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
           <img 
             src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
             alt="P49 ENA Logo" 
-            className="w-16 h-16 md:w-20 md:h-20 object-contain"
+            className="w-12 h-12 md:w-16 md:h-16 object-contain"
           />
         </div>
         
@@ -42,11 +42,6 @@ const Preloader = () => {
             />
           </svg>
         </div>
-      </div>
-      
-      {/* Loading text */}
-      <div className="absolute bottom-16 text-center">
-        <p className="text-white text-lg font-medium animate-pulse">Chargement...</p>
       </div>
     </div>
   );
