@@ -45,7 +45,7 @@ const CommuniquesSection = () => {
               </CardContent>
             </Card>
             <Card className="bg-purple-50 border-purple-200">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-6 py-[20px]">
                 <h3 className="font-semibold text-purple-800 mb-2 text-xl md:text-xl">Communiqué de presse</h3>
                 <p className="text-sm text-purple-600 md:text-sm font-normal">Publication des résultats du dernier concours interne.</p>
               </CardContent>
