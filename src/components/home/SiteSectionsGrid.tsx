@@ -82,9 +82,7 @@ Répertoire des membres.</p>
               <CardTitle className="text-primary text-lg">{t('header.perspectives')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">
-                Notre journal, actualités et archives.
-              </p>
+              <p className="mb-4 text-gray-700">Dernière édition du journal, Écho des régions, Actualités, Archives.</p>
               <Link to="/derniere-edition" className="text-primary hover:text-secondary/80 font-medium">
                 Explorer →
               </Link>
