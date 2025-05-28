@@ -47,16 +47,9 @@ const Historique = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h2 className="text-3xl font-bold text-primary mb-6">La P49 : Une Promotion d'Excellence</h2>
-                <p className="text-gray-700 leading-relaxed mb-4 text-justify">L’idée de la création de la P49 ENA est née de la volonté de sauvegarder et de consolider les relations entre les 800 anciens élèves de la promotion 2009-2010 de l’Ecole Nationale d’Administration.</p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Forte de plus de 150 membres répartis dans tous les secteurs de l'administration 
-                  publique et privée, la P49 s'est distinguée par son engagement, sa solidarité 
-                  et sa contribution au développement de la Côte d'Ivoire.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  Notre devise : "Une famille unie et solidaire" reflète parfaitement l'esprit 
-                  de cohésion qui anime notre promotion depuis plus d'une décennie.
-                </p>
+                <p className="text-gray-700 leading-relaxed mb-4 text-justify">L’association P49 ENA a été créée dans le but de préserver et renforcer les liens entre les anciens élèves de la 49e promotion de l’École Nationale d’Administration. Cette initiative est le fruit de plusieurs rencontres entre membres fondateurs et de cadres d’échanges ayant conduit à une assemblée générale élective. Pour officialiser l’existence de l’association, les statuts et le règlement intérieur ont été adoptés lors d’une assemblée générale. Une déclaration a ensuite été faite à la Préfecture d’Abidjan, suivie de la délivrance d’un récépissé de dépôt de dossier. Cette déclaration a été publiée au Journal Officiel de la République de Côte d’Ivoire. La procédure pour l’obtention de l’arrêté est actuellement en cours.</p>
+                <p className="text-gray-700 leading-relaxed mb-4 text-justify">Cette volonté s’est traduite par des réunions tenues par les membres fondateurs en 2017 et en 2019 ainsi que par plusieurs cadres d’échanges qui ont abouti à l’assemblée générale élective du 24 juin 2023, à l’ENA.</p>
+                
               </div>
               <div>
                 <img alt="Logo P49" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" className="w-full max-w-md mx-auto rounded-lg" />
