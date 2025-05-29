@@ -49,7 +49,7 @@ const CarrierePlusSection = () => {
               </blockquote>
               <div className="border-t border-white/20 pt-4">
                 <p className="font-semibold text-white">Dr. Kouakou Marie-Claire</p>
-                <p className="text-sm opacity-80">Directrice Générale, Promotion 49</p>
+                <p className="text-sm text-white font-normal">Directrice Générale, Promotion 49</p>
               </div>
             </CardContent>
           </Card>
