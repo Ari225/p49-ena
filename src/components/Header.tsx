@@ -162,7 +162,7 @@ const Header = () => {
                 </DropdownMenuContent>
               </DropdownMenu> : <div className="flex space-x-2">
                 <Link to="/contact">
-                  <Button className="bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-md transition-colors duration-200 text-sm">
+                  <Button className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
                     {t('header.contact')}
                   </Button>
                 </Link>
