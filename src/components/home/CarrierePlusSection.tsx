@@ -59,7 +59,7 @@ const CarrierePlusSection = () => {
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-secondary/80 rounded-full flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-primary" />
+                  <TrendingUp className="w-5 h-5 text-primary" />
                 </div>
                 <div className="ml-4">
                   <h3 className="font-semibold text-primary">Nos réussites</h3>
