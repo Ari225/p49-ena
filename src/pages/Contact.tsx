@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -8,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import ContactMap from '@/components/ContactMap';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -110,12 +110,7 @@ const Contact = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <p className="text-gray-500 text-center">
-                      Carte interactive<br />
-                      <span className="text-sm">Intégration à venir</span>
-                    </p>
-                  </div>
+                  <ContactMap />
                 </CardContent>
               </Card>
             </div>
