@@ -32,7 +32,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
       <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt={title} className="h-8 w-8" />
+            <img src={logo} alt={title} className="h-1 w-1" />
             <span className="font-bold text-primary text-lg">{title}</span>
           </Link>
           
