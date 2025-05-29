@@ -53,7 +53,7 @@ const EchoRegionsSection = () => {
           {regionalNews.map((news, index) => <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative h-32 md:h-48">
                 <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
-                <div className="absolute top-2 md:top-3 left-2 md:left-3 bg-primary text-white px-2 py-1 text-xs flex items-center rounded-lg">
+                <div className="absolute top-2 md:top-3 left-2 md:left-3 bg-primary text-white px-2 py-1 text-xs flex items-center rounded">
                   <MapPin className="w-3 h-3 mr-1" />
                   {news.region}
                 </div>
