@@ -85,7 +85,7 @@ const Login = () => {
                 <Button type="submit" className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" disabled={isLoading}>
                   {isLoading ? 'Connexion...' : t('login.submit')}
                 </Button>
-                <div className="text-sm text-secondary-600 text-center">
+                <div className="text-sm text-gray-700 text-center">
                   <p className="text-gray-700 font-normal">Espace réservé aux administrateurs et rédacteurs.</p>
                   
                   
