@@ -43,7 +43,7 @@ const CarrierePlusSection = () => {
               <div className="flex items-center mb-4">
                 <Quote className="w-8 h-8 text-secondary" />
               </div>
-              <blockquote className="text-lg font-medium mb-4">
+              <blockquote className="text-lg font-bold mb-4">
                 "La formation continue est la clé de l'excellence dans le service public. 
                 Chaque jour est une opportunité d'apprendre et de grandir."
               </blockquote>
