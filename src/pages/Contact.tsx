@@ -72,7 +72,7 @@ const Contact = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2 text-primary">
                     <Phone className="h-5 w-5" />
-                    <span>Téléphone</span>
+                    <span className="text-xl font-semibold">Téléphone</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
