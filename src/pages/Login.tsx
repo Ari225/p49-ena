@@ -71,7 +71,7 @@ const Login = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="username">{t('login.username')}</Label>
-                  <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="admin ou redacteur" required />
+                  <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Administrateur ou Rédacteur" required />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">{t('login.password')}</Label>
