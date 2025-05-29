@@ -63,7 +63,7 @@ const CarrierePlusSection = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className="font-semibold text-primary">Nos réussites</h3>
-                  <p className="text-sm text-gray-500">Année 2024</p>
+                  <p className="text-sm text-gray-700 font-normal">Année 2024</p>
                 </div>
               </div>
               <div className="space-y-4">
