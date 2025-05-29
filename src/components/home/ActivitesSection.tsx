@@ -75,7 +75,7 @@ const ActivitesSection = () => {
                             <Clock className="w-4 h-4 mr-2" />
                             {activity.date} à {activity.time}
                           </div>
-                          <div className="flex items-center">
+                          <div className="flex items-center text-sm font-normal text-gray-700">
                             <MapPin className="w-4 h-4 mr-2" />
                             {activity.location}
                           </div>
