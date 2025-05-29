@@ -31,7 +31,7 @@ const CarrierePlusSection = () => {
                 Formation intensive de 6 semaines sur le leadership transformationnel dans l'administration publique.
               </p>
               <div className="bg-secondary/80 p-3 rounded-lg">
-                <p className="text-sm font-medium">Inscriptions ouvertes</p>
+                <p className="font-medium text-primary text-base">Inscriptions ouvertes</p>
                 <p className="text-xs text-gray-600">Places limitées - 20 participants</p>
               </div>
             </CardContent>
