@@ -80,7 +80,7 @@ const CarrierePlusSection = () => {
                 </div>
                 <div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Membres formés</span>
+                    <span className="text-sm text-gray-700 font-normal">Membres formés</span>
                     <span className="font-bold text-primary">150+</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
