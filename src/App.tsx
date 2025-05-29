@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +16,7 @@ import EchoRegions from "./pages/EchoRegions";
 import Actualites from "./pages/Actualites";
 import NotFound from "./pages/NotFound";
 import RepertoireMembers from "./pages/RepertoireMembers";
+import InstancesDirigeantes from "./pages/InstancesDirigeantes";
 
 // Dashboard pages
 import DashboardUsers from "./pages/dashboard/DashboardUsers";
@@ -66,7 +68,7 @@ const App = () => (
               
               {/* Presentation Routes */}
               <Route path="/textes-officiels" element={<div>Textes Officiels - Page en construction</div>} />
-              <Route path="/instances-dirigeantes" element={<div>Instances Dirigeantes - Page en construction</div>} />
+              <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
               
               {/* Activities Routes */}

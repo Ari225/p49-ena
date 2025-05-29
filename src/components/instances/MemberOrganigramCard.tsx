@@ -1,0 +1,74 @@
+
+import React from 'react';
+import { Phone } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+
+interface MemberOrganigramCardProps {
+  name: string;
+  position: string;
+  phone: string;
+}
+
+const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
+  name,
+  position,
+  phone
+}) => {
+  const getInitials = () => {
+    const names = name.split(' ');
+    return names.length >= 2 
+      ? `${names[0].charAt(0)}${names[1].charAt(0)}`.toUpperCase()
+      : name.charAt(0).toUpperCase();
+  };
+
+  const handlePhoneCall = () => {
+    window.open(`tel:${phone}`, '_self');
+  };
+
+  return (
+    <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+      <CardContent className="p-6">
+        {/* Photo */}
+        <div className="flex justify-center mb-4">
+          <Avatar className="h-20 w-20 ring-2 ring-gray-200 group-hover:ring-primary transition-colors">
+            <AvatarImage 
+              src={`https://images.unsplash.com/photo-${1500000000000 + Math.random() * 1000000}?w=150&h=150&fit=crop&face`}
+              alt={name}
+              className="object-cover"
+            />
+            <AvatarFallback className="bg-primary text-white text-lg font-semibold">
+              {getInitials()}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+
+        {/* Name */}
+        <div className="text-center mb-3">
+          <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors">
+            {name}
+          </h3>
+        </div>
+
+        {/* Position */}
+        <div className="text-center mb-4">
+          <p className="text-sm text-gray-600 font-medium">{position}</p>
+        </div>
+
+        {/* Phone */}
+        <div className="flex items-center justify-center">
+          <button
+            onClick={handlePhoneCall}
+            className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors"
+            title={`Appeler ${name}`}
+          >
+            <Phone className="h-4 w-4" />
+            <span className="text-sm font-medium">{phone}</span>
+          </button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default MemberOrganigramCard;
