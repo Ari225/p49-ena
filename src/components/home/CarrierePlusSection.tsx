@@ -1,17 +1,14 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { GraduationCap, Quote, TrendingUp } from 'lucide-react';
-
 const CarrierePlusSection = () => {
-  return (
-    <section className="bg-accent/30 py-[100px] px-[100px]">
+  return <section className="bg-accent/30 py-[100px] px-[100px]">
       <div className="container mx-auto px-0">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-primary mb-4">Carrière+</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto font-normal text-gray-700">
             Développez votre potentiel avec nos opportunités de formation et nos programmes d'accompagnement
           </p>
         </div>
@@ -76,7 +73,9 @@ const CarrierePlusSection = () => {
                     <span className="font-bold text-primary">12</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                    <div className="bg-primary h-2 rounded-full" style={{ width: '80%' }}></div>
+                    <div className="bg-primary h-2 rounded-full" style={{
+                    width: '80%'
+                  }}></div>
                   </div>
                 </div>
                 <div>
@@ -85,7 +84,9 @@ const CarrierePlusSection = () => {
                     <span className="font-bold text-primary">150+</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                    <div className="bg-secondary h-2 rounded-full" style={{ width: '90%' }}></div>
+                    <div className="bg-secondary h-2 rounded-full" style={{
+                    width: '90%'
+                  }}></div>
                   </div>
                 </div>
               </div>
@@ -99,8 +100,6 @@ const CarrierePlusSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CarrierePlusSection;
