@@ -44,7 +44,7 @@ const EchoRegionsSection = () => {
             <Link to="/echo-regions">
               <span className="hidden sm:inline">Actualités régionales</span>
               <span className="sm:hidden">Voir tout</span>
-              <ChevronRight className="ml-2 h-4 w-4" />
+              <ChevronRight className="h-4 w-4" />
             </Link>
           </Button>
         </div>
