@@ -62,7 +62,7 @@ const ActivitesSection = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center mb-2">
-                          <span className="bg-primary text-white text-xs px-2 py-1 rounded-lg">
+                          <span className="bg-primary text-white text-xs px-2 py-1 rounded">
                             {activity.type}
                           </span>
                           <span className="bg-secondary/80 text-primary text-xs px-2 py-1 rounded ml-2 font-normal">
