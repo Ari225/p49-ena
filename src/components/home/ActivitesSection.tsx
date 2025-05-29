@@ -104,7 +104,7 @@ const ActivitesSection = () => {
                       <img src={activity.image} alt={activity.title} className="w-24 h-24 object-cover" />
                       <div className="p-4 flex-1">
                         <h4 className="font-semibold text-primary mb-1">{activity.title}</h4>
-                        <p className="text-sm text-gray-600">{activity.date}</p>
+                        <p className="flex items-center text-sm font-normal text-gray-700">{activity.date}</p>
                         <p className="text-xs text-gray-500">{activity.participants}</p>
                       </div>
                     </div>
