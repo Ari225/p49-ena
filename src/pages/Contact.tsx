@@ -81,20 +81,7 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2 text-primary">
-                    <MapPin className="h-5 w-5" />
-                    <span>Adresse</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Abidjan, Côte d'Ivoire<br />
-                    Cocody, Angré
-                  </p>
-                </CardContent>
-              </Card>
+              
 
               {/* Map Container */}
               <Card>
