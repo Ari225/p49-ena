@@ -105,7 +105,7 @@ const ActivitesSection = () => {
                       <div className="p-4 flex-1">
                         <h4 className="font-semibold text-primary mb-1">{activity.title}</h4>
                         <p className="flex items-center text-sm font-normal text-gray-700">{activity.date}</p>
-                        <p className="text-xs text-gray-500">{activity.participants}</p>
+                        <p className="flex items-center text-sm font-normal text-gray-700">{activity.participants}</p>
                       </div>
                     </div>
                   </CardContent>
