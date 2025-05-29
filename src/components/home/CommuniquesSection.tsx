@@ -11,7 +11,7 @@ const CommuniquesSection = () => {
       <div className="container mx-auto px-0">
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
-          <Link to="/communiques" className="bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] text-sm  md:text-sm font-normal">
+          <Link to="/communiques" className="bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] text-sm  md:text-sm font-semibold">
             Voir tout <ChevronRight className="ml-1 h-4 w-4" />
           </Link>
         </div>
