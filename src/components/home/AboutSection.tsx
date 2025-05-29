@@ -16,7 +16,7 @@ const AboutSection = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-10 md:mb-10 text-center lg:text-right">
               {t('home.about_title')}
             </h2>
-            <p className="text-gray-700 leading-relaxed mb-10 md:mb-10 text-sm md:text-base text-justify font-normal">
+            <p className="text-gray-700 leading-relaxed mb-10 md:mb-10 text-base md:text-base text-justify font-normal">
               {t('home.about_description')}
             </p>
             <div className="flex justify-center lg:justify-end">
