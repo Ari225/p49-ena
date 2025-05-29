@@ -82,7 +82,7 @@ const Login = () => {
                     </button>
                   </div>
                 </div>
-                <Button type="submit" className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-sm font-normal transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" disabled={isLoading}>
+                <Button type="submit" className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" disabled={isLoading}>
                   {isLoading ? 'Connexion...' : t('login.submit')}
                 </Button>
                 <div className="text-sm text-gray-600 text-center">
