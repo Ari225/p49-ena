@@ -48,7 +48,7 @@ const CarrierePlusSection = () => {
                 Chaque jour est une opportunité d'apprendre et de grandir."
               </blockquote>
               <div className="border-t border-white/20 pt-4">
-                <p className="font-semibold">Dr. Kouakou Marie-Claire</p>
+                <p className="font-semibold text-white">Dr. Kouakou Marie-Claire</p>
                 <p className="text-sm opacity-80">Directrice Générale, Promotion 49</p>
               </div>
             </CardContent>
