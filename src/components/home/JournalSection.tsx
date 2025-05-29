@@ -19,7 +19,7 @@ const JournalSection = () => {
             <h3 className="mb-10 md:mb-10 text-center bg-primary text-white py-2 md:py-[10px] rounded-lg text-lg md:text-xl font-semibold">
               Perspectives 49 - Bulletin n°1
             </h3>
-            <p className="leading-relaxed mb-10 md:mb-10 text-justify text-secondary-foreground text-sm md:text-base">
+            <p className="leading-relaxed mb-10 md:mb-10 text-justify text-sm md:text-base font-normal text-primary">
               Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
 
               Le bulletin s'organise autour de quatre rubriques principales. La rubrique Actualités citoyennes propose un décryptage des faits marquants et des enjeux sociaux. Le Dossier spécial offre un éclairage sur l'entrepreneuriat des jeunes et les dynamiques économiques émergentes. La rubrique Vie associative met en avant les actions communautaires et les projets de terrain. Enfin, Culture & expressions valorise les talents locaux et les pratiques artistiques.
