@@ -6,12 +6,12 @@ import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
 import { useMobileDetection } from '@/mobile/hooks/useMobileDetection';
 
-// Mock data for 800+ members
+// Mock data for 800+ members with Ivorian names and cities
 const generateMockMembers = () => {
   const positions = ['Directeur Général', 'Directeur Adjoint', 'Chef de Service', 'Attaché d\'Administration', 'Secrétaire Général', 'Contrôleur Financier', 'Inspecteur', 'Analyste', 'Coordinateur', 'Responsable RH', 'Chef de Projet', 'Conseiller'];
-  const localities = ['Dakar', 'Thiès', 'Saint-Louis', 'Kaolack', 'Ziguinchor', 'Diourbel', 'Tambacounda', 'Fatick', 'Kolda', 'Matam', 'Kaffrine', 'Kédougou', 'Louga', 'Sédhiou'];
-  const firstNames = ['Amadou', 'Fatou', 'Moussa', 'Aïssatou', 'Ibrahima', 'Mariama', 'Ousmane', 'Khady', 'Mamadou', 'Ndeye', 'Cheikh', 'Awa', 'Abdoulaye', 'Mame', 'Omar', 'Coumba'];
-  const lastNames = ['Diop', 'Fall', 'Ndiaye', 'Seck', 'Sy', 'Ba', 'Sarr', 'Cissé', 'Gueye', 'Diouf', 'Faye', 'Kane', 'Wade', 'Thiam', 'Sow', 'Camara'];
+  const localities = ['Abidjan', 'Bouaké', 'Daloa', 'Yamoussoukro', 'San-Pédro', 'Korhogo', 'Man', 'Divo', 'Gagnoa', 'Anyama', 'Abengourou', 'Agboville', 'Grand-Bassam', 'Sassandra'];
+  const firstNames = ['Kouadio', 'Akissi', 'Kouassi', 'Adjoua', 'Yao', 'Amenan', 'Kofi', 'Affoué', 'N\'Guessan', 'Aya', 'Koffi', 'Mariam', 'Kouame', 'Fatou', 'Brou', 'Aminata'];
+  const lastNames = ['Diallo', 'Traoré', 'Ouattara', 'Koné', 'Coulibaly', 'Bamba', 'Yao', 'Kouassi', 'N\'Dri', 'Bakayoko', 'Touré', 'Fofana', 'Sangaré', 'Diabaté', 'Silué', 'Gbagbo'];
   const members = [];
   for (let i = 1; i <= 850; i++) {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
@@ -34,6 +34,7 @@ const generateMockMembers = () => {
   }
   return members;
 };
+
 const RepertoireMembers = () => {
   const {
     isMobile
@@ -113,7 +114,7 @@ const RepertoireMembers = () => {
               Répertoire des Membres
             </h1>
             <p className="text-xl text-center text-gray-200 max-w-3xl mx-auto">
-              Découvrez notre réseau de plus de 800 membres à travers le Sénégal
+              Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
             </p>
           </div>
         </div>
