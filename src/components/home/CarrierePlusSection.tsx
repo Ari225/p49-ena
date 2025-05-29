@@ -23,7 +23,7 @@ const CarrierePlusSection = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className="font-semibold text-primary">Formation en cours</h3>
-                  <p className="text-sm text-gray-500">Jusqu'au 30 avril 2024</p>
+                  <p className="text-sm text-gray-700 font-normal">Jusqu'au 30 avril 2024</p>
                 </div>
               </div>
               <h4 className="font-bold text-lg mb-3">Programme de Leadership Avancé</h4>
