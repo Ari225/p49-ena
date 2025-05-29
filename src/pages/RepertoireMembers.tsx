@@ -107,7 +107,7 @@ const RepertoireMembers = () => {
   return <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section */}
-        <div className="bg-primary text-white py-16">
+        <div className="bg-primary text-white px-[100px] py-[100px]">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
               Répertoire des Membres
