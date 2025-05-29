@@ -11,7 +11,7 @@ const DeleguesRegionauxSection = () => {
   ];
 
   return (
-    <section>
+    <section className="bg-accent/30 p-8 rounded-lg">
       <h2 className="text-3xl font-bold text-center mb-8 text-primary">
         Délégués Régionaux
       </h2>
