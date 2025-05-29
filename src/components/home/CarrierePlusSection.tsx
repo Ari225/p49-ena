@@ -40,8 +40,8 @@ const CarrierePlusSection = () => {
           {/* Citation inspirante */}
           <Card className="overflow-hidden bg-primary text-white">
             <CardContent className="p-6 bg-primary">
-              <div className="flex items-center mb-4">
-                <Quote className="w-8 h-8 text-secondary" />
+              <div className="flex items-center justify-center mb-4">
+                <Quote className="w-5 h-5 text-secondary" />
               </div>
               <blockquote className="text-lg font-bold mb-4">
                 "La formation continue est la clé de l'excellence dans le service public. 
