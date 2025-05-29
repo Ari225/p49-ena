@@ -51,7 +51,7 @@ const Login = () => {
   };
   return <Layout>
       <div className="min-h-[80vh] flex items-center justify-center py-[100px] relative" style={{
-      backgroundImage: 'url(/lovable-uploads/e85e9bf0-20c7-4672-aac9-e32d078db6e6.png)',
+      backgroundImage: 'url(/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png)',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat'
