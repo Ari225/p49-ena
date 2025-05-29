@@ -21,7 +21,7 @@ const GallerySection = () => {
     url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=300&h=200&fit=crop",
     title: "Événement Gala"
   }];
-  return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+  return <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-12 gap-4">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">Galerie Photos</h2>
