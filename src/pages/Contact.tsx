@@ -34,7 +34,14 @@ const Contact = () => {
     });
   };
   return <Layout>
-      <div className="bg-accent/30 py-[100px] px-[100px]">
+      <div className="min-h-[80vh] flex items-center justify-center py-[100px] relative" style={{
+      backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
+    }}>
+        {/* Primary overlay */}
+          <div className="absolute inset-0 bg-primary/80 mx-0"></div>
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-primary mb-4">Contactez-nous</h1>
