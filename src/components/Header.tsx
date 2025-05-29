@@ -167,7 +167,7 @@ const Header = () => {
                   </Button>
                 </Link>
                 <Link to="/login">
-                  <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white font-medium px-4 py-2 rounded-md transition-colors duration-200 text-sm">
+                  <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm">
                     {t('header.login')}
                   </Button>
                 </Link>
