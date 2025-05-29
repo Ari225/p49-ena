@@ -19,7 +19,7 @@ const CarrierePlusSection = () => {
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-                  <GraduationCap className="w-6 h-6 text-white" />
+                  <GraduationCap className="w-5 h-5 text-white" />
                 </div>
                 <div className="ml-4">
                   <h3 className="font-semibold text-primary">Formation en cours</h3>
