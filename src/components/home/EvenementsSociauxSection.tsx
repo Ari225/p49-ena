@@ -32,7 +32,7 @@ const EvenementsSociauxSection = () => {
   return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Événements Sociaux</h2>
+          <h2 className="text-3xl md:text-3xl font-bold text-primary mb-4">Événements sociaux</h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
             Partageons ensemble les moments importants de la vie de nos membres
           </p>
