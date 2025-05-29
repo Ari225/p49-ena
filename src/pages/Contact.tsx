@@ -34,12 +34,12 @@ const Contact = () => {
     });
   };
   return <Layout>
-      <div className="min-h-[80vh] flex items-center justify-center py-[100px] relative" style={{
+      <div style={{
       backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat'
-    }}>
+    }} className="min-h-[80vh] flex items-center justify-center py-[100px] relative px-[100px]">
         {/* Primary overlay */}
           
         <div className="container mx-auto px-4">
