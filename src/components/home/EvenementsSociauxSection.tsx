@@ -55,7 +55,7 @@ const EvenementsSociauxSection = () => {
                   <p className="text-gray-700 text-sm md:text-sm mb-2 md:mb-3 line-clamp-2 font-normal">
                     {event.description}
                   </p>
-                  <p className="text-xs text-gray-500">{event.date}</p>
+                  <p className="text-xs text-gray-700 font-normal">{event.date}</p>
                 </CardContent>
               </Card>;
         })}
