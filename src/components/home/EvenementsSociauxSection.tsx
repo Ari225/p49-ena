@@ -1,43 +1,35 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PartyPopper, GraduationCap, Heart } from 'lucide-react';
-
 const EvenementsSociauxSection = () => {
-  const socialEvents = [
-    {
-      type: 'heureux',
-      icon: PartyPopper,
-      title: 'Mariage de Mme Koné Awa',
-      date: '20 Mars 2024',
-      description: 'Félicitations pour cette belle union',
-      image: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=200&fit=crop',
-      color: 'bg-green-500'
-    },
-    {
-      type: 'retraite',
-      icon: GraduationCap,
-      title: 'Départ en retraite de M. Yao Jean',
-      date: '15 Mars 2024',
-      description: '35 années de service exemplaire',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop',
-      color: 'bg-blue-500'
-    },
-    {
-      type: 'deuil',
-      icon: Heart,
-      title: 'Hommage à Mme Traoré Fatou',
-      date: '10 Mars 2024',
-      description: 'Nos pensées accompagnent sa famille',
-      image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop',
-      color: 'bg-gray-500'
-    }
-  ];
-
-  return (
-    <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+  const socialEvents = [{
+    type: 'heureux',
+    icon: PartyPopper,
+    title: 'Mariage de Mme Koné Awa',
+    date: '20 Mars 2024',
+    description: 'Félicitations pour cette belle union',
+    image: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=300&h=200&fit=crop',
+    color: 'bg-green-500'
+  }, {
+    type: 'retraite',
+    icon: GraduationCap,
+    title: 'Départ en retraite de M. Yao Jean',
+    date: '15 Mars 2024',
+    description: '35 années de service exemplaire',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop',
+    color: 'bg-blue-500'
+  }, {
+    type: 'deuil',
+    icon: Heart,
+    title: 'Hommage à Mme Traoré Fatou',
+    date: '10 Mars 2024',
+    description: 'Nos pensées accompagnent sa famille',
+    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop',
+    color: 'bg-gray-500'
+  }];
+  return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Événements Sociaux</h2>
@@ -48,15 +40,10 @@ const EvenementsSociauxSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
           {socialEvents.map((event, index) => {
-            const IconComponent = event.icon;
-            return (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
+          const IconComponent = event.icon;
+          return <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative h-32 md:h-48">
-                  <img 
-                    src={event.image} 
-                    alt={event.title} 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
                   <div className={`absolute top-2 md:top-3 right-2 md:right-3 ${event.color} text-white p-2 rounded-full`}>
                     <IconComponent className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
@@ -70,9 +57,8 @@ const EvenementsSociauxSection = () => {
                   </p>
                   <p className="text-xs text-gray-500">{event.date}</p>
                 </CardContent>
-              </Card>
-            );
-          })}
+              </Card>;
+        })}
         </div>
         
         <div className="text-center">
@@ -84,8 +70,6 @@ const EvenementsSociauxSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default EvenementsSociauxSection;
