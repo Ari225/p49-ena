@@ -32,7 +32,7 @@ const CarrierePlusSection = () => {
               </p>
               <div className="bg-secondary/80 p-3 rounded-lg">
                 <p className="font-medium text-primary text-base">Inscriptions ouvertes</p>
-                <p className="text-xs text-gray-600">Places limitées - 20 participants</p>
+                <p className="text-gray-700 text-xs font-normal">Places limitées - 20 participants</p>
               </div>
             </CardContent>
           </Card>
