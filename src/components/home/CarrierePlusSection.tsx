@@ -26,7 +26,7 @@ const CarrierePlusSection = () => {
                   <p className="text-sm text-gray-700 font-normal">Jusqu'au 30 avril 2024</p>
                 </div>
               </div>
-              <h4 className="font-bold text-lg mb-3">Programme de Leadership Avancé</h4>
+              <h4 className="font-bold mb-3 text-primary text-lg">Programme de Leadership Avancé</h4>
               <p className="text-gray-600 text-sm mb-4">
                 Formation intensive de 6 semaines sur le leadership transformationnel dans l'administration publique.
               </p>
