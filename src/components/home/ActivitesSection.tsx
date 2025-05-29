@@ -100,8 +100,8 @@ const ActivitesSection = () => {
             <div className="space-y-4">
               {recentActivities.map((activity, index) => <Card key={index} className="overflow-hidden">
                   <CardContent className="p-0">
-                    <div className="flex">
-                      <img src={activity.image} alt={activity.title} className="w-24 h-20 object-cover" />
+                    <div className="flex px-0">
+                      <img src={activity.image} alt={activity.title} className="w-24 h-24 object-cover" />
                       <div className="p-4 flex-1">
                         <h4 className="font-semibold text-primary mb-1">{activity.title}</h4>
                         <p className="text-sm text-gray-600">{activity.date}</p>
