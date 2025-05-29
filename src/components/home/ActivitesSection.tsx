@@ -71,7 +71,7 @@ const ActivitesSection = () => {
                         </div>
                         <h4 className="font-semibold text-primary mb-2">{activity.title}</h4>
                         <div className="space-y-1 text-sm text-gray-600">
-                          <div className="flex items-center">
+                          <div className="flex items-center text-sm font-normal text-gray-700">
                             <Clock className="w-4 h-4 mr-2" />
                             {activity.date} à {activity.time}
                           </div>
