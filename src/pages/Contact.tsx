@@ -39,7 +39,7 @@ const Contact = () => {
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat'
-    }} className="min-h-[80vh] flex items-center justify-center py-[100px] relative px-[100px] bg-primary/80">
+    }} className="min-h-[80vh] flex items-center justify-center py-[100px] absolute px-[100px] bg-primary/80">
         {/* Primary overlay */}
           
         <div className="container mx-auto px-4">
