@@ -27,7 +27,7 @@ const CarrierePlusSection = () => {
                 </div>
               </div>
               <h4 className="font-bold mb-3 text-primary text-lg">Programme de Leadership Avancé</h4>
-              <p className="text-gray-600 text-sm mb-4">
+              <p className="text-sm mb-4 text-gray-700 font-normal">
                 Formation intensive de 6 semaines sur le leadership transformationnel dans l'administration publique.
               </p>
               <div className="bg-secondary/20 p-3 rounded-lg">
