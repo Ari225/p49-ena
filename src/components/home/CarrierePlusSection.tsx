@@ -72,7 +72,7 @@ const CarrierePlusSection = () => {
                     <span className="text-sm font-normal text-gray-700">Formations dispensées</span>
                     <span className="font-bold text-primary">12</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                  <div className="w-full bg-accent-30 rounded-full h-2 mt-1">
                     <div className="bg-primary h-2 rounded-full" style={{
                     width: '80%'
                   }}></div>
