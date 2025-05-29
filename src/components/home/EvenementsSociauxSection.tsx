@@ -52,7 +52,7 @@ const EvenementsSociauxSection = () => {
                   <h3 className="font-semibold text-primary mb-2 text-sm md:text-base line-clamp-2">
                     {event.title}
                   </h3>
-                  <p className="text-gray-600 text-xs md:text-sm mb-2 md:mb-3 line-clamp-2">
+                  <p className="text-gray-700 text-sm md:text-sm mb-2 md:mb-3 line-clamp-2 font-normal">
                     {event.description}
                   </p>
                   <p className="text-xs text-gray-500">{event.date}</p>
