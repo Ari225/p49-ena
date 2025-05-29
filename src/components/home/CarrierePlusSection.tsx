@@ -39,7 +39,7 @@ const CarrierePlusSection = () => {
 
           {/* Citation inspirante */}
           <Card className="overflow-hidden bg-primary text-white">
-            <CardContent className="p-6">
+            <CardContent className="p-6 bg-primary">
               <div className="flex items-center mb-4">
                 <Quote className="w-8 h-8 text-secondary" />
               </div>
