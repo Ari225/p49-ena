@@ -59,7 +59,7 @@ const EchoRegionsSection = () => {
                 </div>
               </div>
               <CardContent className="p-3 md:p-4">
-                <h3 className="font-semibold text-primary mb-2 text-xs line-clamp-2 md:text-base">
+                <h3 className="font-semibold text-primary mb-2 text-base line-clamp-2 md:text-base">
                   {news.title}
                 </h3>
                 <p className="mb-2 md:mb-3 line-clamp-2 text-gray-700 text-sm">
