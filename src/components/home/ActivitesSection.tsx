@@ -79,7 +79,7 @@ const ActivitesSection = () => {
                             <MapPin className="w-4 h-4 mr-2" />
                             {activity.location}
                           </div>
-                          <div className="flex items-center">
+                          <div className="flex items-center text-sm font-normal text-gray-700">
                             <Users className="w-4 h-4 mr-2" />
                             {activity.participants}
                           </div>
