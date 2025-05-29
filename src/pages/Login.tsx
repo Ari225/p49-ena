@@ -86,7 +86,7 @@ const Login = () => {
                   {isLoading ? 'Connexion...' : t('login.submit')}
                 </Button>
                 <div className="text-sm text-gray-700 text-center">
-                  <p className="text-gray-700 font-normal">Espace réservé aux administrateurs et rédacteurs.</p>
+                  <p className="text-gray-700 font-normal">Note : Espace réservé aux administrateurs et rédacteurs.</p>
                   
                   
                 </div>
