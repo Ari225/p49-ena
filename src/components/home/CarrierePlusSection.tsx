@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { GraduationCap, Quote, TrendingUp } from 'lucide-react';
 const CarrierePlusSection = () => {
   return <section className="bg-accent/30 py-[100px] px-[100px]">
-      <div className="container mx-auto px-0">
+      <div className="container mx-auto px-0 font-normal text-base text-gray-700">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-primary mb-4">Carrière+</h2>
-          <p className="max-w-2xl mx-auto font-normal text-gray-700">
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Développez votre potentiel avec nos opportunités de formation et nos programmes d'accompagnement
           </p>
         </div>
