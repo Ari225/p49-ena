@@ -69,7 +69,7 @@ const Login = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2 text-primary text-sm md:text-sm font-bold">
+                <div className="space-y-2">
                   <Label htmlFor="username">{t('login.username')}</Label>
                   <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Administrateur ou Rédacteur" required />
                 </div>
