@@ -82,7 +82,7 @@ const BlogSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium px-6 md:px-8 py-2 md:py-3 text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+          <Button asChild className="bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
             <Link to="/blog" className="flex items-center">
               Voir tous les articles
               <ArrowRight className="ml-2 h-4 w-4" />
