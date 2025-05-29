@@ -88,7 +88,7 @@ const Contact = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2 text-primary">
                     <MapPin className="h-5 w-5" />
-                    <span>Localisation</span>
+                    <span className="text-xl font-semibold">Localisation</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
