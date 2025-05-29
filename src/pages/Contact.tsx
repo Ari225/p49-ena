@@ -114,7 +114,7 @@ const Contact = () => {
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl text-primary">Envoyez-nous un message</CardTitle>
+                  <CardTitle className="text-primary text-xl font-semibold">Envoyez-nous un message</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
