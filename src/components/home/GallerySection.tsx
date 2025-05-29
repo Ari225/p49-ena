@@ -26,7 +26,7 @@ const GallerySection = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 md:mb-12 gap-4">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">Galerie Photos</h2>
           <Link to="/galerie" className="bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center font-semibold text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-            <Camera className="mr-2 h-4 w-4" />
+            <Camera className="h-4 w-4" />
             Voir plus
           </Link>
         </div>
