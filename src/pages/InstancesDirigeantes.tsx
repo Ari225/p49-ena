@@ -23,23 +23,27 @@ const InstancesDirigeantes = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-[100px] py-[100px]">
-          <Tabs defaultValue="bureau" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="bureau" className="text-lg">Bureau</TabsTrigger>
-              <TabsTrigger value="commissions" className="text-lg">Commissions</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="bureau" className="space-y-12">
-              <BureauExecutifSection />
-              <CommissairesSection />
-              <DeleguesRegionauxSection />
-            </TabsContent>
-            
-            <TabsContent value="commissions">
-              <CommissionsSection />
-            </TabsContent>
-          </Tabs>
+        <div className="w-full">
+          <div className="container mx-auto px-[100px] py-[100px]">
+            <Tabs defaultValue="bureau" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-8">
+                <TabsTrigger value="bureau" className="text-lg">Bureau</TabsTrigger>
+                <TabsTrigger value="commissions" className="text-lg">Commissions</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="bureau" className="w-full">
+                <div className="w-full space-y-0 -mx-[100px]">
+                  <BureauExecutifSection />
+                  <CommissairesSection />
+                  <DeleguesRegionauxSection />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="commissions">
+                <CommissionsSection />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </div>
     </Layout>

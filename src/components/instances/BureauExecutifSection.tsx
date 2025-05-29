@@ -52,33 +52,98 @@ const BureauExecutifSection = () => {
     ]
   ];
 
-  return (
-    <section className="bg-accent/30 p-8 rounded-lg">
-      <h2 className="text-3xl font-bold text-center mb-12 text-primary">
-        Bureau Exécutif
-      </h2>
-      <div className="space-y-8">
-        {organigramLevels.map((level, levelIndex) => (
-          <div key={levelIndex} className="flex justify-center">
-            <div className={`grid gap-6 ${
-              level.length === 1 ? 'grid-cols-1 max-w-sm' :
-              level.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl' :
-              level.length === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl' :
-              'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl'
-            }`}>
-              {level.map((member, index) => (
-                <MemberOrganigramCard
-                  key={index}
-                  name={member.name}
-                  position={member.position}
-                  phone={member.phone}
+  const renderConnectors = (levelIndex: number, level: any[], nextLevel?: any[]) => {
+    if (!nextLevel || levelIndex === organigramLevels.length - 1) return null;
+
+    return (
+      <div className="flex justify-center my-4">
+        <svg 
+          width="400" 
+          height="60" 
+          className="overflow-visible"
+          style={{ minWidth: '400px' }}
+        >
+          {/* Ligne horizontale principale */}
+          <line 
+            x1="50" 
+            y1="10" 
+            x2="350" 
+            y2="10" 
+            stroke="#151D3B" 
+            strokeWidth="2"
+          />
+          
+          {/* Ligne verticale vers le bas */}
+          <line 
+            x1="200" 
+            y1="10" 
+            x2="200" 
+            y2="50" 
+            stroke="#151D3B" 
+            strokeWidth="2"
+          />
+          
+          {/* Flèches courbées vers les positions inférieures */}
+          {nextLevel.map((_, index) => {
+            const totalWidth = 300;
+            const spacing = totalWidth / (nextLevel.length + 1);
+            const x = 50 + spacing * (index + 1);
+            
+            return (
+              <g key={index}>
+                {/* Courbe de connexion */}
+                <path
+                  d={`M 200 50 Q ${(200 + x) / 2} 35 ${x} 50`}
+                  stroke="#151D3B"
+                  strokeWidth="2"
+                  fill="none"
                 />
-              ))}
-            </div>
-          </div>
-        ))}
+                {/* Flèche */}
+                <polygon
+                  points={`${x},50 ${x-5},45 ${x+5},45`}
+                  fill="#151D3B"
+                />
+              </g>
+            );
+          })}
+        </svg>
       </div>
-    </section>
+    );
+  };
+
+  return (
+    <div className="w-full bg-accent/30">
+      <section className="px-8 py-8">
+        <h2 className="text-3xl font-bold text-center mb-12 text-primary">
+          Bureau Exécutif
+        </h2>
+        <div className="space-y-2">
+          {organigramLevels.map((level, levelIndex) => (
+            <div key={levelIndex}>
+              <div className="flex justify-center">
+                <div className={`grid gap-6 ${
+                  level.length === 1 ? 'grid-cols-1 max-w-sm' :
+                  level.length === 2 ? 'grid-cols-1 sm:grid-cols-2 max-w-2xl' :
+                  level.length === 3 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl' :
+                  'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl'
+                }`}>
+                  {level.map((member, index) => (
+                    <MemberOrganigramCard
+                      key={index}
+                      name={member.name}
+                      position={member.position}
+                      phone={member.phone}
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Connecteurs vers le niveau suivant */}
+              {renderConnectors(levelIndex, level, organigramLevels[levelIndex + 1])}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 };
 
