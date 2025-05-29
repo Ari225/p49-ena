@@ -65,7 +65,7 @@ const ActivitesSection = () => {
                           <span className="bg-primary text-white text-xs px-2 py-1 rounded-lg">
                             {activity.type}
                           </span>
-                          <span className="bg-secondary text-primary text-xs px-2 py-1 rounded-full ml-2">
+                          <span className="bg-secondary/80 text-primary text-xs px-2 py-1 rounded ml-2 font-normal">
                             {activity.status}
                           </span>
                         </div>
