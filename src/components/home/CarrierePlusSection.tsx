@@ -48,8 +48,8 @@ const CarrierePlusSection = () => {
                 Chaque jour est une opportunité d'apprendre et de grandir."
               </blockquote>
               <div className="border-t border-white/20 pt-4">
-                <p className="font-semibold text-white">Dr. Kouakou Marie-Claire</p>
-                <p className="text-sm text-white font-normal">Directrice Générale, Promotion 49</p>
+                <p className="font-semibold">Dr. Kouakou Marie-Claire</p>
+                <p className="text-sm opacity-80">Directrice Générale, Promotion 49</p>
               </div>
             </CardContent>
           </Card>
@@ -95,7 +95,7 @@ const CarrierePlusSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
+          <Button asChild className="bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
             <Link to="/formations">Découvrir nos opportunités</Link>
           </Button>
         </div>
