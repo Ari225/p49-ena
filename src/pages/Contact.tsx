@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -14,6 +16,7 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
@@ -27,25 +30,29 @@ const Contact = () => {
       message: ''
     });
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  return <Layout>
+
+  return (
+    <Layout>
       <div style={{
-      backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }} className="min-h-[80vh] flex items-center justify-center py-[100px] relative px-[100px]">
+        backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }} className="min-h-[80vh] flex items-center justify-center py-[100px] relative px-[100px]">
         {/* Primary overlay */}
-          
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-primary/80"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-primary mb-4">Contactez-nous</h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h1 className="text-4xl font-bold text-white mb-4">Contactez-nous</h1>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
               Nous sommes à votre écoute. N'hésitez pas à nous contacter pour toute question ou suggestion.
             </p>
           </div>
@@ -93,6 +100,24 @@ const Contact = () => {
                   </p>
                 </CardContent>
               </Card>
+
+              {/* Map Container */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2 text-primary">
+                    <MapPin className="h-5 w-5" />
+                    <span>Localisation</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <p className="text-gray-500 text-center">
+                      Carte interactive<br />
+                      <span className="text-sm">Intégration à venir</span>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Contact Form */}
@@ -131,6 +156,8 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Contact;
