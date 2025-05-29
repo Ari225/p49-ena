@@ -62,7 +62,7 @@ const EvenementsSociauxSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary/90 text-white px-6 md:px-8 py-2 md:py-3 text-sm md:text-base">
+          <Button asChild className="bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
             <Link to="/evenements-heureux">
               <span className="hidden sm:inline">Consulter les annonces sociales</span>
               <span className="sm:hidden">Annonces sociales</span>
