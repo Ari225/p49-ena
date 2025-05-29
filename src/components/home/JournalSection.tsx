@@ -31,7 +31,7 @@ const JournalSection = () => {
                 <Link to="/derniere-edition" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">Dernière édition</Link>
               </Button>
               <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm md:text-base px-4 md:px-6 py-2 md:py-3">
-                <Link to="/archives">Archives</Link>
+                <Link to="/archives" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-base">Archives</Link>
               </Button>
             </div>
           </div>
