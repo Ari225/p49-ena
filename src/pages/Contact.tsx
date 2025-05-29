@@ -57,7 +57,7 @@ const Contact = () => {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center text-primary">
+                  <CardTitle className="flex items-center space-x-2 text-primary">
                     <Mail className="h-5 w-5" />
                     <span className="text-xl font-semibold text-primary">Email</span>
                   </CardTitle>
