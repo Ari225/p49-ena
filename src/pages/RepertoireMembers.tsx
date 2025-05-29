@@ -1,52 +1,23 @@
-
 import React, { useState, useMemo } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationEllipsis, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from '@/components/ui/pagination';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
 import { useMobileDetection } from '@/mobile/hooks/useMobileDetection';
 
 // Mock data for 800+ members
 const generateMockMembers = () => {
-  const positions = [
-    'Directeur Général', 'Directeur Adjoint', 'Chef de Service', 'Attaché d\'Administration',
-    'Secrétaire Général', 'Contrôleur Financier', 'Inspecteur', 'Analyste',
-    'Coordinateur', 'Responsable RH', 'Chef de Projet', 'Conseiller'
-  ];
-  
-  const localities = [
-    'Dakar', 'Thiès', 'Saint-Louis', 'Kaolack', 'Ziguinchor', 'Diourbel',
-    'Tambacounda', 'Fatick', 'Kolda', 'Matam', 'Kaffrine', 'Kédougou',
-    'Louga', 'Sédhiou'
-  ];
-  
-  const firstNames = [
-    'Amadou', 'Fatou', 'Moussa', 'Aïssatou', 'Ibrahima', 'Mariama',
-    'Ousmane', 'Khady', 'Mamadou', 'Ndeye', 'Cheikh', 'Awa',
-    'Abdoulaye', 'Mame', 'Omar', 'Coumba'
-  ];
-  
-  const lastNames = [
-    'Diop', 'Fall', 'Ndiaye', 'Seck', 'Sy', 'Ba', 'Sarr', 'Cissé',
-    'Gueye', 'Diouf', 'Faye', 'Kane', 'Wade', 'Thiam', 'Sow', 'Camara'
-  ];
-
+  const positions = ['Directeur Général', 'Directeur Adjoint', 'Chef de Service', 'Attaché d\'Administration', 'Secrétaire Général', 'Contrôleur Financier', 'Inspecteur', 'Analyste', 'Coordinateur', 'Responsable RH', 'Chef de Projet', 'Conseiller'];
+  const localities = ['Dakar', 'Thiès', 'Saint-Louis', 'Kaolack', 'Ziguinchor', 'Diourbel', 'Tambacounda', 'Fatick', 'Kolda', 'Matam', 'Kaffrine', 'Kédougou', 'Louga', 'Sédhiou'];
+  const firstNames = ['Amadou', 'Fatou', 'Moussa', 'Aïssatou', 'Ibrahima', 'Mariama', 'Ousmane', 'Khady', 'Mamadou', 'Ndeye', 'Cheikh', 'Awa', 'Abdoulaye', 'Mame', 'Omar', 'Coumba'];
+  const lastNames = ['Diop', 'Fall', 'Ndiaye', 'Seck', 'Sy', 'Ba', 'Sarr', 'Cissé', 'Gueye', 'Diouf', 'Faye', 'Kane', 'Wade', 'Thiam', 'Sow', 'Camara'];
   const members = [];
   for (let i = 1; i <= 850; i++) {
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     const position = positions[Math.floor(Math.random() * positions.length)];
     const locality = localities[Math.floor(Math.random() * localities.length)];
-    
     members.push({
       id: i,
       firstName,
@@ -57,99 +28,83 @@ const generateMockMembers = () => {
       socialMedia: {
         facebook: Math.random() > 0.3 ? `https://facebook.com/${firstName.toLowerCase()}.${lastName.toLowerCase()}` : null,
         instagram: Math.random() > 0.5 ? `https://instagram.com/${firstName.toLowerCase()}_${lastName.toLowerCase()}` : null,
-        linkedin: Math.random() > 0.4 ? `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}` : null,
+        linkedin: Math.random() > 0.4 ? `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}` : null
       }
     });
   }
   return members;
 };
-
 const RepertoireMembers = () => {
-  const { isMobile } = useMobileDetection();
+  const {
+    isMobile
+  } = useMobileDetection();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 24;
-  
   const allMembers = useMemo(() => generateMockMembers(), []);
-  
+
   // Filter members based on search term
   const filteredMembers = useMemo(() => {
     if (!searchTerm.trim()) return allMembers;
-    
-    return allMembers.filter(member => 
-      member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.lastName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return allMembers.filter(member => member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || member.lastName.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [allMembers, searchTerm]);
-  
+
   // Calculate pagination
   const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
   const startIndex = (currentPage - 1) * membersPerPage;
   const currentMembers = filteredMembers.slice(startIndex, startIndex + membersPerPage);
-  
+
   // Reset to page 1 when search changes
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
-  
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
-  
+
   // Generate pagination items
   const generatePaginationItems = () => {
     const items = [];
     const maxVisiblePages = isMobile ? 3 : 5;
-    
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
-    
     if (startPage > 1) {
-      items.push(
-        <PaginationItem key="1">
+      items.push(<PaginationItem key="1">
           <PaginationLink onClick={() => handlePageChange(1)} isActive={currentPage === 1}>
             1
           </PaginationLink>
-        </PaginationItem>
-      );
+        </PaginationItem>);
       if (startPage > 2) {
         items.push(<PaginationItem key="ellipsis1"><PaginationEllipsis /></PaginationItem>);
       }
     }
-    
     for (let i = startPage; i <= endPage; i++) {
-      items.push(
-        <PaginationItem key={i}>
+      items.push(<PaginationItem key={i}>
           <PaginationLink onClick={() => handlePageChange(i)} isActive={currentPage === i}>
             {i}
           </PaginationLink>
-        </PaginationItem>
-      );
+        </PaginationItem>);
     }
-    
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         items.push(<PaginationItem key="ellipsis2"><PaginationEllipsis /></PaginationItem>);
       }
-      items.push(
-        <PaginationItem key={totalPages}>
+      items.push(<PaginationItem key={totalPages}>
           <PaginationLink onClick={() => handlePageChange(totalPages)} isActive={currentPage === totalPages}>
             {totalPages}
           </PaginationLink>
-        </PaginationItem>
-      );
+        </PaginationItem>);
     }
-    
     return items;
   };
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section */}
         <div className="bg-primary text-white py-16">
@@ -163,75 +118,48 @@ const RepertoireMembers = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-[100px] py-[100px]">
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input
-                type="text"
-                placeholder="Rechercher par nom ou prénom..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 py-3 text-lg"
-              />
+              <Input type="text" placeholder="Rechercher par nom ou prénom..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 py-3 text-lg" />
             </div>
-            {searchTerm && (
-              <p className="text-sm text-gray-600 mt-2 text-center">
+            {searchTerm && <p className="text-sm text-gray-600 mt-2 text-center">
                 {filteredMembers.length} membre(s) trouvé(s)
-              </p>
-            )}
+              </p>}
           </div>
 
           {/* Members Grid */}
-          {currentMembers.length > 0 ? (
-            <>
+          {currentMembers.length > 0 ? <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                {currentMembers.map((member) => (
-                  <MemberCard key={member.id} member={member} />
-                ))}
+                {currentMembers.map(member => <MemberCard key={member.id} member={member} />)}
               </div>
 
               {/* Pagination */}
-              {totalPages > 1 && (
-                <Pagination className="mt-8">
+              {totalPages > 1 && <Pagination className="mt-8">
                   <PaginationContent>
                     <PaginationItem>
-                      <PaginationPrevious 
-                        onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                      />
+                      <PaginationPrevious onClick={() => handlePageChange(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
                     </PaginationItem>
                     
                     {generatePaginationItems()}
                     
                     <PaginationItem>
-                      <PaginationNext 
-                        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                      />
+                      <PaginationNext onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
                     </PaginationItem>
                   </PaginationContent>
-                </Pagination>
-              )}
-            </>
-          ) : (
-            <div className="text-center py-12">
+                </Pagination>}
+            </> : <div className="text-center py-12">
               <p className="text-xl text-gray-600">
                 Aucun membre trouvé pour "{searchTerm}"
               </p>
-              <button
-                onClick={() => setSearchTerm('')}
-                className="mt-4 text-primary hover:underline"
-              >
+              <button onClick={() => setSearchTerm('')} className="mt-4 text-primary hover:underline">
                 Afficher tous les membres
               </button>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default RepertoireMembers;
