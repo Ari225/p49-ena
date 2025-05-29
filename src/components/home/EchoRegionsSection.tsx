@@ -62,7 +62,7 @@ const EchoRegionsSection = () => {
                 <h3 className="font-semibold text-primary mb-2 text-xs line-clamp-2 md:text-base">
                   {news.title}
                 </h3>
-                <p className="text-gray-600 text-xs mb-2 md:mb-3 line-clamp-2">
+                <p className="mb-2 md:mb-3 line-clamp-2 text-gray-700 text-sm">
                   {news.excerpt}
                 </p>
                 <p className="text-xs text-gray-500">{news.date}</p>
