@@ -87,8 +87,8 @@ const Login = () => {
                 </Button>
                 <div className="text-sm text-gray-600 text-center">
                   <p className="text-gray-700 font-normal">Espace réservé aux administrateurs et rédacteurs.</p>
-                  <p><strong>Admin :</strong> admin / admin123</p>
-                  <p><strong>Rédacteur :</strong> redacteur / redacteur123</p>
+                  
+                  
                 </div>
               </form>
             </CardContent>
