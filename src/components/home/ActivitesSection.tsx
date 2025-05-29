@@ -52,7 +52,7 @@ const ActivitesSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Prochaines activités */}
           <div>
-            <h3 className="text-xl font-semibold text-primary mb-6 flex items-center">
+            <h3 className="font-semibold text-primary mb-6 flex items-center text-xl">
               <Calendar className="w-5 h-5 mr-2" />
               Agenda à venir
             </h3>
@@ -62,7 +62,7 @@ const ActivitesSection = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center mb-2">
-                          <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">
+                          <span className="bg-primary text-white text-xs px-2 py-1 rounded-lg">
                             {activity.type}
                           </span>
                           <span className="bg-secondary text-primary text-xs px-2 py-1 rounded-full ml-2">
