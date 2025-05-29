@@ -69,11 +69,11 @@ const Login = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
+                <div className="space-y-2 text-primary text-sm md:text-sm font-bold">
                   <Label htmlFor="username">{t('login.username')}</Label>
                   <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Administrateur ou Rédacteur" required />
                 </div>
-                <div className="space-y-2 text-white">
+                <div className="space-y-2 text-primary text-sm md:text-sm font-bold">
                   <Label htmlFor="password">{t('login.password')}</Label>
                   <div className="relative">
                     <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" required className="pr-10" />
