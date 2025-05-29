@@ -23,7 +23,7 @@ const Historique = () => {
       <div className="bg-accent/30 py-[100px] px-[100px]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-primary mb-4">Historique du Réseau</h1>
+            <h1 className="font-bold text-primary mb-4 text-5xl">Historique du Réseau</h1>
             <p className="max-w-3xl mx-auto text-gray-700 text-base">Historique, création et situation administrative de l'association</p>
           </div>
 
