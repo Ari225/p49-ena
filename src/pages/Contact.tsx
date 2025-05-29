@@ -63,8 +63,8 @@ const Contact = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">contact@p49ena.ci</p>
-                  <p className="text-gray-600">secretariat@p49ena.ci</p>
+                  <p className="text-gray-700">communication@p49-ena.ci</p>
+                  <p className="text-gray-600">secretariat@p49-ena.ci</p>
                 </CardContent>
               </Card>
 
