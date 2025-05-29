@@ -23,7 +23,7 @@ interface MemberCardProps {
 }
 
 const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
-  const { firstName, lastName, position, locality, photo, socialMedia } = member;
+  const { firstName, lastName, position, locality, socialMedia } = member;
   
   const getInitials = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -40,7 +40,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
         <div className="flex justify-center mb-4">
           <Avatar className="h-20 w-20 ring-2 ring-gray-200 group-hover:ring-primary transition-colors">
             <AvatarImage 
-              src={photo} 
+              src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
               alt={`${firstName} ${lastName}`}
               className="object-cover"
             />

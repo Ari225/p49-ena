@@ -53,7 +53,7 @@ const BureauExecutifSection = () => {
   ];
 
   return (
-    <section className="bg-accent/30 p-8 rounded-lg">
+    <section className="bg-accent/30 p-8">
       <h2 className="text-3xl font-bold text-center mb-12 text-primary">
         Bureau Exécutif
       </h2>

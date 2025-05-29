@@ -33,7 +33,7 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
         <div className="flex justify-center mb-4">
           <Avatar className="h-20 w-20 ring-2 ring-gray-200 group-hover:ring-primary transition-colors">
             <AvatarImage 
-              src={`https://images.unsplash.com/photo-${1500000000000 + Math.random() * 1000000}?w=150&h=150&fit=crop&face`}
+              src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
               alt={name}
               className="object-cover"
             />
