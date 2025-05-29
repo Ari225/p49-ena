@@ -76,7 +76,7 @@ const Contact = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">+225 XX XX XX XX</p>
+                  <p className="text-gray-700 font-normal">+225 01 02 03 04 05</p>
                   <p className="text-gray-600">+225 XX XX XX XX</p>
                 </CardContent>
               </Card>
