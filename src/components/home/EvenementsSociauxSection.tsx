@@ -1,9 +1,14 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PartyPopper, GraduationCap, Heart } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 const EvenementsSociauxSection = () => {
+  const isMobile = useIsMobile();
+  
   const socialEvents = [{
     type: 'heureux',
     icon: PartyPopper,
@@ -29,7 +34,9 @@ const EvenementsSociauxSection = () => {
     image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop',
     color: 'bg-gray-500'
   }];
-  return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+  
+  return (
+    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-3xl font-bold text-primary mb-4">Événements sociaux</h2>
@@ -41,7 +48,8 @@ const EvenementsSociauxSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
           {socialEvents.map((event, index) => {
           const IconComponent = event.icon;
-          return <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
+          return (
+            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative h-32 md:h-48">
                   <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
                   <div className={`absolute top-2 md:top-3 right-2 md:right-3 ${event.color} text-white p-2 rounded-full`}>
@@ -57,7 +65,8 @@ const EvenementsSociauxSection = () => {
                   </p>
                   <p className="text-xs text-gray-700 font-normal">{event.date}</p>
                 </CardContent>
-              </Card>;
+              </Card>
+          );
         })}
         </div>
         
@@ -70,6 +79,8 @@ const EvenementsSociauxSection = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default EvenementsSociauxSection;

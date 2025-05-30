@@ -1,8 +1,14 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 const JournalSection = () => {
-  return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+  const isMobile = useIsMobile();
+  
+  return (
+    <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-8 md:mb-12 text-center lg:text-left">
           Notre Journal
@@ -15,7 +21,7 @@ const JournalSection = () => {
               </div>
             </div>
           </div>
-          <div className="lg:w-2/3 w-full rounded-xl py-6 md:py-12 px-4 md:px-[20px] bg-transparent lg:py-0">
+          <div className={`lg:w-2/3 w-full rounded-xl ${isMobile ? 'py-0 px-0' : 'py-6 md:py-12 px-4 md:px-[20px]'} bg-transparent lg:py-0`}>
             <h3 className="mb-10 md:mb-10 text-center bg-primary text-white py-2 md:py-[10px] rounded-lg text-lg md:text-xl font-semibold">
               Perspectives 49 - Bulletin n°1
             </h3>
@@ -26,7 +32,7 @@ const JournalSection = () => {
 
               Avec une approche rigoureuse et accessible, Perspectives 49 ambitionne d'informer, de questionner et d'inspirer.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
+            <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} gap-3 md:gap-4 justify-center`}>
               <Button asChild className="bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                 <Link to="/derniere-edition" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">Dernière édition</Link>
               </Button>
@@ -37,6 +43,8 @@ const JournalSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default JournalSection;

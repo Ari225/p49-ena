@@ -1,13 +1,17 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 const CommuniquesSection = () => {
-  const {
-    t
-  } = useLanguage();
-  return <section className="px-4 md:px-8 lg:px-[100px] py-12 md:py-16 lg:py-[100px] bg-white">
+  const { t } = useLanguage();
+  const isMobile = useIsMobile();
+  
+  return (
+    <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-white`}>
       <div className="container mx-auto px-0">
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
@@ -65,6 +69,8 @@ const CommuniquesSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default CommuniquesSection;

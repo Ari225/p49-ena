@@ -1,10 +1,16 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { GraduationCap, Quote, TrendingUp } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 const CarrierePlusSection = () => {
-  return <section className="bg-accent/30 py-[100px] px-[100px]">
+  const isMobile = useIsMobile();
+
+  return (
+    <section className={`bg-accent/30 py-[100px] ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-0 font-normal text-base text-gray-700">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-primary mb-4">Carrières+</h2>
@@ -13,7 +19,7 @@ const CarrierePlusSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-8 mb-12`}>
           {/* Concours/Formation en vedette */}
           <Card className="overflow-hidden">
             <CardContent className="p-6">
@@ -100,6 +106,8 @@ const CarrierePlusSection = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default CarrierePlusSection;
