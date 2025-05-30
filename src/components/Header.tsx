@@ -221,7 +221,7 @@ const Header = () => {
 
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && <div className="absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40">
-            <nav className="py-4">
+            <nav className="px-[15px] py-[15px]">
               {menuItems.map(menu => <div key={menu.title}>
                   <button onClick={() => handleSubmenuToggle(menu.title)} className="w-full flex items-center justify-between px-6 py-3 text-left text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors">
                     <span className="text-left">{menu.title}</span>
