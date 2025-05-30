@@ -42,10 +42,9 @@ const Footer = () => {
 
           {/* Second div - Quick Links, Contact, and Newsletter */}
           <div className="mb-6">
-            {/* Quick Links and Contact side by side */}
-            <div className="flex gap-6 mb-6">
-              {/* Quick Links */}
-              <div className="flex-1">
+            {/* Quick Links centered */}
+            <div className="flex justify-center mb-6">
+              <div className="text-center">
                 <h3 className="text-lg font-semibold mb-3">Liens Rapides</h3>
                 <ul className="space-y-2">
                   <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors text-sm">Historique</Link></li>
@@ -54,9 +53,11 @@ const Footer = () => {
                   <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors text-sm">Contact</Link></li>
                 </ul>
               </div>
+            </div>
 
-              {/* Contact Info */}
-              <div className="flex-1">
+            {/* Contact Info centered below Quick Links */}
+            <div className="flex justify-center mb-6">
+              <div className="text-center">
                 <h3 className="text-lg font-semibold mb-3">Contact</h3>
                 <div className="space-y-2 text-gray-300 text-sm">
                   <p>Abidjan, Côte d'Ivoire</p>
@@ -66,13 +67,13 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Newsletter below */}
-            <div>
+            {/* Newsletter centered */}
+            <div className="text-center">
               <h3 className="text-lg font-semibold mb-3">Newsletter</h3>
               <p className="text-gray-300 text-sm mb-3">
                 Restez informé de nos actualités et événements
               </p>
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+              <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-sm mx-auto">
                 <div className="flex">
                   <Input 
                     type="email" 
