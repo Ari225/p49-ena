@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
+
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
+  
   const testimonials = [{
     name: "Dr. Kouassi Marie",
     position: "Directrice Générale, Ministère de l'Économie",
@@ -36,28 +41,84 @@ const TestimonialsSection = () => {
     quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
     image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
   }];
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % testimonials.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
+
   const nextSlide = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % testimonials.length);
   };
+
   const prevSlide = () => {
     setCurrentIndex(prevIndex => prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1);
   };
-  return <section className="py-[100px] px-[100px] bg-white">
+
+  const cardsPerView = isMobile ? 1 : 3;
+  const translatePercentage = isMobile ? 100 : 100 / 3;
+
+  if (isMobile) {
+    return (
+      <section className="py-[100px] px-[25px] bg-white">
+        <div className="container mx-auto px-0">
+          <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
+          
+          <div className="relative overflow-hidden">
+            <div className="flex transition-transform duration-[1500ms] ease-in-out" style={{
+              transform: `translateX(-${currentIndex * translatePercentage}%)`
+            }}>
+              {/* Créer une boucle infinie en dupliquant les témoignages */}
+              {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                <div key={index} className="w-full flex-shrink-0 px-3">
+                  <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4">
+                        <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
+                        <div className="flex-1">
+                          <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
+                          <div>
+                            <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
+                            <p className="text-xs text-gray-500">{testimonial.position}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+            
+            {/* Navigation Arrows */}
+            <button onClick={prevSlide} className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors">
+              <ChevronLeft className="w-6 h-6 text-primary" />
+            </button>
+            <button onClick={nextSlide} className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors">
+              <ChevronRight className="w-6 h-6 text-primary" />
+            </button>
+          </div>
+          
+          <div className="text-center mt-8">
+            <Button asChild className="bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+              <Link to="/temoignages" className="flex items-center">
+                Voir tous les témoignages
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop version
+  return (
+    <section className="py-[100px] px-[100px] bg-white">
       <div className="container mx-auto px-0">
         <h2 className="text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
         
         <div className="relative overflow-hidden">
           <div className="flex transition-transform duration-[1500ms] ease-in-out" style={{
-          transform: `translateX(-${currentIndex * 100 / 3}%)`
-        }}>
+            transform: `translateX(-${currentIndex * translatePercentage}%)`
+          }}>
             {/* Créer une boucle infinie en dupliquant les témoignages */}
-            {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => <div key={index} className="w-1/3 flex-shrink-0 px-3">
+            {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+              <div key={index} className="w-1/3 flex-shrink-0 px-3">
                 <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
@@ -72,7 +133,8 @@ const TestimonialsSection = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </div>)}
+              </div>
+            ))}
           </div>
           
           {/* Navigation Arrows */}
@@ -93,6 +155,8 @@ const TestimonialsSection = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default TestimonialsSection;
