@@ -91,8 +91,8 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo à gauche */}
           <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt={title} className="h-6 w-6" />
-            <span className="font-bold text-primary text-base">{title}</span>
+            <img src={logo} alt={title} className="h-5 w-5" />
+            <span className="font-bold text-primary text-sm">{title}</span>
           </Link>
           
           {/* Switchers de langue au centre */}
