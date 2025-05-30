@@ -21,7 +21,7 @@ const Footer = () => {
 
   if (isMobile) {
     return (
-      <footer className="bg-primary text-white px-6 py-8">
+      <footer className="bg-primary text-white px-[25px] py-[25px]">
         <div className="container mx-auto px-0">
           {/* First div - Logo and paragraphs */}
           <div className="flex flex-col mb-8">
