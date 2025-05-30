@@ -30,21 +30,58 @@ const ValuesSection = () => {
         <h2 className="text-2xl md:text-3xl text-center text-primary mb-8 md:mb-12 font-bold">
           Valeurs de la P49
         </h2>
-        <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'} gap-6 md:gap-8`}>
-          {values.map((value, index) => (
-            <div key={index} className="text-center grid place-items-center">
-              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 bg-secondary/80">
-                <value.icon className="h-5 w-5 text-primary" />
-              </div>
-              <h3 className="text-primary mb-2 md:mb-3 text-lg md:text-xl font-semibold">
-                {value.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
-                {value.description}
-              </p>
+        {isMobile ? (
+          <div className="space-y-6">
+            {/* Connexion et Solidarité sur la même ligne */}
+            <div className="grid grid-cols-2 gap-6">
+              {[values[0], values[2]].map((value, index) => (
+                <div key={index} className="text-center grid place-items-center">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-secondary/80">
+                    <value.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="text-primary mb-2 text-lg font-semibold">
+                    {value.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
+                    {value.description}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            {/* Action et Dévouement sur la même ligne */}
+            <div className="grid grid-cols-2 gap-6">
+              {[values[1], values[3]].map((value, index) => (
+                <div key={index} className="text-center grid place-items-center">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-secondary/80">
+                    <value.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="text-primary mb-2 text-lg font-semibold">
+                    {value.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
+                    {value.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {values.map((value, index) => (
+              <div key={index} className="text-center grid place-items-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 bg-secondary/80">
+                  <value.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-primary mb-2 md:mb-3 text-lg md:text-xl font-semibold">
+                  {value.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
+                  {value.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
