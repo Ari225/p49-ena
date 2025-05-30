@@ -32,10 +32,10 @@ const Footer = () => {
                 className="h-10 w-10 object-contain" 
               />
             </div>
-            <p className="text-gray-300 leading-relaxed mb-2 text-center text-sm">
+            <p className="text-gray-300 leading-relaxed mb-2 text-center text-xs">
               La P49, des Leaders d'excellence au service de la Nation.
             </p>
-            <p className="text-gray-300 leading-relaxed mb-4 text-center text-sm">
+            <p className="text-gray-300 leading-relaxed mb-4 text-center text-xs">
               Plus qu'une promo, une famille unie et solidaire.
             </p>
           </div>
