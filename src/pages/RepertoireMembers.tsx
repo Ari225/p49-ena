@@ -1,11 +1,10 @@
-
 import React, { useState, useMemo } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useMobileDetection } from '@/mobile/hooks/useMobileDetection';
 
 // Mock data for 800+ members with Ivorian names and cities
 const generateMockMembers = () => {
@@ -37,7 +36,9 @@ const generateMockMembers = () => {
 };
 
 const RepertoireMembers = () => {
-  const isMobile = useIsMobile();
+  const {
+    isMobile
+  } = useMobileDetection();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 24;
@@ -58,7 +59,6 @@ const RepertoireMembers = () => {
   React.useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
-  
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({
@@ -105,28 +105,21 @@ const RepertoireMembers = () => {
     }
     return items;
   };
-  
-  return (
-    <Layout>
+  return <Layout>
       <div className="min-h-screen bg-gray-50">
-        {/* Mobile-specific div for responsive styling */}
-        <div className="lg:hidden">
-          {/* Mobile-specific responsive adjustments will be handled by individual components */}
-        </div>
-        
         {/* Header Section */}
-        <div className="bg-primary text-white px-4 lg:px-[100px] py-12 lg:py-[100px]">
+        <div className="bg-primary text-white px-[100px] py-[100px]">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl lg:text-4xl md:text-5xl font-bold text-center mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
               Répertoire des Membres
             </h1>
-            <p className="text-lg lg:text-xl text-center text-gray-200 max-w-3xl mx-auto">
+            <p className="text-xl text-center text-gray-200 max-w-3xl mx-auto">
               Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
             </p>
           </div>
         </div>
 
-        <div className="container mx-auto px-4 lg:px-[100px] py-8 lg:py-[100px]">
+        <div className="container mx-auto px-[100px] py-[100px]">
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
@@ -168,8 +161,6 @@ const RepertoireMembers = () => {
             </div>}
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default RepertoireMembers;

@@ -50,19 +50,19 @@ const Actualites = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 lg:px-8 py-8">
-        <div className="text-center mb-8 lg:mb-12">
-          <h1 className="text-3xl lg:text-4xl font-bold text-primary mb-4">Actualités</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto text-sm lg:text-base">
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-primary mb-4">Actualités</h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Découvrez les dernières nouvelles et événements de notre réseau
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {news.map((item) => (
             <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
               {item.image_url && (
-                <div className="h-36 lg:h-48">
+                <div className="h-48">
                   <img 
                     src={item.image_url} 
                     alt={item.title} 
@@ -70,9 +70,9 @@ const Actualites = () => {
                   />
                 </div>
               )}
-              <CardContent className="p-4 lg:p-6">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs lg:text-sm">
+                  <span className="px-2 py-1 bg-primary/10 text-primary rounded text-sm">
                     {item.category}
                   </span>
                   <div className="flex items-center text-xs text-gray-500">
@@ -80,8 +80,8 @@ const Actualites = () => {
                     {new Date(item.published_date).toLocaleDateString('fr-FR')}
                   </div>
                 </div>
-                <h3 className="font-semibold text-primary mb-3 line-clamp-2 text-sm lg:text-base">{item.title}</h3>
-                <p className="text-gray-600 text-xs lg:text-sm line-clamp-3">{item.summary}</p>
+                <h3 className="font-semibold text-primary mb-3 line-clamp-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm line-clamp-3">{item.summary}</p>
               </CardContent>
             </Card>
           ))}
