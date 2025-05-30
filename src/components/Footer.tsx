@@ -59,7 +59,7 @@ const Footer = () => {
             <div className="flex justify-center mb-6">
               <div className="text-center">
                 <h3 className="text-lg font-semibold mb-3">Contact</h3>
-                <div className="space-y-2 text-gray-300 text-text-xs">
+                <div className="space-y-2 text-gray-300 text-xs">
                   <p>Abidjan, Côte d'Ivoire</p>
                   <p>communication@p49-ena.ci</p>
                   <p>+225 07 79 05 47 16</p>
@@ -70,7 +70,7 @@ const Footer = () => {
             {/* Newsletter centered */}
             <div className="text-center">
               <h3 className="text-lg font-semibold mb-3">Newsletter</h3>
-              <p className="text-gray-300 text-text-xs mb-3">
+              <p className="text-gray-300 text-xs mb-3">
                 Restez informé de nos actualités et événements
               </p>
               <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-xs mx-auto">
