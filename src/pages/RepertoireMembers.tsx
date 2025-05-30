@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
-import { useMobileDetection } from '@/mobile/hooks/useMobileDetection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Mock data for 800+ members with Ivorian names and cities
 const generateMockMembers = () => {
@@ -36,9 +36,7 @@ const generateMockMembers = () => {
 };
 
 const RepertoireMembers = () => {
-  const {
-    isMobile
-  } = useMobileDetection();
+  const isMobile = useIsMobile();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 24;
