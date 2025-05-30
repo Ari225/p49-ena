@@ -29,13 +29,13 @@ const Footer = () => {
               <img 
                 src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
                 alt="P49 ENA Logo" 
-                className="h-16 w-auto object-contain" 
+                className="h-10 w-10 object-contain" 
               />
             </div>
-            <p className="text-gray-300 leading-relaxed mb-2 text-center">
+            <p className="text-gray-300 leading-relaxed mb-2 text-center text-sm">
               La P49, des Leaders d'excellence au service de la Nation.
             </p>
-            <p className="text-gray-300 leading-relaxed mb-4 text-center">
+            <p className="text-gray-300 leading-relaxed mb-4 text-center text-sm">
               Plus qu'une promo, une famille unie et solidaire.
             </p>
           </div>
