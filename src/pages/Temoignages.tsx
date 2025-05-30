@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Input } from '@/components/ui/input';
@@ -79,17 +78,17 @@ const Temoignages = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className="bg-primary text-white py-16 px-[100px]">
+        <section className="bg-primary text-white py-12 lg:py-16 px-4 lg:px-[100px]">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Témoignages</h1>
-            <p className="text-xl opacity-90">
+            <h1 className="text-3xl lg:text-4xl font-bold mb-4">Témoignages</h1>
+            <p className="text-lg lg:text-xl opacity-90">
               Découvrez ce que nos membres disent de leur expérience au sein de la P49
             </p>
           </div>
         </section>
 
         {/* Search Section */}
-        <section className="py-8 px-[100px] bg-accent/20">
+        <section className="py-6 lg:py-8 px-4 lg:px-[100px] bg-accent/20">
           <div className="container mx-auto px-4">
             <div className="max-w-md mx-auto relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -105,7 +104,7 @@ const Temoignages = () => {
         </section>
 
         {/* Testimonials Grid */}
-        <section className="py-12 px-[100px]">
+        <section className="py-8 lg:py-12 px-4 lg:px-[100px]">
           <div className="container mx-auto px-4">
             <div className="mb-6">
               <p className="text-gray-600">
@@ -113,22 +112,22 @@ const Temoignages = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {filteredTestimonials.map((testimonial, index) => (
                 <Card key={index} className="h-full hover:shadow-lg transition-shadow duration-300">
-                  <CardContent className="p-6 flex flex-col h-full">
+                  <CardContent className="p-4 lg:p-6 flex flex-col h-full">
                     <div className="flex items-start space-x-4 mb-4">
                       <img 
                         src={testimonial.image} 
                         alt={testimonial.name} 
-                        className="w-16 h-16 rounded-full object-cover flex-shrink-0" 
+                        className="w-12 lg:w-16 h-12 lg:h-16 rounded-full object-cover flex-shrink-0" 
                       />
                       <div>
-                        <h3 className="font-semibold text-primary">{testimonial.name}</h3>
-                        <p className="text-sm text-gray-600">{testimonial.position}</p>
+                        <h3 className="font-semibold text-primary text-sm lg:text-base">{testimonial.name}</h3>
+                        <p className="text-xs lg:text-sm text-gray-600">{testimonial.position}</p>
                       </div>
                     </div>
-                    <p className="italic text-gray-700 flex-1">"{testimonial.quote}"</p>
+                    <p className="italic text-gray-700 flex-1 text-xs lg:text-sm">"{testimonial.quote}"</p>
                   </CardContent>
                 </Card>
               ))}

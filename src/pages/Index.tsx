@@ -28,6 +28,9 @@ const Index = () => {
 
   return (
     <Layout>
+      <div className="lg:hidden">
+        {/* Mobile-specific styling will be handled by individual sections */}
+      </div>
       <PresidentWelcomeModal />
       <HeroSection backgroundImages={backgroundImages} />
       <ValuesSection />
