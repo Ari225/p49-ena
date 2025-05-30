@@ -73,7 +73,7 @@ const Footer = () => {
               <p className="text-gray-300 text-xs mb-3">
                 Restez informé de nos actualités et événements
               </p>
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-xs mx-auto">
+              <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-sm mx-auto text-xs">
                 <div className="flex">
                   <Input 
                     type="email" 
