@@ -193,7 +193,7 @@ const Header = () => {
           {/* Logo à gauche */}
           <div className="flex items-center space-x-2 flex-1">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-8 w-8" />
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-10 w-10" />
               
             </Link>
           </div>
