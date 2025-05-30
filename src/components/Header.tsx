@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Menu, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+
 const Header = () => {
   const {
     language,
@@ -29,6 +30,7 @@ const Header = () => {
     setIsMobileMenuOpen(false);
     setOpenSubmenu(null);
   };
+
   const menuItems = [{
     title: t('header.presentation'),
     items: [{
@@ -108,6 +110,7 @@ const Header = () => {
       href: '/suggestions'
     }]
   }];
+
   return <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
       {/* Desktop Header */}
       <div className="hidden lg:block">
@@ -219,38 +222,41 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
-        {isMobileMenuOpen && <div className="absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40">
-            <nav className="px-[15px] py-[15px]">
-              {menuItems.map(menu => <div key={menu.title}>
-                  <button onClick={() => handleSubmenuToggle(menu.title)} className="w-full flex items-center justify-between px-6 py-3 text-left text-gray-700 hover:text-primary transition-colors text-sm font-medium">
-                    <span className="text-left">{menu.title}</span>
-                    {openSubmenu === menu.title ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
+        {/* Mobile Menu Overlay avec animation de glissade */}
+        <div className={`absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <nav className="px-[25px] py-[15px]">
+            {menuItems.map(menu => <div key={menu.title}>
+                <button onClick={() => handleSubmenuToggle(menu.title)} className="w-full flex items-center justify-between px-6 py-3 text-left text-gray-700 hover:text-primary transition-colors text-sm font-medium">
+                  <span className="text-left">{menu.title}</span>
+                  {openSubmenu === menu.title ? <ChevronUp className="h-4 w-4 ml-auto" /> : <ChevronDown className="h-4 w-4 ml-auto" />}
+                </button>
+                {openSubmenu === menu.title && <div className="bg-gray-50">
+                    {menu.items.map(item => <Link key={item.href} to={item.href} onClick={closeMobileMenu} className="block px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors text-left">
+                        {item.label}
+                      </Link>)}
+                  </div>}
+              </div>)}
+            
+            {/* Boutons Contact/Connexion ou Dashboard/Déconnexion sur la même ligne */}
+            <div className="flex items-center gap-4 px-6 py-3 mt-4 border-t border-gray-200">
+              {user ? <>
+                  <Link to="/dashboard" onClick={closeMobileMenu} className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors">
+                    Dashboard
+                  </Link>
+                  <button onClick={() => {handleLogout(); closeMobileMenu();}} className="flex-1 text-center px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors">
+                    Déconnexion
                   </button>
-                  {openSubmenu === menu.title && <div className="bg-gray-50">
-                      {menu.items.map(item => <Link key={item.href} to={item.href} onClick={closeMobileMenu} className="block px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors text-left">
-                          {item.label}
-                        </Link>)}
-                    </div>}
-                </div>)}
-              
-              {/* Boutons Contact et Connexion sur la même ligne */}
-              <div className="flex items-center gap-4 px-6 py-3 mt-4 border-t border-gray-200">
-                {user ? <div className="flex-1">
-                    <Link to="/dashboard" onClick={closeMobileMenu} className="block text-center px-4 py-2 text-sm font-medium text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors">
-                      Dashboard
-                    </Link>
-                  </div> : <>
-                    <Link to="/contact" onClick={closeMobileMenu} className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors">
-                      {t('header.contact')}
-                    </Link>
-                    <Link to="/login" onClick={closeMobileMenu} className="flex-1 text-center px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors">
-                      {t('header.login')}
-                    </Link>
-                  </>}
-              </div>
-            </nav>
-          </div>}
+                </> : <>
+                  <Link to="/contact" onClick={closeMobileMenu} className="flex-1 text-center px-4 py-2 text-sm font-medium text-primary border border-primary rounded hover:bg-primary hover:text-white transition-colors">
+                    {t('header.contact')}
+                  </Link>
+                  <Link to="/login" onClick={closeMobileMenu} className="flex-1 text-center px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-primary/90 transition-colors">
+                    {t('header.login')}
+                  </Link>
+                </>}
+            </div>
+          </nav>
+        </div>
       </div>
     </header>;
 };
