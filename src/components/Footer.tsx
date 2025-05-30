@@ -47,10 +47,10 @@ const Footer = () => {
               <div className="text-center">
                 <h3 className="text-lg font-semibold mb-3">Liens Rapides</h3>
                 <ul className="space-y-2">
-                  <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors text-sm">Historique</Link></li>
-                  <li><Link to="/actualites" className="text-gray-300 hover:text-secondary transition-colors text-sm">Actualités</Link></li>
-                  <li><Link to="/agenda" className="text-gray-300 hover:text-secondary transition-colors text-sm">Agenda</Link></li>
-                  <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors text-sm">Contact</Link></li>
+                  <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors text-xs">Historique</Link></li>
+                  <li><Link to="/actualites" className="text-gray-300 hover:text-secondary transition-colors text-xs">Actualités</Link></li>
+                  <li><Link to="/agenda" className="text-gray-300 hover:text-secondary transition-colors text-xs">Agenda</Link></li>
+                  <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors text-xs">Contact</Link></li>
                 </ul>
               </div>
             </div>
@@ -59,7 +59,7 @@ const Footer = () => {
             <div className="flex justify-center mb-6">
               <div className="text-center">
                 <h3 className="text-lg font-semibold mb-3">Contact</h3>
-                <div className="space-y-2 text-gray-300 text-sm">
+                <div className="space-y-2 text-gray-300 text-text-xs">
                   <p>Abidjan, Côte d'Ivoire</p>
                   <p>communication@p49-ena.ci</p>
                   <p>+225 07 79 05 47 16</p>
@@ -70,10 +70,10 @@ const Footer = () => {
             {/* Newsletter centered */}
             <div className="text-center">
               <h3 className="text-lg font-semibold mb-3">Newsletter</h3>
-              <p className="text-gray-300 text-sm mb-3">
+              <p className="text-gray-300 text-text-xs mb-3">
                 Restez informé de nos actualités et événements
               </p>
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-sm mx-auto">
+              <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-xs mx-auto">
                 <div className="flex">
                   <Input 
                     type="email" 
@@ -95,7 +95,7 @@ const Footer = () => {
           </div>
 
           {/* Copyright at the bottom */}
-          <div className="text-sm text-gray-400 text-center pt-4 border-t border-gray-600">
+          <div className="text-xs text-gray-400 text-center pt-4 border-t border-gray-600">
             © 2024 P49 ENA. {t('footer.rights')}.
           </div>
         </div>
