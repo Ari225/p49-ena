@@ -89,14 +89,16 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md md:hidden">
         <div className="flex items-center justify-between px-6 py-3">
-          {/* Logo à gauche */}
-          <Link to="/" className="flex items-center space-x-2">
-            <img src={logo} alt={title} className="h-4 w-4" />
-            <span className="font-bold text-primary text-xs">{title}</span>
-          </Link>
+          {/* Logo à gauche - style modifié pour mobile */}
+          <div className="flex items-center space-x-2 flex-1">
+            <Link to="/" className="flex items-center space-x-2">
+              <img src={logo} alt={title} className="h-3 w-3" />
+              <span className="font-bold text-primary text-xs">{title}</span>
+            </Link>
+          </div>
           
           {/* Switchers de langue au centre */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-center flex-1">
             <button
               onClick={handleLanguageToggle}
               className="flex items-center space-x-1 px-2 py-1 text-xs font-medium text-primary border border-primary/20 rounded"
@@ -108,14 +110,16 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
           </div>
           
           {/* Menu hamburger à droite */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleMenu}
-            className="p-2"
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          <div className="flex justify-end flex-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleMenu}
+              className="p-2"
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -133,11 +137,11 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
                         onClick={() => handleSubmenuToggle(item.label)}
                         className="w-full flex items-center justify-between px-6 py-3 text-left text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors"
                       >
-                        <span>{item.label}</span>
+                        <span className="text-left">{item.label}</span>
                         {openSubmenu === item.label ? (
-                          <ChevronUp className="h-4 w-4" />
+                          <ChevronUp className="h-4 w-4 ml-auto" />
                         ) : (
-                          <ChevronDown className="h-4 w-4" />
+                          <ChevronDown className="h-4 w-4 ml-auto" />
                         )}
                       </button>
                       {openSubmenu === item.label && (
@@ -147,7 +151,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
                               key={subItem.path}
                               to={subItem.path}
                               onClick={closeMenu}
-                              className="block px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+                              className="block px-10 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors text-left"
                             >
                               {subItem.label}
                             </Link>
@@ -159,7 +163,7 @@ const MobileHeader: React.FC<MobileHeaderProps> = ({
                     <Link
                       to={item.path!}
                       onClick={closeMenu}
-                      className="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors"
+                      className="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors text-left"
                     >
                       <span>{item.label}</span>
                     </Link>
