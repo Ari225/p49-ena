@@ -101,7 +101,15 @@ const translations = {
     'login.title': 'Login',
     'login.username': 'Username',
     'login.password': 'Password',
-    'login.submit': 'Sign In'
+    'login.submit': 'Sign In',
+    'official_documents_title': 'Official Documents',
+    'official_documents_subtitle': 'Creation and operational documents of P49',
+    'founding_documents': 'Founding Documents',
+    'founding_documents_description': 'Discover the official documents that marked the creation and organization of the Network of 49th Promotion Graduates. These fundamental texts define our mission, values and operating procedures.',
+    'download_document': 'Download document',
+    'need_help': 'Need help?',
+    'documents_help_text': 'For any questions about these documents or to obtain certified copies, please do not hesitate to contact us.',
+    'contact_us': 'Contact us'
   }
 };
 
