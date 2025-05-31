@@ -27,6 +27,12 @@ import EvenementsHeureux from "./pages/EvenementsHeureux";
 import DepartsRetraite from "./pages/DepartsRetraite";
 import EvenementsDifficiles from "./pages/EvenementsDifficiles";
 
+// Activities pages
+import Agenda from "./pages/Agenda";
+import Regionales from "./pages/Regionales";
+import AssembleesGenerales from "./pages/AssembleesGenerales";
+import ReunionsConstitution from "./pages/ReunionsConstitution";
+
 // Dashboard pages
 import DashboardUsers from "./pages/dashboard/DashboardUsers";
 import DashboardNews from "./pages/dashboard/DashboardNews";
@@ -87,10 +93,10 @@ const App = () => (
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
               
               {/* Activities Routes */}
-              <Route path="/agenda" element={<div>Agenda - Page en construction</div>} />
-              <Route path="/regionales" element={<div>Régionales - Page en construction</div>} />
-              <Route path="/assemblees-generales" element={<div>Assemblées Générales - Page en construction</div>} />
-              <Route path="/reunions-constitution" element={<div>Réunions de Constitution - Page en construction</div>} />
+              <Route path="/agenda" element={<Agenda />} />
+              <Route path="/regionales" element={<Regionales />} />
+              <Route path="/assemblees-generales" element={<AssembleesGenerales />} />
+              <Route path="/reunions-constitution" element={<ReunionsConstitution />} />
               
               {/* Social Events Routes */}
               <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
