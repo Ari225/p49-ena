@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -59,15 +58,7 @@ const translations = {
     'download_document': 'Télécharger le document',
     'need_help': 'Besoin d\'aide ?',
     'documents_help_text': 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.',
-    'contact_us': 'Nous contacter',
-    'unfortunate_events_title': 'Évènements Malheureux',
-    'unfortunate_events_subtitle': 'Soutenons-nous mutuellement dans les moments difficiles',
-    'all': 'Tous',
-    'deaths': 'Décès',
-    'illnesses': 'Maladies',
-    'accidents': 'Accidents',
-    'others': 'Autres',
-    'loading': 'Chargement...'
+    'contact_us': 'Nous contacter'
   },
   en: {
     'header.presentation': 'Presentation',
@@ -117,15 +108,7 @@ const translations = {
     'download_document': 'Download document',
     'need_help': 'Need help?',
     'documents_help_text': 'For any questions about these documents or to obtain certified copies, please do not hesitate to contact us.',
-    'contact_us': 'Contact us',
-    'unfortunate_events_title': 'Unfortunate Events',
-    'unfortunate_events_subtitle': 'Supporting each other through difficult times',
-    'all': 'All',
-    'deaths': 'Deaths',
-    'illnesses': 'Illnesses',
-    'accidents': 'Accidents',
-    'others': 'Others',
-    'loading': 'Loading...'
+    'contact_us': 'Contact us'
   }
 };
 
