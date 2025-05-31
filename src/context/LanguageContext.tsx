@@ -29,7 +29,7 @@ const translations = {
     'menu.constitution_meetings': 'Réunions de constitution',
     'menu.happy_events': 'Évènements heureux',
     'menu.retirement': 'Départs à la retraite',
-    'menu.difficult_events': 'Événements difficiles',
+    'menu.difficult_events': 'Évènements malheureux',
     'menu.training': 'Formations',
     'menu.capacity_building': 'Renforcement des capacités',
     'menu.coaching': 'Coaching & mentorat',
@@ -59,7 +59,15 @@ const translations = {
     'download_document': 'Télécharger le document',
     'need_help': 'Besoin d\'aide ?',
     'documents_help_text': 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.',
-    'contact_us': 'Nous contacter'
+    'contact_us': 'Nous contacter',
+    'unfortunate_events_title': 'Évènements Malheureux',
+    'unfortunate_events_subtitle': 'Soutenons-nous mutuellement dans les moments difficiles',
+    'all': 'Tous',
+    'deaths': 'Décès',
+    'illnesses': 'Maladies',
+    'accidents': 'Accidents',
+    'others': 'Autres',
+    'loading': 'Chargement...'
   },
   en: {
     'header.presentation': 'Presentation',
@@ -79,7 +87,7 @@ const translations = {
     'menu.constitution_meetings': 'Constitution Meetings',
     'menu.happy_events': 'Happy Events',
     'menu.retirement': 'Retirements',
-    'menu.difficult_events': 'Difficult Events',
+    'menu.difficult_events': 'Unfortunate Events',
     'menu.training': 'Training',
     'menu.capacity_building': 'Capacity Building',
     'menu.coaching': 'Coaching & Mentoring',
@@ -109,7 +117,15 @@ const translations = {
     'download_document': 'Download document',
     'need_help': 'Need help?',
     'documents_help_text': 'For any questions about these documents or to obtain certified copies, please do not hesitate to contact us.',
-    'contact_us': 'Contact us'
+    'contact_us': 'Contact us',
+    'unfortunate_events_title': 'Unfortunate Events',
+    'unfortunate_events_subtitle': 'Supporting each other through difficult times',
+    'all': 'All',
+    'deaths': 'Deaths',
+    'illnesses': 'Illnesses',
+    'accidents': 'Accidents',
+    'others': 'Others',
+    'loading': 'Loading...'
   }
 };
 

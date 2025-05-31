@@ -27,11 +27,11 @@ const EvenementsDifficiles = () => {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'tous', label: t('all') || 'Tous', icon: Heart },
-    { id: 'deces', label: t('deaths') || 'Décès', icon: Heart },
-    { id: 'maladie', label: t('illnesses') || 'Maladies', icon: Stethoscope },
-    { id: 'accident', label: t('accidents') || 'Accidents', icon: Car },
-    { id: 'autre_difficile', label: t('others') || 'Autres', icon: AlertCircle }
+    { id: 'tous', label: t('all', 'Tous'), icon: Heart },
+    { id: 'deces', label: t('deaths', 'Décès'), icon: Heart },
+    { id: 'maladie', label: t('illnesses', 'Maladies'), icon: Stethoscope },
+    { id: 'accident', label: t('accidents', 'Accidents'), icon: Car },
+    { id: 'autre_difficile', label: t('others', 'Autres'), icon: AlertCircle }
   ];
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const EvenementsDifficiles = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center">{t('loading') || 'Chargement...'}</div>
+          <div className="text-center">{t('loading', 'Chargement...')}</div>
         </div>
       </Layout>
     );
@@ -95,10 +95,10 @@ const EvenementsDifficiles = () => {
         <section className={`bg-gray-800 text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold mb-4">
-              {t('difficult_events_title') || 'Événements Difficiles'}
+              {t('unfortunate_events_title', 'Évènements Malheureux')}
             </h1>
             <p className="text-xl opacity-90">
-              {t('difficult_events_subtitle') || 'Soutenons-nous mutuellement dans les moments difficiles'}
+              {t('unfortunate_events_subtitle', 'Soutenons-nous mutuellement dans les moments difficiles')}
             </p>
           </div>
         </section>
