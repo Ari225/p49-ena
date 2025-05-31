@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Heart, AlertCircle, Stethoscope, Car } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface DifficultEvent {
   id: string;
@@ -21,15 +22,16 @@ interface DifficultEvent {
 
 const EvenementsDifficiles = () => {
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
   const [events, setEvents] = useState<DifficultEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'tous', label: 'Tous', icon: Heart },
-    { id: 'deces', label: 'Décès', icon: Heart },
-    { id: 'maladie', label: 'Maladies', icon: Stethoscope },
-    { id: 'accident', label: 'Accidents', icon: Car },
-    { id: 'autre_difficile', label: 'Autres', icon: AlertCircle }
+    { id: 'tous', label: t('all') || 'Tous', icon: Heart },
+    { id: 'deces', label: t('deaths') || 'Décès', icon: Heart },
+    { id: 'maladie', label: t('illnesses') || 'Maladies', icon: Stethoscope },
+    { id: 'accident', label: t('accidents') || 'Accidents', icon: Car },
+    { id: 'autre_difficile', label: t('others') || 'Autres', icon: AlertCircle }
   ];
 
   useEffect(() => {
@@ -80,7 +82,7 @@ const EvenementsDifficiles = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center">Chargement...</div>
+          <div className="text-center">{t('loading') || 'Chargement...'}</div>
         </div>
       </Layout>
     );
@@ -92,9 +94,11 @@ const EvenementsDifficiles = () => {
         {/* Header Section */}
         <section className={`bg-gray-800 text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Événements Difficiles</h1>
+            <h1 className="text-4xl font-bold mb-4">
+              {t('difficult_events_title') || 'Événements Difficiles'}
+            </h1>
             <p className="text-xl opacity-90">
-              Soutenons-nous mutuellement dans les moments difficiles
+              {t('difficult_events_subtitle') || 'Soutenons-nous mutuellement dans les moments difficiles'}
             </p>
           </div>
         </section>

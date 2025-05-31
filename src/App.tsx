@@ -21,6 +21,7 @@ import DerniereEdition from "./pages/DerniereEdition";
 import EquipeEditoriale from "./pages/EquipeEditoriale";
 import Archives from "./pages/Archives";
 import Suggestions from "./pages/Suggestions";
+import TextesOfficiels from "./pages/TextesOfficiels";
 
 // Social Events pages
 import EvenementsHeureux from "./pages/EvenementsHeureux";
@@ -88,7 +89,7 @@ const App = () => (
               <Route path="/dashboard/journal-articles" element={<DashboardJournalArticles />} />
               
               {/* Presentation Routes */}
-              <Route path="/textes-officiels" element={<div>Textes Officiels - Page en construction</div>} />
+              <Route path="/textes-officiels" element={<TextesOfficiels />} />
               <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
               
