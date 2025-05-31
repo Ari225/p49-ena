@@ -17,6 +17,10 @@ import Actualites from "./pages/Actualites";
 import NotFound from "./pages/NotFound";
 import RepertoireMembers from "./pages/RepertoireMembers";
 import InstancesDirigeantes from "./pages/InstancesDirigeantes";
+import DerniereEdition from "./pages/DerniereEdition";
+import EquipeEditoriale from "./pages/EquipeEditoriale";
+import Archives from "./pages/Archives";
+import Suggestions from "./pages/Suggestions";
 
 // Dashboard pages
 import DashboardUsers from "./pages/dashboard/DashboardUsers";
@@ -51,6 +55,12 @@ const App = () => (
               <Route path="/galerie" element={<Galerie />} />
               <Route path="/echo-regions" element={<EchoRegions />} />
               <Route path="/actualites" element={<Actualites />} />
+              
+              {/* Perspectives 49 Routes */}
+              <Route path="/derniere-edition" element={<DerniereEdition />} />
+              <Route path="/equipe-editoriale" element={<EquipeEditoriale />} />
+              <Route path="/archives" element={<Archives />} />
+              <Route path="/suggestions" element={<Suggestions />} />
               
               {/* Dashboard Routes */}
               <Route path="/dashboard/users" element={<DashboardUsers />} />
@@ -87,12 +97,6 @@ const App = () => (
               <Route path="/renforcement-capacites" element={<div>Renforcement des Capacités - Page en construction</div>} />
               <Route path="/coaching-mentorat" element={<div>Coaching & Mentorat - Page en construction</div>} />
               <Route path="/actualites-concours" element={<div>Actualités des Concours - Page en construction</div>} />
-              
-              {/* Perspectives Routes */}
-              <Route path="/derniere-edition" element={<div>Dernière Édition - Page en construction</div>} />
-              <Route path="/equipe-editoriale" element={<div>Équipe Éditoriale - Page en construction</div>} />
-              <Route path="/suggestions" element={<div>Suggestions - Page en construction</div>} />
-              <Route path="/archives" element={<div>Archives - Page en construction</div>} />
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
