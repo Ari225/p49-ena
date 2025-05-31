@@ -26,7 +26,7 @@ import TextesOfficiels from "./pages/TextesOfficiels";
 // Social Events pages
 import EvenementsHeureux from "./pages/EvenementsHeureux";
 import DepartsRetraite from "./pages/DepartsRetraite";
-import EvenementsDifficiles from "./pages/EvenementsDifficiles";
+import EvenementsMalheureux from "./pages/EvenementsMalheureux";
 
 // Activities pages
 import Agenda from "./pages/Agenda";
@@ -102,7 +102,7 @@ const App = () => (
               {/* Social Events Routes */}
               <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
               <Route path="/departs-retraite" element={<DepartsRetraite />} />
-              <Route path="/evenements-difficiles" element={<EvenementsDifficiles />} />
+              <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
               
               {/* Careers Routes */}
               <Route path="/formations" element={<div>Formations - Page en construction</div>} />

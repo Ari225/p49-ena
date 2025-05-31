@@ -28,7 +28,7 @@ const EvenementsSociauxSection = () => {
       title: "Évènements Malheureux",
       description: "Soutien et solidarité dans les moments difficiles",
       icon: Briefcase,
-      link: "/evenements-difficiles",
+      link: "/evenements-malheureux",
       color: "bg-gray-100 text-gray-600"
     }
   ];
