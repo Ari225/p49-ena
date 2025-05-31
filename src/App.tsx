@@ -93,9 +93,9 @@ const App = () => (
               <Route path="/reunions-constitution" element={<div>Réunions de Constitution - Page en construction</div>} />
               
               {/* Social Events Routes */}
-              <Route path="/evenements-heureux" element={<div>Événements Heureux - Page en construction</div>} />
-              <Route path="/departs-retraite" element={<div>Départs à la Retraite - Page en construction</div>} />
-              <Route path="/necrologie" element={<div>Nécrologie - Page en construction</div>} />
+              <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
+              <Route path="/departs-retraite" element={<DepartsRetraite />} />
+              <Route path="/evenements-difficiles" element={<EvenementsDifficiles />} />
               
               {/* Careers Routes */}
               <Route path="/formations" element={<div>Formations - Page en construction</div>} />
