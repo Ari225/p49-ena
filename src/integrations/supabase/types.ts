@@ -105,6 +105,56 @@ export type Database = {
           },
         ]
       }
+      difficult_events: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          family_support_message: string | null
+          id: string
+          image_url: string | null
+          member_name: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          family_support_message?: string | null
+          id?: string
+          image_url?: string | null
+          member_name: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          family_support_message?: string | null
+          id?: string
+          image_url?: string | null
+          member_name?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "difficult_events_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       journal_editions: {
         Row: {
           cover_image_url: string | null
@@ -192,6 +242,103 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "news_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      retirement_departures: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          department: string | null
+          id: string
+          image_url: string | null
+          member_name: string
+          position: string | null
+          retirement_date: string
+          tribute_message: string | null
+          updated_at: string
+          years_of_service: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          id?: string
+          image_url?: string | null
+          member_name: string
+          position?: string | null
+          retirement_date: string
+          tribute_message?: string | null
+          updated_at?: string
+          years_of_service?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          department?: string | null
+          id?: string
+          image_url?: string | null
+          member_name?: string
+          position?: string | null
+          retirement_date?: string
+          tribute_message?: string | null
+          updated_at?: string
+          years_of_service?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retirement_departures_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_events: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          id: string
+          image_url: string | null
+          member_name: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          id?: string
+          image_url?: string | null
+          member_name: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          id?: string
+          image_url?: string | null
+          member_name?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_events_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "app_users"

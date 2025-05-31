@@ -22,6 +22,11 @@ import EquipeEditoriale from "./pages/EquipeEditoriale";
 import Archives from "./pages/Archives";
 import Suggestions from "./pages/Suggestions";
 
+// Social Events pages
+import EvenementsHeureux from "./pages/EvenementsHeureux";
+import DepartsRetraite from "./pages/DepartsRetraite";
+import EvenementsDifficiles from "./pages/EvenementsDifficiles";
+
 // Dashboard pages
 import DashboardUsers from "./pages/dashboard/DashboardUsers";
 import DashboardNews from "./pages/dashboard/DashboardNews";
