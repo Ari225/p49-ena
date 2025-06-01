@@ -1,102 +1,59 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
-interface JournalEdition {
+export interface Archive {
   id: string;
   title: string;
-  summary: string;
-  cover_image_url: string;
-  pdf_url: string;
-  publish_date: string;
-  page_count: number;
-  status: string;
+  year: number;
+  month: string;
+  category: string;
+  file_url: string;
+  cover_image_url?: string;
+  description?: string;
 }
 
 export const useArchivesData = () => {
-  const [journals, setJournals] = useState<JournalEdition[]>([]);
-  const [filteredJournals, setFilteredJournals] = useState<JournalEdition[]>([]);
+  const [archives, setArchives] = useState<Archive[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchJournals();
+    fetchArchives();
   }, []);
 
-  useEffect(() => {
-    filterJournals();
-  }, [journals, searchTerm, selectedMonth, selectedYear]);
-
-  const fetchJournals = async () => {
+  const fetchArchives = async () => {
     try {
-      const { data, error } = await supabase
-        .from('journal_editions')
-        .select('*')
-        .eq('status', 'publie')
-        .order('publish_date', { ascending: false });
-
-      if (error) throw error;
-      setJournals(data || []);
-    } catch (error) {
-      console.error('Error fetching journals:', error);
+      setLoading(true);
+      // Mock data instead of Supabase
+      const mockArchives: Archive[] = [
+        {
+          id: '1',
+          title: 'Perspectives 49 - Janvier 2024',
+          year: 2024,
+          month: 'Janvier',
+          category: 'Revue mensuelle',
+          file_url: '/lovable-uploads/sample.pdf',
+          cover_image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
+          description: 'Édition de janvier 2024 du journal Perspectives 49'
+        },
+        {
+          id: '2',
+          title: 'Perspectives 49 - Décembre 2023',
+          year: 2023,
+          month: 'Décembre',
+          category: 'Revue mensuelle',
+          file_url: '/lovable-uploads/sample.pdf',
+          cover_image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
+          description: 'Édition de décembre 2023 du journal Perspectives 49'
+        }
+      ];
+      setArchives(mockArchives);
+    } catch (err) {
+      setError('Erreur lors du chargement des archives');
     } finally {
       setLoading(false);
     }
   };
 
-  const filterJournals = () => {
-    let filtered = journals;
-
-    if (searchTerm) {
-      filtered = filtered.filter(journal => 
-        journal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        journal.summary?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (selectedMonth || selectedYear) {
-      filtered = filtered.filter(journal => {
-        const date = new Date(journal.publish_date);
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = String(date.getFullYear());
-
-        if (selectedMonth && selectedYear) {
-          return month === selectedMonth && year === selectedYear;
-        } else if (selectedMonth) {
-          return month === selectedMonth;
-        } else if (selectedYear) {
-          return year === selectedYear;
-        }
-        return true;
-      });
-    }
-
-    setFilteredJournals(filtered);
-  };
-
-  const clearFilters = () => {
-    setSearchTerm('');
-    setSelectedMonth('');
-    setSelectedYear('');
-  };
-
-  const availableYears = [...new Set(journals.map(journal => 
-    new Date(journal.publish_date).getFullYear().toString()
-  ))].sort((a, b) => b.localeCompare(a));
-
-  return {
-    journals,
-    filteredJournals,
-    loading,
-    searchTerm,
-    setSearchTerm,
-    selectedMonth,
-    setSelectedMonth,
-    selectedYear,
-    setSelectedYear,
-    clearFilters,
-    availableYears
-  };
+  return { archives, loading, error };
 };

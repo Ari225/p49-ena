@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 
 interface NewsItem {
   id: string;
@@ -30,17 +29,24 @@ const DashboardNews = () => {
   }, []);
 
   const fetchNews = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('published_date', { ascending: false });
-
-      if (error) throw error;
-      setNews(data || []);
-    } catch (error) {
-      console.error('Error fetching news:', error);
-    }
+    // Mock data instead of Supabase
+    const mockNews: NewsItem[] = [
+      {
+        id: '1',
+        title: 'Nouvelle formation en leadership',
+        summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
+        category: 'Formation',
+        published_date: '2024-01-15'
+      },
+      {
+        id: '2',
+        title: 'Assemblée générale annuelle',
+        summary: 'L\'assemblée générale de la P49 se tiendra le mois prochain.',
+        category: 'Événement',
+        published_date: '2024-01-10'
+      }
+    ];
+    setNews(mockNews);
   };
 
   return (

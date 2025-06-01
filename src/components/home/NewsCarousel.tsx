@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface NewsItem {
   id: string;
@@ -22,18 +21,34 @@ const NewsCarousel = () => {
   }, []);
 
   const fetchNews = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .order('published_date', { ascending: false })
-        .limit(6);
-
-      if (error) throw error;
-      setNews(data || []);
-    } catch (error) {
-      console.error('Error fetching news:', error);
-    }
+    // Mock data instead of Supabase
+    const mockNews: NewsItem[] = [
+      {
+        id: '1',
+        title: 'Nouvelle formation en leadership',
+        summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
+        category: 'Formation',
+        image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
+        published_date: '2024-01-15'
+      },
+      {
+        id: '2',
+        title: 'Assemblée générale annuelle',
+        summary: 'L\'assemblée générale de la P49 se tiendra le mois prochain.',
+        category: 'Événement',
+        image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
+        published_date: '2024-01-10'
+      },
+      {
+        id: '3',
+        title: 'Nouveau partenariat stratégique',
+        summary: 'La P49 annonce un nouveau partenariat avec une institution internationale.',
+        category: 'Partenariat',
+        image_url: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg',
+        published_date: '2024-01-05'
+      }
+    ];
+    setNews(mockNews);
   };
 
   const nextSlide = () => {
