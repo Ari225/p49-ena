@@ -8,7 +8,7 @@ interface JournalEdition {
   id: string;
   title: string;
   summary: string;
-  cover_image_url: string;
+  cover_image_url?: string;
   pdf_url: string;
   publish_date: string;
   page_count: number;
