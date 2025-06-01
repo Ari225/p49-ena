@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Mail } from 'lucide-react';
+import { Mail, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Footer = () => {
@@ -18,6 +18,34 @@ const Footer = () => {
     console.log('Newsletter subscription for:', email);
     setEmail('');
   };
+
+  const socialLinks = [
+    {
+      name: 'Facebook',
+      url: 'https://www.facebook.com/share/1Fd5Ct69iu/',
+      icon: Facebook,
+    },
+    {
+      name: 'TikTok',
+      url: 'https://www.tiktok.com/@ena.p49?_t=ZM-8wr2lgkMOKU&_r=1',
+      icon: Youtube, // Using Youtube icon as TikTok icon is not available in lucide-react
+    },
+    {
+      name: 'YouTube',
+      url: 'https://www.tiktok.com/@ena.p49?_t=ZM-8wr2lgkMOKU&_r=1',
+      icon: Youtube,
+    },
+    {
+      name: 'Instagram',
+      url: '#',
+      icon: Instagram,
+    },
+    {
+      name: 'LinkedIn',
+      url: '#',
+      icon: Linkedin,
+    },
+  ];
 
   if (isMobile) {
     return (
@@ -40,7 +68,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Second div - Quick Links, Contact, and Newsletter */}
+          {/* Second div - Quick Links, Contact, Newsletter, and Social Media */}
           <div className="mb-6">
             {/* Quick Links centered */}
             <div className="flex justify-center mb-6">
@@ -68,7 +96,7 @@ const Footer = () => {
             </div>
 
             {/* Newsletter centered */}
-            <div className="text-center">
+            <div className="text-center mb-6">
               <h3 className="text-lg font-semibold mb-3">Newsletter</h3>
               <p className="text-gray-300 text-xs mb-3">
                 Restez informé de nos actualités et événements
@@ -91,6 +119,25 @@ const Footer = () => {
                   </Button>
                 </div>
               </form>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="text-center">
+              <h3 className="text-lg font-semibold mb-3">Suivez-nous</h3>
+              <div className="flex justify-center space-x-4">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-secondary transition-colors"
+                    aria-label={social.name}
+                  >
+                    <social.icon className="h-5 w-5" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -124,8 +171,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Right Section - Quick Links, Contact, Newsletter */}
-          <div className="flex grid-cols-1 md:grid-cols-3 gap-10 w-[1200px] mt-8">
+          {/* Right Section - Quick Links, Contact, Newsletter, Social Media */}
+          <div className="flex grid-cols-1 md:grid-cols-4 gap-10 w-[1200px] mt-8">
             {/* Quick Links */}
             <div className="w-full">
               <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
@@ -171,6 +218,25 @@ const Footer = () => {
                   </Button>
                 </div>
               </form>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="w-full">
+              <h3 className="text-lg font-semibold mb-4">Suivez-nous</h3>
+              <div className="flex space-x-4">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-secondary transition-colors"
+                    aria-label={social.name}
+                  >
+                    <social.icon className="h-6 w-6" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
