@@ -10,6 +10,7 @@ interface Translation {
 export const useTranslation = () => {
   const [translations, setTranslations] = useState<Translation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isTranslating, setIsTranslating] = useState(false);
 
   useEffect(() => {
     fetchTranslations();
@@ -37,5 +38,34 @@ export const useTranslation = () => {
     return translation ? translation[language] : key;
   };
 
-  return { translate, loading };
+  const translateText = async (text: string, targetLang: 'fr' | 'en', sourceLang: 'fr' | 'en' = 'fr'): Promise<string> => {
+    setIsTranslating(true);
+    try {
+      // Mock translation - in a real app, this would call a translation service
+      if (targetLang === sourceLang) return text;
+      
+      // Simple mock translations for demo
+      const mockTranslations: { [key: string]: { [key: string]: string } } = {
+        'fr': {
+          'Bienvenue': 'Welcome',
+          'À propos': 'About',
+          'Contact': 'Contact'
+        },
+        'en': {
+          'Welcome': 'Bienvenue',
+          'About': 'À propos',
+          'Contact': 'Contact'
+        }
+      };
+      
+      return mockTranslations[sourceLang]?.[text] || text;
+    } catch (error) {
+      console.error('Translation error:', error);
+      return text;
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  return { translate, loading, translateText, isTranslating };
 };

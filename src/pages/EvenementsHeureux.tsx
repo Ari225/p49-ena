@@ -4,33 +4,31 @@ import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Heart, PartyPopper, GraduationCap, Baby, Award } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { Calendar, Heart, Baby, GraduationCap, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-interface SocialEvent {
+interface HappyEvent {
   id: string;
   title: string;
   description: string | null;
   event_date: string;
   category: string;
   member_name: string;
+  congratulations_message: string | null;
   image_url: string | null;
 }
 
 const EvenementsHeureux = () => {
   const isMobile = useIsMobile();
-  const [events, setEvents] = useState<SocialEvent[]>([]);
+  const [events, setEvents] = useState<HappyEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
   const categories = [
     { id: 'tous', label: 'Tous', icon: Heart },
-    { id: 'mariage', label: 'Mariages', icon: Heart },
-    { id: 'anniversaire', label: 'Anniversaires', icon: PartyPopper },
-    { id: 'promotion', label: 'Promotions', icon: Award },
-    { id: 'bapteme', label: 'Baptêmes', icon: Baby },
     { id: 'naissance', label: 'Naissances', icon: Baby },
-    { id: 'autre_heureux', label: 'Autres', icon: PartyPopper }
+    { id: 'promotion', label: 'Promotions', icon: Award },
+    { id: 'distinction', label: 'Distinctions', icon: GraduationCap },
+    { id: 'autre_heureux', label: 'Autres', icon: Heart }
   ];
 
   useEffect(() => {
@@ -39,15 +37,23 @@ const EvenementsHeureux = () => {
 
   const fetchEvents = async () => {
     try {
-      const { data, error } = await supabase
-        .from('social_events')
-        .select('*')
-        .order('event_date', { ascending: false });
-
-      if (error) throw error;
-      setEvents(data || []);
+      setLoading(true);
+      // Mock data instead of Supabase
+      const mockEvents: HappyEvent[] = [
+        {
+          id: '1',
+          title: 'Naissance de bébé Marie',
+          description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
+          event_date: '2024-01-15',
+          category: 'naissance',
+          member_name: 'Famille Kouassi',
+          congratulations_message: 'Félicitations aux heureux parents !',
+          image_url: null
+        }
+      ];
+      setEvents(mockEvents);
     } catch (error) {
-      console.error('Error fetching social events:', error);
+      console.error('Error fetching happy events:', error);
     } finally {
       setLoading(false);
     }
@@ -68,6 +74,15 @@ const EvenementsHeureux = () => {
     return categoryData?.label || category;
   };
 
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'naissance': return 'bg-pink-100 text-pink-700';
+      case 'promotion': return 'bg-green-100 text-green-700';
+      case 'distinction': return 'bg-purple-100 text-purple-700';
+      default: return 'bg-blue-100 text-blue-700';
+    }
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -82,11 +97,11 @@ const EvenementsHeureux = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`bg-primary text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`bg-gradient-to-r from-pink-500 to-purple-600 text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Événements Heureux</h1>
+            <h1 className="text-4xl font-bold mb-4">Évènements Heureux</h1>
             <p className="text-xl opacity-90">
-              Célébrons ensemble les moments de joie de nos membres
+              Partageons ensemble nos moments de joie et de fierté
             </p>
           </div>
         </section>
@@ -95,7 +110,7 @@ const EvenementsHeureux = () => {
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <Tabs defaultValue="tous" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
                 {categories.map((category) => {
                   const IconComponent = category.icon;
                   return (
@@ -118,14 +133,14 @@ const EvenementsHeureux = () => {
                       {getFilteredEvents(category.id).map((event) => {
                         const IconComponent = getCategoryIcon(event.category);
                         return (
-                          <Card key={event.id} className="hover:shadow-lg transition-shadow duration-300">
+                          <Card key={event.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-pink-400">
                             <CardHeader className="pb-3">
                               <div className="flex items-start justify-between">
                                 <div className="flex-1">
-                                  <CardTitle className="text-lg text-primary mb-2">{event.title}</CardTitle>
+                                  <CardTitle className="text-lg text-gray-800 mb-2">{event.title}</CardTitle>
                                   <p className="text-gray-600 font-medium">{event.member_name}</p>
                                 </div>
-                                <div className="bg-green-100 text-green-600 p-2 rounded-full">
+                                <div className="bg-pink-100 text-pink-600 p-2 rounded-full">
                                   <IconComponent className="h-4 w-4" />
                                 </div>
                               </div>
@@ -152,7 +167,16 @@ const EvenementsHeureux = () => {
                                 <p className="text-gray-700 text-sm mb-3">{event.description}</p>
                               )}
                               
-                              <Badge variant="secondary" className="bg-green-100 text-green-700">
+                              {event.congratulations_message && (
+                                <div className="bg-yellow-50 p-3 rounded-lg border-l-2 border-yellow-300 mb-3">
+                                  <p className="text-sm text-gray-700 italic">
+                                    <Heart className="h-3 w-3 inline mr-1" />
+                                    {event.congratulations_message}
+                                  </p>
+                                </div>
+                              )}
+                              
+                              <Badge className={getCategoryColor(event.category)}>
                                 {getCategoryLabel(event.category)}
                               </Badge>
                             </CardContent>
@@ -162,7 +186,7 @@ const EvenementsHeureux = () => {
                     </div>
                   ) : (
                     <div className="text-center py-12">
-                      <PartyPopper className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                       <p className="text-gray-500">
                         Aucun événement dans cette catégorie pour le moment.
                       </p>

@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 export interface Archive {
   id: string;
@@ -16,6 +16,9 @@ export const useArchivesData = () => {
   const [archives, setArchives] = useState<Archive[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
 
   useEffect(() => {
     fetchArchives();
@@ -55,5 +58,42 @@ export const useArchivesData = () => {
     }
   };
 
-  return { archives, loading, error };
+  const filteredJournals = useMemo(() => {
+    return archives.filter(archive => {
+      const matchesSearch = searchTerm === '' || 
+        archive.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        archive.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesMonth = selectedMonth === '' || archive.month === selectedMonth;
+      const matchesYear = selectedYear === '' || archive.year.toString() === selectedYear;
+      
+      return matchesSearch && matchesMonth && matchesYear;
+    });
+  }, [archives, searchTerm, selectedMonth, selectedYear]);
+
+  const availableYears = useMemo(() => {
+    const years = [...new Set(archives.map(archive => archive.year))];
+    return years.sort((a, b) => b - a);
+  }, [archives]);
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedMonth('');
+    setSelectedYear('');
+  };
+
+  return { 
+    archives, 
+    loading, 
+    error, 
+    filteredJournals,
+    searchTerm,
+    setSearchTerm,
+    selectedMonth,
+    setSelectedMonth,
+    selectedYear,
+    setSelectedYear,
+    clearFilters,
+    availableYears
+  };
 };
