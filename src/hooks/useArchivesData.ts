@@ -10,6 +10,11 @@ export interface Archive {
   file_url: string;
   cover_image_url?: string;
   description?: string;
+  summary: string;
+  pdf_url: string;
+  publish_date: string;
+  page_count: number;
+  status: string;
 }
 
 export const useArchivesData = () => {
@@ -37,7 +42,12 @@ export const useArchivesData = () => {
           category: 'Revue mensuelle',
           file_url: '/lovable-uploads/sample.pdf',
           cover_image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          description: 'Édition de janvier 2024 du journal Perspectives 49'
+          description: 'Édition de janvier 2024 du journal Perspectives 49',
+          summary: 'Édition de janvier 2024 du journal Perspectives 49',
+          pdf_url: '/lovable-uploads/sample.pdf',
+          publish_date: '2024-01-15',
+          page_count: 32,
+          status: 'published'
         },
         {
           id: '2',
@@ -47,7 +57,12 @@ export const useArchivesData = () => {
           category: 'Revue mensuelle',
           file_url: '/lovable-uploads/sample.pdf',
           cover_image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-          description: 'Édition de décembre 2023 du journal Perspectives 49'
+          description: 'Édition de décembre 2023 du journal Perspectives 49',
+          summary: 'Édition de décembre 2023 du journal Perspectives 49',
+          pdf_url: '/lovable-uploads/sample.pdf',
+          publish_date: '2023-12-15',
+          page_count: 28,
+          status: 'published'
         }
       ];
       setArchives(mockArchives);
@@ -72,8 +87,8 @@ export const useArchivesData = () => {
   }, [archives, searchTerm, selectedMonth, selectedYear]);
 
   const availableYears = useMemo(() => {
-    const years = [...new Set(archives.map(archive => archive.year))];
-    return years.sort((a, b) => b - a);
+    const years = [...new Set(archives.map(archive => archive.year.toString()))];
+    return years.sort((a, b) => parseInt(b) - parseInt(a));
   }, [archives]);
 
   const clearFilters = () => {

@@ -1,11 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Heart, AlertCircle, Stethoscope, Car } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface DifficultEvent {
@@ -38,13 +36,31 @@ const EvenementsMalheureux = () => {
 
   const fetchEvents = async () => {
     try {
-      const { data, error } = await supabase
-        .from('difficult_events')
-        .select('*')
-        .order('event_date', { ascending: false });
-
-      if (error) throw error;
-      setEvents(data || []);
+      setLoading(true);
+      // Mock data instead of Supabase
+      const mockEvents: DifficultEvent[] = [
+        {
+          id: '1',
+          title: 'Décès de M. Jean Kouassi',
+          description: 'Nous avons la tristesse de vous annoncer le décès de notre collègue Jean Kouassi.',
+          event_date: '2024-01-15',
+          category: 'deces',
+          member_name: 'Jean Kouassi',
+          family_support_message: 'Nos pensées accompagnent sa famille en ces moments difficiles.',
+          image_url: null
+        },
+        {
+          id: '2',
+          title: 'Hospitalisation de Mme Marie Diabaté',
+          description: 'Notre collègue Marie Diabaté est actuellement hospitalisée.',
+          event_date: '2024-01-10',
+          category: 'maladie',
+          member_name: 'Marie Diabaté',
+          family_support_message: 'Nous lui souhaitons un prompt rétablissement.',
+          image_url: null
+        }
+      ];
+      setEvents(mockEvents);
     } catch (error) {
       console.error('Error fetching difficult events:', error);
     } finally {
