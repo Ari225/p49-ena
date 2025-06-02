@@ -1,14 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const JournalSection = () => {
   const isMobile = useIsMobile();
-  
-  return (
-    <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+  return <section className="bg-accent/30 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-primary mb-8 md:mb-12 text-center lg:text-left">
           Notre Journal
@@ -25,7 +21,7 @@ const JournalSection = () => {
             <h3 className="mb-10 md:mb-10 text-center bg-primary text-white py-2 md:py-[10px] rounded-lg text-lg md:text-xl font-semibold">
               Perspectives 49 - Bulletin n°1
             </h3>
-            <p className="leading-relaxed mb-10 md:mb-10 text-justify text-base md:text-base font-normal text-gray-700">
+            <p className="leading-relaxed mb-10 md:mb-10 text-justify md:text-base font-normal text-gray-700 text-sm">
               Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
 
               Le bulletin s'organise autour de quatre rubriques principales. La rubrique Actualités citoyennes propose un décryptage des faits marquants et des enjeux sociaux. Le Dossier spécial offre un éclairage sur l'entrepreneuriat des jeunes et les dynamiques économiques émergentes. La rubrique Vie associative met en avant les actions communautaires et les projets de terrain. Enfin, Culture & expressions valorise les talents locaux et les pratiques artistiques.
@@ -43,8 +39,6 @@ const JournalSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default JournalSection;
