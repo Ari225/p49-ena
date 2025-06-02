@@ -1,235 +1,66 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Mail, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import FooterLogo from './footer/FooterLogo';
+import FooterLinks from './footer/FooterLinks';
+import FooterContact from './footer/FooterContact';
+import FooterNewsletter from './footer/FooterNewsletter';
+import FooterSocial from './footer/FooterSocial';
 
 const Footer = () => {
   const { t } = useLanguage();
-  const [email, setEmail] = useState('');
   const isMobile = useIsMobile();
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle newsletter subscription
-    console.log('Newsletter subscription for:', email);
-    setEmail('');
-  };
-
-  const socialLinks = [
-    {
-      name: 'Facebook',
-      url: 'https://www.facebook.com/share/1Fd5Ct69iu/',
-      icon: Facebook,
-    },
-    {
-      name: 'Instagram',
-      url: '#',
-      icon: Instagram,
-    },
-    {
-      name: 'TikTok',
-      url: 'https://www.tiktok.com/@ena.p49?_t=ZM-8wr2lgkMOKU&_r=1',
-      icon: Youtube, // Using Youtube icon as TikTok icon is not available in lucide-react
-    },
-    {
-      name: 'LinkedIn',
-      url: '#',
-      icon: Linkedin,
-    },
-  ];
 
   if (isMobile) {
     return (
       <footer className="bg-primary text-white px-[25px] py-[25px]">
         <div className="container mx-auto px-0">
-          {/* First div - Logo and paragraphs */}
-          <div className="flex flex-col mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <img 
-                src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
-                alt="P49 ENA Logo" 
-                className="h-10 w-10 object-contain" 
-              />
-            </div>
-            <p className="text-gray-300 leading-relaxed mb-2 text-center text-xs">
-              La P49, des Leaders d'excellence au service de la Nation.
-            </p>
-            <p className="text-gray-300 leading-relaxed mb-4 text-center text-xs">
-              Plus qu'une promo, une famille unie et solidaire.
-            </p>
-          </div>
-
-          {/* Second div - Quick Links, Contact, Newsletter */}
+          <FooterLogo />
+          
           <div className="mb-6">
-            {/* Quick Links centered */}
-            <div className="flex justify-center mb-6">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold mb-3">Liens Rapides</h3>
-                <ul className="space-y-2">
-                  <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors text-xs">Historique</Link></li>
-                  <li><Link to="/actualites" className="text-gray-300 hover:text-secondary transition-colors text-xs">Actualités</Link></li>
-                  <li><Link to="/agenda" className="text-gray-300 hover:text-secondary transition-colors text-xs">Agenda</Link></li>
-                  <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors text-xs">Contact</Link></li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Contact Info centered below Quick Links */}
-            <div className="flex justify-center mb-6">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold mb-3">Contact</h3>
-                <div className="space-y-2 text-gray-300 text-xs">
-                  <p>Abidjan, Côte d'Ivoire</p>
-                  <p>communication@p49-ena.ci</p>
-                  <p>+225 07 79 05 47 16</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Newsletter centered */}
-            <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold mb-3">Newsletter</h3>
-              <p className="text-gray-300 text-xs mb-3">
-                Restez informé de nos actualités et événements
-              </p>
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-sm mx-auto text-xs">
-                <div className="flex">
-                  <Input 
-                    type="email" 
-                    placeholder="Votre email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-r-none" 
-                    required 
-                  />
-                  <Button 
-                    type="submit" 
-                    className="bg-secondary hover:bg-secondary/90 text-primary rounded-l-none"
-                  >
-                    <Mail className="h-4 w-4" />
-                  </Button>
-                </div>
-              </form>
-            </div>
+            <FooterLinks />
+            <FooterContact />
+            <FooterNewsletter />
           </div>
 
-          {/* Copyright and Social Media on the same line */}
           <div className="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-600">
             <div>
               © 2024 P49 ENA. {t('footer.rights')}.
             </div>
-            <div className="flex space-x-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-secondary transition-colors"
-                  aria-label={social.name}
-                >
-                  <social.icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
+            <FooterSocial />
           </div>
         </div>
       </footer>
     );
   }
 
-  // Desktop version
   return (
     <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
         <div className="flex grid-cols-1 lg:grid-cols-2 gap-[10px] w-full">
-          {/* Left Section - Logo and Description */}
           <div className="flex flex-col w-[50%]">
-            <div className="flex items-center mb-5 w-40">
-              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-auto object-contain" />
-            </div>
-            <p className="text-gray-300 leading-relaxed mb-2 max-w-[240px]">
-              La P49, des Leaders d'excellence au service de la Nation.
-            </p>
-            <p className="text-gray-300 leading-relaxed mb-5 max-w-[230px]">
-              Plus qu'une promo, une famille unie et solidaire.
-            </p>
+            <FooterLogo />
           </div>
 
-          {/* Right Section - Quick Links, Contact, Newsletter */}
           <div className="flex grid-cols-1 md:grid-cols-3 gap-10 w-[1200px] mt-8">
-            {/* Quick Links */}
             <div className="w-full">
-              <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
-              <ul className="space-y-2">
-                <li><Link to="/historique" className="text-gray-300 hover:text-secondary transition-colors">Historique</Link></li>
-                <li><Link to="/actualites" className="text-gray-300 hover:text-secondary transition-colors">Actualités</Link></li>
-                <li><Link to="/agenda" className="text-gray-300 hover:text-secondary transition-colors">Agenda</Link></li>
-                <li><Link to="/contact" className="text-gray-300 hover:text-secondary transition-colors">Contact</Link></li>
-              </ul>
+              <FooterLinks />
             </div>
-
-            {/* Contact Info */}
             <div className="w-full min-w-[50px]">
-              <h3 className="text-lg font-semibold mb-4 w-20">Contact</h3>
-              <div className="space-y-2 text-gray-300 w-[200px]">
-                <p className="w-[200px]">Abidjan, Côte d'Ivoire</p>
-                <p className="w-[200px]">communication@p49-ena.ci</p>
-                <p className="w-[200px]">+225 07 79 05 47 16</p>
-              </div>
+              <FooterContact />
             </div>
-
-            {/* Newsletter */}
             <div className="w-full">
-              <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
-              <p className="text-gray-300 text-sm mb-4">
-                Restez informé de nos actualités et événements
-              </p>
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3">
-                <div className="flex">
-                  <Input 
-                    type="email" 
-                    placeholder="Votre email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-r-none" 
-                    required 
-                  />
-                  <Button 
-                    type="submit" 
-                    className="bg-secondary hover:bg-secondary/90 text-primary rounded-l-none"
-                  >
-                    <Mail className="h-4 w-4" />
-                  </Button>
-                </div>
-              </form>
+              <FooterNewsletter />
             </div>
           </div>
         </div>
         
-        {/* Copyright and Social Media on the same line */}
         <div className="flex items-center justify-between text-sm text-gray-400 mt-8 pt-4 border-t border-gray-600">
           <div>
             © 2024 P49 ENA. {t('footer.rights')}.
           </div>
-          <div className="flex space-x-4">
-            {socialLinks.map((social) => (
-              <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-secondary transition-colors"
-                aria-label={social.name}
-              >
-                <social.icon className="h-6 w-6" />
-              </a>
-            ))}
-          </div>
+          <FooterSocial />
         </div>
       </div>
     </footer>
