@@ -37,7 +37,7 @@ const EvenementsDifficiles = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center">Chargement...</div>
+          <div className={`text-center ${isMobile ? 'mt-6' : ''}`}>Chargement...</div>
         </div>
       </Layout>
     );
@@ -47,19 +47,19 @@ const EvenementsDifficiles = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`bg-gray-800 text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`bg-gray-800 text-white ${isMobile ? 'py-10' : 'py-16'} ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold mb-4`}>
               Évènements Malheureux
             </h1>
-            <p className="text-xl opacity-90">
+            <p className={`${isMobile ? 'text-base' : 'text-xl'} opacity-90`}>
               Soutenons-nous mutuellement dans les moments difficiles
             </p>
           </div>
         </section>
 
         {/* Events Section */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`${isMobile ? 'py-8' : 'py-12'} ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <EventCategoryTabs events={events} />
           </div>

@@ -25,40 +25,42 @@ const ValuesSection = () => {
   }];
   
   return (
-    <section className={`bg-white ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px]`}>
+    <section className={`bg-white ${isMobile ? 'py-[50px] px-[25px]' : 'py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
-        <h2 className="text-2xl md:text-3xl text-center text-primary mb-8 md:mb-12 font-bold">
+        <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} text-center text-primary mb-8 md:mb-12 font-bold`}>
           Valeurs de la P49
         </h2>
+        
         {isMobile ? (
           <div className="space-y-6">
-            {/* Connexion et Solidarité sur la même ligne */}
-            <div className="grid grid-cols-2 gap-6">
-              {[values[0], values[2]].map((value, index) => (
+            {/* Première rangée - Connexion et Action */}
+            <div className="grid grid-cols-2 gap-4">
+              {[values[0], values[1]].map((value, index) => (
                 <div key={index} className="text-center grid place-items-center">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-secondary/80">
-                    <value.icon className="h-5 w-5 text-primary" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 bg-secondary/80">
+                    <value.icon className="h-4 w-4 text-primary" />
                   </div>
-                  <h3 className="text-primary mb-2 text-lg font-semibold">
+                  <h3 className="text-primary mb-1 text-base font-semibold">
                     {value.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
+                  <p className="text-xs leading-relaxed text-gray-700 max-w-[130px] text-center px-1 font-normal">
                     {value.description}
                   </p>
                 </div>
               ))}
             </div>
-            {/* Action et Dévouement sur la même ligne */}
-            <div className="grid grid-cols-2 gap-6">
-              {[values[1], values[3]].map((value, index) => (
+            
+            {/* Deuxième rangée - Solidarité et Dévouement */}
+            <div className="grid grid-cols-2 gap-4">
+              {[values[2], values[3]].map((value, index) => (
                 <div key={index} className="text-center grid place-items-center">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-secondary/80">
-                    <value.icon className="h-5 w-5 text-primary" />
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2 bg-secondary/80">
+                    <value.icon className="h-4 w-4 text-primary" />
                   </div>
-                  <h3 className="text-primary mb-2 text-lg font-semibold">
+                  <h3 className="text-primary mb-1 text-base font-semibold">
                     {value.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-gray-700 max-w-[220px] text-center px-2 font-normal">
+                  <p className="text-xs leading-relaxed text-gray-700 max-w-[130px] text-center px-1 font-normal">
                     {value.description}
                   </p>
                 </div>

@@ -57,25 +57,25 @@ const SiteSectionsGrid = () => {
 
   if (isMobile) {
     return (
-      <section className="bg-white py-[100px] px-[25px]">
+      <section className="bg-white py-[50px] px-[25px]">
         <div className="container mx-auto px-0">
-          <h2 className="text-3xl font-bold text-center text-primary mb-12">Nos rubriques</h2>
+          <h2 className="text-2xl font-bold text-center text-primary mb-8">Nos rubriques</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {sections.map((section) => {
               const IconComponent = section.icon;
               return (
-                <AccordionItem key={section.id} value={section.id} className="border rounded-lg">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-secondary/80">
-                        <IconComponent className="h-5 w-5 text-primary" />
+                <AccordionItem key={section.id} value={section.id} className="border rounded-lg shadow-sm">
+                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-secondary/80">
+                        <IconComponent className="h-4 w-4 text-primary" />
                       </div>
-                      <h3 className="text-lg font-semibold text-primary text-left">{section.title}</h3>
+                      <h3 className="text-base font-semibold text-primary text-left">{section.title}</h3>
                     </div>
                   </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-4">
-                    <p className="mb-4 text-gray-700">{section.content}</p>
-                    <Link to={section.link} className="text-primary hover:text-secondary/80 font-medium">
+                  <AccordionContent className="px-4 pb-4">
+                    <p className="mb-4 text-sm text-gray-700">{section.content}</p>
+                    <Link to={section.link} className="text-primary hover:text-secondary/80 font-medium text-sm inline-flex items-center">
                       {section.linkText}
                     </Link>
                   </AccordionContent>

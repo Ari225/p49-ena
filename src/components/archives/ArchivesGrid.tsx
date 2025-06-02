@@ -27,15 +27,21 @@ const ArchivesGrid = ({ filteredJournals, clearFilters }: ArchivesGridProps) => 
     <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-4">
         {filteredJournals.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'}`}>
             {filteredJournals.map((journal) => (
               <JournalCard key={journal.id} journal={journal} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">Aucune édition trouvée avec ces critères de recherche.</p>
-            <Button onClick={clearFilters} variant="outline">
+          <div className={`text-center py-12 ${isMobile ? 'px-4' : ''}`}>
+            <p className={`text-gray-500 mb-4 ${isMobile ? 'text-sm' : ''}`}>
+              Aucune édition trouvée avec ces critères de recherche.
+            </p>
+            <Button 
+              onClick={clearFilters} 
+              variant="outline"
+              className={isMobile ? 'w-full' : ''}
+            >
               Afficher toutes les éditions
             </Button>
           </div>

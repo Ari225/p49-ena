@@ -36,25 +36,31 @@ const EvenementsSociauxSection = () => {
   return (
     <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Événements Sociaux</h2>
-          <p className="text-gray-700 max-w-3xl mx-auto">
+        <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
+            Événements Sociaux
+          </h2>
+          <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : ''}`}>
             La P49 accompagne ses membres dans tous les moments importants de leur vie, 
             qu'ils soient heureux ou difficiles. Découvrez nos événements sociaux.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} mb-8`}>
           {events.map((event, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="text-center pb-4">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${event.color}`}>
-                  <event.icon className="h-8 w-8" />
+            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 ${isMobile ? 'mb-4' : ''}`}>
+              <CardHeader className={`text-center pb-${isMobile ? '2' : '4'}`}>
+                <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'} ${event.color}`}>
+                  <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'}`} />
                 </div>
-                <CardTitle className="text-xl text-primary">{event.title}</CardTitle>
+                <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-primary`}>
+                  {event.title}
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-gray-600 mb-6">{event.description}</p>
+                <p className={`text-gray-600 mb-${isMobile ? '4' : '6'} ${isMobile ? 'text-sm' : ''}`}>
+                  {event.description}
+                </p>
                 <Button asChild className="w-full">
                   <Link to={event.link} className="flex items-center justify-center">
                     Découvrir
@@ -67,10 +73,10 @@ const EvenementsSociauxSection = () => {
         </div>
 
         <div className="text-center">
-          <p className="text-gray-600 mb-4">
+          <p className={`text-gray-600 mb-4 ${isMobile ? 'text-sm' : ''}`}>
             Vous souhaitez partager un événement ou avez besoin de soutien ?
           </p>
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className={isMobile ? 'w-full' : ''}>
             <Link to="/contact">Nous contacter</Link>
           </Button>
         </div>
