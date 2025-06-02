@@ -70,8 +70,8 @@ const Header = () => {
       label: t('menu.retirement'),
       href: '/departs-retraite'
     }, {
-      label: t('menu.necrology'),
-      href: '/necrologie'
+      label: 'Événements Malheureux',
+      href: '/evenements-malheureux'
     }]
   }, {
     title: t('header.careers'),
