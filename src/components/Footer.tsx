@@ -26,19 +26,14 @@ const Footer = () => {
       icon: Facebook,
     },
     {
-      name: 'TikTok',
-      url: 'https://www.tiktok.com/@ena.p49?_t=ZM-8wr2lgkMOKU&_r=1',
-      icon: Youtube, // Using Youtube icon as TikTok icon is not available in lucide-react
-    },
-    {
-      name: 'YouTube',
-      url: 'https://www.tiktok.com/@ena.p49?_t=ZM-8wr2lgkMOKU&_r=1',
-      icon: Youtube,
-    },
-    {
       name: 'Instagram',
       url: '#',
       icon: Instagram,
+    },
+    {
+      name: 'TikTok',
+      url: 'https://www.tiktok.com/@ena.p49?_t=ZM-8wr2lgkMOKU&_r=1',
+      icon: Youtube, // Using Youtube icon as TikTok icon is not available in lucide-react
     },
     {
       name: 'LinkedIn',
@@ -68,7 +63,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Second div - Quick Links, Contact, Newsletter, and Social Media */}
+          {/* Second div - Quick Links, Contact, Newsletter */}
           <div className="mb-6">
             {/* Quick Links centered */}
             <div className="flex justify-center mb-6">
@@ -120,37 +115,34 @@ const Footer = () => {
                 </div>
               </form>
             </div>
-
-            {/* Social Media Links */}
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-3">Suivez-nous</h3>
-              <div className="flex justify-center space-x-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-300 hover:text-secondary transition-colors"
-                    aria-label={social.name}
-                  >
-                    <social.icon className="h-5 w-5" />
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
 
-          {/* Copyright at the bottom */}
-          <div className="text-xs text-gray-400 text-center pt-4 border-t border-gray-600">
-            © 2024 P49 ENA. {t('footer.rights')}.
+          {/* Copyright and Social Media on the same line */}
+          <div className="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-600">
+            <div>
+              © 2024 P49 ENA. {t('footer.rights')}.
+            </div>
+            <div className="flex space-x-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-secondary transition-colors"
+                  aria-label={social.name}
+                >
+                  <social.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </footer>
     );
   }
 
-  // Desktop version (original layout)
+  // Desktop version
   return (
     <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
@@ -166,13 +158,10 @@ const Footer = () => {
             <p className="text-gray-300 leading-relaxed mb-5 max-w-[230px]">
               Plus qu'une promo, une famille unie et solidaire.
             </p>
-            <div className="text-sm text-gray-400">
-              © 2024 P49 ENA. {t('footer.rights')}.
-            </div>
           </div>
 
-          {/* Right Section - Quick Links, Contact, Newsletter, Social Media */}
-          <div className="flex grid-cols-1 md:grid-cols-4 gap-10 w-[1200px] mt-8">
+          {/* Right Section - Quick Links, Contact, Newsletter */}
+          <div className="flex grid-cols-1 md:grid-cols-3 gap-10 w-[1200px] mt-8">
             {/* Quick Links */}
             <div className="w-full">
               <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
@@ -219,25 +208,27 @@ const Footer = () => {
                 </div>
               </form>
             </div>
-
-            {/* Social Media Links */}
-            <div className="w-full">
-              <h3 className="text-lg font-semibold mb-4">Suivez-nous</h3>
-              <div className="flex space-x-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-300 hover:text-secondary transition-colors"
-                    aria-label={social.name}
-                  >
-                    <social.icon className="h-6 w-6" />
-                  </a>
-                ))}
-              </div>
-            </div>
+          </div>
+        </div>
+        
+        {/* Copyright and Social Media on the same line */}
+        <div className="flex items-center justify-between text-sm text-gray-400 mt-8 pt-4 border-t border-gray-600">
+          <div>
+            © 2024 P49 ENA. {t('footer.rights')}.
+          </div>
+          <div className="flex space-x-4">
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-secondary transition-colors"
+                aria-label={social.name}
+              >
+                <social.icon className="h-6 w-6" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
