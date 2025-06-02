@@ -1,37 +1,31 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface HeroSectionProps {
   backgroundImages: string[];
 }
-
 const HeroSection = ({
   backgroundImages
 }: HeroSectionProps) => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const isMobile = useIsMobile();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
-
-  return (
-    <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+  return <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
       {/* Background Images Carousel */}
       <div className="absolute inset-0">
-        {backgroundImages.map((image, index) => (
-          <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
+        {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
             <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
-          </div>
-        ))}
+          </div>)}
         <div className="absolute inset-0 bg-primary/80"></div>
       </div>
       
@@ -50,25 +44,8 @@ const HeroSection = ({
         </Button>
         
         {/* Dots navigation for mobile */}
-        {isMobile && (
-          <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-2">
-            {backgroundImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentImageIndex 
-                    ? 'bg-secondary w-6' 
-                    : 'bg-white/50'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
+        {isMobile}
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HeroSection;
