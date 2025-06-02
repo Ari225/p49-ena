@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 
 const FooterSocial = () => {
   const socialLinks = [
@@ -27,6 +27,11 @@ const FooterSocial = () => {
       name: 'LinkedIn',
       url: '#',
       icon: Linkedin,
+    },
+    {
+      name: 'YouTube',
+      url: 'https://youtube.com/@reseaup49?si=EQygjnscg1v0rI7i',
+      icon: Youtube,
     },
   ];
 

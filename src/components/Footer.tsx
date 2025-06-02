@@ -24,11 +24,11 @@ const Footer = () => {
             <FooterNewsletter />
           </div>
 
-          <div className="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-600">
-            <div>
+          <div className="flex flex-col items-center space-y-4">
+            <FooterSocial />
+            <div className="text-xs text-gray-400 text-center">
               © 2024 P49 ENA. {t('footer.rights')}.
             </div>
-            <FooterSocial />
           </div>
         </div>
       </footer>
