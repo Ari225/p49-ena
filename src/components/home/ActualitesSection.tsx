@@ -22,31 +22,31 @@ const ActualitesSection = () => {
   }, []);
 
   const fetchNews = async () => {
-    // Mock data instead of Supabase
+    // Mock data - additional news items for the grid
     const mockNews: NewsItem[] = [
       {
-        id: '1',
-        title: 'Nouvelle formation en leadership',
-        summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
+        id: '4',
+        title: 'Séminaire de développement professionnel',
+        summary: 'Un séminaire intensif pour le renforcement des capacités professionnelles.',
         category: 'Formation',
         image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-        published_date: '2024-01-15'
+        published_date: '2024-01-20'
       },
       {
-        id: '2',
-        title: 'Assemblée générale annuelle',
-        summary: 'L\'assemblée générale de la P49 se tiendra le mois prochain.',
-        category: 'Événement',
+        id: '5',
+        title: 'Nouveau programme de mentorat',
+        summary: 'Lancement du programme de mentorat pour les jeunes diplômés.',
+        category: 'Programme',
         image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-        published_date: '2024-01-10'
+        published_date: '2024-01-18'
       },
       {
-        id: '3',
-        title: 'Nouveau partenariat stratégique',
-        summary: 'La P49 annonce un nouveau partenariat avec une institution internationale.',
-        category: 'Partenariat',
+        id: '6',
+        title: 'Conférence internationale sur la gouvernance',
+        summary: 'Participation à la conférence internationale sur les bonnes pratiques.',
+        category: 'Conférence',
         image_url: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg',
-        published_date: '2024-01-05'
+        published_date: '2024-01-16'
       }
     ];
     setNews(mockNews);
@@ -57,12 +57,12 @@ const ActualitesSection = () => {
   }
 
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+    <section className="bg-gray-50 py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Actualités</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Plus d'Actualités</h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
-            Restez informés des dernières nouvelles et événements de notre réseau
+            Découvrez toutes nos dernières nouvelles et événements
           </p>
         </div>
         

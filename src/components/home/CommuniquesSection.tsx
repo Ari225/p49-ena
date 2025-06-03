@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +9,56 @@ import { useIsMobile } from '@/hooks/use-mobile';
 const CommuniquesSection = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const [selectedImage, setSelectedImage] = useState<string>('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg');
+  
+  const communiques = [
+    {
+      id: 1,
+      title: 'Communiqué urgent',
+      description: 'Report de l\'événement prévu le 25 mars 2024.',
+      color: 'red',
+      image: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg'
+    },
+    {
+      id: 2,
+      title: 'Nouvelle inscription',
+      description: 'Ouverture des inscriptions pour la formation de mars.',
+      color: 'blue',
+      image: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'
+    },
+    {
+      id: 3,
+      title: 'Félicitations',
+      description: 'Promotion de plusieurs membres à de nouveaux postes.',
+      color: 'green',
+      image: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg'
+    },
+    {
+      id: 4,
+      title: 'Communiqué de presse',
+      description: 'Publication des résultats du dernier concours interne.',
+      color: 'purple',
+      image: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'
+    },
+    {
+      id: 5,
+      title: 'Communiqué ENA',
+      description: 'Nouvelles directives pour les formations continues.',
+      color: 'orange',
+      image: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png'
+    },
+    {
+      id: 6,
+      title: 'Communiqué P49',
+      description: 'Assemblée générale extraordinaire du réseau P49.',
+      color: 'indigo',
+      image: '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png'
+    }
+  ];
+
+  const handleCommuniqueClick = (image: string) => {
+    setSelectedImage(image);
+  };
   
   return (
     <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-white`}>
@@ -24,48 +74,32 @@ const CommuniquesSection = () => {
           {/* Image container */}
           <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
             <div className="w-full lg:w-[500px] bg-white shadow-xl p-4 md:p-6 rounded-lg px-0 py-0">
-              <img alt="Communiqué" src="/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg" className="w-full h-full object-cover" />
+              <img 
+                alt="Communiqué sélectionné" 
+                src={selectedImage} 
+                className="w-full h-full object-cover rounded-lg transition-all duration-300" 
+              />
             </div>
           </div>
           
           {/* Communiqués stacked */}
           <div className="flex-1 space-y-3 md:space-y-4">
-            <Card className="bg-red-50 border-red-200">
-              <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                <h3 className="font-semibold text-red-800 mb-2 text-xl md:text-xl">Communiqué urgent</h3>
-                <p className="text-sm md:text-sm text-red-600 font-normal">Report de l'événement prévu le 25 mars 2024.</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-blue-50 border-blue-200">
-              <CardContent className="p-4 md:p-6 py-[20px]">
-                <h3 className="font-semibold text-blue-800 mb-2 text-xl md:text-xl">Nouvelle inscription</h3>
-                <p className="text-sm md:text-sm text-blue-600 font-normal">Ouverture des inscriptions pour la formation de mars.</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-green-50 border-green-200">
-              <CardContent className="p-4 md:p-6 py-[20px]">
-                <h3 className="font-semibold text-green-800 mb-2 text-xl md:text-xl">Félicitations</h3>
-                <p className="text-sm md:text-sm text-green-600 font-normal">Promotion de plusieurs membres à de nouveaux postes.</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-purple-50 border-purple-200">
-              <CardContent className="p-4 md:p-6 py-[20px]">
-                <h3 className="font-semibold text-purple-800 mb-2 text-xl md:text-xl">Communiqué de presse</h3>
-                <p className="text-sm text-purple-600 md:text-sm font-normal">Publication des résultats du dernier concours interne.</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-orange-50 border-orange-200">
-              <CardContent className="p-4 md:p-6 py-[20px]">
-                <h3 className="font-semibold text-orange-800 mb-2 text-xl md:text-xl">Communiqué ENA</h3>
-                <p className="text-sm md:text-sm text-orange-600 font-normal">Nouvelles directives pour les formations continues.</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-indigo-50 border-indigo-200">
-              <CardContent className="p-4 md:p-6 py-[20px]">
-                <h3 className="font-semibold text-indigo-800 mb-2 text-xl md:text-xl">Communiqué P49</h3>
-                <p className="text-sm md:text-sm text-indigo-600 font-normal">Assemblée générale extraordinaire du réseau P49.</p>
-              </CardContent>
-            </Card>
+            {communiques.map((communique) => (
+              <Card 
+                key={communique.id}
+                className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`}
+                onClick={() => handleCommuniqueClick(communique.image)}
+              >
+                <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
+                  <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl md:text-xl`}>
+                    {communique.title}
+                  </h3>
+                  <p className={`text-sm md:text-sm text-${communique.color}-600 font-normal`}>
+                    {communique.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </div>
