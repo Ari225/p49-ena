@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -95,12 +96,29 @@ const NewsCarousel = () => {
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow mx-auto max-w-4xl">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                       {item.image_url && (
-                        <div className="h-64 md:h-80">
+                        <div className="h-64 md:h-80 relative">
                           <img 
                             src={item.image_url} 
                             alt={item.title} 
                             className="w-full h-full object-cover"
                           />
+                          {/* Navigation Arrows on image for mobile */}
+                          {isMobile && (
+                            <>
+                              <button
+                                onClick={prevSlide}
+                                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+                              >
+                                <ChevronLeft className="w-6 h-6" />
+                              </button>
+                              <button
+                                onClick={nextSlide}
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+                              >
+                                <ChevronRight className="w-6 h-6" />
+                              </button>
+                            </>
+                          )}
                         </div>
                       )}
                       <CardContent className="p-6 md:p-8 flex flex-col justify-center">
@@ -117,6 +135,10 @@ const NewsCarousel = () => {
                           {item.title}
                         </h3>
                         <p className="text-gray-600 text-base leading-relaxed">{item.summary}</p>
+                        <Link to={`/actualites/${item.id}`} className="mt-4 text-primary hover:text-primary/80 font-medium flex items-center">
+                          Lire la suite
+                          <ArrowRight className="ml-1 h-4 w-4" />
+                        </Link>
                       </CardContent>
                     </div>
                   </Card>
@@ -125,19 +147,23 @@ const NewsCarousel = () => {
             </div>
           </div>
 
-          {/* Navigation Arrows */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
+          {/* Navigation Arrows for desktop */}
+          {!isMobile && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
 
           {/* Dots Indicator */}
           <div className="flex justify-center mt-6 space-x-2">

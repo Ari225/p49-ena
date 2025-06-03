@@ -73,17 +73,17 @@ const CommuniquesSection = () => {
         </div>
         
         {isMobile ? (
-          // Mobile layout: Image above selected communiqué
+          // Mobile layout: Image above selected communiqué with real dimensions
           <div className="space-y-3">
             {communiques.map((communique) => (
               <div key={communique.id}>
-                {/* Show image above selected communiqué */}
+                {/* Show image above selected communiqué with natural dimensions */}
                 {selectedId === communique.id && (
                   <div className="w-full bg-white shadow-xl p-4 rounded-lg mb-3">
                     <img 
                       alt="Communiqué sélectionné" 
                       src={selectedImage} 
-                      className="w-full h-48 object-cover rounded-lg transition-all duration-300" 
+                      className="w-full h-auto object-contain rounded-lg transition-all duration-300" 
                     />
                   </div>
                 )}
