@@ -1,7 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface NewsItem {
   id: string;
@@ -15,6 +17,7 @@ interface NewsItem {
 const NewsCarousel = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     fetchNews();
@@ -71,7 +74,7 @@ const NewsCarousel = () => {
   }
 
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]">
+    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Actualités</h2>
@@ -148,6 +151,16 @@ const NewsCarousel = () => {
               />
             ))}
           </div>
+        </div>
+
+        {/* Voir toutes les actualités button */}
+        <div className="text-center mt-8">
+          <Link to="/actualites">
+            <Button className="bg-primary text-white hover:bg-primary/90 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+              Voir toutes les actualités
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
