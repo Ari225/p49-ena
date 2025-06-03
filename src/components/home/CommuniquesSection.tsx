@@ -10,6 +10,7 @@ const CommuniquesSection = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
   const [selectedImage, setSelectedImage] = useState<string>('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg');
+  const [selectedId, setSelectedId] = useState<number>(1);
   
   const communiques = [
     {
@@ -56,8 +57,9 @@ const CommuniquesSection = () => {
     }
   ];
 
-  const handleCommuniqueClick = (image: string) => {
+  const handleCommuniqueClick = (image: string, id: number) => {
     setSelectedImage(image);
+    setSelectedId(id);
   };
   
   return (
@@ -70,38 +72,73 @@ const CommuniquesSection = () => {
           </Link>
         </div>
         
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Image container */}
-          <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
-            <div className="w-full lg:w-[500px] bg-white shadow-xl p-4 md:p-6 rounded-lg px-0 py-0">
-              <img 
-                alt="Communiqué sélectionné" 
-                src={selectedImage} 
-                className="w-full h-full object-cover rounded-lg transition-all duration-300" 
-              />
-            </div>
-          </div>
-          
-          {/* Communiqués stacked */}
-          <div className="flex-1 space-y-3 md:space-y-4">
+        {isMobile ? (
+          // Mobile layout: Image above selected communiqué
+          <div className="space-y-3">
             {communiques.map((communique) => (
-              <Card 
-                key={communique.id}
-                className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`}
-                onClick={() => handleCommuniqueClick(communique.image)}
-              >
-                <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                  <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl md:text-xl`}>
-                    {communique.title}
-                  </h3>
-                  <p className={`text-sm md:text-sm text-${communique.color}-600 font-normal`}>
-                    {communique.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <div key={communique.id}>
+                {/* Show image above selected communiqué */}
+                {selectedId === communique.id && (
+                  <div className="w-full bg-white shadow-xl p-4 rounded-lg mb-3">
+                    <img 
+                      alt="Communiqué sélectionné" 
+                      src={selectedImage} 
+                      className="w-full h-48 object-cover rounded-lg transition-all duration-300" 
+                    />
+                  </div>
+                )}
+                
+                <Card 
+                  className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`}
+                  onClick={() => handleCommuniqueClick(communique.image, communique.id)}
+                >
+                  <CardContent className="p-4 px-[24px] py-[20px]">
+                    <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
+                      {communique.title}
+                    </h3>
+                    <p className={`text-sm text-${communique.color}-600 font-normal`}>
+                      {communique.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
-        </div>
+        ) : (
+          // Desktop layout: Original layout
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            {/* Image container */}
+            <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
+              <div className="w-full lg:w-[500px] bg-white shadow-xl p-4 md:p-6 rounded-lg px-0 py-0">
+                <img 
+                  alt="Communiqué sélectionné" 
+                  src={selectedImage} 
+                  className="w-full h-full object-cover rounded-lg transition-all duration-300" 
+                />
+              </div>
+            </div>
+            
+            {/* Communiqués stacked */}
+            <div className="flex-1 space-y-3 md:space-y-4">
+              {communiques.map((communique) => (
+                <Card 
+                  key={communique.id}
+                  className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`}
+                  onClick={() => handleCommuniqueClick(communique.image, communique.id)}
+                >
+                  <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
+                    <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl md:text-xl`}>
+                      {communique.title}
+                    </h3>
+                    <p className={`text-sm md:text-sm text-${communique.color}-600 font-normal`}>
+                      {communique.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

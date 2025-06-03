@@ -4,11 +4,11 @@ import Layout from '@/components/Layout';
 import PresidentWelcomeModal from '@/components/PresidentWelcomeModal';
 import HeroSection from '@/components/home/HeroSection';
 import ValuesSection from '@/components/home/ValuesSection';
+import AboutSection from '@/components/home/AboutSection';
 import NewsCarousel from '@/components/home/NewsCarousel';
+import CommuniquesSection from '@/components/home/CommuniquesSection';
 import AchievementsSection from '@/components/home/AchievementsSection';
 import ActualitesSection from '@/components/home/ActualitesSection';
-import CommuniquesSection from '@/components/home/CommuniquesSection';
-import AboutSection from '@/components/home/AboutSection';
 import SiteSectionsGrid from '@/components/home/SiteSectionsGrid';
 import JournalSection from '@/components/home/JournalSection';
 import EchoRegionsSection from '@/components/home/EchoRegionsSection';
@@ -48,11 +48,11 @@ const Index = () => {
       <PresidentWelcomeModal />
       <HeroSection backgroundImages={backgroundImages} />
       <ValuesSection />
+      <AboutSection />
       <NewsCarousel />
+      <CommuniquesSection />
       <AchievementsSection />
       <ActualitesSection />
-      <CommuniquesSection />
-      <AboutSection />
       <SiteSectionsGrid />
       <JournalSection />
       <EchoRegionsSection />

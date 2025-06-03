@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { ArrowLeft, Upload } from 'lucide-react';
+import { ArrowLeft, Upload, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const DashboardAddNews = () => {
@@ -138,6 +138,15 @@ const DashboardAddNews = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Image</label>
+                  <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-start space-x-2">
+                      <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <div className="text-sm text-blue-800">
+                        <p className="font-medium">Format d'image recommandé :</p>
+                        <p>Utilisez des images au format carré (1:1) ou 16:9 pour un affichage optimal dans le carousel des actualités.</p>
+                      </div>
+                    </div>
+                  </div>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                     <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                     <input
