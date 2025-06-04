@@ -101,7 +101,6 @@ const PresidentWelcomeModal = () => {
             <div className="flex flex-col sm:flex-row gap-3 justify-end p-6 md:p-8 pt-0 border-t bg-white">
               <Button 
                 onClick={handleNeverShowAgain}
-                variant="outline"
                 className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm"
               >
                 Je ne souhaite plus revoir ce message
