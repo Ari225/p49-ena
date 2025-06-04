@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const PresidentWelcomeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Check if modal has been dismissed and when
@@ -44,29 +46,27 @@ const PresidentWelcomeModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl p-0 bg-white mx-[25px] my-[50px] lg:mx-auto lg:my-auto">
-        <div className="flex flex-col md:flex-row">
-          {/* President Photo */}
-          <div className="md:w-1/3 bg-gradient-to-br from-primary to-primary/80 p-8 flex items-center justify-center">
-            <div className="text-center text-white">
-              <div className="w-32 h-32 bg-white/20 rounded-full mx-auto mb-4 overflow-hidden">
-                <img 
-                  src="/lovable-uploads/f1d1dd5c-a951-422c-b2bc-e5db8549f70f.png" 
-                  alt="Mme MEL Méléï Marcelle" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-xl font-semibold">Mme MEL Méléï Marcelle</h3>
-              <p className="text-sm opacity-90">Présidente du Réseau P49</p>
-            </div>
+      <DialogContent className={`w-full max-w-none h-auto bg-white ${isMobile ? 'mx-[25px]' : 'mx-[100px]'} my-[50px] lg:my-auto`}>
+        <div className="flex flex-col md:flex-row w-full">
+          {/* President Photo - Full container coverage */}
+          <div className="md:w-1/3 relative overflow-hidden">
+            <img 
+              src="/lovable-uploads/f1d1dd5c-a951-422c-b2bc-e5db8549f70f.png" 
+              alt="Mme MEL Méléï Marcelle" 
+              className="w-full h-full object-cover min-h-[300px] md:min-h-[600px]"
+            />
           </div>
 
           {/* Welcome Message */}
-          <div className="md:w-2/3 p-8">
+          <div className="md:w-2/3 p-6 md:p-8">
             <h2 className="text-2xl font-bold text-primary mb-4">
               Message de Bienvenue
             </h2>
-            <div className="text-gray-700 leading-relaxed mb-6 text-sm">
+            <div className="text-center mb-4 md:hidden">
+              <h3 className="text-xl font-semibold text-primary">Mme MEL Méléï Marcelle</h3>
+              <p className="text-sm text-primary/80">Présidente du Réseau P49</p>
+            </div>
+            <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
               <p className="mb-4">
                 Chères visiteuses, chers visiteurs,
               </p>
