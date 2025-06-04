@@ -14,9 +14,9 @@ const JournalSection = () => {
           Notre Journal
         </h2>
         <div className={`flex ${isMobile ? 'flex-col space-y-6' : 'flex-col lg:flex-row'} items-center ${!isMobile ? 'space-y-6 lg:space-y-0 lg:space-x-12' : ''}`}>
-          <div className={`${isMobile ? 'w-full max-w-[280px]' : 'lg:w-1/3 w-full'}`}>
+          <div className={`${isMobile ? 'w-full max-w-[280px] px-0' : 'lg:w-1/3 w-full'}`}>
             <div className="bg-white rounded-lg shadow-xl">
-              <div className={`bg-white rounded-lg ${isMobile ? 'p-3' : 'p-3 md:p-6'} py-0 px-0 mx-0`}>
+              <div className={`bg-white rounded-lg ${isMobile ? 'p-0' : 'p-3 md:p-6'} py-0 px-0 mx-0`}>
                 <img 
                   alt="Perspectives 49 Journal" 
                   className="w-full h-auto object-contain" 
@@ -25,7 +25,7 @@ const JournalSection = () => {
               </div>
             </div>
           </div>
-          <div className={`${isMobile ? 'w-full' : 'lg:w-2/3 w-full'} rounded-xl ${isMobile ? 'py-0 px-0' : 'py-6 md:py-12 px-4 md:px-[20px]'} bg-transparent lg:py-0`}>
+          <div className={`${isMobile ? 'w-full px-0' : 'lg:w-2/3 w-full'} rounded-xl ${isMobile ? 'py-0 px-0' : 'py-6 md:py-12 px-4 md:px-[20px]'} bg-transparent lg:py-0`}>
             <h3 className={`${isMobile ? 'mb-6 text-center bg-primary text-white py-2 rounded-lg text-base' : 'mb-10 md:mb-10 text-center bg-primary text-white py-2 md:py-[10px] rounded-lg text-lg md:text-xl'} font-semibold`}>
               Perspectives 49 - Bulletin n°1
             </h3>

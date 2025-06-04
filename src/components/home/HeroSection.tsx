@@ -1,36 +1,45 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 interface HeroSectionProps {
   backgroundImages: string[];
 }
-const HeroSection = ({
-  backgroundImages
-}: HeroSectionProps) => {
-  const {
-    t
-  } = useLanguage();
+
+const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
+  const { t } = useLanguage();
   const isMobile = useIsMobile();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
-  return <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+
+  return (
+    <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
       {/* Background Images Carousel */}
       <div className="absolute inset-0">
-        {backgroundImages.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}>
+        {backgroundImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
             <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
-          </div>)}
+          </div>
+        ))}
         <div className="absolute inset-0 bg-primary/80"></div>
       </div>
       
       {/* Content */}
-      <div className={`relative z-10 text-center w-full ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} my-0 py-0`}>
+      <div className={`relative z-10 text-center w-full ${isMobile ? 'px-[25px] py-[50px]' : 'px-4 md:px-8 lg:px-[100px]'} my-0`}>
         <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in mt-10`}>
           {t('home.hero_title')}
         </h1>
@@ -42,10 +51,9 @@ const HeroSection = ({
             Notre histoire
           </Link>
         </Button>
-        
-        {/* Dots navigation for mobile */}
-        {isMobile}
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default HeroSection;

@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
 
 const CommuniquesSection = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
   const [selectedImage, setSelectedImage] = useState<string>('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg');
   const [selectedId, setSelectedId] = useState<number>(1);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   
   const communiques = [
     {
@@ -61,6 +63,22 @@ const CommuniquesSection = () => {
     setSelectedImage(image);
     setSelectedId(id);
   };
+
+  const nextSlide = () => {
+    const newIndex = (currentSlideIndex + 1) % communiques.length;
+    setCurrentSlideIndex(newIndex);
+    const currentCommunique = communiques[newIndex];
+    setSelectedImage(currentCommunique.image);
+    setSelectedId(currentCommunique.id);
+  };
+
+  const prevSlide = () => {
+    const newIndex = currentSlideIndex === 0 ? communiques.length - 1 : currentSlideIndex - 1;
+    setCurrentSlideIndex(newIndex);
+    const currentCommunique = communiques[newIndex];
+    setSelectedImage(currentCommunique.image);
+    setSelectedId(currentCommunique.id);
+  };
   
   return (
     <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-accent/30`}>
@@ -73,36 +91,64 @@ const CommuniquesSection = () => {
         </div>
         
         {isMobile ? (
-          // Mobile layout: Image above selected communiqué with real dimensions
+          // Mobile layout: Image above selected communiqué with carousel
           <div className="space-y-3">
-            {communiques.map((communique) => (
-              <div key={communique.id}>
-                {/* Show image above selected communiqué with natural dimensions */}
-                {selectedId === communique.id && (
-                  <div className="w-full bg-white shadow-xl p-4 rounded-lg mb-3">
-                    <img 
-                      alt="Communiqué sélectionné" 
-                      src={selectedImage} 
-                      className="w-full h-auto object-contain rounded-lg transition-all duration-300" 
-                    />
-                  </div>
-                )}
-                
-                <Card 
-                  className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`}
-                  onClick={() => handleCommuniqueClick(communique.image, communique.id)}
+            {/* Show image above selected communiqué */}
+            <div className="w-full bg-white shadow-xl p-4 rounded-lg mb-3">
+              <img 
+                alt="Communiqué sélectionné" 
+                src={selectedImage} 
+                className="w-full h-auto object-contain rounded-lg transition-all duration-300" 
+              />
+            </div>
+            
+            {/* Carousel for communiqués */}
+            <div className="relative">
+              <div className="overflow-hidden">
+                <div 
+                  className="flex transition-transform duration-300 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlideIndex * 100}%)` }}
                 >
-                  <CardContent className="p-4 px-[24px] py-[20px]">
-                    <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
-                      {communique.title}
-                    </h3>
-                    <p className={`text-sm text-${communique.color}-600 font-normal`}>
-                      {communique.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                  {communiques.map((communique) => (
+                    <div key={communique.id} className="w-full flex-shrink-0 px-2">
+                      <Card 
+                        className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`}
+                        onClick={() => handleCommuniqueClick(communique.image, communique.id)}
+                      >
+                        <CardContent className="p-4 px-[24px] py-[20px]">
+                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
+                            {communique.title}
+                          </h3>
+                          <p className={`text-sm text-${communique.color}-600 font-normal`}>
+                            {communique.description}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+              
+              {/* Navigation arrows */}
+              <div className="flex justify-center gap-4 mt-4">
+                <Button 
+                  onClick={prevSlide}
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button 
+                  onClick={nextSlide}
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </div>
         ) : (
           // Desktop layout: Original layout

@@ -45,14 +45,14 @@ const TestimonialsSection = () => {
 
   // Autoslide effect
   useEffect(() => {
-    if (!autoSlide) return;
+    if (!autoSlide || isMobile) return;
     
     const interval = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % testimonials.length);
     }, 5000); // Change slide every 5 seconds
     
     return () => clearInterval(interval);
-  }, [autoSlide, testimonials.length]);
+  }, [autoSlide, testimonials.length, isMobile]);
 
   const nextSlide = () => {
     setAutoSlide(false); // Stop auto sliding when user interacts
@@ -98,28 +98,25 @@ const TestimonialsSection = () => {
               ))}
             </div>
             
-            {/* Navigation Dots */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {testimonials.map((_, idx) => (
-                <button 
-                  key={idx}
-                  onClick={() => {
-                    setAutoSlide(false);
-                    setCurrentIndex(idx);
-                  }}
-                  className={`w-2 h-2 rounded-full ${currentIndex === idx ? 'bg-primary' : 'bg-gray-300'}`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
+            {/* Navigation Arrows only */}
+            <div className="flex justify-center gap-4 mt-4">
+              <Button 
+                onClick={prevSlide}
+                variant="outline"
+                size="icon"
+                className="rounded-full"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button 
+                onClick={nextSlide}
+                variant="outline"
+                size="icon"
+                className="rounded-full"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
             </div>
-            
-            {/* Navigation Arrows */}
-            <button onClick={prevSlide} className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-lg hover:bg-gray-50 transition-colors">
-              <ChevronLeft className="w-5 h-5 text-primary" />
-            </button>
-            <button onClick={nextSlide} className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-lg hover:bg-gray-50 transition-colors">
-              <ChevronRight className="w-5 h-5 text-primary" />
-            </button>
           </div>
           
           <div className="text-center mt-6">

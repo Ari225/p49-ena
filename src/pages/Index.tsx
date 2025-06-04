@@ -62,19 +62,6 @@ const Index = () => {
       <ActivitesSection />
       <BlogSection />
       <GallerySection />
-      
-      {/* Bouton de retour en haut pour mobile */}
-      {isMobile && (
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 bg-primary text-white rounded-full p-3 shadow-lg z-50"
-          aria-label="Retour en haut"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 19V5M5 12l7-7 7 7" />
-          </svg>
-        </button>
-      )}
     </Layout>
   );
 };

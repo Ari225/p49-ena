@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Preloader from './Preloader';
+import ScrollToTopButton from './ScrollToTopButton';
 import { useLocation } from 'react-router-dom';
 
 interface LayoutProps {
@@ -21,6 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
       {!isDashboard && <Footer />}
+      <ScrollToTopButton />
     </div>
   );
 };
