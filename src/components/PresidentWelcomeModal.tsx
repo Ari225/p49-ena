@@ -53,22 +53,22 @@ const PresidentWelcomeModal = () => {
       }`}>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
-          <div className={`relative overflow-hidden ${isMobile ? 'h-[200px]' : 'md:w-1/3'}`}>
+          <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-1/3'}`}>
             <img 
               src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
               alt="Mme MEL Méléï Marcelle" 
-              className={`w-full object-cover object-top ${
+              className={`w-full object-cover ${
                 isMobile 
-                  ? 'h-[200px]' 
-                  : 'h-full min-h-[400px]'
+                  ? 'h-[160px] object-top' 
+                  : 'h-full object-center'
               }`}
             />
           </div>
 
           {/* Welcome Message - Scrollable */}
-          <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : 'max-h-[600px]'}`}>
+          <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-260px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
+              <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
                 Message de Bienvenue
               </h2>
               <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -100,8 +100,8 @@ const PresidentWelcomeModal = () => {
               </div>
             </div>
             
-            {/* Fixed buttons at bottom */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-end p-6 md:p-8 pt-0 border-t bg-white">
+            {/* Fixed buttons at bottom with improved separator */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-end p-6 md:p-8 pt-4 border-t border-gray-300 bg-white">
               <Button 
                 onClick={handleNeverShowAgain}
                 className="bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm"
