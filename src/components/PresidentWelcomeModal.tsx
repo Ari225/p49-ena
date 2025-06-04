@@ -46,8 +46,8 @@ const PresidentWelcomeModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`w-full max-w-none h-auto bg-white ${isMobile ? 'mx-[25px]' : 'mx-[100px]'} my-[50px] lg:my-auto`}>
-        <div className="flex flex-col md:flex-row w-full">
+      <DialogContent className={`w-full max-w-[calc(100vw-${isMobile ? '50px' : '200px'})] h-auto bg-white mx-auto mt-[100px] mb-[50px]`}>
+        <div className={`flex flex-col md:flex-row w-full ${isMobile ? 'px-0' : ''}`}>
           {/* President Photo - Full container coverage */}
           <div className="md:w-1/3 relative overflow-hidden">
             <img 
