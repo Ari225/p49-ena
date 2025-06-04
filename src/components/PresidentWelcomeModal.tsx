@@ -46,21 +46,29 @@ const PresidentWelcomeModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`w-full ${isMobile ? 'max-w-[calc(100vw-25px)]' : 'max-w-[calc(100vw-200px)]'} h-auto bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]`}>
-        <div className={`flex flex-col md:flex-row w-full h-full`}>
+      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${
+        isMobile 
+          ? 'mx-[25px] my-[50px] max-w-[calc(100vw-50px)] max-h-[calc(100vh-100px)]' 
+          : 'mx-[100px] my-[80px] max-w-[calc(100vw-200px)] max-h-[calc(100vh-160px)]'
+      }`}>
+        <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
-          <div className="md:w-1/3 relative overflow-hidden">
+          <div className={`relative overflow-hidden ${isMobile ? 'h-[200px]' : 'md:w-1/3'}`}>
             <img 
               src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
               alt="Mme MEL Méléï Marcelle" 
-              className="w-full h-full object-cover min-h-[300px] md:min-h-[600px]"
+              className={`w-full object-cover object-top ${
+                isMobile 
+                  ? 'h-[200px]' 
+                  : 'h-full min-h-[600px]'
+              }`}
             />
           </div>
 
           {/* Welcome Message - Scrollable */}
-          <div className="md:w-2/3 flex flex-col max-h-[600px]">
+          <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : 'max-h-[600px]'}`}>
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <h2 className="text-2xl font-bold text-primary mb-4">
+              <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>
                 Message de Bienvenue
               </h2>
               <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
