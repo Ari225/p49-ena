@@ -60,7 +60,7 @@ const PresidentWelcomeModal = () => {
               className={`w-full object-cover object-top ${
                 isMobile 
                   ? 'h-[200px]' 
-                  : 'h-full min-h-[600px]'
+                  : 'h-full min-h-[400px]'
               }`}
             />
           </div>
