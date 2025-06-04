@@ -48,27 +48,27 @@ const PresidentWelcomeModal = () => {
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${
         isMobile 
-          ? 'max-w-[calc(100vw-50px)] max-h-[calc(100vh-100px)] my-[50px]' 
-          : 'max-w-[calc(100vw-200px)] max-h-[90vh] my-[5vh]'
+          ? 'max-w-[calc(100vw-50px)] max-h-[calc(100vh-100px)]' 
+          : 'max-w-[calc(100vw-200px)]  max-h-[calc(100vh-100px)]'
       }`}>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
-          <div className={`relative overflow-hidden rounded-lg ${isMobile ? 'h-[140px]' : 'md:w-1/3'}`}>
+          <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-1/3'}`}>
             <img 
               src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
               alt="Mme MEL Méléï Marcelle" 
-              className={`w-full object-cover rounded-lg ${
+              className={`w-full object-cover ${
                 isMobile 
-                  ? 'h-[140px] object-top' 
+                  ? 'h-[160px] object-top' 
                   : 'h-full object-center'
               }`}
             />
           </div>
 
-          {/* Welcome Message - Scrollable on mobile, fixed height on desktop */}
-          <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-240px)]' : 'h-full'}`}>
-            <div className={`flex-1 ${isMobile ? 'overflow-y-auto' : ''} p-6 md:p-8`}>
-              <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-base' : 'text-2xl'}`}>
+          {/* Welcome Message - Scrollable */}
+          <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-260px)]' : 'max-h-[calc(100vh-160px)]'}`}>
+            <div className="flex-1 overflow-y-auto p-6 md:p-8">
+              <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
                 Message de Bienvenue
               </h2>
               <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -101,7 +101,7 @@ const PresidentWelcomeModal = () => {
             </div>
             
             {/* Fixed buttons at bottom with improved separator */}
-            <div className={`flex ${isMobile ? 'flex-row gap-3' : 'flex-col sm:flex-row gap-3'} justify-end p-6 md:p-8 pt-4 border-t border-gray-300 bg-white`}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-end p-6 md:p-8 pt-4 border-t border-gray-300 bg-white">
               <Button 
                 onClick={handleNeverShowAgain}
                 className="bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm"
