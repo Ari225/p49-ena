@@ -63,10 +63,6 @@ const PresidentWelcomeModal = () => {
               <h2 className="text-2xl font-bold text-primary mb-4">
                 Message de Bienvenue
               </h2>
-              <div className="text-center mb-4 md:hidden">
-                <h3 className="text-xl font-semibold text-primary">Mme MEL Méléï Marcelle</h3>
-                <p className="text-sm text-primary/80">Présidente du Réseau P49</p>
-              </div>
               <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
                 <p className="mb-4">
                   Chères visiteuses, chers visiteurs,
@@ -91,8 +87,7 @@ const PresidentWelcomeModal = () => {
                   Avec toute ma considération,
                 </p>
                 <p className="font-semibold text-primary">
-                  Mme MEL Méléï Marcelle<br/>
-                  Présidente du Réseau P49
+                  Madame MEL Méléï Marcelle, Présidente du Réseau P49
                 </p>
               </div>
             </div>
