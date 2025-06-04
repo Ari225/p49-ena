@@ -63,7 +63,7 @@ const CommuniquesSection = () => {
   };
   
   return (
-    <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-white`}>
+    <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-accent/30`}>
       <div className="container mx-auto px-0">
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
