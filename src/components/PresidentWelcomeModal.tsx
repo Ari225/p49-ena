@@ -53,7 +53,7 @@ const PresidentWelcomeModal = () => {
       }`}>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
-          <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-2/3'}`}>
+          <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-1/3'}`}>
             <img 
               src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
               alt="Mme MEL Méléï Marcelle" 
@@ -106,7 +106,7 @@ const PresidentWelcomeModal = () => {
                 onClick={handleNeverShowAgain}
                 className="bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm"
               >
-                Ne plus revoir
+                Je ne souhaite plus revoir ce message
               </Button>
               <Button 
                 onClick={handleClose}
