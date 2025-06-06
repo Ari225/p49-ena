@@ -4,13 +4,14 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Eye, FileText } from 'lucide-react';
+import PDFViewer from '@/components/PDFViewer';
 
 const DerniereEdition = () => {
   const currentJournal = {
     title: "Perspectives 49 - Bulletin n°1",
     summary: "Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes. Le bulletin s'organise autour de quatre rubriques principales : Actualités citoyennes, Dossier spécial sur l'entrepreneuriat des jeunes, Vie associative et Culture & expressions.",
     coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
-    pdfUrl: "#", // Will be updated when admin uploads PDF
+    pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", // Sample PDF for demonstration
     publishDate: "Mars 2024"
   };
 
@@ -19,13 +20,15 @@ const DerniereEdition = () => {
       title: "Perspectives 49 - Numéro Spécial Assemblée Générale",
       date: "Février 2024",
       summary: "Compte-rendu complet de l'assemblée générale 2024 et perspectives d'avenir.",
-      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"
+      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
+      pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
     },
     {
       title: "Perspectives 49 - Bilan Annuel 2023",
       date: "Décembre 2023",
       summary: "Retour sur les réalisations de l'année 2023 et projets pour 2024.",
-      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"
+      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
+      pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
     }
   ];
 
@@ -34,13 +37,15 @@ const DerniereEdition = () => {
       title: "Perspectives 49 - Numéro Inaugural",
       date: "Janvier 2023",
       summary: "Premier numéro du journal du réseau P49.",
-      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"
+      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
+      pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
     },
     {
       title: "Perspectives 49 - Édition Spéciale Formation",
       date: "Juin 2023",
       summary: "Focus sur les programmes de formation continue.",
-      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"
+      coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
+      pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
     }
   ];
 
@@ -73,10 +78,10 @@ const DerniereEdition = () => {
                 
                 {/* Action Buttons */}
                 <div className="flex space-x-4 justify-center">
-                  <Button className="bg-primary hover:bg-primary/90 flex items-center space-x-2">
-                    <Eye className="h-4 w-4" />
-                    <span>Lire en ligne</span>
-                  </Button>
+                  <PDFViewer 
+                    pdfUrl={currentJournal.pdfUrl}
+                    title={currentJournal.title}
+                  />
                   <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white flex items-center space-x-2">
                     <Download className="h-4 w-4" />
                     <span>Télécharger PDF</span>
@@ -123,10 +128,16 @@ const DerniereEdition = () => {
                   <CardContent>
                     <p className="text-gray-700 mb-4">{journal.summary}</p>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Eye className="h-3 w-3 mr-1" />
-                        Lire
-                      </Button>
+                      <PDFViewer 
+                        pdfUrl={journal.pdfUrl}
+                        title={journal.title}
+                        triggerButton={
+                          <Button size="sm" variant="outline">
+                            <Eye className="h-3 w-3 mr-1" />
+                            Lire
+                          </Button>
+                        }
+                      />
                       <Button size="sm" variant="outline">
                         <Download className="h-3 w-3 mr-1" />
                         Télécharger
@@ -160,10 +171,16 @@ const DerniereEdition = () => {
                     </div>
                     <p className="text-gray-700 text-sm mb-3">{journal.summary}</p>
                     <div className="flex space-x-1">
-                      <Button size="sm" variant="outline" className="text-xs">
-                        <FileText className="h-3 w-3 mr-1" />
-                        Consulter
-                      </Button>
+                      <PDFViewer 
+                        pdfUrl={journal.pdfUrl}
+                        title={journal.title}
+                        triggerButton={
+                          <Button size="sm" variant="outline" className="text-xs">
+                            <FileText className="h-3 w-3 mr-1" />
+                            Consulter
+                          </Button>
+                        }
+                      />
                     </div>
                   </CardContent>
                 </Card>
