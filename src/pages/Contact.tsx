@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import ContactMap from '@/components/ContactMap';
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -15,6 +17,7 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
@@ -28,19 +31,25 @@ const Contact = () => {
       message: ''
     });
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  return <Layout>
-      <div style={{
-      backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
-    }} className="min-h-[80vh] flex items-center justify-center py-[100px] relative px-[100px]">
+
+  return (
+    <Layout>
+      <div 
+        style={{
+          backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }} 
+        className="min-h-[80vh] flex items-center justify-center py-[100px] relative px-[100px]"
+      >
         {/* Primary overlay */}
         <div className="absolute inset-0 bg-primary/80"></div>
         
@@ -81,8 +90,6 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              
-
               {/* Map Container */}
               <Card>
                 <CardHeader>
@@ -108,20 +115,46 @@ const Contact = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="name">Nom complet</Label>
-                        <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
+                        <Input 
+                          id="name" 
+                          name="name" 
+                          value={formData.name} 
+                          onChange={handleChange} 
+                          required 
+                        />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required />
+                        <Input 
+                          id="email" 
+                          name="email" 
+                          type="email" 
+                          value={formData.email} 
+                          onChange={handleChange} 
+                          required 
+                        />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject">Sujet</Label>
-                      <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} required />
+                      <Input 
+                        id="subject" 
+                        name="subject" 
+                        value={formData.subject} 
+                        onChange={handleChange} 
+                        required 
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="message">Message</Label>
-                      <Textarea id="message" name="message" rows={6} value={formData.message} onChange={handleChange} required />
+                      <Textarea 
+                        id="message" 
+                        name="message" 
+                        rows={6} 
+                        value={formData.message} 
+                        onChange={handleChange} 
+                        required 
+                      />
                     </div>
                     <Button type="submit" className="bg-primary hover:bg-primary/90 w-full">
                       Envoyer le message
@@ -133,6 +166,8 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Contact;

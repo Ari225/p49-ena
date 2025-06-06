@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/context/LanguageContext';
@@ -14,6 +15,7 @@ import CarrierePlus from '@/pages/CarrierePlus';
 import EvenementsSociaux from '@/pages/EvenementsSociaux';
 import Gallery from '@/pages/Gallery';
 import Journal from '@/pages/Journal';
+import Contact from '@/pages/Contact';
 import NotFound from '@/pages/NotFound';
 import ActualiteDetail from '@/pages/ActualiteDetail';
 import CommuniqueDetail from '@/pages/CommuniqueDetail';
@@ -47,6 +49,7 @@ function App() {
                 <Route path="/journal" element={<Journal />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/echo-regions" element={<EchoRegions />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Routes>
