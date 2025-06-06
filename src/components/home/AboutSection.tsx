@@ -16,8 +16,8 @@ const AboutSection = () => {
           <div className={`${isMobile ? 'w-full flex justify-center' : 'lg:w-1/3 w-full'}`}>
             <img 
               src="/lovable-uploads/A propos.webp" 
-              alt="P49 ENA Logo" 
-              className={`${isMobile ? 'w-32 h-32' : 'w-40 h-40 md:w-60 md:h-60'} object-contain`}
+              alt="à propos" 
+              className={`${isMobile ? 'w-32 h-32' : 'w-70 h-auto md:w-60 md:h-60'} object-contain`}
             />
           </div>
           <div className={`${isMobile ? 'w-full' : 'lg:w-2/3 w-full'}`}>
