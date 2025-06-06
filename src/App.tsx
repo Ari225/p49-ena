@@ -16,6 +16,8 @@ import EvenementsSociaux from '@/pages/EvenementsSociaux';
 import Gallery from '@/pages/Gallery';
 import Journal from '@/pages/Journal';
 import Contact from '@/pages/Contact';
+import Historique from '@/pages/Historique';
+import Archives from '@/pages/Archives';
 import NotFound from '@/pages/NotFound';
 import ActualiteDetail from '@/pages/ActualiteDetail';
 import CommuniqueDetail from '@/pages/CommuniqueDetail';
@@ -50,6 +52,8 @@ function App() {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/echo-regions" element={<EchoRegions />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/historique" element={<Historique />} />
+                <Route path="/archives" element={<Archives />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Routes>
