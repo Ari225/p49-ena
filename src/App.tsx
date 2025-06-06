@@ -41,6 +41,10 @@ import ReunionsConstitution from '@/pages/ReunionsConstitution';
 import Suggestions from '@/pages/Suggestions';
 import Temoignages from '@/pages/Temoignages';
 import TextesOfficiels from '@/pages/TextesOfficiels';
+import Formations from '@/pages/Formations';
+import RenforcementCapacites from '@/pages/RenforcementCapacites';
+import CoachingMentorat from '@/pages/CoachingMentorat';
+import ActualitesConcours from '@/pages/ActualitesConcours';
 
 function App() {
   const queryClient = new QueryClient();
@@ -86,6 +90,10 @@ function App() {
                 <Route path="/suggestions" element={<Suggestions />} />
                 <Route path="/temoignages" element={<Temoignages />} />
                 <Route path="/textes-officiels" element={<TextesOfficiels />} />
+                <Route path="/formations" element={<Formations />} />
+                <Route path="/renforcement-capacites" element={<RenforcementCapacites />} />
+                <Route path="/coaching-mentorat" element={<CoachingMentorat />} />
+                <Route path="/actualites-concours" element={<ActualitesConcours />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
               </Routes>
