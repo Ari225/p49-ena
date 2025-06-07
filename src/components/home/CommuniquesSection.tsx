@@ -91,7 +91,7 @@ const CommuniquesSection = () => {
                 <div className="flex transition-transform duration-300 ease-in-out" style={{
               transform: `translateX(-${currentSlideIndex * 100}%)`
             }}>
-                  {communiques.map(communique => <div key={communique.id} className="w-full flex-shrink-0 px-2">
+                  {communiques.map(communique => <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg ">
                       <Card className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                         <CardContent className="p-4 px-[24px] py-[20px]">
                           <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
