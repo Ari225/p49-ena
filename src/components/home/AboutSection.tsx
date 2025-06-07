@@ -17,7 +17,7 @@ const AboutSection = () => {
             <img 
               src="/lovable-uploads/P49Grid.webp" 
               alt="P49" 
-              className={`${isMobile ? 'w-32 h-32' : 'w-[150px] h-auto md:w--[150px] md:h-auto'} object-contain`}
+              className={`${isMobile ? 'w-32 h-32' : 'w-200 h-auto md:w--200 md:h-auto'} object-contain`}
             />
           </div>
           <div className={`${isMobile ? 'w-full' : 'lg:w-2/3 w-full'}`}>
