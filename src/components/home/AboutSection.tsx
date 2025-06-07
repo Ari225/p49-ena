@@ -15,7 +15,7 @@ const AboutSection = () => {
         <div className={`flex flex-col ${isMobile ? 'space-y-6' : 'lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-12'}`}>
           <div className={`${isMobile ? 'w-full flex justify-center' : 'lg:w-1/3 w-full'}`}>
             <img 
-              src="/lovable-uploads/P49 Grid.webp" 
+              src="/lovable-uploads/P49Grid.webp" 
               alt="P49" 
               className={`${isMobile ? 'w-32 h-32' : 'w-auto h-auto md:w-auto md:h-auto'} object-contain`}
             />
