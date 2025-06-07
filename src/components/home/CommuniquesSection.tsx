@@ -121,7 +121,7 @@ const CommuniquesSection = () => {
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Image container */}
             <div className="w-full lg:w-[500px] bg-white flex items-center justify-center">
-              <div className="w-full lg:w-[500px] bg-white shadow-xl md:p-6 rounded-lg px-0 py-0 ">
+              <div className="w-full lg:w-[500px] bg-white shadow-xl rounded-lg px-0 py-0 ">
                 <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
               </div>
             </div>
