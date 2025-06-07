@@ -81,7 +81,7 @@ const CommuniquesSection = () => {
       // Mobile layout: Image above selected communiqué with carousel
       <div className="space-y-3">
             {/* Show image above selected communiqué */}
-            <div className="w-full bg-white shadow-xl p-4 rounded-lg mb-3">
+            <div className="w-full bg-transparent shadow-xl p-4 rounded-lg mb-3 px-0 py-0 ">
               <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-auto object-contain rounded-lg transition-all duration-300" />
             </div>
             
