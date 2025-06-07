@@ -12,7 +12,7 @@ const JournalSection = () => {
         <div className={`flex ${isMobile ? 'flex-col space-y-6' : 'flex-col lg:flex-row'} items-center ${!isMobile ? 'space-y-6 lg:space-y-0 lg:space-x-12' : ''}`}>
           <div className={`${isMobile ? 'w-full max-w-[280px]' : 'lg:w-1/3 w-full'}`}>
             <div className="bg-white rounded-lg shadow-xl">
-              <div className={`bg-white rounded-lg ${isMobile ? 'p-3' : 'p-3 md:p-6'} py-0 px-0 mx-0`}>
+              <div className={`bg-white rounded-lg ${isMobile ? 'p-0' : 'p-0 md:p-0'} py-0 px-0 mx-0`}>
                 <img alt="Perspectives 49 Journal" className="w-full h-auto object-contain" src="/lovable-uploads/Pers49.webp" />
               </div>
             </div>
