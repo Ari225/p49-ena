@@ -22,7 +22,7 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
   }, [backgroundImages.length]);
 
   return (
-    <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
+    <section className={`relative ${isMobile ? 'h-[60vh]' : 'h-screen'} flex items-center justify-center text-white overflow-hidden`}>
       {/* Background Images Carousel */}
       <div className="absolute inset-0">
         {backgroundImages.map((image, index) => (
