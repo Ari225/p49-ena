@@ -13,7 +13,7 @@ const JournalSection = () => {
           <div className={`${isMobile ? 'w-full max-w-[280px]' : 'lg:w-1/3 w-full'}`}>
             <div className="bg-white rounded-lg shadow-xl">
               <div className={`bg-white rounded-lg ${isMobile ? 'p-3' : 'p-3 md:p-6'} py-0 px-0 mx-0`}>
-                <img alt="Perspectives 49 Journal" className="w-full h-auto object-contain" src="/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg" />
+                <img alt="Perspectives 49 Journal" src="/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg" className="w-full h-full object-contain " />
               </div>
             </div>
           </div>
