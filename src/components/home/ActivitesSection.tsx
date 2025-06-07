@@ -1,16 +1,13 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const ActivitesSection = () => {
   const isMobile = useIsMobile();
   const [upcomingSlideIndex, setUpcomingSlideIndex] = useState(0);
   const [recentSlideIndex, setRecentSlideIndex] = useState(0);
-  
   const upcomingActivities = [{
     type: 'Assemblée Générale',
     title: 'AG Extraordinaire 2024',
@@ -36,7 +33,6 @@ const ActivitesSection = () => {
     participants: '25 places',
     status: 'Places limitées'
   }];
-  
   const recentActivities = [{
     title: 'Régionale de l\'Ouest - Man',
     date: '25 Mars 2024',
@@ -48,25 +44,19 @@ const ActivitesSection = () => {
     participants: '135 membres',
     image: 'https://images.unsplash.com/photo-1559223607-a43c990c692f?w=300&h=150&fit=crop'
   }];
-
   const nextUpcomingSlide = () => {
     setUpcomingSlideIndex(prevIndex => (prevIndex + 1) % upcomingActivities.length);
   };
-
   const prevUpcomingSlide = () => {
     setUpcomingSlideIndex(prevIndex => prevIndex === 0 ? upcomingActivities.length - 1 : prevIndex - 1);
   };
-
   const nextRecentSlide = () => {
     setRecentSlideIndex(prevIndex => (prevIndex + 1) % recentActivities.length);
   };
-
   const prevRecentSlide = () => {
     setRecentSlideIndex(prevIndex => prevIndex === 0 ? recentActivities.length - 1 : prevIndex - 1);
   };
-  
-  return (
-    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-primary mb-4">Activités</h2>
@@ -83,15 +73,12 @@ const ActivitesSection = () => {
               Agenda à venir
             </h3>
             
-            {isMobile ? (
-              <div className="relative">
+            {isMobile ? <div className="relative">
                 <div className="overflow-hidden">
-                  <div 
-                    className="flex transition-transform duration-300 ease-in-out"
-                    style={{ transform: `translateX(-${upcomingSlideIndex * 100}%)` }}
-                  >
-                    {upcomingActivities.map((activity, index) => (
-                      <div key={index} className="w-full flex-shrink-0 px-2">
+                  <div className="flex transition-transform duration-300 ease-in-out" style={{
+                transform: `translateX(-${upcomingSlideIndex * 100}%)`
+              }}>
+                    {upcomingActivities.map((activity, index) => <div key={index} className="w-full flex-shrink-0 px-0">
                         <Card className="overflow-hidden">
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between">
@@ -123,34 +110,20 @@ const ActivitesSection = () => {
                             </div>
                           </CardContent>
                         </Card>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </div>
                 
                 <div className="flex justify-center gap-4 mt-4">
-                  <Button 
-                    onClick={prevUpcomingSlide}
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
+                  <Button onClick={prevUpcomingSlide} variant="outline" size="icon" className="rounded-full">
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
-                  <Button 
-                    onClick={nextUpcomingSlide}
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
+                  <Button onClick={nextUpcomingSlide} variant="outline" size="icon" className="rounded-full">
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {upcomingActivities.map((activity, index) => (
-                  <Card key={index} className="overflow-hidden">
+              </div> : <div className="space-y-4">
+                {upcomingActivities.map((activity, index) => <Card key={index} className="overflow-hidden">
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -180,10 +153,8 @@ const ActivitesSection = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+                  </Card>)}
+              </div>}
           </div>
 
           {/* Activités récentes */}
@@ -193,15 +164,12 @@ const ActivitesSection = () => {
               Dernières activités
             </h3>
             
-            {isMobile ? (
-              <div className="relative">
+            {isMobile ? <div className="relative">
                 <div className="overflow-hidden">
-                  <div 
-                    className="flex transition-transform duration-300 ease-in-out"
-                    style={{ transform: `translateX(-${recentSlideIndex * 100}%)` }}
-                  >
-                    {recentActivities.map((activity, index) => (
-                      <div key={index} className="w-full flex-shrink-0 px-2">
+                  <div className="flex transition-transform duration-300 ease-in-out" style={{
+                transform: `translateX(-${recentSlideIndex * 100}%)`
+              }}>
+                    {recentActivities.map((activity, index) => <div key={index} className="w-full flex-shrink-0 px-2">
                         <Card className="overflow-hidden">
                           <CardContent className="p-0">
                             <div className="flex px-0">
@@ -214,34 +182,20 @@ const ActivitesSection = () => {
                             </div>
                           </CardContent>
                         </Card>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </div>
                 
                 <div className="flex justify-center gap-4 mt-4">
-                  <Button 
-                    onClick={prevRecentSlide}
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
+                  <Button onClick={prevRecentSlide} variant="outline" size="icon" className="rounded-full">
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
-                  <Button 
-                    onClick={nextRecentSlide}
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full"
-                  >
+                  <Button onClick={nextRecentSlide} variant="outline" size="icon" className="rounded-full">
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {recentActivities.map((activity, index) => (
-                  <Card key={index} className="overflow-hidden">
+              </div> : <div className="space-y-4">
+                {recentActivities.map((activity, index) => <Card key={index} className="overflow-hidden">
                     <CardContent className="p-0">
                       <div className="flex px-0">
                         <img src={activity.image} alt={activity.title} className="w-24 h-auto object-cover" />
@@ -252,10 +206,8 @@ const ActivitesSection = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+                  </Card>)}
+              </div>}
           </div>
         </div>
         
@@ -265,8 +217,6 @@ const ActivitesSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ActivitesSection;
