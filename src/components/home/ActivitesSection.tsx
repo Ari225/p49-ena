@@ -174,7 +174,7 @@ const ActivitesSection = () => {
         </div>
 
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : 'text-sm md:text-sm'}`}>
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] h-10 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : 'text-sm md:text-sm'}`}>
             <Link to="/activites" className="flex items-center justify-center">
               Voir toutes nos activités
               <ChevronRight className="h-4 w-4 ml-1" />
