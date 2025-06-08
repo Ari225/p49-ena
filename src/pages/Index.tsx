@@ -26,6 +26,7 @@ const Index = () => {
     '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
     '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
     '/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png'
+    '/lovable-uploads/Equipe.jpg'
   ];
 
   // Effet pour ajuster le scroll pour les appareils mobiles
