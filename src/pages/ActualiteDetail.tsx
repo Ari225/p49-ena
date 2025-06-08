@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -7,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, ArrowLeft, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface NewsDetail {
   id: string;
   title: string;
@@ -20,17 +18,18 @@ interface NewsDetail {
   author: string;
   tags?: string[];
 }
-
 const ActualiteDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const isMobile = useIsMobile();
   const [news, setNews] = useState<NewsDetail | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     fetchNewsDetail();
   }, [id]);
-
   const fetchNewsDetail = async () => {
     try {
       setLoading(true);
@@ -54,11 +53,7 @@ const ActualiteDetail = () => {
         summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
         category: 'Formation',
         image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-        images: [
-          '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-          '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'
-        ],
+        images: ['/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg', '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg', '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'],
         published_date: '2024-01-15',
         author: 'Équipe P49',
         tags: ['Leadership', 'Formation', 'Management', 'Développement professionnel']
@@ -70,20 +65,15 @@ const ActualiteDetail = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">Chargement...</div>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
-
   if (!news) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">Actualité non trouvée</h1>
@@ -92,12 +82,9 @@ const ActualiteDetail = () => {
             </Link>
           </div>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-white min-h-screen">
         {/* Back Button */}
         <section className={`py-6 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
@@ -111,7 +98,7 @@ const ActualiteDetail = () => {
 
         {/* Article Content */}
         <article className={`pb-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             {/* Header */}
             <header className="mb-8">
               <div className="flex items-center gap-4 mb-4">
@@ -134,60 +121,37 @@ const ActualiteDetail = () => {
             </header>
 
             {/* Main Image */}
-            {news.image_url && (
-              <div className="mb-8">
-                <img 
-                  src={news.image_url} 
-                  alt={news.title}
-                  className="w-full h-96 object-cover rounded-lg shadow-lg"
-                />
-              </div>
-            )}
+            {news.image_url && <div className="mb-8">
+                <img src={news.image_url} alt={news.title} className="w-full h-96 object-cover rounded-lg shadow-lg" />
+              </div>}
 
             {/* Content */}
             <div className="prose prose-lg max-w-none mb-8">
-              {news.content.split('\n').map((paragraph, index) => (
-                <p key={index} className="mb-4 text-gray-700 leading-relaxed">
+              {news.content.split('\n').map((paragraph, index) => <p key={index} className="mb-4 text-gray-700 leading-relaxed">
                   {paragraph.trim()}
-                </p>
-              ))}
+                </p>)}
             </div>
 
             {/* Additional Images */}
-            {news.images && news.images.length > 1 && (
-              <div className="mb-8">
+            {news.images && news.images.length > 1 && <div className="mb-8">
                 <h3 className="text-xl font-semibold text-primary mb-4">Images supplémentaires</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {news.images.slice(1).map((image, index) => (
-                    <img 
-                      key={index}
-                      src={image} 
-                      alt={`${news.title} - Image ${index + 2}`}
-                      className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                    />
-                  ))}
+                  {news.images.slice(1).map((image, index) => <img key={index} src={image} alt={`${news.title} - Image ${index + 2}`} className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow" />)}
                 </div>
-              </div>
-            )}
+              </div>}
 
             {/* Tags */}
-            {news.tags && news.tags.length > 0 && (
-              <div className="mb-8">
+            {news.tags && news.tags.length > 0 && <div className="mb-8">
                 <h3 className="text-lg font-semibold text-primary mb-3">Mots-clés</h3>
                 <div className="flex flex-wrap gap-2">
-                  {news.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline">
+                  {news.tags.map((tag, index) => <Badge key={index} variant="outline">
                       {tag}
-                    </Badge>
-                  ))}
+                    </Badge>)}
                 </div>
-              </div>
-            )}
+              </div>}
           </div>
         </article>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default ActualiteDetail;
