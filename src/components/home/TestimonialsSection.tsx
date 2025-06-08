@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -102,7 +103,7 @@ const TestimonialsSection = () => {
             <Button asChild className="bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold w-full text-sm">
               <Link to="/temoignages" className="flex items-center justify-center">
                 Voir tous les témoignages
-                <ArrowRight className="h-4 w-4 ml-2" />
+                <ChevronRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
           </div>
@@ -151,7 +152,7 @@ const TestimonialsSection = () => {
           <Button asChild className="bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
             <Link to="/temoignages" className="flex items-center">
               Voir tous les témoignages
-              <ArrowRight className="h-4 w-4 ml-2" />
+              <ChevronRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>
         </div>

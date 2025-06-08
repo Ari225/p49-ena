@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Camera, ArrowRight } from 'lucide-react';
+import { Camera, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const GallerySection = () => {
@@ -48,7 +48,7 @@ const GallerySection = () => {
             <Link to="/galerie">
               <span className="hidden sm:inline">Voir la galerie</span>
               <span className="sm:hidden">Voir plus</span>
-              <ArrowRight className="h-4 w-4 ml-1" />
+              <ChevronRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>
         </div>

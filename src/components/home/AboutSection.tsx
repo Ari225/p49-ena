@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const AboutSection = () => {
@@ -32,7 +33,10 @@ const AboutSection = () => {
                 asChild 
                 className={`bg-primary text-white hover:bg-primary rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${isMobile ? 'w-full justify-center py-3' : 'px-4 py-2'}`}
               >
-                <Link to="/historique">En savoir plus</Link>
+                <Link to="/historique">
+                  En savoir plus
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Link>
               </Button>
             </div>
           </div>

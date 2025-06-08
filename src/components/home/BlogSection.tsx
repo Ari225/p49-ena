@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PenTool, Calendar, User, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { PenTool, Calendar, User, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BlogArticle {
@@ -69,7 +70,7 @@ const BlogSection = () => {
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
           <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Articles de Blog</h2>
-          <p className="text-gray-700 text-base md:text-base px-4">
+          <p className={`text-gray-700 px-4 ${isMobile ? 'text-sm' : 'text-base md:text-base'}`}>
             Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
           </p>
         </div>
@@ -109,7 +110,7 @@ const BlogSection = () => {
               </div>
             </div>
             
-            <div className="flex justify-center gap-4 mt-6">
+            <div className="flex justify-center gap-4 mt-4">
               <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -146,10 +147,10 @@ const BlogSection = () => {
           </div>}
         
         <div className="text-center">
-          <Button asChild className="bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
-            <Link to="/blog" className="flex items-center">
+          <Button asChild className={`bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : ''}`}>
+            <Link to="/blog" className="flex items-center justify-center">
               Voir tous les articles
-              <ArrowRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>
         </div>
