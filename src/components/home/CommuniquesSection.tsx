@@ -92,7 +92,7 @@ const CommuniquesSection = () => {
               transform: `translateX(-${currentSlideIndex * 100}%)`
             }}>
                   {communiques.map(communique => <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg ">
-                      <Card className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                      <Card className={`bg-${communique.color}-50 border-${communique.color}-200 rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                         <CardContent className="p-4 px-[24px] py-[20px]">
                           <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
                             {communique.title}
