@@ -1,15 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, MapPin, ChevronLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const EchoRegionsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useIsMobile();
-  
   const regionalNews = [{
     region: "Abidjan",
     title: "Rencontre mensuelle des membres d'Abidjan",
@@ -35,7 +32,6 @@ const EchoRegionsSection = () => {
     excerpt: "Workshop sur les innovations en gestion publique locale.",
     image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=250&fit=crop"
   }];
-  
   useEffect(() => {
     if (!isMobile) {
       const interval = setInterval(() => {
@@ -44,17 +40,13 @@ const EchoRegionsSection = () => {
       return () => clearInterval(interval);
     }
   }, [isMobile]);
-
   const nextSlide = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % regionalNews.length);
   };
-
   const prevSlide = () => {
     setCurrentIndex(prevIndex => prevIndex === 0 ? regionalNews.length - 1 : prevIndex - 1);
   };
-  
-  return (
-    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
           <h2 className="text-2xl md:text-3xl font-bold text-primary">Écho des Régions</h2>
@@ -67,15 +59,12 @@ const EchoRegionsSection = () => {
           </Button>
         </div>
         
-        {isMobile ? (
-          <div className="relative">
+        {isMobile ? <div className="relative">
             <div className="overflow-hidden">
-              <div 
-                className="flex transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {regionalNews.map((news, index) => (
-                  <div key={index} className="w-full flex-shrink-0 px-2">
+              <div className="flex transition-transform duration-300 ease-in-out" style={{
+            transform: `translateX(-${currentIndex * 100}%)`
+          }}>
+                {regionalNews.map((news, index) => <div key={index} className="w-full flex-shrink-0 px-0">
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                       <div className="relative h-32 md:h-48">
                         <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
@@ -94,35 +83,21 @@ const EchoRegionsSection = () => {
                         <p className="text-xs text-gray-700 font-normal">{news.date}</p>
                       </CardContent>
                     </Card>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
             
             {/* Navigation arrows */}
             <div className="flex justify-center gap-4 mt-4">
-              <Button 
-                onClick={prevSlide}
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
+              <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button 
-                onClick={nextSlide}
-                variant="outline"
-                size="icon"
-                className="rounded-full"
-              >
+              <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {regionalNews.map((news, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
+          </div> : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            {regionalNews.map((news, index) => <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative h-32 md:h-48">
                   <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
                   <div className="absolute top-2 md:top-3 left-2 md:left-3 bg-primary text-white px-2 py-1 text-xs flex items-center rounded">
@@ -139,13 +114,9 @@ const EchoRegionsSection = () => {
                   </p>
                   <p className="text-xs text-gray-700 font-normal">{news.date}</p>
                 </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+              </Card>)}
+          </div>}
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default EchoRegionsSection;
