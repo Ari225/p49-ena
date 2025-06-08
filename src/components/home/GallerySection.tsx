@@ -40,7 +40,7 @@ const GallerySection = () => {
     <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
-          <h2 className="text-2xl md:text-3xl font-bold text-primary flex items-center">
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary flex items-center`}>
             <Camera className="w-6 h-6 mr-2" />
             Médiathèque
           </h2>

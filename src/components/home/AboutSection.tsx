@@ -21,7 +21,7 @@ const AboutSection = () => {
             />
           </div>
           <div className={`${isMobile ? 'w-full' : 'lg:w-2/3 w-full'}`}>
-            <h2 className={`text-2xl md:text-3xl font-bold text-primary mb-6 md:mb-10 text-center ${isMobile ? '' : 'lg:text-right'}`}>
+            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-6 md:mb-10 text-center ${isMobile ? '' : 'lg:text-right'}`}>
               {t('home.about_title')}
             </h2>
             <p className={`text-gray-700 leading-relaxed mb-6 md:mb-10 ${isMobile ? 'text-sm' : 'text-base md:text-base'} text-justify font-normal`}>

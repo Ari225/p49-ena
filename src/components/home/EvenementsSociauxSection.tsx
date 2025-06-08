@@ -35,7 +35,7 @@ const EvenementsSociauxSection = () => {
     <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
             Événements Sociaux
           </h2>
           <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : ''}`}>

@@ -1,13 +1,15 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const JournalSection = () => {
   const isMobile = useIsMobile();
-  return <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  
+  return (
+    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
-        <h2 className={`text-2xl md:text-3xl font-bold text-primary mb-8 md:mb-12 ${isMobile ? 'text-center' : 'text-center lg:text-left'}`}>
+        <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-8 md:mb-12 ${isMobile ? 'text-center' : 'text-center lg:text-left'}`}>
           Notre Journal
         </h2>
         <div className={`flex ${isMobile ? 'flex-col space-y-6' : 'flex-col lg:flex-row'} items-center ${!isMobile ? 'space-y-6 lg:space-y-0 lg:space-x-12' : ''}`}>
@@ -44,6 +46,8 @@ const JournalSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default JournalSection;

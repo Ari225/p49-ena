@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+
 const CommuniquesSection = () => {
   const {
     t
@@ -68,10 +69,11 @@ const CommuniquesSection = () => {
     setSelectedImage(currentCommunique.image);
     setSelectedId(currentCommunique.id);
   };
-  return <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-accent/30`}>
+  return (
+    <section className={`${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'} py-12 md:py-16 lg:py-[100px] bg-accent/30`}>
       <div className="container mx-auto px-0">
         <div className="flex items-center justify-between mb-6 md:mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-primary">{t('home.communiques_title')}</h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary`}>{t('home.communiques_title')}</h2>
           <Link to="/communiques" className="bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] text-sm  md:text-sm font-semibold">
             Voir tout <ChevronRight className="ml-1 h-4 w-4" />
           </Link>
@@ -141,6 +143,8 @@ const CommuniquesSection = () => {
             </div>
           </div>}
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default CommuniquesSection;

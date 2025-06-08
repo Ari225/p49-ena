@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, MapPin, ChevronLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const EchoRegionsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useIsMobile();
@@ -46,10 +47,11 @@ const EchoRegionsSection = () => {
   const prevSlide = () => {
     setCurrentIndex(prevIndex => prevIndex === 0 ? regionalNews.length - 1 : prevIndex - 1);
   };
-  return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  return (
+    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
-          <h2 className="text-2xl md:text-3xl font-bold text-primary">Écho des Régions</h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary`}>Écho des Régions</h2>
           <Button asChild className="bg-primary text-white font-semibold hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
             <Link to="/echo-regions">
               <span className="hidden sm:inline">Actualités régionales</span>
@@ -117,6 +119,8 @@ const EchoRegionsSection = () => {
               </Card>)}
           </div>}
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default EchoRegionsSection;

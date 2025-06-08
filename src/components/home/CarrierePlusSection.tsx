@@ -13,7 +13,7 @@ const CarrierePlusSection = () => {
     <section className={`bg-accent/30 py-[100px] ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-0 font-normal text-base text-gray-700">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Carrières+</h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>Carrières+</h2>
           <p className="text-gray-700 mx-auto font-normal">
             Développez votre potentiel avec nos opportunités de formation et nos programmes d'accompagnement
           </p>
