@@ -169,7 +169,7 @@ const ActivitesSection = () => {
                   <div className="flex transition-transform duration-300 ease-in-out" style={{
                 transform: `translateX(-${recentSlideIndex * 100}%)`
               }}>
-                    {recentActivities.map((activity, index) => <div key={index} className="w-full flex-shrink-0 px-2">
+                    {recentActivities.map((activity, index) => <div key={index} className="w-full flex-shrink-0 px-0">
                         <Card className="overflow-hidden">
                           <CardContent className="p-0">
                             <div className="flex px-0">
