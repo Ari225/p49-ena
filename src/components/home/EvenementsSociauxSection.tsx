@@ -1,41 +1,32 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Briefcase, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const EvenementsSociauxSection = () => {
   const isMobile = useIsMobile();
-  
-  const events = [
-    {
-      title: "Événements Heureux",
-      description: "Mariages, anniversaires, promotions, baptêmes et autres moments de joie",
-      icon: Heart,
-      link: "/evenements-heureux",
-      color: "bg-green-100 text-green-600"
-    },
-    {
-      title: "Départs à la Retraite",
-      description: "Honorer nos membres qui partent à la retraite après des années de service",
-      icon: Users,
-      link: "/departs-retraite",
-      color: "bg-blue-100 text-blue-600"
-    },
-    {
-      title: "Évènements Malheureux",
-      description: "Soutien et solidarité dans les moments difficiles",
-      icon: Briefcase,
-      link: "/evenements-malheureux",
-      color: "bg-gray-100 text-gray-600"
-    }
-  ];
-
-  return (
-    <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-      <div className="container mx-auto px-4">
+  const events = [{
+    title: "Événements Heureux",
+    description: "Mariages, anniversaires, promotions, baptêmes et autres moments de joie",
+    icon: Heart,
+    link: "/evenements-heureux",
+    color: "bg-green-100 text-green-600"
+  }, {
+    title: "Départs à la Retraite",
+    description: "Honorer nos membres qui partent à la retraite après des années de service",
+    icon: Users,
+    link: "/departs-retraite",
+    color: "bg-blue-100 text-blue-600"
+  }, {
+    title: "Évènements Malheureux",
+    description: "Soutien et solidarité dans les moments difficiles",
+    icon: Briefcase,
+    link: "/evenements-malheureux",
+    color: "bg-gray-100 text-gray-600"
+  }];
+  return <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+      <div className="container mx-auto px-0">
         <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
             Événements Sociaux
@@ -47,8 +38,7 @@ const EvenementsSociauxSection = () => {
         </div>
 
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} mb-8`}>
-          {events.map((event, index) => (
-            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 ${isMobile ? 'mb-4' : ''}`}>
+          {events.map((event, index) => <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 ${isMobile ? 'mb-4' : ''}`}>
               <CardHeader className={`text-center pb-${isMobile ? '2' : '4'}`}>
                 <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'} ${event.color}`}>
                   <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'}`} />
@@ -68,8 +58,7 @@ const EvenementsSociauxSection = () => {
                   </Link>
                 </Button>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
 
         <div className="text-center">
@@ -81,8 +70,6 @@ const EvenementsSociauxSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default EvenementsSociauxSection;
