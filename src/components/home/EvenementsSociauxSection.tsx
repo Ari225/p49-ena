@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Briefcase, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const EvenementsSociauxSection = () => {
   const isMobile = useIsMobile();
   const events = [{
@@ -11,21 +13,26 @@ const EvenementsSociauxSection = () => {
     description: "Mariages, anniversaires, promotions, baptêmes et autres moments de joie",
     icon: Heart,
     link: "/evenements-heureux",
-    color: "bg-green-100 text-green-600"
+    color: "bg-green-100 text-green-600",
+    backgroundImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=300&fit=crop"
   }, {
     title: "Départs à la Retraite",
     description: "Honorer nos membres qui partent à la retraite après des années de service",
     icon: Users,
     link: "/departs-retraite",
-    color: "bg-blue-100 text-blue-600"
+    color: "bg-blue-100 text-blue-600",
+    backgroundImage: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=300&fit=crop"
   }, {
     title: "Évènements Malheureux",
     description: "Soutien et solidarité dans les moments difficiles",
     icon: Briefcase,
     link: "/evenements-malheureux",
-    color: "bg-gray-100 text-gray-600"
+    color: "bg-gray-100 text-gray-600",
+    backgroundImage: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop"
   }];
-  return <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+
+  return (
+    <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
           <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
@@ -38,16 +45,22 @@ const EvenementsSociauxSection = () => {
         </div>
 
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} mb-8`}>
-          {events.map((event, index) => <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 ${isMobile ? 'mb-4' : ''}`}>
-              <CardHeader className={`text-center pb-${isMobile ? '2' : '4'}`}>
-                <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'} ${event.color}`}>
-                  <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'}`} />
-                </div>
-                <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-primary`}>
-                  {event.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
+          {events.map((event, index) => (
+            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden ${isMobile ? 'mb-4' : ''}`}>
+              {/* Background Image with Overlay */}
+              <div className="relative h-32 bg-cover bg-center" style={{ backgroundImage: `url(${event.backgroundImage})` }}>
+                <div className="absolute inset-0 bg-primary/80"></div>
+                <CardHeader className={`relative z-10 text-center pb-${isMobile ? '2' : '4'} text-white`}>
+                  <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'}`}>
+                    <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
+                  </div>
+                  <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-white`}>
+                    {event.title}
+                  </CardTitle>
+                </CardHeader>
+              </div>
+              
+              <CardContent className="text-center p-6">
                 <p className={`text-gray-600 mb-${isMobile ? '4' : '6'} ${isMobile ? 'text-sm' : ''}`}>
                   {event.description}
                 </p>
@@ -58,7 +71,8 @@ const EvenementsSociauxSection = () => {
                   </Link>
                 </Button>
               </CardContent>
-            </Card>)}
+            </Card>
+          ))}
         </div>
 
         <div className="text-center">
@@ -70,6 +84,8 @@ const EvenementsSociauxSection = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default EvenementsSociauxSection;

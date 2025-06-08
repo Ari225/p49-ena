@@ -163,22 +163,7 @@ const TestimonialsSection = () => {
             ))}
           </div>
           
-          {/* Navigation Dots */}
-          <div className="flex justify-center mt-6 space-x-2">
-            {testimonials.map((_, idx) => (
-              <button 
-                key={idx}
-                onClick={() => {
-                  setAutoSlide(false);
-                  setCurrentIndex(idx);
-                }}
-                className={`w-3 h-3 rounded-full transition-colors duration-300 ${currentIndex === idx ? 'bg-primary' : 'bg-gray-300'}`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-          
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows only */}
           <button onClick={prevSlide} className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors">
             <ChevronLeft className="w-6 h-6 text-primary" />
           </button>
