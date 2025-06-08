@@ -110,7 +110,7 @@ const BlogSection = () => {
               </div>
             </div>
             
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="flex justify-center gap-4 mt-4 mb-12">
               <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -147,7 +147,7 @@ const BlogSection = () => {
           </div>}
         
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : ''}`}>
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : 'text-sm md:text-sm'}`}>
             <Link to="/blog" className="flex items-center justify-center">
               Voir tous les articles
               <ChevronRight className="h-4 w-4 ml-1" />

@@ -44,8 +44,8 @@ const GallerySection = () => {
             <Camera className="w-6 h-6 mr-2" />
             Médiathèque
           </h2>
-          <Button asChild className="bg-primary text-white font-semibold hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
-            <Link to="/galerie">
+          <Button asChild className="bg-primary text-white font-semibold hover:bg-primary rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg h-10">
+            <Link to="/galerie" className="py-[5px] px-[15px]">
               <span className="hidden sm:inline">Voir la galerie</span>
               <span className="sm:hidden">Voir plus</span>
               <ChevronRight className="h-4 w-4 ml-1" />
