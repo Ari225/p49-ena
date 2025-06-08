@@ -1,11 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Calendar, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface NewsItem {
   id: string;
   title: string;
@@ -14,12 +12,10 @@ interface NewsItem {
   image_url: string;
   published_date: string;
 }
-
 const NewsCarousel = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isMobile = useIsMobile();
-
   useEffect(() => {
     fetchNews();
   }, []);
@@ -27,14 +23,11 @@ const NewsCarousel = () => {
   // Auto-rotate slides every 5 seconds
   useEffect(() => {
     if (news.length === 0) return;
-
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % news.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [news.length]);
-
   const fetchNews = async () => {
     // Mock data instead of Supabase
     const mockNews: NewsItem[] = [{
@@ -61,21 +54,16 @@ const NewsCarousel = () => {
     }];
     setNews(mockNews);
   };
-
   const nextSlide = () => {
     setCurrentIndex(prev => (prev + 1) % news.length);
   };
-
   const prevSlide = () => {
     setCurrentIndex(prev => (prev - 1 + news.length) % news.length);
   };
-
   if (news.length === 0) {
     return null;
   }
-
-  return (
-    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">Actualités</h2>
@@ -87,40 +75,24 @@ const NewsCarousel = () => {
         <div className="relative w-full">
           {/* Carousel Container */}
           <div className="relative overflow-hidden rounded-lg">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {news.map((item) => (
-                <div key={item.id} className="w-full flex-shrink-0">
+            <div className="flex transition-transform duration-500 ease-in-out" style={{
+            transform: `translateX(-${currentIndex * 100}%)`
+          }}>
+              {news.map(item => <div key={item.id} className="w-full flex-shrink-0">
                   <Card className="overflow-hidden hover:shadow-lg transition-shadow mx-auto max-w-4xl">
                     <div className="grid grid-cols-1 md:grid-cols-2">
-                      {item.image_url && (
-                        <div className="h-64 md:h-80 relative">
-                          <img 
-                            src={item.image_url} 
-                            alt={item.title} 
-                            className="w-full h-full object-cover"
-                          />
+                      {item.image_url && <div className="h-64 md:h-80 relative">
+                          <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
                           {/* Navigation Arrows on image for mobile */}
-                          {isMobile && (
-                            <>
-                              <button
-                                onClick={prevSlide}
-                                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
-                              >
+                          {isMobile && <>
+                              <button onClick={prevSlide} className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110">
                                 <ChevronLeft className="w-6 h-6" />
                               </button>
-                              <button
-                                onClick={nextSlide}
-                                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
-                              >
+                              <button onClick={nextSlide} className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110">
                                 <ChevronRight className="w-6 h-6" />
                               </button>
-                            </>
-                          )}
-                        </div>
-                      )}
+                            </>}
+                        </div>}
                       <CardContent className="p-6 md:p-8 flex flex-col justify-center">
                         <div className="flex items-center justify-between mb-4">
                           <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
@@ -142,41 +114,22 @@ const NewsCarousel = () => {
                       </CardContent>
                     </div>
                   </Card>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
 
           {/* Navigation Arrows for desktop */}
-          {!isMobile && (
-            <>
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
-              >
+          {!isMobile && <>
+              <button onClick={prevSlide} className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110">
                 <ChevronLeft className="w-6 h-6" />
               </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
-              >
+              <button onClick={nextSlide} className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-primary rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110">
                 <ChevronRight className="w-6 h-6" />
               </button>
-            </>
-          )}
+            </>}
 
           {/* Dots Indicator */}
-          <div className="flex justify-center mt-6 space-x-2">
-            {news.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                  index === currentIndex ? 'bg-primary scale-110' : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-              />
-            ))}
-          </div>
+          
         </div>
 
         {/* Voir toutes les actualités button */}
@@ -189,8 +142,6 @@ const NewsCarousel = () => {
           </Link>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default NewsCarousel;
