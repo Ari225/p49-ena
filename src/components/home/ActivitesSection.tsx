@@ -59,7 +59,7 @@ const ActivitesSection = () => {
   return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Activités</h2>
+          <h2 className="font-bold text-primary mb-4 text-lg">Activités</h2>
           <p className="text-gray-700 max-w-2xl mx-auto">
             Restez informés de nos prochains événements et revivez nos dernières activités
           </p>
