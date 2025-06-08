@@ -53,8 +53,8 @@ const EchoRegionsSection = () => {
       <div className="container mx-auto px-0">
         <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
           <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary`}>Écho des Régions</h2>
-          <Button asChild className="bg-primary text-white font-semibold hover:bg-primary rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg h-10">
-            <Link to="/echo-regions" className="py-[5px] px-[15px]">
+          <Button asChild className="bg-primary text-white font-semibold hover:bg-primary rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
+            <Link to="/echo-regions" className="py-[5px] px-[15px] h-10 flex items-center">
               <span className="hidden sm:inline">Actualités régionales</span>
               <span className="sm:hidden">Voir tout</span>
               <ChevronRight className="h-4 w-4 ml-1" />
