@@ -1,11 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PenTool, Calendar, User, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 interface BlogArticle {
   id: string;
   title: string;
@@ -65,8 +63,7 @@ const BlogSection = () => {
   const prevSlide = () => {
     setCurrentSlideIndex(prevIndex => prevIndex === 0 ? articles.length - 1 : prevIndex - 1);
   };
-  return (
-    <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  return <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
           <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Articles de Blog</h2>
@@ -110,7 +107,7 @@ const BlogSection = () => {
               </div>
             </div>
             
-            <div className="flex justify-center gap-4 mt-4 mb-12">
+            <div className="flex justify-center gap-4 mt-4 mb-4">
               <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
@@ -155,7 +152,6 @@ const BlogSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
 export default BlogSection;
