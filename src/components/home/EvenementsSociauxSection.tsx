@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, Users, ChevronRight } from 'lucide-react';
+import { Heart, Users, Frown, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const EvenementsSociauxSection = () => {
@@ -14,21 +14,21 @@ const EvenementsSociauxSection = () => {
     icon: Heart,
     link: "/evenements-heureux",
     color: "bg-green-100 text-green-600",
-    backgroundImage: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=300&fit=crop"
+    backgroundImage: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg"
   }, {
     title: "Départs à la Retraite",
     description: "Honorer nos membres qui partent à la retraite après des années de service",
     icon: Users,
     link: "/departs-retraite",
     color: "bg-blue-100 text-blue-600",
-    backgroundImage: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=300&fit=crop"
+    backgroundImage: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg"
   }, {
     title: "Évènements Malheureux",
     description: "Soutien et solidarité dans les moments difficiles",
-    emoji: "😞",
+    icon: Frown,
     link: "/evenements-malheureux",
     color: "bg-gray-100 text-gray-600",
-    backgroundImage: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop"
+    backgroundImage: "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg"
   }];
 
   return (
@@ -59,11 +59,7 @@ const EvenementsSociauxSection = () => {
               <div className="relative z-10 text-white">
                 <CardHeader className={`text-center pb-${isMobile ? '2' : '4'}`}>
                   <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'}`}>
-                    {event.emoji ? (
-                      <span className={`${isMobile ? 'text-2xl' : 'text-3xl'}`}>{event.emoji}</span>
-                    ) : (
-                      <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
-                    )}
+                    <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
                   </div>
                   <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-white`}>
                     {event.title}
