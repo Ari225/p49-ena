@@ -85,7 +85,7 @@ function App() {
                 <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
                 <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
                 <Route path="/regionales" element={<Regionales />} />
-                <Route path="/repertoire-members" element={<RepertoireMembers />} />
+                <Route path="/repertoire-membres" element={<RepertoireMembers />} />
                 <Route path="/reunions-constitution" element={<ReunionsConstitution />} />
                 <Route path="/suggestions" element={<Suggestions />} />
                 <Route path="/temoignages" element={<Temoignages />} />
