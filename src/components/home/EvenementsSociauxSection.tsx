@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, Users, Briefcase, ChevronRight } from 'lucide-react';
+import { Heart, Users, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const EvenementsSociauxSection = () => {
@@ -25,7 +25,7 @@ const EvenementsSociauxSection = () => {
   }, {
     title: "Évènements Malheureux",
     description: "Soutien et solidarité dans les moments difficiles",
-    icon: Briefcase,
+    emoji: "😞",
     link: "/evenements-malheureux",
     color: "bg-gray-100 text-gray-600",
     backgroundImage: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop"
@@ -46,31 +46,42 @@ const EvenementsSociauxSection = () => {
 
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} mb-8`}>
           {events.map((event, index) => (
-            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden ${isMobile ? 'mb-4' : ''}`}>
-              {/* Background Image with Overlay */}
-              <div className="relative h-32 bg-cover bg-center" style={{ backgroundImage: `url(${event.backgroundImage})` }}>
+            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden relative ${isMobile ? 'mb-4' : ''}`}>
+              {/* Background Image covering entire card */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${event.backgroundImage})` }}
+              >
                 <div className="absolute inset-0 bg-primary/80"></div>
-                <CardHeader className={`relative z-10 text-center pb-${isMobile ? '2' : '4'} text-white`}>
+              </div>
+              
+              {/* Content overlay */}
+              <div className="relative z-10 text-white">
+                <CardHeader className={`text-center pb-${isMobile ? '2' : '4'}`}>
                   <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'}`}>
-                    <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
+                    {event.emoji ? (
+                      <span className={`${isMobile ? 'text-2xl' : 'text-3xl'}`}>{event.emoji}</span>
+                    ) : (
+                      <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
+                    )}
                   </div>
                   <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-white`}>
                     {event.title}
                   </CardTitle>
                 </CardHeader>
+                
+                <CardContent className="text-center p-6">
+                  <p className={`text-white/90 mb-${isMobile ? '4' : '6'} ${isMobile ? 'text-sm' : ''}`}>
+                    {event.description}
+                  </p>
+                  <Button asChild className="w-full bg-white text-primary hover:bg-white/90">
+                    <Link to={event.link} className="flex items-center justify-center">
+                      Découvrir
+                      <ChevronRight className="h-4 w-4 ml-2" />
+                    </Link>
+                  </Button>
+                </CardContent>
               </div>
-              
-              <CardContent className="text-center p-6">
-                <p className={`text-gray-600 mb-${isMobile ? '4' : '6'} ${isMobile ? 'text-sm' : ''}`}>
-                  {event.description}
-                </p>
-                <Button asChild className="w-full">
-                  <Link to={event.link} className="flex items-center justify-center">
-                    Découvrir
-                    <ChevronRight className="h-4 w-4 ml-2" />
-                  </Link>
-                </Button>
-              </CardContent>
             </Card>
           ))}
         </div>
