@@ -106,57 +106,82 @@ const RepertoireMembers = () => {
   return <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section */}
-        <div className="bg-primary text-white px-[100px] py-[100px]">
+        <div className="bg-primary text-white px-4 md:px-[100px] py-8 md:py-[100px]">
           <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
               Répertoire des Membres
             </h1>
-            <p className="text-xl text-center text-gray-200 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-center text-gray-200 max-w-3xl mx-auto">
               Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
             </p>
           </div>
         </div>
 
-        <div className="container mx-auto px-[100px] py-[100px]">
+        <div className="container mx-auto px-4 md:px-[100px] py-8 md:py-[100px]">
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <Input type="text" placeholder="Rechercher par nom ou prénom..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 py-3 text-lg" />
+              <Input 
+                type="text" 
+                placeholder="Rechercher par nom ou prénom..." 
+                value={searchTerm} 
+                onChange={e => setSearchTerm(e.target.value)} 
+                className="pl-10 py-3 text-lg" 
+              />
             </div>
-            {searchTerm && <p className="text-sm text-gray-600 mt-2 text-center">
+            {searchTerm && (
+              <p className="text-sm text-gray-600 mt-2 text-center">
                 {filteredMembers.length} membre(s) trouvé(s)
-              </p>}
+              </p>
+            )}
           </div>
 
           {/* Members Grid */}
-          {currentMembers.length > 0 ? <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                {currentMembers.map(member => <MemberCard key={member.id} member={member} />)}
+          {currentMembers.length > 0 ? (
+            <>
+              <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 mb-8">
+                {currentMembers.map(member => (
+                  <MemberCard key={member.id} member={member} />
+                ))}
               </div>
 
               {/* Pagination */}
-              {totalPages > 1 && <Pagination className="mt-8">
+              {totalPages > 1 && (
+                <Pagination className="mt-8">
                   <PaginationContent>
                     <PaginationItem>
-                      <PaginationPrevious onClick={() => handlePageChange(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                      <PaginationPrevious 
+                        onClick={() => handlePageChange(Math.max(1, currentPage - 1))} 
+                        className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+                      />
                     </PaginationItem>
                     
                     {generatePaginationItems()}
                     
                     <PaginationItem>
-                      <PaginationNext onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                      <PaginationNext 
+                        onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} 
+                        className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
+                      />
                     </PaginationItem>
                   </PaginationContent>
-                </Pagination>}
-            </> : <div className="text-center py-12">
+                </Pagination>
+              )}
+            </>
+          ) : (
+            <div className="text-center py-12">
               <p className="text-xl text-gray-600">
                 Aucun membre trouvé pour "{searchTerm}"
               </p>
-              <button onClick={() => setSearchTerm('')} className="mt-4 text-primary hover:underline">
+              <button 
+                onClick={() => setSearchTerm('')} 
+                className="mt-4 text-primary hover:underline"
+              >
                 Afficher tous les membres
               </button>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
     </Layout>;
