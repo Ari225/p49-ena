@@ -82,7 +82,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             {socialMedia.facebook && (
               <button
                 onClick={(e) => handleSocialClick(e, socialMedia.facebook!)}
-                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors"
                 title="Facebook"
               >
                 <Facebook className="h-4 w-4" />
@@ -91,7 +91,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             {socialMedia.instagram && (
               <button
                 onClick={(e) => handleSocialClick(e, socialMedia.instagram!)}
-                className="p-2 rounded-full bg-pink-600 text-white hover:bg-pink-700 transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors"
                 title="Instagram"
               >
                 <Instagram className="h-4 w-4" />
@@ -100,7 +100,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             {socialMedia.linkedin && (
               <button
                 onClick={(e) => handleSocialClick(e, socialMedia.linkedin!)}
-                className="p-2 rounded-full bg-blue-800 text-white hover:bg-blue-900 transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors"
                 title="LinkedIn"
               >
                 <Linkedin className="h-4 w-4" />
