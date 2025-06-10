@@ -25,43 +25,21 @@ interface MemberCardProps {
 }
 
 const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [isMatriculeDialogOpen, setIsMatriculeDialogOpen] = useState(false);
-  const [pendingSocialAction, setPendingSocialAction] = useState<string | null>(null);
   const { firstName, lastName, position, locality, socialMedia } = member;
   
   const getInitials = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  const handleSocialClick = (e: React.MouseEvent, url: string) => {
-    e.stopPropagation();
-    setPendingSocialAction(url);
-    setIsMatriculeDialogOpen(true);
-  };
-
-  const handlePhoneClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setPendingSocialAction('phone');
+  const handleCardClick = () => {
     setIsMatriculeDialogOpen(true);
   };
 
   const handleMatriculeVerified = () => {
-    if (pendingSocialAction) {
-      if (pendingSocialAction === 'phone') {
-        // Simuler un numéro de téléphone
-        const phoneNumber = `+225 ${Math.floor(Math.random() * 90000000 + 10000000)}`;
-        alert(`Numéro de téléphone: ${phoneNumber}`);
-      } else {
-        window.open(pendingSocialAction, '_blank', 'noopener,noreferrer');
-      }
-    }
     setIsMatriculeDialogOpen(false);
-    setPendingSocialAction(null);
-  };
-
-  const handleCardClick = () => {
-    setIsDialogOpen(true);
+    setIsDetailDialogOpen(true);
   };
 
   return (
@@ -101,44 +79,28 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             <span className="text-sm">{locality}</span>
           </div>
 
-          {/* Contact Icons */}
+          {/* Contact Icons - Non-clickable preview */}
           <div className="flex justify-center space-x-3">
             {/* Phone Icon */}
-            <button
-              onClick={handlePhoneClick}
-              className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
-              title="Téléphone"
-            >
+            <div className="p-2 text-gray-600 cursor-default" title="Téléphone">
               <Phone className="h-4 w-4" />
-            </button>
+            </div>
 
-            {/* Social Media */}
+            {/* Social Media Icons */}
             {socialMedia.facebook && (
-              <button
-                onClick={(e) => handleSocialClick(e, socialMedia.facebook!)}
-                className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
-                title="Facebook"
-              >
+              <div className="p-2 text-gray-600 cursor-default" title="Facebook">
                 <Facebook className="h-4 w-4" />
-              </button>
+              </div>
             )}
             {socialMedia.instagram && (
-              <button
-                onClick={(e) => handleSocialClick(e, socialMedia.instagram!)}
-                className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
-                title="Instagram"
-              >
+              <div className="p-2 text-gray-600 cursor-default" title="Instagram">
                 <Instagram className="h-4 w-4" />
-              </button>
+              </div>
             )}
             {socialMedia.linkedin && (
-              <button
-                onClick={(e) => handleSocialClick(e, socialMedia.linkedin!)}
-                className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
-                title="LinkedIn"
-              >
+              <div className="p-2 text-gray-600 cursor-default" title="LinkedIn">
                 <Linkedin className="h-4 w-4" />
-              </button>
+              </div>
             )}
           </div>
         </CardContent>
@@ -146,16 +108,13 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
       <MemberDetailDialog 
         member={member}
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        isOpen={isDetailDialogOpen}
+        onClose={() => setIsDetailDialogOpen(false)}
       />
 
       <MatriculeVerificationDialog
         isOpen={isMatriculeDialogOpen}
-        onClose={() => {
-          setIsMatriculeDialogOpen(false);
-          setPendingSocialAction(null);
-        }}
+        onClose={() => setIsMatriculeDialogOpen(false)}
         onVerified={handleMatriculeVerified}
       />
     </>

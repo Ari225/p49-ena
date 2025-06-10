@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Facebook, Instagram, Linkedin, MapPin, Briefcase, Phone, X } from 'lucide-react';
-import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
+import { Facebook, Instagram, Linkedin, MapPin, Briefcase, Phone } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 interface Member {
@@ -28,7 +28,7 @@ interface MemberDetailDialogProps {
 const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen, onClose }) => {
   if (!member) return null;
 
-  const { firstName, lastName, position, locality, phone, socialMedia } = member;
+  const { firstName, lastName, position, locality, socialMedia } = member;
   
   const getInitials = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -38,10 +38,10 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const handlePhoneCall = () => {
-    if (phone) {
-      window.open(`tel:${phone}`, '_self');
-    }
+  const handlePhoneClick = () => {
+    // Simuler un numéro de téléphone
+    const phoneNumber = `+225 ${Math.floor(Math.random() * 90000000 + 10000000)}`;
+    alert(`Numéro de téléphone: ${phoneNumber}`);
   };
 
   return (
@@ -71,36 +71,32 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
           {/* Position */}
           <div className="flex items-center justify-center mb-3 text-gray-600">
-            <Briefcase className="h-5 w-5 mr-3 flex-shrink-0 text-primary" />
+            <Briefcase className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
             <span className="text-base font-medium text-center">{position}</span>
           </div>
 
           {/* Location */}
-          <div className="flex items-center justify-center mb-4 text-gray-600">
-            <MapPin className="h-5 w-5 mr-3 flex-shrink-0 text-primary" />
+          <div className="flex items-center justify-center mb-6 text-gray-600">
+            <MapPin className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
             <span className="text-base">{locality}</span>
           </div>
 
-          {/* Phone */}
-          {phone && (
-            <div className="flex items-center justify-center mb-6">
-              <button
-                onClick={handlePhoneCall}
-                className="flex items-center space-x-3 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-4 py-2 rounded-lg"
-                title={`Appeler ${firstName} ${lastName}`}
-              >
-                <Phone className="h-5 w-5" />
-                <span className="text-base font-medium">{phone}</span>
-              </button>
-            </div>
-          )}
-
-          {/* Social Media */}
+          {/* Contact Icons - Clickable with outlined style */}
           <div className="flex justify-center space-x-4">
+            {/* Phone Icon */}
+            <button
+              onClick={handlePhoneClick}
+              className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+              title="Téléphone"
+            >
+              <Phone className="h-5 w-5" />
+            </button>
+
+            {/* Social Media Icons */}
             {socialMedia.facebook && (
               <button
                 onClick={() => handleSocialClick(socialMedia.facebook!)}
-                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
+                className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
                 title="Facebook"
               >
                 <Facebook className="h-5 w-5" />
@@ -109,7 +105,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             {socialMedia.instagram && (
               <button
                 onClick={() => handleSocialClick(socialMedia.instagram!)}
-                className="p-3 rounded-full bg-pink-600 text-white hover:bg-pink-700 transition-colors shadow-lg hover:shadow-xl"
+                className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
                 title="Instagram"
               >
                 <Instagram className="h-5 w-5" />
@@ -118,7 +114,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             {socialMedia.linkedin && (
               <button
                 onClick={() => handleSocialClick(socialMedia.linkedin!)}
-                className="p-3 rounded-full bg-blue-800 text-white hover:bg-blue-900 transition-colors shadow-lg hover:shadow-xl"
+                className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
                 title="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />

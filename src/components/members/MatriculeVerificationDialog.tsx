@@ -22,12 +22,14 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Matricule par défaut pour les tests
+  const DEFAULT_MATRICULE = 'P49DEMO';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    // Simuler une vérification (en production, cela devrait être une vraie vérification)
     if (!matricule.trim()) {
       setError('Veuillez saisir votre matricule');
       setIsLoading(false);
@@ -36,7 +38,8 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
     // Simuler un délai de vérification
     setTimeout(() => {
-      if (matricule.length >= 4) {
+      // Accepter le matricule par défaut ou tout matricule de plus de 4 caractères
+      if (matricule.toUpperCase() === DEFAULT_MATRICULE || matricule.length >= 4) {
         onVerified();
         setMatricule('');
       } else {
@@ -61,7 +64,7 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
             Vérification d'accès
           </DialogTitle>
           <DialogDescription>
-            Pour accéder aux informations de contact, veuillez saisir votre matricule de membre P49.
+            Pour accéder aux informations complètes du membre, veuillez saisir votre matricule de membre P49.
           </DialogDescription>
         </DialogHeader>
 
@@ -105,7 +108,9 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
         <div className="text-xs text-gray-500 mt-4 p-3 bg-gray-50 rounded">
           <strong>Note:</strong> Cette fonctionnalité protège la confidentialité des membres. 
-          Seuls les membres authentifiés peuvent accéder aux informations de contact.
+          Seuls les membres authentifiés peuvent accéder aux informations complètes.
+          <br />
+          <strong>Pour les tests:</strong> Utilisez le matricule <code className="bg-gray-200 px-1 rounded">P49DEMO</code>
         </div>
       </DialogContent>
     </Dialog>
