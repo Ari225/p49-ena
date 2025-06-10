@@ -3,36 +3,42 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Camera, ChevronRight } from 'lucide-react';
+import { Camera, ChevronRight, Video, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const GallerySection = () => {
   const isMobile = useIsMobile();
   
-  const galleryImages = [
+  const galleryItems = [
     {
       id: 1,
       src: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
       alt: 'Événement P49',
-      category: 'Événements'
+      category: 'Événements',
+      type: 'image'
     },
     {
       id: 2,
-      src: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
+      src: 'https://videos.pexels.com/video-files/3196036/3196036-uhd_2560_1440_25fps.mp4',
       alt: 'Formation P49',
-      category: 'Formations'
+      category: 'Formations',
+      type: 'video',
+      thumbnail: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg'
     },
     {
       id: 3,
       src: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg',
       alt: 'Assemblée P49',
-      category: 'Assemblées'
+      category: 'Assemblées',
+      type: 'image'
     },
     {
       id: 4,
-      src: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
+      src: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4',
       alt: 'Cérémonie P49',
-      category: 'Cérémonies'
+      category: 'Cérémonies',
+      type: 'video',
+      thumbnail: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png'
     }
   ];
 
@@ -54,20 +60,36 @@ const GallerySection = () => {
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {galleryImages.map((image) => (
-            <Card key={image.id} className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer">
+          {galleryItems.map((item) => (
+            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer">
               <CardContent className="p-0 relative">
                 <div className="aspect-square overflow-hidden">
-                  <img 
-                    src={image.src} 
-                    alt={image.alt}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  {item.type === 'video' ? (
+                    <>
+                      <img 
+                        src={item.thumbnail} 
+                        alt={item.alt}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
+                          <Play className="w-6 h-6 text-primary ml-1" />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <img 
+                      src={item.src} 
+                      alt={item.alt}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
                 </div>
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                  <span className="text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">
-                    {image.category}
-                  </span>
+                  <div className="flex items-center text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">
+                    {item.type === 'video' && <Video className="w-4 h-4 mr-1" />}
+                    <span>{item.category}</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
