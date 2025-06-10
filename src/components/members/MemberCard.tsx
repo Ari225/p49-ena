@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Facebook, Instagram, Linkedin, MapPin, Briefcase } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, MapPin, Briefcase, Phone } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import MemberDetailDialog from './MemberDetailDialog';
+import MatriculeVerificationDialog from './MatriculeVerificationDialog';
 
 interface Member {
   id: number;
@@ -25,6 +26,8 @@ interface MemberCardProps {
 
 const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isMatriculeDialogOpen, setIsMatriculeDialogOpen] = useState(false);
+  const [pendingSocialAction, setPendingSocialAction] = useState<string | null>(null);
   const { firstName, lastName, position, locality, socialMedia } = member;
   
   const getInitials = () => {
@@ -33,7 +36,28 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
   const handleSocialClick = (e: React.MouseEvent, url: string) => {
     e.stopPropagation();
-    window.open(url, '_blank', 'noopener,noreferrer');
+    setPendingSocialAction(url);
+    setIsMatriculeDialogOpen(true);
+  };
+
+  const handlePhoneClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPendingSocialAction('phone');
+    setIsMatriculeDialogOpen(true);
+  };
+
+  const handleMatriculeVerified = () => {
+    if (pendingSocialAction) {
+      if (pendingSocialAction === 'phone') {
+        // Simuler un numéro de téléphone
+        const phoneNumber = `+225 ${Math.floor(Math.random() * 90000000 + 10000000)}`;
+        alert(`Numéro de téléphone: ${phoneNumber}`);
+      } else {
+        window.open(pendingSocialAction, '_blank', 'noopener,noreferrer');
+      }
+    }
+    setIsMatriculeDialogOpen(false);
+    setPendingSocialAction(null);
   };
 
   const handleCardClick = () => {
@@ -77,12 +101,22 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             <span className="text-sm">{locality}</span>
           </div>
 
-          {/* Social Media */}
+          {/* Contact Icons */}
           <div className="flex justify-center space-x-3">
+            {/* Phone Icon */}
+            <button
+              onClick={handlePhoneClick}
+              className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
+              title="Téléphone"
+            >
+              <Phone className="h-4 w-4" />
+            </button>
+
+            {/* Social Media */}
             {socialMedia.facebook && (
               <button
                 onClick={(e) => handleSocialClick(e, socialMedia.facebook!)}
-                className="p-2 text-gray-600 hover:text-primary transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
                 title="Facebook"
               >
                 <Facebook className="h-4 w-4" />
@@ -91,7 +125,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             {socialMedia.instagram && (
               <button
                 onClick={(e) => handleSocialClick(e, socialMedia.instagram!)}
-                className="p-2 text-gray-600 hover:text-primary transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
                 title="Instagram"
               >
                 <Instagram className="h-4 w-4" />
@@ -100,7 +134,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             {socialMedia.linkedin && (
               <button
                 onClick={(e) => handleSocialClick(e, socialMedia.linkedin!)}
-                className="p-2 text-gray-600 hover:text-primary transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors cursor-pointer"
                 title="LinkedIn"
               >
                 <Linkedin className="h-4 w-4" />
@@ -114,6 +148,15 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
         member={member}
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
+      />
+
+      <MatriculeVerificationDialog
+        isOpen={isMatriculeDialogOpen}
+        onClose={() => {
+          setIsMatriculeDialogOpen(false);
+          setPendingSocialAction(null);
+        }}
+        onVerified={handleMatriculeVerified}
       />
     </>
   );
