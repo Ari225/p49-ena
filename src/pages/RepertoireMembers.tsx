@@ -106,7 +106,7 @@ const RepertoireMembers = () => {
   return <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section */}
-        <div className="bg-primary text-white px-4 md:px-[100px] py-8 md:py-[100px]">
+        <div className="bg-primary text-white px-[25px] md:px-[100px] py-8 md:py-[100px]">
           <div className="container mx-auto px-4">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
               Répertoire des Membres
@@ -117,7 +117,7 @@ const RepertoireMembers = () => {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 md:px-[100px] py-8 md:py-[100px]">
+        <div className="container mx-auto px-[25px] md:px-[100px] py-8 md:py-[100px]">
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
@@ -140,7 +140,7 @@ const RepertoireMembers = () => {
           {/* Members Grid */}
           {currentMembers.length > 0 ? (
             <>
-              <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 mb-8">
                 {currentMembers.map(member => (
                   <MemberCard key={member.id} member={member} />
                 ))}
