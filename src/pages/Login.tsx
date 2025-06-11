@@ -57,7 +57,7 @@ const Login = () => {
       backgroundRepeat: 'no-repeat'
     }}>
         {/* Primary overlay */}
-          <div className="absolute inset-0 bg-primary/80 mx-0 my-[53px]"></div>
+          <div className="absolute inset-0 bg-primary/80 mx-0 my-0"></div>
         
         <div className="w-full max-w-md relative z-10">
           <Card className="mx-[25px] px-0">
