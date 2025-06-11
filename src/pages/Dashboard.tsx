@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
@@ -8,13 +9,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, FileText, Calendar, Eye } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-const Dashboard = () => {
+// Import dashboard pages
+import DashboardUsers from './dashboard/DashboardUsers';
+import DashboardNews from './dashboard/DashboardNews';
+import DashboardBlog from './dashboard/DashboardBlog';
+import DashboardJournal from './dashboard/DashboardJournal';
+import DashboardEvents from './dashboard/DashboardEvents';
+import DashboardSettings from './dashboard/DashboardSettings';
+import DashboardNotifications from './dashboard/DashboardNotifications';
+import DashboardPopups from './dashboard/DashboardPopups';
+import DashboardProfile from './dashboard/DashboardProfile';
+import DashboardSubmitted from './dashboard/DashboardSubmitted';
+import DashboardMyArticles from './dashboard/DashboardMyArticles';
+import DashboardNewArticle from './dashboard/DashboardNewArticle';
+import DashboardJournalArticles from './dashboard/DashboardJournalArticles';
+import DashboardAddNews from './dashboard/DashboardAddNews';
+import DashboardAddUser from './dashboard/DashboardAddUser';
+import DashboardAddJournal from './dashboard/DashboardAddJournal';
+
+const DashboardHome = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-
-  if (!user) {
-    return <div>Non autorisé</div>;
-  }
 
   const stats = [
     {
@@ -49,10 +64,10 @@ const Dashboard = () => {
         <div className="p-4">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">
-              Bienvenue, {user.username}
+              Bienvenue, {user?.username}
             </h1>
             <p className="text-gray-600 mt-1 text-sm">
-              {user.role === 'admin' ? 'Panneau d\'administration' : 'Espace rédacteur'}
+              {user?.role === 'admin' ? 'Panneau d\'administration' : 'Espace rédacteur'}
             </p>
           </div>
 
@@ -108,25 +123,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          {/* Mobile Navigation for Dashboard */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-3 px-2">
-            <button className="flex flex-col items-center text-primary">
-              <FileText className="w-5 h-5" />
-              <span className="text-xs mt-1">Articles</span>
-            </button>
-            <button className="flex flex-col items-center text-gray-500">
-              <Users className="w-5 h-5" />
-              <span className="text-xs mt-1">Membres</span>
-            </button>
-            <button className="flex flex-col items-center text-gray-500">
-              <Calendar className="w-5 h-5" />
-              <span className="text-xs mt-1">Événements</span>
-            </button>
-            <button className="flex flex-col items-center text-gray-500">
-              <Eye className="w-5 h-5" />
-              <span className="text-xs mt-1">Stats</span>
-            </button>
-          </div>
+          {user?.role === 'admin' ? <AdminSidebar /> : <EditorSidebar />}
         </div>
       </Layout>
     );
@@ -136,15 +133,15 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="flex">
-        {user.role === 'admin' ? <AdminSidebar /> : <EditorSidebar />}
+        {user?.role === 'admin' ? <AdminSidebar /> : <EditorSidebar />}
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">
-              Bienvenue, {user.username}
+              Bienvenue, {user?.username}
             </h1>
             <p className="text-gray-600 mt-2">
-              {user.role === 'admin' ? 'Panneau d\'administration' : 'Espace rédacteur'}
+              {user?.role === 'admin' ? 'Panneau d\'administration' : 'Espace rédacteur'}
             </p>
           </div>
 
@@ -202,6 +199,36 @@ const Dashboard = () => {
         </div>
       </div>
     </Layout>
+  );
+};
+
+const Dashboard = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <div>Non autorisé</div>;
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={<DashboardHome />} />
+      <Route path="/users" element={<DashboardUsers />} />
+      <Route path="/news" element={<DashboardNews />} />
+      <Route path="/blog" element={<DashboardBlog />} />
+      <Route path="/journal" element={<DashboardJournal />} />
+      <Route path="/events" element={<DashboardEvents />} />
+      <Route path="/settings" element={<DashboardSettings />} />
+      <Route path="/notifications" element={<DashboardNotifications />} />
+      <Route path="/popups" element={<DashboardPopups />} />
+      <Route path="/profile" element={<DashboardProfile />} />
+      <Route path="/submitted" element={<DashboardSubmitted />} />
+      <Route path="/my-articles" element={<DashboardMyArticles />} />
+      <Route path="/new-article" element={<DashboardNewArticle />} />
+      <Route path="/journal-articles" element={<DashboardJournalArticles />} />
+      <Route path="/add-news" element={<DashboardAddNews />} />
+      <Route path="/add-user" element={<DashboardAddUser />} />
+      <Route path="/add-journal" element={<DashboardAddJournal />} />
+    </Routes>
   );
 };
 
