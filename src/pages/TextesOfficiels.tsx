@@ -50,7 +50,7 @@ const TextesOfficiels = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with gradient */}
-        <section className={`relative py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} overflow-hidden`}>
+        <section className={`relative py-16 ${isMobile ? 'px-[25px]' : 'px-[100px] py-[100px]'} overflow-hidden`}>
           {/* Gradient background from primary to image */}
           <div 
             className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"
