@@ -49,15 +49,28 @@ const TextesOfficiels = () => {
   return (
     <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section */}
-       <section className={`bg-primary text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">
-              {t('official_documents_title') || 'Textes Officiels'}
-            </h1>
-            <p className="text-xl opacity-90">
-              {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
-            </p>
+        {/* Header Section with gradient */}
+        <section className={`relative py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} overflow-hidden`}>
+          {/* Gradient background from primary to image */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"
+            style={{
+              backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) 40%, transparent 70%), url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right'
+            }}
+          />
+          
+          {/* Content positioned on the left over primary color */}
+          <div className="container mx-auto px-4 relative z-10">
+            <div className={`${isMobile ? 'max-w-full' : 'max-w-2xl'}`}>
+              <h1 className="text-4xl font-bold mb-4 text-white">
+                {t('official_documents_title') || 'Textes Officiels'}
+              </h1>
+              <p className="text-xl opacity-90 text-white">
+                {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
+              </p>
+            </div>
           </div>
         </section>
 
