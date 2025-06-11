@@ -50,23 +50,16 @@ const TextesOfficiels = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section
-  className={`relative text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}
-  style={{
-    background: `linear-gradient(to right, rgba(0, 0, 0, 0.6) 0%, var(--tw-bg-opacity, theme('colors.primary')) 50%), url('/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png') no-repeat left center / cover`
-  }}
->
-  <div className="container mx-auto px-4 relative z-10">
-    <h1 className="text-4xl font-bold mb-4">
-      {t('official_documents_title') || 'Textes Officiels'}
-    </h1>
-    <p className="text-xl opacity-90">
-      {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
-    </p>
-  </div>
-  <div className="absolute inset-0 bg-primary opacity-80 md:opacity-100 md:bg-transparent"></div>
-</section>
-
+       <section className={`bg-primary text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl font-bold mb-4">
+              {t('official_documents_title') || 'Textes Officiels'}
+            </h1>
+            <p className="text-xl opacity-90">
+              {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
+            </p>
+          </div>
+        </section>
 
         {/* Introduction */}
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
