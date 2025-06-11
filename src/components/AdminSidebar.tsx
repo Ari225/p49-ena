@@ -61,7 +61,7 @@ const AdminSidebar = () => {
   if (isMobile) {
     return (
       <div className="fixed bottom-0 left-0 right-0 bg-primary border-t border-gray-200 z-50">
-        <ScrollArea className="w-full">
+        <div className="overflow-x-auto">
           <div className="flex py-2 px-2 min-w-max">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -71,21 +71,26 @@ const AdminSidebar = () => {
                   key={item.href}
                   to={item.href}
                   className={cn(
-                    'flex flex-col items-center px-3 py-1 text-xs transition-colors min-w-[70px]',
+                    'flex flex-col items-center px-3 py-1 text-xs transition-colors min-w-[80px] flex-shrink-0',
                     isActive
                       ? 'text-secondary'
                       : 'text-white hover:text-secondary/80'
                   )}
                 >
                   <Icon className="h-5 w-5 mb-1" />
-                  <span className="text-xs text-center leading-tight">
-                    {item.title}
+                  <span className="text-xs text-center leading-tight whitespace-nowrap">
+                    {item.title.split(' ').map((word, index, array) => (
+                      <span key={index}>
+                        {word}
+                        {index < array.length - 1 && index === Math.floor(array.length / 2) - 1 ? <br /> : ' '}
+                      </span>
+                    ))}
                   </span>
                 </Link>
               );
             })}
           </div>
-        </ScrollArea>
+        </div>
       </div>
     );
   }

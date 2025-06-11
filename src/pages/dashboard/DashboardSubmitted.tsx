@@ -20,7 +20,9 @@ const DashboardSubmitted = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Articles Soumis</h1>
+            <h1 className="text-2xl font-bold text-primary leading-tight">
+              Articles<br />Soumis
+            </h1>
             <p className="text-gray-600 mt-1 text-sm">Mes articles en attente</p>
           </div>
 
