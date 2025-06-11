@@ -61,7 +61,7 @@ const DashboardHome = () => {
   if (isMobile) {
     return (
       <Layout>
-        <div className="p-4">
+        <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">
               Bienvenue, {user?.username}

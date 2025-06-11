@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Users, FileText, Calendar, Settings, PenTool, MessageSquare, BarChart3, Bell, BookOpen } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -60,29 +61,31 @@ const AdminSidebar = () => {
   if (isMobile) {
     return (
       <div className="fixed bottom-0 left-0 right-0 bg-primary border-t border-gray-200 z-50">
-        <div className="flex justify-around py-2">
-          {menuItems.slice(0, 4).map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  'flex flex-col items-center px-2 py-1 text-xs transition-colors',
-                  isActive
-                    ? 'text-secondary'
-                    : 'text-white hover:text-secondary/80'
-                )}
-              >
-                <Icon className="h-5 w-5 mb-1" />
-                <span className="text-xs truncate max-w-[60px]">
-                  {item.title.split(' ')[0]}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
+        <ScrollArea className="w-full">
+          <div className="flex py-2 px-2 min-w-max">
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    'flex flex-col items-center px-3 py-1 text-xs transition-colors min-w-[70px]',
+                    isActive
+                      ? 'text-secondary'
+                      : 'text-white hover:text-secondary/80'
+                  )}
+                >
+                  <Icon className="h-5 w-5 mb-1" />
+                  <span className="text-xs text-center leading-tight">
+                    {item.title}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </ScrollArea>
       </div>
     );
   }
