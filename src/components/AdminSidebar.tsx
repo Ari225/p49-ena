@@ -63,15 +63,16 @@ const AdminSidebar = () => {
         <div className="flex justify-around py-2">
           {menuItems.slice(0, 4).map((item) => {
             const Icon = item.icon;
+            const isActive = location.pathname === item.href;
             return (
               <Link
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  'flex flex-col items-center px-2 py-1 text-xs',
-                  location.pathname === item.href
+                  'flex flex-col items-center px-2 py-1 text-xs transition-colors',
+                  isActive
                     ? 'text-secondary'
-                    : 'text-white'
+                    : 'text-white hover:text-secondary/80'
                 )}
               >
                 <Icon className="h-5 w-5 mb-1" />
@@ -92,13 +93,14 @@ const AdminSidebar = () => {
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
+            const isActive = location.pathname === item.href;
             return (
               <Link
                 key={item.href}
                 to={item.href}
                 className={cn(
                   'flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors',
-                  location.pathname === item.href
+                  isActive
                     ? 'bg-secondary text-primary font-semibold'
                     : 'hover:bg-white/10'
                 )}
