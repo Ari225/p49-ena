@@ -59,7 +59,7 @@ export const useMenuItems = () => {
           href: '/departs-retraite'
         },
         {
-          label: 'Événements Malheureux',
+          label: 'Évènements malheureux',
           href: '/evenements-malheureux'
         }
       ]
