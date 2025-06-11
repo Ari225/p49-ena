@@ -60,7 +60,7 @@ const Login = () => {
           <div className="absolute inset-0 bg-primary/80 mx-0 my-0"></div>
         
         <div className="w-full max-w-md relative z-10">
-          <Card className="mx-[25px] px-0">
+          <Card className="px-0 mx-0">
             <CardHeader className="text-center ">
               <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
               <CardTitle className="font-bold text-primary text-3xl">
