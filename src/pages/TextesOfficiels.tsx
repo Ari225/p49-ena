@@ -57,7 +57,7 @@ const TextesOfficiels = () => {
             style={{
               backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) 40%, transparent 80%), url('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg')`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center right'
+              backgroundPosition: 'top right'
             }}
           />
           
