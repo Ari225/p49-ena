@@ -55,7 +55,7 @@ const TextesOfficiels = () => {
           <div 
             className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"
             style={{
-              backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) 40%, transparent 80%), url('/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png')`,
+              backgroundImage: `linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) 40%, transparent 80%), url('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center right'
             }}
