@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Users, FileText, Calendar, Settings, PenTool, MessageSquare, BarChart3, Bell, BookOpen } from 'lucide-react';
+import { Users, FileText, Calendar, Settings, PenTool, MessageSquare, BarChart3, Bell, BookOpen, MapPin, Briefcase, Star, PartyPopper, Activity, PlayCircle } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -35,6 +35,41 @@ const AdminSidebar = () => {
       title: 'Journal',
       href: '/dashboard/journal',
       icon: BookOpen
+    },
+    {
+      title: 'Communiqués',
+      href: '/dashboard/communiques',
+      icon: MessageSquare
+    },
+    {
+      title: 'Écho des Régions',
+      href: '/dashboard/echo-regions',
+      icon: MapPin
+    },
+    {
+      title: 'Carrières+',
+      href: '/dashboard/carrieres',
+      icon: Briefcase
+    },
+    {
+      title: 'Témoignages',
+      href: '/dashboard/temoignages',
+      icon: Star
+    },
+    {
+      title: 'Événements Sociaux',
+      href: '/dashboard/evenements-sociaux',
+      icon: PartyPopper
+    },
+    {
+      title: 'Activités',
+      href: '/dashboard/activites',
+      icon: Activity
+    },
+    {
+      title: 'Médiathèque',
+      href: '/dashboard/mediatheque',
+      icon: PlayCircle
     },
     {
       title: 'Événements',
