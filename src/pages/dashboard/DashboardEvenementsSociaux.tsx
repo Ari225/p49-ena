@@ -7,24 +7,32 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+const formSchema = z.object({
+  title: z.string().min(1, 'Le titre est requis'),
+  date: z.string().min(1, 'La date est requise'),
+  time: z.string().min(1, 'L\'heure est requise'),
+  location: z.string().min(1, 'Le lieu est requis'),
+  participants: z.string().min(1, 'Le nombre de participants est requis'),
+  description: z.string().min(1, 'La description est requise'),
+  category: z.string().min(1, 'La catégorie est requise'),
+  contact: z.string().optional(),
+  price: z.string().optional(),
+});
 
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    title: '',
-    date: '',
-    time: '',
-    location: '',
-    participants: '',
-    description: '',
-    category: ''
-  });
-
-  const mockEvents = [
+  const [events, setEvents] = useState([
     {
       id: '1',
       title: 'Gala annuel de la P49',
@@ -33,7 +41,9 @@ const DashboardEvenementsSociaux = () => {
       location: 'Hôtel Ivoire, Abidjan',
       participants: '200+',
       description: 'Soirée de gala annuelle réunissant tous les membres de la P49.',
-      category: 'Gala'
+      category: 'Gala',
+      contact: 'evenements@p49.com',
+      price: '50000 FCFA'
     },
     {
       id: '2',
@@ -43,19 +53,44 @@ const DashboardEvenementsSociaux = () => {
       location: 'Golf Club d\'Abidjan',
       participants: '50',
       description: 'Compétition sportive amicale entre les promotions.',
-      category: 'Sport'
+      category: 'Sport',
+      contact: 'sport@p49.com',
+      price: 'Gratuit'
     }
-  ];
+  ]);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      date: '',
+      time: '',
+      location: '',
+      participants: '',
+      description: '',
+      category: '',
+      contact: '',
+      price: '',
+    },
+  });
 
   if (!user || user.role !== 'admin') {
     return <div>Non autorisé</div>;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Nouvel événement social:', formData);
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const newEvent = {
+      id: Date.now().toString(),
+      ...values,
+    };
+    setEvents([...events, newEvent]);
     setShowForm(false);
-    setFormData({ title: '', date: '', time: '', location: '', participants: '', description: '', category: '' });
+    form.reset();
+    console.log('Nouvel événement social ajouté:', newEvent);
+  };
+
+  const handleDelete = (id: string) => {
+    setEvents(events.filter(event => event.id !== id));
   };
 
   if (isMobile) {
@@ -68,79 +103,154 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="mb-4">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90 w-full"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvel événement'}
-            </Button>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90 w-full">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouvel événement
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Ajouter un événement social</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Titre de l'événement</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Titre de l'événement" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="time"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Heure</FormLabel>
+                          <FormControl>
+                            <Input type="time" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Lieu</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Lieu de l'événement" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="participants"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nombre de participants</FormLabel>
+                          <FormControl>
+                            <Input placeholder="50, 100+, etc." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="category"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Catégorie</FormLabel>
+                          <FormControl>
+                            <select className="w-full p-2 border rounded-md" {...field}>
+                              <option value="">Sélectionner une catégorie</option>
+                              <option value="Gala">Gala</option>
+                              <option value="Sport">Sport</option>
+                              <option value="Networking">Networking</option>
+                              <option value="Culturel">Culturel</option>
+                              <option value="Caritatif">Caritatif</option>
+                              <option value="Formation">Formation</option>
+                              <option value="Loisirs">Loisirs</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="contact"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Contact (optionnel)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Email ou téléphone" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Prix (optionnel)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Gratuit, 5000 FCFA, etc." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="Description de l'événement" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit" className="w-full">Publier l'événement</Button>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
           </div>
 
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Ajouter un événement social</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder="Titre de l'événement"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    required
-                  />
-                  <Input
-                    type="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({...formData, time: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Lieu"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Nombre de participants"
-                    value={formData.participants}
-                    onChange={(e) => setFormData({...formData, participants: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="w-full p-2 border rounded-md"
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    required
-                  >
-                    <option value="">Catégorie</option>
-                    <option value="Gala">Gala</option>
-                    <option value="Sport">Sport</option>
-                    <option value="Networking">Networking</option>
-                    <option value="Culturel">Culturel</option>
-                    <option value="Caritatif">Caritatif</option>
-                  </select>
-                  <Textarea
-                    placeholder="Description de l'événement"
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    required
-                  />
-                  <Button type="submit" className="w-full">Publier</Button>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-
           <div className="space-y-4">
-            {mockEvents.map((event) => (
+            {events.map((event) => (
               <Card key={event.id}>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center">
@@ -164,13 +274,20 @@ const DashboardEvenementsSociaux = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-2">{event.description}</p>
-                  <p className="text-sm mb-4"><strong>Catégorie:</strong> {event.category}</p>
+                  <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
+                  {event.contact && <p className="text-sm mb-1"><strong>Contact:</strong> {event.contact}</p>}
+                  {event.price && <p className="text-sm mb-4"><strong>Prix:</strong> {event.price}</p>}
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
                       Modifier
                     </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="text-red-600"
+                      onClick={() => handleDelete(event.id)}
+                    >
                       <Trash2 className="h-4 w-4 mr-1" />
                       Supprimer
                     </Button>
@@ -197,83 +314,156 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="mb-6">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvel événement social'}
-            </Button>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouvel événement social
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Ajouter un événement social</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                          <FormLabel>Titre de l'événement</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Titre de l'événement" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date</FormLabel>
+                          <FormControl>
+                            <Input type="date" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="time"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Heure</FormLabel>
+                          <FormControl>
+                            <Input type="time" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Lieu</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Lieu de l'événement" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="participants"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nombre de participants</FormLabel>
+                          <FormControl>
+                            <Input placeholder="50, 100+, etc." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="category"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Catégorie</FormLabel>
+                          <FormControl>
+                            <select className="w-full p-2 border rounded-md" {...field}>
+                              <option value="">Sélectionner une catégorie</option>
+                              <option value="Gala">Gala</option>
+                              <option value="Sport">Sport</option>
+                              <option value="Networking">Networking</option>
+                              <option value="Culturel">Culturel</option>
+                              <option value="Caritatif">Caritatif</option>
+                              <option value="Formation">Formation</option>
+                              <option value="Loisirs">Loisirs</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="contact"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Contact (optionnel)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Email ou téléphone" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Prix (optionnel)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Gratuit, 5000 FCFA, etc." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2">
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="Description de l'événement" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="md:col-span-2">
+                      <Button type="submit" className="w-full">Publier l'événement</Button>
+                    </div>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
           </div>
 
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Ajouter un événement social</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Titre de l'événement"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    required
-                  />
-                  <Input
-                    type="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({...formData, time: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Lieu"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Nombre de participants"
-                    value={formData.participants}
-                    onChange={(e) => setFormData({...formData, participants: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="p-2 border rounded-md"
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    required
-                  >
-                    <option value="">Catégorie</option>
-                    <option value="Gala">Gala</option>
-                    <option value="Sport">Sport</option>
-                    <option value="Networking">Networking</option>
-                    <option value="Culturel">Culturel</option>
-                    <option value="Caritatif">Caritatif</option>
-                  </select>
-                  <div className="md:col-span-2">
-                    <Textarea
-                      placeholder="Description de l'événement"
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Button type="submit">Publier l'événement</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {mockEvents.map((event) => (
+            {events.map((event) => (
               <Card key={event.id}>
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -297,13 +487,20 @@ const DashboardEvenementsSociaux = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-2">{event.description}</p>
-                  <p className="text-sm mb-4"><strong>Catégorie:</strong> {event.category}</p>
+                  <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
+                  {event.contact && <p className="text-sm mb-1"><strong>Contact:</strong> {event.contact}</p>}
+                  {event.price && <p className="text-sm mb-4"><strong>Prix:</strong> {event.price}</p>}
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
                       Modifier
                     </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="text-red-600"
+                      onClick={() => handleDelete(event.id)}
+                    >
                       <Trash2 className="h-4 w-4 mr-1" />
                       Supprimer
                     </Button>
