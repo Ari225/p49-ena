@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -26,6 +25,13 @@ import DashboardJournalArticles from './dashboard/DashboardJournalArticles';
 import DashboardAddNews from './dashboard/DashboardAddNews';
 import DashboardAddUser from './dashboard/DashboardAddUser';
 import DashboardAddJournal from './dashboard/DashboardAddJournal';
+import DashboardCommuniques from './dashboard/DashboardCommuniques';
+import DashboardEchoRegions from './dashboard/DashboardEchoRegions';
+import DashboardCarrieres from './dashboard/DashboardCarrieres';
+import DashboardTemoignages from './dashboard/DashboardTemoignages';
+import DashboardEvenementsSociaux from './dashboard/DashboardEvenementsSociaux';
+import DashboardActivites from './dashboard/DashboardActivites';
+import DashboardMediatheque from './dashboard/DashboardMediatheque';
 
 const DashboardHome = () => {
   const { user } = useAuth();
@@ -216,6 +222,13 @@ const Dashboard = () => {
       <Route path="/news" element={<DashboardNews />} />
       <Route path="/blog" element={<DashboardBlog />} />
       <Route path="/journal" element={<DashboardJournal />} />
+      <Route path="/communiques" element={<DashboardCommuniques />} />
+      <Route path="/echo-regions" element={<DashboardEchoRegions />} />
+      <Route path="/carrieres" element={<DashboardCarrieres />} />
+      <Route path="/temoignages" element={<DashboardTemoignages />} />
+      <Route path="/evenements-sociaux" element={<DashboardEvenementsSociaux />} />
+      <Route path="/activites" element={<DashboardActivites />} />
+      <Route path="/mediatheque" element={<DashboardMediatheque />} />
       <Route path="/events" element={<DashboardEvents />} />
       <Route path="/settings" element={<DashboardSettings />} />
       <Route path="/notifications" element={<DashboardNotifications />} />
