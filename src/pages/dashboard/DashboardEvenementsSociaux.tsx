@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -28,11 +27,24 @@ const formSchema = z.object({
   price: z.string().optional(),
 });
 
+interface Event {
+  id: string;
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  participants: string;
+  description: string;
+  category: string;
+  contact: string;
+  price: string;
+}
+
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
-  const [events, setEvents] = useState([
+  const [events, setEvents] = useState<Event[]>([
     {
       id: '1',
       title: 'Gala annuel de la P49',
@@ -79,9 +91,17 @@ const DashboardEvenementsSociaux = () => {
   }
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const newEvent = {
+    const newEvent: Event = {
       id: Date.now().toString(),
-      ...values,
+      title: values.title,
+      date: values.date,
+      time: values.time,
+      location: values.location,
+      participants: values.participants,
+      description: values.description,
+      category: values.category,
+      contact: values.contact || '',
+      price: values.price || '',
     };
     setEvents([...events, newEvent]);
     setShowForm(false);
