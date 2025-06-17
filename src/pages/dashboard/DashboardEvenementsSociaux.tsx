@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -86,11 +87,21 @@ const DashboardEvenementsSociaux = () => {
     },
   });
 
-  if (!user || user.role !== 'admin') {
-    return <div>Non autorisé</div>;
+  console.log('DashboardEvenementsSociaux rendered, user:', user);
+  console.log('Events:', events);
+
+  if (!user) {
+    console.log('No user found');
+    return <div>Chargement...</div>;
+  }
+
+  if (user.role !== 'admin') {
+    console.log('User is not admin:', user.role);
+    return <div>Non autorisé - Accès réservé aux administrateurs</div>;
   }
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log('Form submitted with values:', values);
     const newEvent: Event = {
       id: Date.now().toString(),
       title: values.title,
@@ -110,6 +121,7 @@ const DashboardEvenementsSociaux = () => {
   };
 
   const handleDelete = (id: string) => {
+    console.log('Deleting event with id:', id);
     setEvents(events.filter(event => event.id !== id));
   };
 
