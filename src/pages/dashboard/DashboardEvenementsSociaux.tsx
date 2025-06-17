@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock } from 'lucide-react';
@@ -16,6 +17,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   eventType: z.string().min(1, 'Le type d\'événement est requis'),
@@ -28,6 +30,7 @@ const formSchema = z.object({
   description: z.string().min(1, 'La description est requise'),
   thought: z.string().min(1, 'La pensée est requise'),
   keyword: z.string().optional(),
+  image: z.string().optional(),
 });
 
 interface Event {
@@ -42,6 +45,7 @@ interface Event {
   description: string;
   thought: string;
   keyword: string;
+  image?: string;
 }
 
 const eventTypeCategories = {
@@ -53,7 +57,9 @@ const eventTypeCategories = {
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [events, setEvents] = useState<Event[]>([
     {
       id: '1',
@@ -65,7 +71,8 @@ const DashboardEvenementsSociaux = () => {
       location: 'Abidjan',
       description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
       thought: 'Félicitations aux heureux parents !',
-      keyword: 'Naissances'
+      keyword: 'Naissances',
+      image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop'
     },
     {
       id: '2',
@@ -78,7 +85,8 @@ const DashboardEvenementsSociaux = () => {
       location: 'Bouaké',
       description: 'Après 35 années de service dévoué, M. Koffi prend sa retraite.',
       thought: 'Nous lui souhaitons une retraite heureuse et épanouie !',
-      keyword: 'Retraite'
+      keyword: 'Retraite',
+      image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop'
     }
   ]);
 
@@ -95,6 +103,7 @@ const DashboardEvenementsSociaux = () => {
       description: '',
       thought: '',
       keyword: '',
+      image: '',
     },
   });
 
@@ -107,6 +116,25 @@ const DashboardEvenementsSociaux = () => {
       form.setValue('keyword', watchedCategory);
     }
   }, [watchedCategory, form]);
+
+  // Effect to populate form when editing
+  React.useEffect(() => {
+    if (editingEvent) {
+      form.reset({
+        eventType: editingEvent.eventType,
+        category: editingEvent.category,
+        title: editingEvent.title,
+        memberName: editingEvent.memberName,
+        yearsOfService: editingEvent.yearsOfService || '',
+        date: editingEvent.date,
+        location: editingEvent.location,
+        description: editingEvent.description,
+        thought: editingEvent.thought,
+        keyword: editingEvent.keyword,
+        image: editingEvent.image || '',
+      });
+    }
+  }, [editingEvent, form]);
 
   console.log('DashboardEvenementsSociaux rendered, user:', user);
   console.log('Events:', events);
@@ -123,28 +151,76 @@ const DashboardEvenementsSociaux = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log('Form submitted with values:', values);
-    const newEvent: Event = {
-      id: Date.now().toString(),
-      eventType: values.eventType,
-      category: values.category,
-      title: values.title,
-      memberName: values.memberName,
-      yearsOfService: values.yearsOfService || '',
-      date: values.date,
-      location: values.location,
-      description: values.description,
-      thought: values.thought,
-      keyword: values.keyword || values.category,
-    };
-    setEvents([...events, newEvent]);
+    
+    if (editingEvent) {
+      // Update existing event
+      const updatedEvent: Event = {
+        ...editingEvent,
+        eventType: values.eventType,
+        category: values.category,
+        title: values.title,
+        memberName: values.memberName,
+        yearsOfService: values.yearsOfService || '',
+        date: values.date,
+        location: values.location,
+        description: values.description,
+        thought: values.thought,
+        keyword: values.keyword || values.category,
+        image: values.image || '',
+      };
+      setEvents(events.map(event => event.id === editingEvent.id ? updatedEvent : event));
+      toast({
+        title: "Événement modifié",
+        description: "L'événement social a été modifié avec succès.",
+      });
+      setEditingEvent(null);
+    } else {
+      // Create new event
+      const newEvent: Event = {
+        id: Date.now().toString(),
+        eventType: values.eventType,
+        category: values.category,
+        title: values.title,
+        memberName: values.memberName,
+        yearsOfService: values.yearsOfService || '',
+        date: values.date,
+        location: values.location,
+        description: values.description,
+        thought: values.thought,
+        keyword: values.keyword || values.category,
+        image: values.image || '',
+      };
+      setEvents([...events, newEvent]);
+      toast({
+        title: "Événement créé",
+        description: "Le nouvel événement social a été créé avec succès.",
+      });
+    }
+    
     setShowForm(false);
     form.reset();
-    console.log('Nouvel événement social ajouté:', newEvent);
+    console.log('Événement social traité avec succès');
+  };
+
+  const handleEdit = (event: Event) => {
+    console.log('Editing event:', event);
+    setEditingEvent(event);
+    setShowForm(true);
   };
 
   const handleDelete = (id: string) => {
     console.log('Deleting event with id:', id);
     setEvents(events.filter(event => event.id !== id));
+    toast({
+      title: "Événement supprimé",
+      description: "L'événement social a été supprimé avec succès.",
+    });
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setEditingEvent(null);
+    form.reset();
   };
 
   const renderForm = () => (
@@ -159,7 +235,7 @@ const DashboardEvenementsSociaux = () => {
               <Select onValueChange={(value) => {
                 field.onChange(value);
                 form.setValue('category', ''); // Reset category when event type changes
-              }} defaultValue={field.value}>
+              }} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionner le type d'événement" />
@@ -183,7 +259,7 @@ const DashboardEvenementsSociaux = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Catégorie</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Sélectionner une catégorie" />
@@ -301,6 +377,20 @@ const DashboardEvenementsSociaux = () => {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>URL de l'image</FormLabel>
+              <FormControl>
+                <Input placeholder="ex: https://example.com/image.jpg" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {watchedCategory && (
           <FormField
             control={form.control}
@@ -317,7 +407,9 @@ const DashboardEvenementsSociaux = () => {
           />
         )}
 
-        <Button type="submit" className="w-full">Publier l'événement</Button>
+        <Button type="submit" className="w-full">
+          {editingEvent ? 'Modifier l\'événement' : 'Publier l\'événement'}
+        </Button>
       </form>
     </Form>
   );
@@ -332,16 +424,18 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="mb-4">
-            <Dialog open={showForm} onOpenChange={setShowForm}>
+            <Dialog open={showForm} onOpenChange={(open) => !open && handleCloseForm()}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 w-full">
+                <Button className="bg-primary hover:bg-primary/90 w-full" onClick={() => setEditingEvent(null)}>
                   <Plus className="mr-2 h-4 w-4" />
                   Nouvel événement
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Ajouter un événement social</DialogTitle>
+                  <DialogTitle>
+                    {editingEvent ? 'Modifier l\'événement social' : 'Ajouter un événement social'}
+                  </DialogTitle>
                 </DialogHeader>
                 {renderForm()}
               </DialogContent>
@@ -372,6 +466,9 @@ const DashboardEvenementsSociaux = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {event.image && (
+                    <img src={event.image} alt={event.title} className="w-full h-32 object-cover rounded mb-3" />
+                  )}
                   <p className="text-gray-600 mb-2">{event.description}</p>
                   <p className="text-sm mb-1"><strong>Type:</strong> {event.eventType}</p>
                   <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
@@ -379,19 +476,32 @@ const DashboardEvenementsSociaux = () => {
                   <p className="text-sm mb-1"><strong>Pensée:</strong> {event.thought}</p>
                   <p className="text-sm mb-4"><strong>Mot-clé:</strong> {event.keyword}</p>
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleEdit(event)}>
                       <Edit className="h-4 w-4 mr-1" />
                       Modifier
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="text-red-600"
-                      onClick={() => handleDelete(event.id)}
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="outline" className="text-red-600">
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Supprimer
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Êtes-vous sûr de vouloir supprimer cet événement ? Cette action est irréversible.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => handleDelete(event.id)}>
+                            Supprimer
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </CardContent>
               </Card>
@@ -415,16 +525,18 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="mb-6">
-            <Dialog open={showForm} onOpenChange={setShowForm}>
+            <Dialog open={showForm} onOpenChange={(open) => !open && handleCloseForm()}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">
+                <Button className="bg-primary hover:bg-primary/90" onClick={() => setEditingEvent(null)}>
                   <Plus className="mr-2 h-4 w-4" />
                   Nouvel événement social
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Ajouter un événement social</DialogTitle>
+                  <DialogTitle>
+                    {editingEvent ? 'Modifier l\'événement social' : 'Ajouter un événement social'}
+                  </DialogTitle>
                 </DialogHeader>
                 <div className="grid grid-cols-1 gap-4">
                   {renderForm()}
@@ -457,6 +569,9 @@ const DashboardEvenementsSociaux = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {event.image && (
+                    <img src={event.image} alt={event.title} className="w-full h-40 object-cover rounded mb-3" />
+                  )}
                   <p className="text-gray-600 mb-2">{event.description}</p>
                   <p className="text-sm mb-1"><strong>Type:</strong> {event.eventType}</p>
                   <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
@@ -464,19 +579,32 @@ const DashboardEvenementsSociaux = () => {
                   <p className="text-sm mb-1"><strong>Pensée:</strong> {event.thought}</p>
                   <p className="text-sm mb-4"><strong>Mot-clé:</strong> {event.keyword}</p>
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" onClick={() => handleEdit(event)}>
                       <Edit className="h-4 w-4 mr-1" />
                       Modifier
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="text-red-600"
-                      onClick={() => handleDelete(event.id)}
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="outline" className="text-red-600">
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Supprimer
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Êtes-vous sûr de vouloir supprimer cet événement ? Cette action est irréversible.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Annuler</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => handleDelete(event.id)}>
+                            Supprimer
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </CardContent>
               </Card>
