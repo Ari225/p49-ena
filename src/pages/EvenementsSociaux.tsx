@@ -146,7 +146,9 @@ const EvenementsSociaux = () => {
                       <div className="space-y-2 mb-4">
                         <p className="text-sm"><strong>Type:</strong> {event.eventType}</p>
                         <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                        {event.yearsOfService && <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>}
+                        {'yearsOfService' in event && event.yearsOfService && (
+                          <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
+                        )}
                         <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
                       </div>
                       <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-200">
