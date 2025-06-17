@@ -1,200 +1,189 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, Heart, Baby, GraduationCap, Award } from 'lucide-react';
+import { Calendar, MapPin, Users, PartyPopper, Heart, Gift, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-interface HappyEvent {
-  id: string;
-  title: string;
-  description: string | null;
-  event_date: string;
-  category: string;
-  member_name: string;
-  congratulations_message: string | null;
-  image_url: string | null;
-}
 
 const EvenementsHeureux = () => {
   const isMobile = useIsMobile();
-  const [events, setEvents] = useState<HappyEvent[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const categories = [
-    { id: 'tous', label: 'Tous', icon: Heart },
-    { id: 'naissance', label: 'Naissances', icon: Baby },
-    { id: 'promotion', label: 'Promotions', icon: Award },
-    { id: 'distinction', label: 'Distinctions', icon: GraduationCap },
-    { id: 'autre_heureux', label: 'Autres', icon: Heart }
+  const heureuxEvents = [
+    {
+      id: '1',
+      eventType: 'Heureux',
+      category: 'Naissances',
+      title: 'Naissance de bébé Marie',
+      memberName: 'Famille Kouassi',
+      date: '2024-01-15',
+      location: 'Abidjan',
+      description: 'Nous avons la joie d\'annoncer la naissance de Marie, un petit ange qui illumine déjà la famille.',
+      thought: 'Félicitations aux heureux parents ! Que cette petite merveille vous apporte joie et bonheur.',
+      keyword: 'Naissances',
+      image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+    },
+    {
+      id: '2',
+      eventType: 'Heureux',
+      category: 'Promotions',
+      title: 'Promotion au grade de Directeur',
+      memberName: 'M. Yao Kouadio',
+      date: '2024-02-10',
+      location: 'Yamoussoukro',
+      description: 'M. Yao Kouadio a été promu au grade de Directeur des Ressources Humaines suite à son excellent travail.',
+      thought: 'Félicitations pour cette promotion bien méritée ! Votre dévouement est enfin récompensé.',
+      keyword: 'Promotions',
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
+    },
+    {
+      id: '3',
+      eventType: 'Heureux',
+      category: 'Distinctions',
+      title: 'Médaille d\'honneur du travail',
+      memberName: 'Mme Akissi Brou',
+      date: '2024-01-25',
+      location: 'Abidjan',
+      description: 'Mme Akissi Brou a reçu la médaille d\'honneur du travail pour ses 25 années de service exemplaire.',
+      thought: 'Un honneur bien mérité ! Votre engagement inspire toute notre communauté.',
+      keyword: 'Distinctions',
+      image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop"
+    },
+    {
+      id: '4',
+      eventType: 'Heureux',
+      category: 'Naissances',
+      title: 'Naissance des jumeaux Paul et Pierre',
+      memberName: 'Famille Diabaté',
+      date: '2024-02-05',
+      location: 'Bouaké',
+      description: 'Double bonheur pour la famille Diabaté avec l\'arrivée des jumeaux Paul et Pierre.',
+      thought: 'Quelle joie immense ! Que ces deux petits anges grandissent en bonne santé.',
+      keyword: 'Naissances',
+      image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+    }
   ];
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
-    try {
-      setLoading(true);
-      // Mock data instead of Supabase
-      const mockEvents: HappyEvent[] = [
-        {
-          id: '1',
-          title: 'Naissance de bébé Marie',
-          description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
-          event_date: '2024-01-15',
-          category: 'naissance',
-          member_name: 'Famille Kouassi',
-          congratulations_message: 'Félicitations aux heureux parents !',
-          image_url: null
-        }
-      ];
-      setEvents(mockEvents);
-    } catch (error) {
-      console.error('Error fetching happy events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getFilteredEvents = (category: string) => {
-    if (category === 'tous') return events;
-    return events.filter(event => event.category === category);
-  };
-
   const getCategoryIcon = (category: string) => {
-    const categoryData = categories.find(cat => cat.id === category);
-    return categoryData?.icon || Heart;
-  };
-
-  const getCategoryLabel = (category: string) => {
-    const categoryData = categories.find(cat => cat.id === category);
-    return categoryData?.label || category;
+    switch (category) {
+      case 'Naissances': return Gift;
+      case 'Promotions': return Star;
+      case 'Distinctions': return Award;
+      default: return PartyPopper;
+    }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'naissance': return 'bg-pink-100 text-pink-700';
-      case 'promotion': return 'bg-green-100 text-green-700';
-      case 'distinction': return 'bg-purple-100 text-purple-700';
-      default: return 'bg-blue-100 text-blue-700';
+      case 'Naissances': return 'border-l-pink-500 bg-pink-50';
+      case 'Promotions': return 'border-l-yellow-500 bg-yellow-50';
+      case 'Distinctions': return 'border-l-purple-500 bg-purple-50';
+      default: return 'border-l-green-500 bg-green-50';
     }
   };
-
-  if (loading) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">Chargement...</div>
-        </div>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`bg-gradient-to-r from-pink-500 to-purple-600 text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Évènements Heureux</h1>
-            <p className="text-xl opacity-90">
-              Partageons ensemble nos moments de joie et de fierté
+        <section className={`bg-gradient-to-r from-green-600 to-green-800 text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+          <div className="container mx-auto px-4 text-center">
+            <PartyPopper className="w-16 h-16 mx-auto mb-6" />
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Événements Heureux</h1>
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
+              Célébrons ensemble les moments de joie, les réussites et les bonheurs qui illuminent notre communauté
             </p>
           </div>
         </section>
 
         {/* Events Section */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <Tabs defaultValue="tous" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
-                {categories.map((category) => {
-                  const IconComponent = category.icon;
-                  return (
-                    <TabsTrigger 
-                      key={category.id} 
-                      value={category.id}
-                      className="flex items-center gap-1 text-xs lg:text-sm"
-                    >
-                      <IconComponent className="h-3 w-3 lg:h-4 lg:w-4" />
-                      <span className="hidden sm:inline">{category.label}</span>
-                    </TabsTrigger>
-                  );
-                })}
-              </TabsList>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-primary mb-4">Nos moments de bonheur</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Partageons la joie des naissances, célébrons les promotions et honorons les distinctions de nos membres.
+              </p>
+            </div>
 
-              {categories.map((category) => (
-                <TabsContent key={category.id} value={category.id} className="space-y-6">
-                  {getFilteredEvents(category.id).length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {getFilteredEvents(category.id).map((event) => {
-                        const IconComponent = getCategoryIcon(event.category);
-                        return (
-                          <Card key={event.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-pink-400">
-                            <CardHeader className="pb-3">
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <CardTitle className="text-lg text-gray-800 mb-2">{event.title}</CardTitle>
-                                  <p className="text-gray-600 font-medium">{event.member_name}</p>
-                                </div>
-                                <div className="bg-pink-100 text-pink-600 p-2 rounded-full">
-                                  <IconComponent className="h-4 w-4" />
-                                </div>
-                              </div>
-                              <div className="flex items-center text-sm text-gray-500 mt-2">
-                                <Calendar className="h-4 w-4 mr-2" />
-                                {new Date(event.event_date).toLocaleDateString('fr-FR', {
-                                  year: 'numeric',
-                                  month: 'long',
-                                  day: 'numeric'
-                                })}
-                              </div>
-                            </CardHeader>
-                            
-                            <CardContent className="pt-0">
-                              {event.image_url && (
-                                <img 
-                                  src={event.image_url} 
-                                  alt={event.title}
-                                  className="w-full h-32 object-cover rounded mb-3"
-                                />
-                              )}
-                              
-                              {event.description && (
-                                <p className="text-gray-700 text-sm mb-3">{event.description}</p>
-                              )}
-                              
-                              {event.congratulations_message && (
-                                <div className="bg-yellow-50 p-3 rounded-lg border-l-2 border-yellow-300 mb-3">
-                                  <p className="text-sm text-gray-700 italic">
-                                    <Heart className="h-3 w-3 inline mr-1" />
-                                    {event.congratulations_message}
-                                  </p>
-                                </div>
-                              )}
-                              
-                              <Badge className={getCategoryColor(event.category)}>
-                                {getCategoryLabel(event.category)}
-                              </Badge>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {heureuxEvents.map((event) => {
+                const IconComponent = getCategoryIcon(event.category);
+                return (
+                  <Card key={event.id} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)}`}>
+                    <div className="aspect-video overflow-hidden">
+                      <img 
+                        src={event.image} 
+                        alt={event.title}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
                     </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500">
-                        Aucun événement dans cette catégorie pour le moment.
-                      </p>
-                    </div>
-                  )}
-                </TabsContent>
-              ))}
-            </Tabs>
+                    <CardHeader>
+                      <CardTitle className="text-green-800 text-lg flex items-center">
+                        <IconComponent className="w-5 h-5 mr-2" />
+                        {event.title}
+                      </CardTitle>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          {new Date(event.date).toLocaleDateString('fr-FR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </div>
+                        <div className="flex items-center">
+                          <MapPin className="w-4 h-4 mr-2" />
+                          {event.location}
+                        </div>
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2" />
+                          {event.memberName}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-700 text-sm mb-3">{event.description}</p>
+                      <div className="space-y-2 mb-4">
+                        <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                        <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
+                      </div>
+                      <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
+                        <p className="text-sm text-green-800 italic">
+                          <Heart className="h-3 w-3 inline mr-1" />
+                          {event.thought}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Statistics Section */}
+        <section className={`bg-green-50 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center text-primary mb-12">
+              Nos bonheurs en chiffres
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <Card className="text-center p-6 bg-white">
+                <Gift className="w-12 h-12 mx-auto mb-4 text-pink-600" />
+                <h3 className="text-2xl font-bold text-pink-800 mb-2">12</h3>
+                <p className="text-pink-700">Naissances cette année</p>
+              </Card>
+              <Card className="text-center p-6 bg-white">
+                <Star className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
+                <h3 className="text-2xl font-bold text-yellow-800 mb-2">8</h3>
+                <p className="text-yellow-700">Promotions célébrées</p>
+              </Card>
+              <Card className="text-center p-6 bg-white">
+                <Award className="w-12 h-12 mx-auto mb-4 text-purple-600" />
+                <h3 className="text-2xl font-bold text-purple-800 mb-2">5</h3>
+                <p className="text-purple-700">Distinctions honorées</p>
+              </Card>
+            </div>
           </div>
         </section>
       </div>
