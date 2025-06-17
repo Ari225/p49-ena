@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useForm } from 'react-hook-form';
@@ -17,29 +18,37 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const formSchema = z.object({
-  title: z.string().min(1, 'Le titre est requis'),
-  date: z.string().min(1, 'La date est requise'),
-  time: z.string().min(1, 'L\'heure est requise'),
-  location: z.string().min(1, 'Le lieu est requis'),
-  participants: z.string().min(1, 'Le nombre de participants est requis'),
-  description: z.string().min(1, 'La description est requise'),
+  eventType: z.string().min(1, 'Le type d\'événement est requis'),
   category: z.string().min(1, 'La catégorie est requise'),
-  contact: z.string().optional(),
-  price: z.string().optional(),
+  title: z.string().min(1, 'L\'intitulé de l\'événement est requis'),
+  memberName: z.string().min(1, 'Le nom du concerné est requis'),
+  yearsOfService: z.string().optional(),
+  date: z.string().min(1, 'La date est requise'),
+  location: z.string().min(1, 'La localité est requise'),
+  description: z.string().min(1, 'La description est requise'),
+  thought: z.string().min(1, 'La pensée est requise'),
+  keyword: z.string().optional(),
 });
 
 interface Event {
   id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  participants: string;
-  description: string;
+  eventType: string;
   category: string;
-  contact: string;
-  price: string;
+  title: string;
+  memberName: string;
+  yearsOfService?: string;
+  date: string;
+  location: string;
+  description: string;
+  thought: string;
+  keyword: string;
 }
+
+const eventTypeCategories = {
+  'Heureux': ['Naissances', 'Promotions', 'Distinctions', 'Autres'],
+  'Retraite': ['Retraite'],
+  'Malheureux': ['Décès', 'Maladies', 'Accidents', 'Autres']
+};
 
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
@@ -48,44 +57,56 @@ const DashboardEvenementsSociaux = () => {
   const [events, setEvents] = useState<Event[]>([
     {
       id: '1',
-      title: 'Gala annuel de la P49',
-      date: '2024-05-15',
-      time: '19:00',
-      location: 'Hôtel Ivoire, Abidjan',
-      participants: '200+',
-      description: 'Soirée de gala annuelle réunissant tous les membres de la P49.',
-      category: 'Gala',
-      contact: 'evenements@p49.com',
-      price: '50000 FCFA'
+      eventType: 'Heureux',
+      category: 'Naissances',
+      title: 'Naissance de bébé Marie',
+      memberName: 'Famille Kouassi',
+      date: '2024-01-15',
+      location: 'Abidjan',
+      description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
+      thought: 'Félicitations aux heureux parents !',
+      keyword: 'Naissances'
     },
     {
       id: '2',
-      title: 'Tournoi de golf inter-promotions',
-      date: '2024-04-20',
-      time: '08:00',
-      location: 'Golf Club d\'Abidjan',
-      participants: '50',
-      description: 'Compétition sportive amicale entre les promotions.',
-      category: 'Sport',
-      contact: 'sport@p49.com',
-      price: 'Gratuit'
+      eventType: 'Retraite',
+      category: 'Retraite',
+      title: 'Départ en retraite de M. Koffi',
+      memberName: 'M. Jean Koffi',
+      yearsOfService: '35 ans de service',
+      date: '2024-02-01',
+      location: 'Bouaké',
+      description: 'Après 35 années de service dévoué, M. Koffi prend sa retraite.',
+      thought: 'Nous lui souhaitons une retraite heureuse et épanouie !',
+      keyword: 'Retraite'
     }
   ]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      date: '',
-      time: '',
-      location: '',
-      participants: '',
-      description: '',
+      eventType: '',
       category: '',
-      contact: '',
-      price: '',
+      title: '',
+      memberName: '',
+      yearsOfService: '',
+      date: '',
+      location: '',
+      description: '',
+      thought: '',
+      keyword: '',
     },
   });
+
+  const watchedEventType = form.watch('eventType');
+  const watchedCategory = form.watch('category');
+
+  // Auto-set keyword based on category
+  React.useEffect(() => {
+    if (watchedCategory) {
+      form.setValue('keyword', watchedCategory);
+    }
+  }, [watchedCategory, form]);
 
   console.log('DashboardEvenementsSociaux rendered, user:', user);
   console.log('Events:', events);
@@ -104,15 +125,16 @@ const DashboardEvenementsSociaux = () => {
     console.log('Form submitted with values:', values);
     const newEvent: Event = {
       id: Date.now().toString(),
-      title: values.title,
-      date: values.date,
-      time: values.time,
-      location: values.location,
-      participants: values.participants,
-      description: values.description,
+      eventType: values.eventType,
       category: values.category,
-      contact: values.contact || '',
-      price: values.price || '',
+      title: values.title,
+      memberName: values.memberName,
+      yearsOfService: values.yearsOfService || '',
+      date: values.date,
+      location: values.location,
+      description: values.description,
+      thought: values.thought,
+      keyword: values.keyword || values.category,
     };
     setEvents([...events, newEvent]);
     setShowForm(false);
@@ -124,6 +146,181 @@ const DashboardEvenementsSociaux = () => {
     console.log('Deleting event with id:', id);
     setEvents(events.filter(event => event.id !== id));
   };
+
+  const renderForm = () => (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="eventType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Type de l'événement</FormLabel>
+              <Select onValueChange={(value) => {
+                field.onChange(value);
+                form.setValue('category', ''); // Reset category when event type changes
+              }} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Sélectionner le type d'événement" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Heureux">Heureux</SelectItem>
+                  <SelectItem value="Retraite">Retraite</SelectItem>
+                  <SelectItem value="Malheureux">Malheureux</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {watchedEventType && (
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Catégorie</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionner une catégorie" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {eventTypeCategories[watchedEventType as keyof typeof eventTypeCategories]?.map((category) => (
+                      <SelectItem key={category} value={category}>{category}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Intitulé de l'événement</FormLabel>
+              <FormControl>
+                <Input placeholder="ex: Naissance de bébé Marie" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="memberName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nom du concerné</FormLabel>
+              <FormControl>
+                <Input placeholder="ex: Famille Kouassi" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {watchedEventType === 'Retraite' && (
+          <FormField
+            control={form.control}
+            name="yearsOfService"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Années de service</FormLabel>
+                <FormControl>
+                  <Input placeholder="ex: 35 ans de service" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Date</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Localité</FormLabel>
+              <FormControl>
+                <Input placeholder="ex: Abidjan" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder="ex: Nous avons la joie d'annoncer la naissance de Marie." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="thought"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Pensée</FormLabel>
+              <FormControl>
+                <Textarea placeholder="ex: Félicitations aux heureux parents !" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {watchedCategory && (
+          <FormField
+            control={form.control}
+            name="keyword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mot-clé (automatique)</FormLabel>
+                <FormControl>
+                  <Input {...field} readOnly className="bg-gray-100" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <Button type="submit" className="w-full">Publier l'événement</Button>
+      </form>
+    </Form>
+  );
 
   if (isMobile) {
     return (
@@ -146,137 +343,7 @@ const DashboardEvenementsSociaux = () => {
                 <DialogHeader>
                   <DialogTitle>Ajouter un événement social</DialogTitle>
                 </DialogHeader>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="title"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Titre de l'événement</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Titre de l'événement" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Date</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="time"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Heure</FormLabel>
-                          <FormControl>
-                            <Input type="time" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="location"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Lieu</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Lieu de l'événement" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="participants"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Nombre de participants</FormLabel>
-                          <FormControl>
-                            <Input placeholder="50, 100+, etc." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Catégorie</FormLabel>
-                          <FormControl>
-                            <select className="w-full p-2 border rounded-md" {...field}>
-                              <option value="">Sélectionner une catégorie</option>
-                              <option value="Gala">Gala</option>
-                              <option value="Sport">Sport</option>
-                              <option value="Networking">Networking</option>
-                              <option value="Culturel">Culturel</option>
-                              <option value="Caritatif">Caritatif</option>
-                              <option value="Formation">Formation</option>
-                              <option value="Loisirs">Loisirs</option>
-                            </select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="contact"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Contact (optionnel)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Email ou téléphone" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="price"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Prix (optionnel)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Gratuit, 5000 FCFA, etc." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Description de l'événement" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button type="submit" className="w-full">Publier l'événement</Button>
-                  </form>
-                </Form>
+                {renderForm()}
               </DialogContent>
             </Dialog>
           </div>
@@ -292,7 +359,7 @@ const DashboardEvenementsSociaux = () => {
                   <div className="space-y-1">
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(event.date).toLocaleDateString('fr-FR')} à {event.time}
+                      {new Date(event.date).toLocaleDateString('fr-FR')}
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <MapPin className="w-4 h-4 mr-1" />
@@ -300,15 +367,17 @@ const DashboardEvenementsSociaux = () => {
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Users className="w-4 h-4 mr-1" />
-                      {event.participants} participants
+                      {event.memberName}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-2">{event.description}</p>
+                  <p className="text-sm mb-1"><strong>Type:</strong> {event.eventType}</p>
                   <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
-                  {event.contact && <p className="text-sm mb-1"><strong>Contact:</strong> {event.contact}</p>}
-                  {event.price && <p className="text-sm mb-4"><strong>Prix:</strong> {event.price}</p>}
+                  {event.yearsOfService && <p className="text-sm mb-1"><strong>Années de service:</strong> {event.yearsOfService}</p>}
+                  <p className="text-sm mb-1"><strong>Pensée:</strong> {event.thought}</p>
+                  <p className="text-sm mb-4"><strong>Mot-clé:</strong> {event.keyword}</p>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
@@ -357,139 +426,9 @@ const DashboardEvenementsSociaux = () => {
                 <DialogHeader>
                   <DialogTitle>Ajouter un événement social</DialogTitle>
                 </DialogHeader>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="title"
-                      render={({ field }) => (
-                        <FormItem className="md:col-span-2">
-                          <FormLabel>Titre de l'événement</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Titre de l'événement" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Date</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="time"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Heure</FormLabel>
-                          <FormControl>
-                            <Input type="time" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="location"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Lieu</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Lieu de l'événement" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="participants"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Nombre de participants</FormLabel>
-                          <FormControl>
-                            <Input placeholder="50, 100+, etc." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Catégorie</FormLabel>
-                          <FormControl>
-                            <select className="w-full p-2 border rounded-md" {...field}>
-                              <option value="">Sélectionner une catégorie</option>
-                              <option value="Gala">Gala</option>
-                              <option value="Sport">Sport</option>
-                              <option value="Networking">Networking</option>
-                              <option value="Culturel">Culturel</option>
-                              <option value="Caritatif">Caritatif</option>
-                              <option value="Formation">Formation</option>
-                              <option value="Loisirs">Loisirs</option>
-                            </select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="contact"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Contact (optionnel)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Email ou téléphone" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="price"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Prix (optionnel)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Gratuit, 5000 FCFA, etc." {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem className="md:col-span-2">
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder="Description de l'événement" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <div className="md:col-span-2">
-                      <Button type="submit" className="w-full">Publier l'événement</Button>
-                    </div>
-                  </form>
-                </Form>
+                <div className="grid grid-cols-1 gap-4">
+                  {renderForm()}
+                </div>
               </DialogContent>
             </Dialog>
           </div>
@@ -505,7 +444,7 @@ const DashboardEvenementsSociaux = () => {
                   <div className="space-y-1">
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(event.date).toLocaleDateString('fr-FR')} à {event.time}
+                      {new Date(event.date).toLocaleDateString('fr-FR')}
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <MapPin className="w-4 h-4 mr-1" />
@@ -513,15 +452,17 @@ const DashboardEvenementsSociaux = () => {
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Users className="w-4 h-4 mr-1" />
-                      {event.participants} participants
+                      {event.memberName}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 mb-2">{event.description}</p>
+                  <p className="text-sm mb-1"><strong>Type:</strong> {event.eventType}</p>
                   <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
-                  {event.contact && <p className="text-sm mb-1"><strong>Contact:</strong> {event.contact}</p>}
-                  {event.price && <p className="text-sm mb-4"><strong>Prix:</strong> {event.price}</p>}
+                  {event.yearsOfService && <p className="text-sm mb-1"><strong>Années de service:</strong> {event.yearsOfService}</p>}
+                  <p className="text-sm mb-1"><strong>Pensée:</strong> {event.thought}</p>
+                  <p className="text-sm mb-4"><strong>Mot-clé:</strong> {event.keyword}</p>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
