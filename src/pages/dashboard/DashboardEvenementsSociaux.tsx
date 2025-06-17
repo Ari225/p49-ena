@@ -12,7 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users, Clock } from 'lucide-react';
+import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users, Upload, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,7 +30,6 @@ const formSchema = z.object({
   description: z.string().min(1, 'La description est requise'),
   thought: z.string().min(1, 'La pensée est requise'),
   keyword: z.string().optional(),
-  image: z.string().optional(),
 });
 
 interface Event {
@@ -60,6 +59,8 @@ const DashboardEvenementsSociaux = () => {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const [events, setEvents] = useState<Event[]>([
     {
       id: '1',
@@ -103,7 +104,6 @@ const DashboardEvenementsSociaux = () => {
       description: '',
       thought: '',
       keyword: '',
-      image: '',
     },
   });
 
@@ -131,8 +131,10 @@ const DashboardEvenementsSociaux = () => {
         description: editingEvent.description,
         thought: editingEvent.thought,
         keyword: editingEvent.keyword,
-        image: editingEvent.image || '',
       });
+      if (editingEvent.image) {
+        setImagePreview(editingEvent.image);
+      }
     }
   }, [editingEvent, form]);
 
@@ -149,8 +151,34 @@ const DashboardEvenementsSociaux = () => {
     return <div>Non autorisé - Accès réservé aux administrateurs</div>;
   }
 
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setImagePreview(result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImagePreview('');
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log('Form submitted with values:', values);
+    
+    // Convert selected image to URL (in a real app, you'd upload to a server)
+    let imageUrl = '';
+    if (selectedImage) {
+      imageUrl = imagePreview;
+    } else if (editingEvent?.image && imagePreview) {
+      imageUrl = imagePreview;
+    }
     
     if (editingEvent) {
       // Update existing event
@@ -166,7 +194,7 @@ const DashboardEvenementsSociaux = () => {
         description: values.description,
         thought: values.thought,
         keyword: values.keyword || values.category,
-        image: values.image || '',
+        image: imageUrl,
       };
       setEvents(events.map(event => event.id === editingEvent.id ? updatedEvent : event));
       toast({
@@ -188,7 +216,7 @@ const DashboardEvenementsSociaux = () => {
         description: values.description,
         thought: values.thought,
         keyword: values.keyword || values.category,
-        image: values.image || '',
+        image: imageUrl,
       };
       setEvents([...events, newEvent]);
       toast({
@@ -197,8 +225,7 @@ const DashboardEvenementsSociaux = () => {
       });
     }
     
-    setShowForm(false);
-    form.reset();
+    handleCloseForm();
     console.log('Événement social traité avec succès');
   };
 
@@ -220,7 +247,17 @@ const DashboardEvenementsSociaux = () => {
   const handleCloseForm = () => {
     setShowForm(false);
     setEditingEvent(null);
+    setSelectedImage(null);
+    setImagePreview('');
     form.reset();
+  };
+
+  const handleNewEvent = () => {
+    setEditingEvent(null);
+    setSelectedImage(null);
+    setImagePreview('');
+    form.reset();
+    setShowForm(true);
   };
 
   const renderForm = () => (
@@ -232,10 +269,13 @@ const DashboardEvenementsSociaux = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Type de l'événement</FormLabel>
-              <Select onValueChange={(value) => {
-                field.onChange(value);
-                form.setValue('category', ''); // Reset category when event type changes
-              }} value={field.value}>
+              <Select 
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  form.setValue('category', '');
+                }} 
+                value={field.value}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionner le type d'événement" />
@@ -377,19 +417,51 @@ const DashboardEvenementsSociaux = () => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>URL de l'image</FormLabel>
-              <FormControl>
-                <Input placeholder="ex: https://example.com/image.jpg" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Image Upload Section */}
+        <div className="space-y-2">
+          <Label>Image de l'événement</Label>
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+            {imagePreview ? (
+              <div className="relative">
+                <img 
+                  src={imagePreview} 
+                  alt="Prévisualisation" 
+                  className="w-full h-40 object-cover rounded"
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="absolute top-2 right-2"
+                  onClick={removeImage}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                <div className="mt-2">
+                  <Label htmlFor="image-upload" className="cursor-pointer">
+                    <span className="mt-2 block text-sm font-medium text-gray-900">
+                      Cliquez pour sélectionner une image
+                    </span>
+                    <span className="mt-1 block text-xs text-gray-500">
+                      PNG, JPG, GIF jusqu'à 10MB
+                    </span>
+                  </Label>
+                  <Input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                    className="hidden"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         {watchedCategory && (
           <FormField
@@ -426,7 +498,7 @@ const DashboardEvenementsSociaux = () => {
           <div className="mb-4">
             <Dialog open={showForm} onOpenChange={(open) => !open && handleCloseForm()}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 w-full" onClick={() => setEditingEvent(null)}>
+                <Button className="bg-primary hover:bg-primary/90 w-full" onClick={handleNewEvent}>
                   <Plus className="mr-2 h-4 w-4" />
                   Nouvel événement
                 </Button>
@@ -527,7 +599,7 @@ const DashboardEvenementsSociaux = () => {
           <div className="mb-6">
             <Dialog open={showForm} onOpenChange={(open) => !open && handleCloseForm()}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90" onClick={() => setEditingEvent(null)}>
+                <Button className="bg-primary hover:bg-primary/90" onClick={handleNewEvent}>
                   <Plus className="mr-2 h-4 w-4" />
                   Nouvel événement social
                 </Button>
