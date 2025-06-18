@@ -94,7 +94,7 @@ const Historique = () => {
 
         {/* Objets de la P49 Section */}
         <section className="py-[100px] px-4 md:px-[100px] bg-white">
-          <div className="container mx-auto">
+          <div className="container mx-auto px-0">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-primary mb-6">Objet de l'association P49 ENA</h2>
               <p className="text-lg text-gray-700 max-w-4xl mx-auto">
