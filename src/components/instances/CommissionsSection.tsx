@@ -1,11 +1,15 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const CommissionsSection = () => {
+  const isMobile = useIsMobile();
+  
   const commissions = [
     {
       title: "Commission chargée de la Mobilisation des Ressources Humaines",
+      president: "KPONE Bérenger",
       tasks: [
         "Elle est chargée de proposer et de mettre en œuvre des stratégies de mobilisation des énarques de la promotion 2009-2010 de l'ENA autour des activités organisées par le bureau exécutif.",
         "Elle est également chargée de mobiliser les Autorités, services et organisations nationales qui peuvent aider le Réseau à atteindre ses objectifs."
@@ -13,18 +17,21 @@ const CommissionsSection = () => {
     },
     {
       title: "Commission chargée de la Mobilisation Financière",
+      president: "ABOUA Sopie IDA épouse KOUADIO",
       tasks: [
         "Elle est chargée de proposer des stratégies visant, d'une part, à mobiliser les cotisations des membres du réseau ainsi que les dons, et, d'autre part à développer des sources de revenu pour le compte du réseau."
       ]
     },
     {
       title: "Commission Culturelle",
+      president: "AHOURE Noël",
       tasks: [
         "Elle est chargée de proposer et d'animer des activités culturelles, artistiques, récréatives, festives diverses (sortie détente, bal annuel, cérémonies diverses, colonies de vacances)."
       ]
     },
     {
       title: "Commission Sociale",
+      president: "ODJE Marie-Clémence",
       tasks: [
         "Elle est chargée de proposer et de mettre en œuvre des stratégies de soutien aux membres du réseau en matière :",
         "• de facilitation de départ des membres à la retraite ;",
@@ -34,6 +41,7 @@ const CommissionsSection = () => {
     },
     {
       title: "Commission Carrière, Renforcement des Capacités, Promotion et Protection des Droits Professionnels",
+      president: "KROU Allou Luc",
       tasks: [
         "Elle est chargée:",
         "• d'informer, de conseiller, d'aider et de suivre les membres dans la conduite de leur parcours professionnel ;",
@@ -47,6 +55,7 @@ const CommissionsSection = () => {
     },
     {
       title: "Commission Communication",
+      president: "SILUE Kiyala",
       tasks: [
         "Elle est chargée de :",
         "• l'animation des canaux de communication de la P49 ENA ;",
@@ -56,6 +65,7 @@ const CommissionsSection = () => {
     },
     {
       title: "Commission Organisation",
+      president: "SORO Thima",
       tasks: [
         "Elle est chargée de la planification, de la mise en œuvre, de la coordination du suivi et de l'évaluation des activités prévues."
       ]
@@ -64,22 +74,28 @@ const CommissionsSection = () => {
 
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+      <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-6' : 'mb-8'} text-primary`}>
         Les Commissions du Réseau P49 ENA
       </h2>
       
       <div className="grid gap-6">
         {commissions.map((commission, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-            <CardHeader>
-              <CardTitle className="text-xl text-primary">
+          <Card key={index} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
+            <CardHeader className={isMobile ? 'pb-3' : ''}>
+              <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-primary mb-2`}>
                 {commission.title}
               </CardTitle>
+              <div className={`bg-primary/10 rounded-lg p-3 ${isMobile ? 'mb-2' : 'mb-3'}`}>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold text-primary`}>
+                  <span className="text-gray-700">Président : </span>
+                  {commission.president}
+                </p>
+              </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className={isMobile ? 'pt-0' : ''}>
               <div className="space-y-2">
                 {commission.tasks.map((task, taskIndex) => (
-                  <p key={taskIndex} className="text-gray-700 leading-relaxed">
+                  <p key={taskIndex} className={`text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : ''}`}>
                     {task}
                   </p>
                 ))}

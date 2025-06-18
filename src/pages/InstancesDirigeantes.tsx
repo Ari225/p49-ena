@@ -6,32 +6,40 @@ import BureauExecutifSection from '@/components/instances/BureauExecutifSection'
 import CommissairesSection from '@/components/instances/CommissairesSection';
 import DeleguesRegionauxSection from '@/components/instances/DeleguesRegionauxSection';
 import CommissionsSection from '@/components/instances/CommissionsSection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const InstancesDirigeantes = () => {
+  const isMobile = useIsMobile();
+
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
-        {/* Header Section */}
-        <div className="bg-primary text-white px-[100px] py-[100px]">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+        {/* Hero Section with Background Image */}
+        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+          <div className="absolute inset-0">
+            <img src="/lovable-uploads/86d6f303-a616-4f82-9bdc-8e06f6878a5a.png" alt="Background instances dirigeantes" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Instances Dirigeantes
             </h1>
-            <p className="text-xl text-center text-gray-200 max-w-3xl mx-auto">
+            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
             </p>
           </div>
-        </div>
+        </section>
 
-        <div className="container mx-auto px-[100px] py-[50px]">
+        <div className={`container mx-auto ${isMobile ? 'px-4 py-8' : 'px-[100px] py-[50px]'}`}>
           <Tabs defaultValue="bureau" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="bureau" className="text-lg">Bureau</TabsTrigger>
-              <TabsTrigger value="commissions" className="text-lg">Commissions</TabsTrigger>
+            <TabsList className={`grid w-full grid-cols-2 mb-8 ${isMobile ? 'h-auto' : ''}`}>
+              <TabsTrigger value="bureau" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Bureau</TabsTrigger>
+              <TabsTrigger value="commissions" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Commissions</TabsTrigger>
             </TabsList>
             
             <TabsContent value="bureau" className="space-y-0">
-              <div className="mx-[-100px]">
+              <div className={isMobile ? '' : 'mx-[-100px]'}>
                 <BureauExecutifSection />
                 <CommissairesSection />
                 <DeleguesRegionauxSection />
