@@ -1,43 +1,30 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
-
 const Historique = () => {
-  const timeline = [
-    {
-      year: 'À ce jour',
-      title: 'Suite de la procédure',
-      description: "La procédure pour l'obtention de l'arrêté est en cours."
-    },
-    {
-      year: '20 mars 2024',
-      title: 'Récépissé de dépôt de dossier d\'association',
-      description: 'N°0412/PA/SG/D1, il a été délivré par la Préfecture d\'Abidjan, après une déclaration faite.'
-    },
-    {
-      year: '25 novembre 2023',
-      title: 'Adoption des statuts et règlements intérieurs',
-      description: "À l'occasion d'une assemblée générale qui s'est tenue lors des Régionales de Yamoussoukro, en vue d'officialiser l'existence de l'association."
-    },
-    {
-      year: '24 juin 2023',
-      title: 'Assemblée générale élective',
-      description: "À l'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d'échanges."
-    }
-  ];
-
-  return (
-    <Layout>
+  const timeline = [{
+    year: 'À ce jour',
+    title: 'Suite de la procédure',
+    description: "La procédure pour l'obtention de l'arrêté est en cours."
+  }, {
+    year: '20 mars 2024',
+    title: 'Récépissé de dépôt de dossier d\'association',
+    description: 'N°0412/PA/SG/D1, il a été délivré par la Préfecture d\'Abidjan, après une déclaration faite.'
+  }, {
+    year: '25 novembre 2023',
+    title: 'Adoption des statuts et règlements intérieurs',
+    description: "À l'occasion d'une assemblée générale qui s'est tenue lors des Régionales de Yamoussoukro, en vue d'officialiser l'existence de l'association."
+  }, {
+    year: '24 juin 2023',
+    title: 'Assemblée générale élective',
+    description: "À l'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d'échanges."
+  }];
+  return <Layout>
       <div className="bg-accent/30">
         {/* Hero Section with Background Image */}
         <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
           <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" 
-              alt="Background historique" 
-              className="w-full h-full object-cover" 
-            />
+            <img src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" alt="Background historique" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
@@ -53,7 +40,7 @@ const Historique = () => {
 
         {/* Section La P49 */}
         <section className="py-[100px] px-4 md:px-[100px]">
-          <div className="container mx-auto">
+          <div className="container mx-auto px-0">
             <h2 className="font-bold text-primary mb-12 text-4xl text-center">La P49 : une promotion d'excellence</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
@@ -62,11 +49,7 @@ const Historique = () => {
                 </p>
               </div>
               <div>
-                <img 
-                  alt="Logo P49" 
-                  src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
-                  className="w-full max-w-md mx-auto rounded-lg" 
-                />
+                <img alt="Logo P49" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" className="w-full max-w-md mx-auto rounded-lg" />
               </div>
             </div>
           </div>
@@ -81,8 +64,7 @@ const Historique = () => {
                 {/* Timeline Line */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary to-secondary"></div>
                 
-                {timeline.map((event, index) => (
-                  <div key={index} className={`relative flex items-center mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                     {/* Timeline Dot */}
                     <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full border-4 border-white shadow-xl z-10 flex items-center justify-center">
                       <div className="w-3 h-3 bg-white rounded-full"></div>
@@ -104,8 +86,7 @@ const Historique = () => {
                         </p>
                       </CardContent>
                     </Card>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
           </div>
@@ -222,8 +203,6 @@ const Historique = () => {
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Historique;
