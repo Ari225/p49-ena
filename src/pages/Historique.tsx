@@ -1,8 +1,6 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
-
 const Historique = () => {
   const timeline = [{
     year: 'À ce jour',
@@ -21,18 +19,12 @@ const Historique = () => {
     title: 'Assemblée générale élective',
     description: "À l'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d'échanges."
   }];
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-accent/30">
         {/* Hero Section with Background Image */}
         <section className="relative h-screen flex items-center justify-center text-white overflow-hidden">
           <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" 
-              alt="Background historique" 
-              className="w-full h-full object-cover" 
-            />
+            <img src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" alt="Background historique" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
@@ -67,15 +59,14 @@ const Historique = () => {
 
         {/* Timeline Section */}
         <section className="py-[100px] px-4 md:px-[100px] bg-gradient-to-b from-accent/30 to-white">
-          <div className="container mx-auto">
+          <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-4xl font-bold text-center text-primary mb-16">Chronologie</h2>
               <div className="relative">
                 {/* Timeline Line */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary to-secondary"></div>
                 
-                {timeline.map((event, index) => (
-                  <div key={index} className={`relative flex items-center mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                     {/* Timeline Dot */}
                     <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full border-4 border-white shadow-xl z-10 flex items-center justify-center">
                       <div className="w-3 h-3 bg-white rounded-full"></div>
@@ -97,8 +88,7 @@ const Historique = () => {
                         </p>
                       </CardContent>
                     </Card>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
           </div>
@@ -215,8 +205,6 @@ const Historique = () => {
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Historique;
