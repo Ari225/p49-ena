@@ -13,7 +13,7 @@ const InstancesDirigeantes = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="bg-gray-50">
         {/* Hero Section with Background Image */}
         <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
           <div className="absolute inset-0">
