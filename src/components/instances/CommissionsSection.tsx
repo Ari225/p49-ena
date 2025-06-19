@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -78,7 +77,7 @@ const CommissionsSection = () => {
         Les Commissions du Réseau P49 ENA
       </h2>
       
-      <div className="grid gap-6">
+      <div className={`grid gap-6 ${isMobile ? 'grid-cols-1' : 'grid-cols-2'}`}>
         {commissions.map((commission, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
             <CardHeader className={isMobile ? 'pb-3' : ''}>
