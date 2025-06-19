@@ -31,15 +31,15 @@ const InstancesDirigeantes = () => {
           </div>
         </section>
 
-        <div className={`container mx-auto ${isMobile ? 'px-[25px] py-8' : 'px-[100px] py-[50px]'}`}>
+        <div className={`container mx-auto ${isMobile ? 'px-[25px] py-8' : 'px-[100px] py-12'}`}>
           <Tabs defaultValue="bureau" className="w-full">
             <TabsList className={`grid w-full grid-cols-2 mb-8 ${isMobile ? 'h-auto' : ''}`}>
               <TabsTrigger value="bureau" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Bureau</TabsTrigger>
               <TabsTrigger value="commissions" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Commissions</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="bureau" className="space-y-0 pb-8">
-              <div className="space-y-16">
+            <TabsContent value="bureau" className="space-y-0">
+              <div className={`space-y-12 ${isMobile ? 'mb-8' : 'mb-12'}`}>
                 <BureauExecutifSection />
                 <CommissairesSection />
                 <DeleguesRegionauxSection />
