@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { Phone } from 'lucide-react';
+import { Phone, Lock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import MemberDetailDialog from '../members/MemberDetailDialog';
+import MatriculeVerificationDialog from '../members/MatriculeVerificationDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MemberOrganigramCardProps {
@@ -17,7 +18,9 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
   position,
   phone
 }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+  const [isMatriculeDialogOpen, setIsMatriculeDialogOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const isMobile = useIsMobile();
 
   const getInitials = () => {
@@ -29,11 +32,25 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
 
   const handlePhoneCall = (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.open(`tel:${phone}`, '_self');
+    if (isVerified) {
+      window.open(`tel:${phone}`, '_self');
+    } else {
+      setIsMatriculeDialogOpen(true);
+    }
   };
 
   const handleCardClick = () => {
-    setIsDialogOpen(true);
+    if (isVerified) {
+      setIsDetailDialogOpen(true);
+    } else {
+      setIsMatriculeDialogOpen(true);
+    }
+  };
+
+  const handleMatriculeVerified = () => {
+    setIsVerified(true);
+    setIsMatriculeDialogOpen(false);
+    setIsDetailDialogOpen(true);
   };
 
   // Convert name to firstName and lastName for dialog
@@ -93,24 +110,41 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
             </p>
           </div>
 
-          {/* Phone */}
+          {/* Phone - Hidden until verified */}
           <div className="flex items-center justify-center">
-            <button
-              onClick={handlePhoneCall}
-              className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors bg-primary/10 hover:bg-primary/20 rounded-full px-3 py-2"
-              title={`Appeler ${name}`}
-            >
-              <Phone className="h-3 w-3" />
-              <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>{phone}</span>
-            </button>
+            {isVerified ? (
+              <button
+                onClick={handlePhoneCall}
+                className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors bg-primary/10 hover:bg-primary/20 rounded-full px-3 py-2"
+                title={`Appeler ${name}`}
+              >
+                <Phone className="h-3 w-3" />
+                <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>{phone}</span>
+              </button>
+            ) : (
+              <button
+                onClick={handlePhoneCall}
+                className="flex items-center space-x-2 text-gray-500 bg-gray-100 rounded-full px-3 py-2 cursor-pointer hover:bg-gray-200 transition-colors"
+                title="Matricule requis pour voir les coordonnées"
+              >
+                <Lock className="h-3 w-3" />
+                <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>Matricule requis</span>
+              </button>
+            )}
           </div>
         </CardContent>
       </Card>
 
       <MemberDetailDialog 
         member={memberData}
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        isOpen={isDetailDialogOpen}
+        onClose={() => setIsDetailDialogOpen(false)}
+      />
+
+      <MatriculeVerificationDialog
+        isOpen={isMatriculeDialogOpen}
+        onClose={() => setIsMatriculeDialogOpen(false)}
+        onVerified={handleMatriculeVerified}
       />
     </>
   );

@@ -65,31 +65,31 @@ const BureauExecutifSection = () => {
       </h2>
       
       {/* Organigramme Structure */}
-      <div className="space-y-16 max-w-7xl mx-auto">
+      <div className="space-y-20 max-w-7xl mx-auto">
         {organigramLevels.map((level, levelIndex) => (
           <div key={levelIndex} className="relative">
-            {/* Vertical line coming from above - Style flèche analysée */}
+            {/* Vertical line coming from above - only for levels after first */}
             {levelIndex > 0 && (
-              <div className={`absolute ${isMobile ? '-top-14' : '-top-16'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-14' : 'h-16'} transform -translate-x-1/2`}></div>
+              <div className={`absolute ${isMobile ? '-top-18' : '-top-20'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-16' : 'h-18'} transform -translate-x-1/2`}></div>
             )}
             
-            {/* Horizontal connection line for multiple members - Style T inversé */}
+            {/* Connection system for multiple members */}
             {level.length > 1 && !isMobile && (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-8">
-                {/* Horizontal main line */}
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-10">
+                {/* Main horizontal distribution line */}
                 <div className={`h-0.5 bg-gray-800 ${
-                  level.length === 2 ? 'w-96' :
-                  level.length === 3 ? 'w-[600px]' :
-                  'w-[800px]'
+                  level.length === 2 ? 'w-80' :
+                  level.length === 3 ? 'w-[500px]' :
+                  'w-[700px]'
                 }`}></div>
                 
-                {/* Vertical connectors to each card - Style T inversé exact */}
+                {/* Individual vertical connectors to each card */}
                 {level.map((_, index) => {
                   let leftPosition;
                   if (level.length === 2) {
                     leftPosition = index === 0 ? '25%' : '75%';
                   } else if (level.length === 3) {
-                    leftPosition = index === 0 ? '16.67%' : index === 1 ? '50%' : '83.33%';
+                    leftPosition = index === 0 ? '20%' : index === 1 ? '50%' : '80%';
                   } else {
                     leftPosition = `${12.5 + (index * 25)}%`;
                   }
@@ -97,7 +97,7 @@ const BureauExecutifSection = () => {
                   return (
                     <div 
                       key={index}
-                      className="absolute top-0 w-0.5 h-8 bg-gray-800"
+                      className="absolute top-0 w-0.5 h-10 bg-gray-800"
                       style={{ left: leftPosition, transform: 'translateX(-50%)' }}
                     ></div>
                   );
@@ -124,9 +124,48 @@ const BureauExecutifSection = () => {
               </div>
             </div>
             
-            {/* Vertical line going down for next level - Continue le style */}
+            {/* Regroupement des flèches pour les niveaux suivants avec plusieurs cartes */}
             {levelIndex < organigramLevels.length - 1 && (
-              <div className={`absolute ${isMobile ? 'bottom-0' : 'bottom-0'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-14' : 'h-16'} transform -translate-x-1/2`}></div>
+              <div className="relative">
+                {/* Flèche sortant du niveau actuel */}
+                {level.length === 1 ? (
+                  // Ligne simple pour niveau à une carte
+                  <div className={`absolute ${isMobile ? 'top-4' : 'top-6'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-16' : 'h-18'} transform -translate-x-1/2`}></div>
+                ) : (
+                  // Système de regroupement pour niveaux multiples
+                  <div className="absolute top-6 left-1/2 transform -translate-x-1/2">
+                    {/* Lignes verticales remontant de chaque carte */}
+                    {level.map((_, index) => {
+                      let leftOffset;
+                      if (level.length === 2) {
+                        leftOffset = index === 0 ? -160 : 160;
+                      } else if (level.length === 3) {
+                        leftOffset = index === 0 ? -250 : index === 1 ? 0 : 250;
+                      } else {
+                        leftOffset = -350 + (index * 233);
+                      }
+                      
+                      return (
+                        <div 
+                          key={index}
+                          className="absolute top-0 w-0.5 h-8 bg-gray-800"
+                          style={{ left: leftOffset, transform: 'translateX(-50%)' }}
+                        ></div>
+                      );
+                    })}
+                    
+                    {/* Ligne horizontale de regroupement */}
+                    <div className={`absolute top-8 h-0.5 bg-gray-800 ${
+                      level.length === 2 ? 'w-80' :
+                      level.length === 3 ? 'w-[500px]' :
+                      'w-[700px]'
+                    } transform -translate-x-1/2`}></div>
+                    
+                    {/* Ligne verticale centrale vers le niveau suivant */}
+                    <div className={`absolute top-8 left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-10' : 'h-12'} transform -translate-x-1/2`}></div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         ))}
