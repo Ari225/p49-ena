@@ -8,7 +8,7 @@ const BureauExecutifSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className={`${isMobile ? 'p-4' : 'p-8'} relative`}>
+    <section className="relative">
       <div className="relative z-10">
         <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-8' : 'mb-12'} text-primary`}>
           Bureau Exécutif
