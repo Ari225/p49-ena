@@ -65,16 +65,41 @@ const BureauExecutifSection = () => {
       </h2>
       
       {/* Organigramme Structure */}
-      <div className="space-y-8 max-w-7xl mx-auto">
+      <div className="space-y-12 max-w-7xl mx-auto">
         {organigramLevels.map((level, levelIndex) => (
           <div key={levelIndex} className="relative">
-            {/* Connecting Lines for Organigramme */}
+            {/* Vertical line coming from above */}
             {levelIndex > 0 && (
-              <div className={`absolute ${isMobile ? '-top-6' : '-top-8'} left-1/2 w-0.5 bg-primary ${isMobile ? 'h-6' : 'h-8'} transform -translate-x-1/2`}></div>
+              <div className={`absolute ${isMobile ? '-top-10' : '-top-12'} left-1/2 w-0.5 bg-primary ${isMobile ? 'h-10' : 'h-12'} transform -translate-x-1/2`}></div>
+            )}
+            
+            {/* Horizontal line for multiple members at same level */}
+            {level.length > 1 && !isMobile && (
+              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div className={`h-0.5 bg-primary ${
+                  level.length === 2 ? 'w-80' :
+                  level.length === 3 ? 'w-[500px]' :
+                  'w-[700px]'
+                }`}></div>
+                {/* Vertical connectors to each card */}
+                {level.map((_, index) => (
+                  <div 
+                    key={index}
+                    className="absolute top-0 w-0.5 h-8 bg-primary"
+                    style={{
+                      left: level.length === 2 
+                        ? `${(index * 100) + 12.5}%`
+                        : level.length === 3
+                        ? `${(index * 50) + 16.67}%`
+                        : `${(index * 25) + 12.5}%`
+                    }}
+                  ></div>
+                ))}
+              </div>
             )}
             
             <div className="flex justify-center">
-              <div className={`grid gap-6 ${
+              <div className={`grid gap-8 ${
                 level.length === 1 ? 'grid-cols-1 max-w-sm' :
                 level.length === 2 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2'} max-w-2xl` :
                 level.length === 3 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'} max-w-4xl` :
@@ -82,10 +107,6 @@ const BureauExecutifSection = () => {
               }`}>
                 {level.map((member, index) => (
                   <div key={index} className="relative">
-                    {/* Horizontal connecting lines for multiple members at same level */}
-                    {level.length > 1 && index < level.length - 1 && !isMobile && (
-                      <div className="absolute top-1/2 -right-3 w-6 h-0.5 bg-primary transform -translate-y-1/2"></div>
-                    )}
                     <MemberOrganigramCard
                       name={member.name}
                       position={member.position}
@@ -98,7 +119,7 @@ const BureauExecutifSection = () => {
             
             {/* Vertical line going down for next level */}
             {levelIndex < organigramLevels.length - 1 && (
-              <div className={`absolute ${isMobile ? 'bottom-0' : 'bottom-0'} left-1/2 w-0.5 bg-primary ${isMobile ? 'h-6' : 'h-8'} transform -translate-x-1/2`}></div>
+              <div className={`absolute ${isMobile ? 'bottom-0' : 'bottom-0'} left-1/2 w-0.5 bg-primary ${isMobile ? 'h-10' : 'h-12'} transform -translate-x-1/2`}></div>
             )}
           </div>
         ))}
