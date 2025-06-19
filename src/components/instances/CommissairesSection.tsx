@@ -9,7 +9,7 @@ const CommissairesSection = () => {
   ];
 
   return (
-    <section className="bg-white p-8">
+    <section className="p-8">
       <h2 className="text-3xl font-bold text-center mb-8 text-primary">
         Commissaires aux Comptes
       </h2>
