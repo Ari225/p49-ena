@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isDashboard = location.pathname.startsWith('/dashboard');
 
   return (
-    <div className="flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Preloader />
       <Header />
       <main className="flex-1">
