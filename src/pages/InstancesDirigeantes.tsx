@@ -38,10 +38,12 @@ const InstancesDirigeantes = () => {
               <TabsTrigger value="commissions" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Commissions</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="bureau" className="space-y-0">
-              <BureauExecutifSection />
-              <CommissairesSection />
-              <DeleguesRegionauxSection />
+            <TabsContent value="bureau" className="space-y-0 pb-8">
+              <div className="space-y-16">
+                <BureauExecutifSection />
+                <CommissairesSection />
+                <DeleguesRegionauxSection />
+              </div>
             </TabsContent>
             
             <TabsContent value="commissions">
