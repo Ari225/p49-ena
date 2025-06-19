@@ -58,117 +58,223 @@ const BureauExecutifSection = () => {
     ]
   ];
 
+  const ConnectionLine = ({ fromLevel, toLevel, fromIndex = 0, toIndex = 0, isSingle = false }: {
+    fromLevel: number;
+    toLevel: number;
+    fromIndex?: number;
+    toIndex?: number;
+    isSingle?: boolean;
+  }) => {
+    if (isMobile) return null;
+
+    // Calculer les positions et dimensions
+    const verticalSpacing = 320; // Espacement entre les niveaux
+    const cardWidth = 280; // Largeur approximative d'une carte
+    const cardHeight = 200; // Hauteur approximative d'une carte
+    
+    const fromLevelData = organigramLevels[fromLevel];
+    const toLevelData = organigramLevels[toLevel];
+    
+    // Position de départ (bas de la carte source)
+    const getCardXPosition = (levelIndex: number, cardIndex: number, levelLength: number) => {
+      if (levelLength === 1) return 0;
+      if (levelLength === 2) return (cardIndex - 0.5) * 400;
+      if (levelLength === 3) return (cardIndex - 1) * 350;
+      return (cardIndex - (levelLength - 1) / 2) * 300;
+    };
+
+    const fromX = getCardXPosition(fromLevel, fromIndex, fromLevelData.length);
+    const toX = getCardXPosition(toLevel, toIndex, toLevelData.length);
+    
+    const startY = (fromLevel * verticalSpacing) + cardHeight + 40;
+    const endY = (toLevel * verticalSpacing) - 40;
+    const midY = startY + (endY - startY) / 2;
+
+    if (isSingle) {
+      // Connexion simple pour une seule carte
+      return (
+        <svg 
+          className="absolute pointer-events-none"
+          style={{
+            left: '50%',
+            top: startY,
+            transform: 'translateX(-50%)',
+            width: Math.abs(toX - fromX) + 40,
+            height: endY - startY,
+            zIndex: 0
+          }}
+        >
+          <defs>
+            <marker
+              id={`arrowhead-${fromLevel}-${toLevel}`}
+              markerWidth="10"
+              markerHeight="7"
+              refX="9"
+              refY="3.5"
+              orient="auto"
+            >
+              <polygon
+                points="0 0, 10 3.5, 0 7"
+                fill="#374151"
+                className="drop-shadow-sm"
+              />
+            </marker>
+          </defs>
+          <path
+            d={`M ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} 0 
+                Q ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} 20 
+                  ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} 40
+                L ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} ${endY - startY - 60}
+                Q ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} ${endY - startY - 40}
+                  ${(Math.abs(toX - fromX) + 40) / 2 + toX - fromX} ${endY - startY - 20}
+                L ${(Math.abs(toX - fromX) + 40) / 2 + toX - fromX} ${endY - startY}`}
+            stroke="#374151"
+            strokeWidth="2"
+            fill="none"
+            markerEnd={`url(#arrowhead-${fromLevel}-${toLevel})`}
+            className="drop-shadow-sm"
+          />
+        </svg>
+      );
+    }
+
+    // Connexion en T inversé pour plusieurs cartes
+    const connectionWidth = Math.max(Math.abs(toX - fromX) + cardWidth, cardWidth * toLevelData.length + 100);
+    
+    return (
+      <svg 
+        className="absolute pointer-events-none"
+        style={{
+          left: '50%',
+          top: startY,
+          transform: 'translateX(-50%)',
+          width: connectionWidth + 100,
+          height: endY - startY,
+          zIndex: 0
+        }}
+      >
+        <defs>
+          <marker
+            id={`arrowhead-multi-${fromLevel}-${toLevel}-${toIndex}`}
+            markerWidth="10"
+            markerHeight="7"
+            refX="9"
+            refY="3.5"
+            orient="auto"
+          >
+            <polygon
+              points="0 0, 10 3.5, 0 7"
+              fill="#374151"
+              className="drop-shadow-sm"
+            />
+          </marker>
+          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <dropShadow dx="0" dy="1" stdDeviation="1" floodColor="#00000020"/>
+          </filter>
+        </defs>
+        
+        {/* Ligne verticale depuis la carte source */}
+        <line
+          x1={(connectionWidth + 100) / 2 + fromX}
+          y1="0"
+          x2={(connectionWidth + 100) / 2 + fromX}
+          y2="60"
+          stroke="#374151"
+          strokeWidth="2"
+          filter="url(#shadow)"
+        />
+        
+        {/* Ligne horizontale de distribution */}
+        <line
+          x1={(connectionWidth + 100) / 2 - connectionWidth / 2 + 50}
+          y1="60"
+          x2={(connectionWidth + 100) / 2 + connectionWidth / 2 - 50}
+          y2="60"
+          stroke="#374151"
+          strokeWidth="2"
+          filter="url(#shadow)"
+        />
+        
+        {/* Ligne verticale vers chaque carte de destination */}
+        <line
+          x1={(connectionWidth + 100) / 2 + toX}
+          y1="60"
+          x2={(connectionWidth + 100) / 2 + toX}
+          y2={endY - startY}
+          stroke="#374151"
+          strokeWidth="2"
+          markerEnd={`url(#arrowhead-multi-${fromLevel}-${toLevel}-${toIndex})`}
+          filter="url(#shadow)"
+        />
+      </svg>
+    );
+  };
+
   return (
-    <section className={`bg-accent/30 ${isMobile ? 'p-4' : 'p-8'}`}>
-      <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-8' : 'mb-12'} text-primary`}>
-        Bureau Exécutif
-      </h2>
+    <section className={`bg-gradient-to-br from-accent/20 to-primary/5 ${isMobile ? 'p-4' : 'p-8'}`}>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Cdefs%3E%3Cpattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"%3E%3Cpath d="M 20 0 L 0 0 0 20" fill="none" stroke="%23f3f4f6" stroke-width="0.5"/%3E%3C/pattern%3E%3C/defs%3E%3Crect width="100%25" height="100%25" fill="url(%23grid)"/%3E%3C/svg%3E')] opacity-30"></div>
       
-      {/* Organigramme Structure */}
-      <div className="space-y-20 max-w-7xl mx-auto">
-        {organigramLevels.map((level, levelIndex) => (
-          <div key={levelIndex} className="relative">
-            {/* Vertical line coming from above - only for levels after first */}
-            {levelIndex > 0 && (
-              <div className={`absolute ${isMobile ? '-top-18' : '-top-20'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-16' : 'h-18'} transform -translate-x-1/2`}></div>
-            )}
-            
-            {/* Connection system for multiple members */}
-            {level.length > 1 && !isMobile && (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-10">
-                {/* Main horizontal distribution line */}
-                <div className={`h-0.5 bg-gray-800 ${
-                  level.length === 2 ? 'w-80' :
-                  level.length === 3 ? 'w-[500px]' :
-                  'w-[700px]'
-                }`}></div>
-                
-                {/* Individual vertical connectors to each card */}
-                {level.map((_, index) => {
-                  let leftPosition;
-                  if (level.length === 2) {
-                    leftPosition = index === 0 ? '25%' : '75%';
-                  } else if (level.length === 3) {
-                    leftPosition = index === 0 ? '20%' : index === 1 ? '50%' : '80%';
-                  } else {
-                    leftPosition = `${12.5 + (index * 25)}%`;
-                  }
-                  
-                  return (
-                    <div 
-                      key={index}
-                      className="absolute top-0 w-0.5 h-10 bg-gray-800"
-                      style={{ left: leftPosition, transform: 'translateX(-50%)' }}
-                    ></div>
-                  );
-                })}
-              </div>
-            )}
-            
-            <div className="flex justify-center">
-              <div className={`grid gap-8 ${
-                level.length === 1 ? 'grid-cols-1 max-w-sm' :
-                level.length === 2 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2'} max-w-3xl` :
-                level.length === 3 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'} max-w-5xl` :
-                `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'} max-w-7xl`
-              }`}>
-                {level.map((member, index) => (
-                  <div key={index} className="relative">
-                    <MemberOrganigramCard
-                      name={member.name}
-                      position={member.position}
-                      phone={member.phone}
-                    />
-                  </div>
-                ))}
+      <div className="relative z-10">
+        <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-8' : 'mb-12'} text-primary bg-white/80 backdrop-blur-sm rounded-xl py-4 px-6 mx-auto w-fit shadow-lg border border-primary/10`}>
+          Bureau Exécutif
+        </h2>
+        
+        {/* Organigramme Structure */}
+        <div className="relative max-w-7xl mx-auto" style={{ minHeight: `${organigramLevels.length * 320}px` }}>
+          {organigramLevels.map((level, levelIndex) => (
+            <div key={levelIndex} className="absolute w-full" style={{ top: `${levelIndex * 320}px` }}>
+              {/* Connexions vers le niveau suivant */}
+              {levelIndex < organigramLevels.length - 1 && !isMobile && (
+                <div className="absolute inset-0">
+                  {level.length === 1 ? (
+                    // Connexion simple pour niveau à une carte
+                    organigramLevels[levelIndex + 1].map((_, nextIndex) => (
+                      <ConnectionLine
+                        key={`${levelIndex}-${nextIndex}`}
+                        fromLevel={levelIndex}
+                        toLevel={levelIndex + 1}
+                        fromIndex={0}
+                        toIndex={nextIndex}
+                        isSingle={organigramLevels[levelIndex + 1].length === 1}
+                      />
+                    ))
+                  ) : (
+                    // Connexions multiples regroupées
+                    organigramLevels[levelIndex + 1].map((_, nextIndex) => (
+                      <ConnectionLine
+                        key={`${levelIndex}-${nextIndex}`}
+                        fromLevel={levelIndex}
+                        toLevel={levelIndex + 1}
+                        fromIndex={Math.floor(level.length / 2)}
+                        toIndex={nextIndex}
+                        isSingle={false}
+                      />
+                    ))
+                  )}
+                </div>
+              )}
+              
+              <div className="flex justify-center">
+                <div className={`grid gap-8 ${
+                  level.length === 1 ? 'grid-cols-1 max-w-sm' :
+                  level.length === 2 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2'} max-w-3xl` :
+                  level.length === 3 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'} max-w-5xl` :
+                  `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'} max-w-7xl`
+                }`}>
+                  {level.map((member, index) => (
+                    <div key={index} className="relative transform hover:scale-105 transition-all duration-300">
+                      <MemberOrganigramCard
+                        name={member.name}
+                        position={member.position}
+                        phone={member.phone}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            
-            {/* Regroupement des flèches pour les niveaux suivants avec plusieurs cartes */}
-            {levelIndex < organigramLevels.length - 1 && (
-              <div className="relative">
-                {/* Flèche sortant du niveau actuel */}
-                {level.length === 1 ? (
-                  // Ligne simple pour niveau à une carte
-                  <div className={`absolute ${isMobile ? 'top-4' : 'top-6'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-16' : 'h-18'} transform -translate-x-1/2`}></div>
-                ) : (
-                  // Système de regroupement pour niveaux multiples
-                  <div className="absolute top-6 left-1/2 transform -translate-x-1/2">
-                    {/* Lignes verticales remontant de chaque carte */}
-                    {level.map((_, index) => {
-                      let leftOffset;
-                      if (level.length === 2) {
-                        leftOffset = index === 0 ? -160 : 160;
-                      } else if (level.length === 3) {
-                        leftOffset = index === 0 ? -250 : index === 1 ? 0 : 250;
-                      } else {
-                        leftOffset = -350 + (index * 233);
-                      }
-                      
-                      return (
-                        <div 
-                          key={index}
-                          className="absolute top-0 w-0.5 h-8 bg-gray-800"
-                          style={{ left: leftOffset, transform: 'translateX(-50%)' }}
-                        ></div>
-                      );
-                    })}
-                    
-                    {/* Ligne horizontale de regroupement */}
-                    <div className={`absolute top-8 h-0.5 bg-gray-800 ${
-                      level.length === 2 ? 'w-80' :
-                      level.length === 3 ? 'w-[500px]' :
-                      'w-[700px]'
-                    } transform -translate-x-1/2`}></div>
-                    
-                    {/* Ligne verticale centrale vers le niveau suivant */}
-                    <div className={`absolute top-8 left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-10' : 'h-12'} transform -translate-x-1/2`}></div>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
