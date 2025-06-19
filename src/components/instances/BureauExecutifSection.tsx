@@ -65,45 +65,52 @@ const BureauExecutifSection = () => {
       </h2>
       
       {/* Organigramme Structure */}
-      <div className="space-y-12 max-w-7xl mx-auto">
+      <div className="space-y-16 max-w-7xl mx-auto">
         {organigramLevels.map((level, levelIndex) => (
           <div key={levelIndex} className="relative">
-            {/* Vertical line coming from above */}
+            {/* Vertical line coming from above - Style flèche analysée */}
             {levelIndex > 0 && (
-              <div className={`absolute ${isMobile ? '-top-10' : '-top-12'} left-1/2 w-0.5 bg-primary ${isMobile ? 'h-10' : 'h-12'} transform -translate-x-1/2`}></div>
+              <div className={`absolute ${isMobile ? '-top-14' : '-top-16'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-14' : 'h-16'} transform -translate-x-1/2`}></div>
             )}
             
-            {/* Horizontal line for multiple members at same level */}
+            {/* Horizontal connection line for multiple members - Style T inversé */}
             {level.length > 1 && !isMobile && (
-              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className={`h-0.5 bg-primary ${
-                  level.length === 2 ? 'w-80' :
-                  level.length === 3 ? 'w-[500px]' :
-                  'w-[700px]'
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-8">
+                {/* Horizontal main line */}
+                <div className={`h-0.5 bg-gray-800 ${
+                  level.length === 2 ? 'w-96' :
+                  level.length === 3 ? 'w-[600px]' :
+                  'w-[800px]'
                 }`}></div>
-                {/* Vertical connectors to each card */}
-                {level.map((_, index) => (
-                  <div 
-                    key={index}
-                    className="absolute top-0 w-0.5 h-8 bg-primary"
-                    style={{
-                      left: level.length === 2 
-                        ? `${(index * 100) + 12.5}%`
-                        : level.length === 3
-                        ? `${(index * 50) + 16.67}%`
-                        : `${(index * 25) + 12.5}%`
-                    }}
-                  ></div>
-                ))}
+                
+                {/* Vertical connectors to each card - Style T inversé exact */}
+                {level.map((_, index) => {
+                  let leftPosition;
+                  if (level.length === 2) {
+                    leftPosition = index === 0 ? '25%' : '75%';
+                  } else if (level.length === 3) {
+                    leftPosition = index === 0 ? '16.67%' : index === 1 ? '50%' : '83.33%';
+                  } else {
+                    leftPosition = `${12.5 + (index * 25)}%`;
+                  }
+                  
+                  return (
+                    <div 
+                      key={index}
+                      className="absolute top-0 w-0.5 h-8 bg-gray-800"
+                      style={{ left: leftPosition, transform: 'translateX(-50%)' }}
+                    ></div>
+                  );
+                })}
               </div>
             )}
             
             <div className="flex justify-center">
               <div className={`grid gap-8 ${
                 level.length === 1 ? 'grid-cols-1 max-w-sm' :
-                level.length === 2 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2'} max-w-2xl` :
-                level.length === 3 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'} max-w-4xl` :
-                `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'} max-w-6xl`
+                level.length === 2 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2'} max-w-3xl` :
+                level.length === 3 ? `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'} max-w-5xl` :
+                `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'} max-w-7xl`
               }`}>
                 {level.map((member, index) => (
                   <div key={index} className="relative">
@@ -117,9 +124,9 @@ const BureauExecutifSection = () => {
               </div>
             </div>
             
-            {/* Vertical line going down for next level */}
+            {/* Vertical line going down for next level - Continue le style */}
             {levelIndex < organigramLevels.length - 1 && (
-              <div className={`absolute ${isMobile ? 'bottom-0' : 'bottom-0'} left-1/2 w-0.5 bg-primary ${isMobile ? 'h-10' : 'h-12'} transform -translate-x-1/2`}></div>
+              <div className={`absolute ${isMobile ? 'bottom-0' : 'bottom-0'} left-1/2 w-0.5 bg-gray-800 ${isMobile ? 'h-14' : 'h-16'} transform -translate-x-1/2`}></div>
             )}
           </div>
         ))}
