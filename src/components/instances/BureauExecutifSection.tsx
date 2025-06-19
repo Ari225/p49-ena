@@ -58,199 +58,200 @@ const BureauExecutifSection = () => {
     ]
   ];
 
-  const ConnectionLine = ({ fromLevel, toLevel, fromIndex = 0, toIndex = 0, isSingle = false }: {
+  const ConnectionLine = ({ fromLevel, toLevel, fromIndex = 0, toIndex = 0 }: {
     fromLevel: number;
     toLevel: number;
     fromIndex?: number;
     toIndex?: number;
-    isSingle?: boolean;
   }) => {
     if (isMobile) return null;
 
-    // Calculer les positions et dimensions
-    const verticalSpacing = 320; // Espacement entre les niveaux
-    const cardWidth = 280; // Largeur approximative d'une carte
-    const cardHeight = 200; // Hauteur approximative d'une carte
+    const verticalSpacing = 340;
+    const cardHeight = 220;
+    const cardWidth = 280;
     
     const fromLevelData = organigramLevels[fromLevel];
     const toLevelData = organigramLevels[toLevel];
     
-    // Position de départ (bas de la carte source)
-    const getCardXPosition = (levelIndex: number, cardIndex: number, levelLength: number) => {
-      if (levelLength === 1) return 0;
-      if (levelLength === 2) return (cardIndex - 0.5) * 400;
-      if (levelLength === 3) return (cardIndex - 1) * 350;
-      return (cardIndex - (levelLength - 1) / 2) * 300;
+    // Calculate card positions
+    const getCardXPosition = (levelIndex: number, cardIndex: number, levelSize: number) => {
+      if (levelSize === 1) return 0;
+      if (levelSize === 2) return (cardIndex - 0.5) * 400;
+      if (levelSize === 3) return (cardIndex - 1) * 350;
+      return (cardIndex - (levelSize - 1) / 2) * 320;
     };
 
     const fromX = getCardXPosition(fromLevel, fromIndex, fromLevelData.length);
     const toX = getCardXPosition(toLevel, toIndex, toLevelData.length);
     
-    const startY = (fromLevel * verticalSpacing) + cardHeight + 40;
-    const endY = (toLevel * verticalSpacing) - 40;
-    const midY = startY + (endY - startY) / 2;
+    const startY = (fromLevel * verticalSpacing) + cardHeight;
+    const endY = (toLevel * verticalSpacing) - 20;
+    const connectionHeight = endY - startY;
 
-    if (isSingle) {
-      // Connexion simple pour une seule carte
+    // For single source to single target
+    if (fromLevelData.length === 1 && toLevelData.length === 1) {
       return (
-        <svg 
+        <svg
           className="absolute pointer-events-none"
           style={{
             left: '50%',
             top: startY,
             transform: 'translateX(-50%)',
-            width: Math.abs(toX - fromX) + 40,
-            height: endY - startY,
+            width: Math.max(Math.abs(toX - fromX) + 40, 60),
+            height: connectionHeight,
             zIndex: 0
           }}
         >
           <defs>
             <marker
-              id={`arrowhead-${fromLevel}-${toLevel}`}
-              markerWidth="10"
-              markerHeight="7"
-              refX="9"
-              refY="3.5"
+              id={`arrow-${fromLevel}-${toLevel}`}
+              markerWidth="8"
+              markerHeight="8"
+              refX="7"
+              refY="4"
               orient="auto"
+              markerUnits="strokeWidth"
             >
-              <polygon
-                points="0 0, 10 3.5, 0 7"
-                fill="#374151"
+              <path
+                d="M0,0 L0,8 L8,4 z"
+                fill="#1f2937"
                 className="drop-shadow-sm"
               />
             </marker>
+            <filter id="lineShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="1" stdDeviation="1" floodOpacity="0.2"/>
+            </filter>
           </defs>
           <path
-            d={`M ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} 0 
-                Q ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} 20 
-                  ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} 40
-                L ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} ${endY - startY - 60}
-                Q ${(Math.abs(toX - fromX) + 40) / 2 + fromX - toX} ${endY - startY - 40}
-                  ${(Math.abs(toX - fromX) + 40) / 2 + toX - fromX} ${endY - startY - 20}
-                L ${(Math.abs(toX - fromX) + 40) / 2 + toX - fromX} ${endY - startY}`}
-            stroke="#374151"
+            d={`M 30 0 L 30 ${connectionHeight - 20} L ${30 + (toX - fromX)} ${connectionHeight - 20} L ${30 + (toX - fromX)} ${connectionHeight}`}
+            stroke="#1f2937"
             strokeWidth="2"
             fill="none"
-            markerEnd={`url(#arrowhead-${fromLevel}-${toLevel})`}
-            className="drop-shadow-sm"
+            markerEnd={`url(#arrow-${fromLevel}-${toLevel})`}
+            filter="url(#lineShadow)"
+            className="transition-all duration-300"
           />
         </svg>
       );
     }
 
-    // Connexion en T inversé pour plusieurs cartes
-    const connectionWidth = Math.max(Math.abs(toX - fromX) + cardWidth, cardWidth * toLevelData.length + 100);
-    
+    // For single source to multiple targets or multiple sources
+    const connectionWidth = Math.max(
+      Math.abs(getCardXPosition(toLevel, 0, toLevelData.length) - getCardXPosition(toLevel, toLevelData.length - 1, toLevelData.length)) + cardWidth,
+      600
+    );
+
     return (
-      <svg 
+      <svg
         className="absolute pointer-events-none"
         style={{
           left: '50%',
           top: startY,
           transform: 'translateX(-50%)',
           width: connectionWidth + 100,
-          height: endY - startY,
+          height: connectionHeight,
           zIndex: 0
         }}
       >
         <defs>
           <marker
-            id={`arrowhead-multi-${fromLevel}-${toLevel}-${toIndex}`}
-            markerWidth="10"
-            markerHeight="7"
-            refX="9"
-            refY="3.5"
+            id={`arrow-multi-${fromLevel}-${toLevel}-${toIndex}`}
+            markerWidth="8"
+            markerHeight="8"
+            refX="7"
+            refY="4"
             orient="auto"
+            markerUnits="strokeWidth"
           >
-            <polygon
-              points="0 0, 10 3.5, 0 7"
-              fill="#374151"
+            <path
+              d="M0,0 L0,8 L8,4 z"
+              fill="#1f2937"
               className="drop-shadow-sm"
             />
           </marker>
-          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <dropShadow dx="0" dy="1" stdDeviation="1" floodColor="#00000020"/>
+          <filter id="multiLineShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="1" stdDeviation="1" floodOpacity="0.2"/>
           </filter>
         </defs>
         
-        {/* Ligne verticale depuis la carte source */}
+        {/* Main vertical line from source */}
         <line
           x1={(connectionWidth + 100) / 2 + fromX}
           y1="0"
           x2={(connectionWidth + 100) / 2 + fromX}
-          y2="60"
-          stroke="#374151"
+          y2={connectionHeight * 0.6}
+          stroke="#1f2937"
           strokeWidth="2"
-          filter="url(#shadow)"
+          filter="url(#multiLineShadow)"
+          className="transition-all duration-300"
         />
         
-        {/* Ligne horizontale de distribution */}
-        <line
-          x1={(connectionWidth + 100) / 2 - connectionWidth / 2 + 50}
-          y1="60"
-          x2={(connectionWidth + 100) / 2 + connectionWidth / 2 - 50}
-          y2="60"
-          stroke="#374151"
-          strokeWidth="2"
-          filter="url(#shadow)"
-        />
+        {/* Horizontal distribution line */}
+        {toLevelData.length > 1 && (
+          <line
+            x1={(connectionWidth + 100) / 2 + getCardXPosition(toLevel, 0, toLevelData.length)}
+            y1={connectionHeight * 0.6}
+            x2={(connectionWidth + 100) / 2 + getCardXPosition(toLevel, toLevelData.length - 1, toLevelData.length)}
+            y2={connectionHeight * 0.6}
+            stroke="#1f2937"
+            strokeWidth="2"
+            filter="url(#multiLineShadow)"
+            className="transition-all duration-300"
+          />
+        )}
         
-        {/* Ligne verticale vers chaque carte de destination */}
+        {/* Vertical line to target */}
         <line
           x1={(connectionWidth + 100) / 2 + toX}
-          y1="60"
+          y1={connectionHeight * 0.6}
           x2={(connectionWidth + 100) / 2 + toX}
-          y2={endY - startY}
-          stroke="#374151"
+          y2={connectionHeight}
+          stroke="#1f2937"
           strokeWidth="2"
-          markerEnd={`url(#arrowhead-multi-${fromLevel}-${toLevel}-${toIndex})`}
-          filter="url(#shadow)"
+          markerEnd={`url(#arrow-multi-${fromLevel}-${toLevel}-${toIndex})`}
+          filter="url(#multiLineShadow)"
+          className="transition-all duration-300"
         />
       </svg>
     );
   };
 
   return (
-    <section className={`bg-gradient-to-br from-accent/20 to-primary/5 ${isMobile ? 'p-4' : 'p-8'}`}>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Cdefs%3E%3Cpattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"%3E%3Cpath d="M 20 0 L 0 0 0 20" fill="none" stroke="%23f3f4f6" stroke-width="0.5"/%3E%3C/pattern%3E%3C/defs%3E%3Crect width="100%25" height="100%25" fill="url(%23grid)"/%3E%3C/svg%3E')] opacity-30"></div>
+    <section className={`bg-gradient-to-br from-blue-50 via-white to-indigo-50 ${isMobile ? 'p-4' : 'p-8'} relative overflow-hidden`}>
+      {/* Modern grid background */}
+      <div className="absolute inset-0 opacity-30">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="modernGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" strokeWidth="1"/>
+              <circle cx="0" cy="0" r="1" fill="#cbd5e1" opacity="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#modernGrid)"/>
+        </svg>
+      </div>
       
       <div className="relative z-10">
-        <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-8' : 'mb-12'} text-primary bg-white/80 backdrop-blur-sm rounded-xl py-4 px-6 mx-auto w-fit shadow-lg border border-primary/10`}>
+        <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-8' : 'mb-12'} text-primary bg-white/90 backdrop-blur-sm rounded-2xl py-6 px-8 mx-auto w-fit shadow-xl border border-primary/20`}>
           Bureau Exécutif
         </h2>
         
         {/* Organigramme Structure */}
-        <div className="relative max-w-7xl mx-auto" style={{ minHeight: `${organigramLevels.length * 320}px` }}>
+        <div className="relative max-w-7xl mx-auto" style={{ minHeight: `${organigramLevels.length * 340}px` }}>
           {organigramLevels.map((level, levelIndex) => (
-            <div key={levelIndex} className="absolute w-full" style={{ top: `${levelIndex * 320}px` }}>
-              {/* Connexions vers le niveau suivant */}
+            <div key={levelIndex} className="absolute w-full" style={{ top: `${levelIndex * 340}px` }}>
+              {/* Render connection lines to next level */}
               {levelIndex < organigramLevels.length - 1 && !isMobile && (
                 <div className="absolute inset-0">
-                  {level.length === 1 ? (
-                    // Connexion simple pour niveau à une carte
-                    organigramLevels[levelIndex + 1].map((_, nextIndex) => (
-                      <ConnectionLine
-                        key={`${levelIndex}-${nextIndex}`}
-                        fromLevel={levelIndex}
-                        toLevel={levelIndex + 1}
-                        fromIndex={0}
-                        toIndex={nextIndex}
-                        isSingle={organigramLevels[levelIndex + 1].length === 1}
-                      />
-                    ))
-                  ) : (
-                    // Connexions multiples regroupées
-                    organigramLevels[levelIndex + 1].map((_, nextIndex) => (
-                      <ConnectionLine
-                        key={`${levelIndex}-${nextIndex}`}
-                        fromLevel={levelIndex}
-                        toLevel={levelIndex + 1}
-                        fromIndex={Math.floor(level.length / 2)}
-                        toIndex={nextIndex}
-                        isSingle={false}
-                      />
-                    ))
-                  )}
+                  {organigramLevels[levelIndex + 1].map((_, nextIndex) => (
+                    <ConnectionLine
+                      key={`${levelIndex}-${nextIndex}`}
+                      fromLevel={levelIndex}
+                      toLevel={levelIndex + 1}
+                      fromIndex={level.length > 1 ? Math.floor(level.length / 2) : 0}
+                      toIndex={nextIndex}
+                    />
+                  ))}
                 </div>
               )}
               
@@ -262,7 +263,7 @@ const BureauExecutifSection = () => {
                   `grid-cols-1 ${isMobile ? 'sm:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'} max-w-7xl`
                 }`}>
                   {level.map((member, index) => (
-                    <div key={index} className="relative transform hover:scale-105 transition-all duration-300">
+                    <div key={index} className="relative transform hover:scale-105 transition-all duration-300 hover:z-10">
                       <MemberOrganigramCard
                         name={member.name}
                         position={member.position}
