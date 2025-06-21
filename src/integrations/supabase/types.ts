@@ -9,6 +9,65 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      activities: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          date: string
+          description: string
+          id: string
+          image_url: string | null
+          location: string
+          participants: string
+          status: string
+          time: string
+          title: string
+          type: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          date: string
+          description: string
+          id?: string
+          image_url?: string | null
+          location: string
+          participants: string
+          status?: string
+          time: string
+          title: string
+          type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          location?: string
+          participants?: string
+          status?: string
+          time?: string
+          title?: string
+          type?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       app_users: {
         Row: {
           address: string | null

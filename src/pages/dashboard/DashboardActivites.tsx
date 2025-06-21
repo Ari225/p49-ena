@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Activity, Plus, Edit, Trash2, Calendar, MapPin, Users, Upload, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const DashboardActivites = () => {
   const { user } = useAuth();
@@ -21,19 +22,20 @@ const DashboardActivites = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
+    category: '',
     type: '',
     date: '',
     time: '',
     location: '',
     participants: '',
-    description: '',
-    status: 'À venir'
+    description: ''
   });
 
   const mockActivities = [
     {
       id: '1',
       title: 'Formation en Leadership Public',
+      category: 'Autre activité',
       type: 'Formation',
       date: '2024-04-15',
       time: '09:00 - 17:00',
@@ -46,6 +48,7 @@ const DashboardActivites = () => {
     {
       id: '2',
       title: 'Conférence sur la Digitalisation',
+      category: 'Autre activité',
       type: 'Conférence',
       date: '2024-04-25',
       time: '14:00 - 18:00',
@@ -78,30 +81,85 @@ const DashboardActivites = () => {
     setImagePreview(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Nouvelle activité:', { ...formData, image: selectedImage });
     
-    toast({
-      title: "Activité créée !",
-      description: "L'activité a été ajoutée avec succès.",
-    });
+    try {
+      // Upload image if selected
+      let imageUrl = null;
+      if (selectedImage) {
+        const fileExt = selectedImage.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        
+        // Note: You'll need to set up Supabase Storage for this to work
+        // For now, we'll just use a placeholder
+        imageUrl = `placeholder-${fileName}`;
+      }
 
-    // Reset form
-    setFormData({
-      title: '',
-      type: '',
-      date: '',
-      time: '',
-      location: '',
-      participants: '',
-      description: '',
-      status: 'À venir'
-    });
-    setSelectedImage(null);
-    setImagePreview(null);
-    setShowForm(false);
+      // Insert activity into database
+      const { data, error } = await supabase
+        .from('activities')
+        .insert({
+          title: formData.title,
+          category: formData.category,
+          type: formData.category === 'Autre activité' ? formData.type : null,
+          date: formData.date,
+          time: formData.time,
+          location: formData.location,
+          participants: formData.participants,
+          description: formData.description,
+          image_url: imageUrl,
+          created_by: user.id
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Activité créée !",
+        description: "L'activité a été ajoutée avec succès.",
+      });
+
+      // Reset form
+      setFormData({
+        title: '',
+        category: '',
+        type: '',
+        date: '',
+        time: '',
+        location: '',
+        participants: '',
+        description: ''
+      });
+      setSelectedImage(null);
+      setImagePreview(null);
+      setShowForm(false);
+    } catch (error) {
+      console.error('Error creating activity:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de créer l'activité.",
+        variant: "destructive"
+      });
+    }
   };
+
+  const categoryOptions = [
+    'Les Régionales',
+    'Assemblées Générales', 
+    'Réunions de constitution',
+    'Autre activité'
+  ];
+
+  const typeOptions = [
+    'Formation',
+    'Séminaire',
+    'Atelier',
+    'Conférence',
+    'Assemblée',
+    'Table Ronde'
+  ];
 
   const ActivityForm = () => (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -114,18 +172,29 @@ const DashboardActivites = () => {
       
       <select
         className="w-full p-2 border rounded-md"
-        value={formData.type}
-        onChange={(e) => setFormData({...formData, type: e.target.value})}
+        value={formData.category}
+        onChange={(e) => setFormData({...formData, category: e.target.value, type: ''})}
         required
       >
-        <option value="">Type d'activité</option>
-        <option value="Formation">Formation</option>
-        <option value="Séminaire">Séminaire</option>
-        <option value="Atelier">Atelier</option>
-        <option value="Conférence">Conférence</option>
-        <option value="Assemblée">Assemblée</option>
-        <option value="Table Ronde">Table Ronde</option>
+        <option value="">Catégorie</option>
+        {categoryOptions.map(option => (
+          <option key={option} value={option}>{option}</option>
+        ))}
       </select>
+
+      {formData.category === 'Autre activité' && (
+        <select
+          className="w-full p-2 border rounded-md"
+          value={formData.type}
+          onChange={(e) => setFormData({...formData, type: e.target.value})}
+          required
+        >
+          <option value="">Type d'activité</option>
+          {typeOptions.map(option => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+      )}
 
       <div className="grid grid-cols-2 gap-4">
         <Input
@@ -135,10 +204,9 @@ const DashboardActivites = () => {
           required
         />
         <Input
-          type="time"
-          placeholder="Heure de début"
-          value={formData.time.split(' - ')[0] || ''}
-          onChange={(e) => setFormData({...formData, time: e.target.value + ' - '})}
+          placeholder="Heure (ex: 09:00 - 17:00)"
+          value={formData.time}
+          onChange={(e) => setFormData({...formData, time: e.target.value})}
           required
         />
       </div>
@@ -164,16 +232,6 @@ const DashboardActivites = () => {
         required
       />
 
-      <select
-        className="w-full p-2 border rounded-md"
-        value={formData.status}
-        onChange={(e) => setFormData({...formData, status: e.target.value})}
-        required
-      >
-        <option value="À venir">À venir</option>
-        <option value="Terminé">Terminé</option>
-      </select>
-
       {/* Upload d'image */}
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Image de l'activité</label>
@@ -189,6 +247,7 @@ const DashboardActivites = () => {
                   id="image-upload"
                   type="file"
                   accept="image/*"
+                  capture="environment"
                   className="hidden"
                   onChange={handleImageUpload}
                 />
@@ -266,7 +325,10 @@ const DashboardActivites = () => {
                     {activity.title}
                   </CardTitle>
                   <div className="space-y-1">
-                    <p className="text-sm font-medium text-primary">{activity.type}</p>
+                    <p className="text-sm font-medium text-primary">{activity.category}</p>
+                    {activity.type && (
+                      <p className="text-sm text-gray-600">{activity.type}</p>
+                    )}
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1" />
                       {new Date(activity.date).toLocaleDateString('fr-FR')} - {activity.time}
@@ -349,7 +411,10 @@ const DashboardActivites = () => {
                     {activity.title}
                   </CardTitle>
                   <div className="space-y-1">
-                    <p className="font-medium text-primary">{activity.type}</p>
+                    <p className="font-medium text-primary">{activity.category}</p>
+                    {activity.type && (
+                      <p className="text-gray-600">{activity.type}</p>
+                    )}
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1" />
                       {new Date(activity.date).toLocaleDateString('fr-FR')} - {activity.time}
