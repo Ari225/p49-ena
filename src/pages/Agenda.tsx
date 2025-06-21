@@ -1,87 +1,123 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, MapPin, Users, Calendar as CalendarIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Clock, MapPin, Users, Calendar as CalendarIcon, CalendarPlus, Eye } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
+import { useToast } from '@/hooks/use-toast';
 
 const Agenda = () => {
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
-  // Événements pour le calendrier
-  const events = [
+  // Toutes les activités (récentes et à venir)
+  const allActivities = [
+    // Activités à venir
     {
       id: 1,
-      title: "Assemblée Générale Extraordinaire",
-      date: new Date(2024, 5, 15), // 15 juin 2024
-      time: "09:00",
-      location: "Hôtel Ivoire, Abidjan",
-      type: "AG",
-      participants: 120,
-      description: "Assemblée générale extraordinaire pour les amendements statutaires"
+      title: "Formation en Leadership Public",
+      date: "15 Avril 2024",
+      time: "09:00 - 17:00",
+      location: "ENA Abidjan",
+      participants: "25 places disponibles",
+      description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
+      type: "Formation",
+      status: "À venir",
+      calendarDate: new Date(2024, 3, 15), // Avril = 3 (0-indexed)
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop"
     },
     {
       id: 2,
-      title: "Régionale Centre",
-      date: new Date(2024, 5, 28), // 28 juin 2024
-      time: "14:00",
-      location: "Yamoussoukro",
-      type: "Régionale",
-      participants: 45,
-      description: "Rencontre régionale des membres du centre"
+      title: "Conférence sur la Digitalisation",
+      date: "22 Avril 2024", 
+      time: "14:00 - 18:00",
+      location: "Hôtel Ivoire",
+      participants: "100 participants",
+      description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
+      type: "Conférence",
+      status: "À venir",
+      calendarDate: new Date(2024, 3, 22),
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop"
     },
+    // Activités récentes
     {
       id: 3,
-      title: "Formation Leadership Digital",
-      date: new Date(2024, 6, 5), // 5 juillet 2024
-      time: "08:30",
+      title: "Assemblée Générale Ordinaire",
+      date: "20 Mars 2024",
+      time: "09:00 - 16:00", 
       location: "ENA Abidjan",
-      type: "Formation",
-      participants: 25,
-      description: "Atelier de formation sur le leadership à l'ère numérique"
+      participants: "80 membres présents",
+      description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
+      type: "Assemblée",
+      status: "Terminé",
+      calendarDate: new Date(2024, 2, 20), // Mars = 2
+      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=250&fit=crop"
     },
     {
       id: 4,
-      title: "Réunion de Constitution Ouest",
-      date: new Date(2024, 6, 12), // 12 juillet 2024
-      time: "10:00",
-      location: "Man",
-      type: "Constitution",
-      participants: 30,
-      description: "Réunion de constitution pour la région Ouest"
+      title: "Atelier Gestion de Projet",
+      date: "10 Mars 2024",
+      time: "08:30 - 12:30",
+      location: "Centre de formation",
+      participants: "15 participants",
+      description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
+      type: "Atelier",
+      status: "Terminé",
+      calendarDate: new Date(2024, 2, 10),
+      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop"
     },
+    // Événements additionnels pour le calendrier
     {
       id: 5,
-      title: "Régionale Nord",
-      date: new Date(2024, 6, 20), // 20 juillet 2024
-      time: "15:00",
-      location: "Korhogo",
+      title: "Assemblée Générale Extraordinaire",
+      date: "15 Juin 2024",
+      time: "09:00",
+      location: "Hôtel Ivoire, Abidjan",
+      type: "AG",
+      participants: "120 participants attendus",
+      description: "Assemblée générale extraordinaire pour les amendements statutaires",
+      status: "À venir",
+      calendarDate: new Date(2024, 5, 15)
+    },
+    {
+      id: 6,
+      title: "Régionale Centre",
+      date: "28 Juin 2024",
+      time: "14:00",
+      location: "Yamoussoukro",
       type: "Régionale",
-      participants: 38,
-      description: "Rencontre régionale des membres du nord"
+      participants: "45 participants attendus",
+      description: "Rencontre régionale des membres du centre",
+      status: "À venir",
+      calendarDate: new Date(2024, 5, 28)
     }
   ];
 
   // Filtrer les événements par date sélectionnée
-  const selectedDateEvents = events.filter(event => 
+  const selectedDateEvents = allActivities.filter(event => 
     selectedDate && 
-    event.date.toDateString() === selectedDate.toDateString()
+    event.calendarDate.toDateString() === selectedDate.toDateString()
   );
 
   // Fonction pour déterminer si une date a des événements
   const hasEvents = (date: Date) => {
-    return events.some(event => event.date.toDateString() === date.toDateString());
+    return allActivities.some(event => event.calendarDate.toDateString() === date.toDateString());
   };
 
   const getEventTypeColor = (type: string) => {
     switch (type) {
-      case 'AG': return 'bg-red-100 text-red-800';
+      case 'AG': 
+      case 'Assemblée': return 'bg-red-100 text-red-800';
       case 'Régionale': return 'bg-blue-100 text-blue-800';
-      case 'Formation': return 'bg-green-100 text-green-800';
-      case 'Constitution': return 'bg-purple-100 text-purple-800';
+      case 'Formation': 
+      case 'Atelier': return 'bg-green-100 text-green-800';
+      case 'Conférence': return 'bg-purple-100 text-purple-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -95,6 +131,35 @@ const Agenda = () => {
     });
   };
 
+  const handleAddToCalendar = (activity: any) => {
+    try {
+      const { startDate, endDate } = parseEventDate(activity.date, activity.time);
+      
+      addToCalendar({
+        title: activity.title,
+        description: `${activity.description}\n\nType: ${activity.type}\nParticipants: ${activity.participants}`,
+        startDate,
+        endDate,
+        location: activity.location
+      });
+
+      toast({
+        title: "Événement ajouté !",
+        description: "L'activité a été sauvegardée dans votre calendrier.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter l'événement au calendrier.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Séparer les activités à venir et récentes
+  const upcomingActivities = allActivities.filter(activity => activity.status === 'À venir');
+  const pastActivities = allActivities.filter(activity => activity.status === 'Terminé');
+
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
@@ -103,7 +168,7 @@ const Agenda = () => {
           <div className="container mx-auto px-4">
             <h1 className="text-4xl font-bold mb-4">Agenda P49</h1>
             <p className="text-xl opacity-90">
-              Consultez le calendrier de toutes nos activités à venir
+              Consultez le calendrier de toutes nos activités à venir et récentes
             </p>
           </div>
         </section>
@@ -111,7 +176,7 @@ const Agenda = () => {
         {/* Contenu principal */}
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               {/* Calendrier */}
               <Card>
                 <CardHeader>
@@ -162,7 +227,7 @@ const Agenda = () => {
                             </Badge>
                           </div>
                           <p className="text-gray-600 text-sm mb-3">{event.description}</p>
-                          <div className="space-y-1 text-sm text-gray-600">
+                          <div className="space-y-1 text-sm text-gray-600 mb-3">
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-2" />
                               {event.time}
@@ -173,8 +238,26 @@ const Agenda = () => {
                             </div>
                             <div className="flex items-center">
                               <Users className="h-4 w-4 mr-2" />
-                              {event.participants} participants attendus
+                              {event.participants}
                             </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button asChild size="sm" variant="outline">
+                              <Link to={`/activites/${event.id}`}>
+                                <Eye className="h-4 w-4 mr-1" />
+                                Voir détails
+                              </Link>
+                            </Button>
+                            {event.status === 'À venir' && (
+                              <Button
+                                size="sm"
+                                onClick={() => handleAddToCalendar(event)}
+                                className="bg-green-600 hover:bg-green-700"
+                              >
+                                <CalendarPlus className="h-4 w-4 mr-1" />
+                                Calendrier
+                              </Button>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -188,35 +271,112 @@ const Agenda = () => {
               </Card>
             </div>
 
-            {/* Prochaines activités */}
-            <Card className="mt-8">
+            {/* Activités à venir */}
+            <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Prochaines Activités</CardTitle>
+                <CardTitle>Activités à venir</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {events.slice(0, 6).map((event) => (
-                    <div key={event.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge className={getEventTypeColor(event.type)}>
-                          {event.type}
-                        </Badge>
-                        <span className="text-sm text-gray-500">
-                          {event.date.toLocaleDateString('fr-FR')}
-                        </span>
-                      </div>
-                      <h3 className="font-semibold text-primary mb-2">{event.title}</h3>
-                      <div className="space-y-1 text-sm text-gray-600">
-                        <div className="flex items-center">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {event.time}
+                <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+                  {upcomingActivities.map((activity) => (
+                    <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
+                      {activity.image && (
+                        <div className="w-full h-40 overflow-hidden rounded-t-lg">
+                          <img 
+                            src={activity.image} 
+                            alt={activity.title}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
-                        <div className="flex items-center">
-                          <MapPin className="h-3 w-3 mr-1" />
-                          {event.location}
+                      )}
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge className={getEventTypeColor(activity.type)}>
+                            {activity.type}
+                          </Badge>
+                          <span className="text-sm text-gray-500">
+                            {activity.date}
+                          </span>
                         </div>
-                      </div>
-                    </div>
+                        <h3 className="font-semibold text-primary mb-2">{activity.title}</h3>
+                        <div className="space-y-1 text-sm text-gray-600 mb-3">
+                          <div className="flex items-center">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {activity.time}
+                          </div>
+                          <div className="flex items-center">
+                            <MapPin className="h-3 w-3 mr-1" />
+                            {activity.location}
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button asChild size="sm" variant="outline" className="flex-1">
+                            <Link to={`/activites/${activity.id}`}>
+                              <Eye className="h-4 w-4 mr-1" />
+                              Détails
+                            </Link>
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleAddToCalendar(activity)}
+                            className="bg-green-600 hover:bg-green-700"
+                          >
+                            <CalendarPlus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Activités récentes */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Activités récentes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+                  {pastActivities.map((activity) => (
+                    <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 opacity-80">
+                      {activity.image && (
+                        <div className="w-full h-40 overflow-hidden rounded-t-lg">
+                          <img 
+                            src={activity.image} 
+                            alt={activity.title}
+                            className="w-full h-full object-cover grayscale"
+                          />
+                        </div>
+                      )}
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <Badge className="bg-gray-100 text-gray-700">
+                            {activity.type}
+                          </Badge>
+                          <span className="text-sm text-gray-500">
+                            {activity.date}
+                          </span>
+                        </div>
+                        <h3 className="font-semibold text-gray-600 mb-2">{activity.title}</h3>
+                        <div className="space-y-1 text-sm text-gray-500 mb-3">
+                          <div className="flex items-center">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {activity.time}
+                          </div>
+                          <div className="flex items-center">
+                            <MapPin className="h-3 w-3 mr-1" />
+                            {activity.location}
+                          </div>
+                        </div>
+                        <Button asChild size="sm" variant="outline" className="w-full">
+                          <Link to={`/activites/${activity.id}`}>
+                            <Eye className="h-4 w-4 mr-1" />
+                            Voir détails
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </CardContent>

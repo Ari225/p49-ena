@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, MapPin, Users, Clock, ChevronRight, CalendarPlus } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, ChevronRight, CalendarPlus, Eye } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
@@ -22,7 +22,8 @@ const ActivitesSection = () => {
       participants: "25 places disponibles",
       description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
       type: "Formation",
-      status: "À venir"
+      status: "À venir",
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop"
     },
     {
       id: 2,
@@ -33,7 +34,8 @@ const ActivitesSection = () => {
       participants: "100 participants",
       description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
       type: "Conférence",
-      status: "À venir"
+      status: "À venir",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop"
     }
   ];
 
@@ -47,7 +49,8 @@ const ActivitesSection = () => {
       participants: "80 membres présents",
       description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
       type: "Assemblée",
-      status: "Terminé"
+      status: "Terminé",
+      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=250&fit=crop"
     },
     {
       id: 4,
@@ -58,7 +61,8 @@ const ActivitesSection = () => {
       participants: "15 participants",
       description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
       type: "Atelier",
-      status: "Terminé"
+      status: "Terminé",
+      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop"
     }
   ];
 
@@ -108,6 +112,15 @@ const ActivitesSection = () => {
           <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
             {upcomingActivities.map((activity) => (
               <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
+                {activity.image && (
+                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                    <img 
+                      src={activity.image} 
+                      alt={activity.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
@@ -145,14 +158,21 @@ const ActivitesSection = () => {
                     </div>
                   </div>
 
-                  <Button
-                    onClick={() => handleAddToCalendar(activity)}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white"
-                    size="sm"
-                  >
-                    <CalendarPlus className="w-4 h-4 mr-2" />
-                    Ajouter au calendrier
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button asChild size="sm" variant="outline" className="flex-1">
+                      <Link to={`/activites/${activity.id}`}>
+                        <Eye className="w-4 h-4 mr-2" />
+                        Voir détails
+                      </Link>
+                    </Button>
+                    <Button
+                      onClick={() => handleAddToCalendar(activity)}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      size="sm"
+                    >
+                      <CalendarPlus className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -167,7 +187,16 @@ const ActivitesSection = () => {
           </h3>
           <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
             {pastActivities.map((activity) => (
-              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400">
+              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400 opacity-80">
+                {activity.image && (
+                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                    <img 
+                      src={activity.image} 
+                      alt={activity.title}
+                      className="w-full h-full object-cover grayscale"
+                    />
+                  </div>
+                )}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-gray-500 text-white px-2 py-1 rounded text-xs font-medium">
@@ -178,15 +207,15 @@ const ActivitesSection = () => {
                     </span>
                   </div>
                   
-                  <h4 className="font-semibold text-primary mb-3 text-lg">
+                  <h4 className="font-semibold text-gray-600 mb-3 text-lg">
                     {activity.title}
                   </h4>
                   
-                  <p className="text-gray-600 text-sm mb-4">
+                  <p className="text-gray-500 text-sm mb-4">
                     {activity.description}
                   </p>
                   
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-2 text-sm text-gray-500 mb-4">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-gray-500" />
                       <span>{activity.date}</span>
@@ -204,6 +233,13 @@ const ActivitesSection = () => {
                       <span>{activity.participants}</span>
                     </div>
                   </div>
+
+                  <Button asChild size="sm" variant="outline" className="w-full">
+                    <Link to={`/activites/${activity.id}`}>
+                      <Eye className="w-4 h-4 mr-2" />
+                      Voir détails
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -212,7 +248,7 @@ const ActivitesSection = () => {
 
         <div className="text-center">
           <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] h-10 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : 'text-sm md:text-sm'}`}>
-            <Link to="/activites" className="flex items-center justify-center">
+            <Link to="/agenda" className="flex items-center justify-center">
               Voir toutes nos activités
               <ChevronRight className="h-4 w-4 ml-1" />
             </Link>
