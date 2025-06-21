@@ -1,11 +1,13 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '@/pages/Home';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Index from '@/pages/Index';
 import Agenda from '@/pages/Agenda';
-import News from '@/pages/News';
+import Actualites from '@/pages/Actualites';
 import Contact from '@/pages/Contact';
 import Login from '@/pages/Login';
-import Dashboard from '@/pages/dashboard/Dashboard';
+import Dashboard from '@/pages/Dashboard';
 import DashboardNews from '@/pages/dashboard/DashboardNews';
 import DashboardUsers from '@/pages/dashboard/DashboardUsers';
 import DashboardSettings from '@/pages/dashboard/DashboardSettings';
@@ -22,21 +24,28 @@ import DashboardPopups from '@/pages/dashboard/DashboardPopups';
 import DashboardNotifications from '@/pages/dashboard/DashboardNotifications';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
-import { QueryClient } from 'react-query';
 import { Toaster } from '@/components/ui/sonner';
 import ActiviteDetail from '@/pages/ActiviteDetail';
 import DashboardActivites from '@/pages/dashboard/DashboardActivites';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 function App() {
   return (
-    <QueryClient>
+    <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <AuthProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Index />} />
               <Route path="/agenda" element={<Agenda />} />
-              <Route path="/news" element={<News />} />
+              <Route path="/news" element={<Actualites />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -61,7 +70,7 @@ function App() {
           </BrowserRouter>
         </AuthProvider>
       </LanguageProvider>
-    </QueryClient>
+    </QueryClientProvider>
   );
 }
 
