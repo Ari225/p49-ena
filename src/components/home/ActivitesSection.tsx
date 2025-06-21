@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,69 +6,63 @@ import { Calendar, MapPin, Users, Clock, ChevronRight, CalendarPlus, Eye } from 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
-
 const ActivitesSection = () => {
   const isMobile = useIsMobile();
-  const { toast } = useToast();
-  
-  const upcomingActivities = [
-    {
-      id: 1,
-      title: "Formation en Leadership Public",
-      date: "15 Avril 2024",
-      time: "09:00 - 17:00",
-      location: "ENA Abidjan",
-      participants: "25 places disponibles",
-      description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
-      type: "Formation",
-      status: "À venir",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop"
-    },
-    {
-      id: 2,
-      title: "Conférence sur la Digitalisation",
-      date: "22 Avril 2024", 
-      time: "14:00 - 18:00",
-      location: "Hôtel Ivoire",
-      participants: "100 participants",
-      description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
-      type: "Conférence",
-      status: "À venir",
-      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop"
-    }
-  ];
-
-  const pastActivities = [
-    {
-      id: 3,
-      title: "Assemblée Générale Ordinaire",
-      date: "20 Mars 2024",
-      time: "09:00 - 16:00", 
-      location: "ENA Abidjan",
-      participants: "80 membres présents",
-      description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
-      type: "Assemblée",
-      status: "Terminé",
-      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=250&fit=crop"
-    },
-    {
-      id: 4,
-      title: "Atelier Gestion de Projet",
-      date: "10 Mars 2024",
-      time: "08:30 - 12:30",
-      location: "Centre de formation",
-      participants: "15 participants",
-      description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
-      type: "Atelier",
-      status: "Terminé",
-      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop"
-    }
-  ];
-
+  const {
+    toast
+  } = useToast();
+  const upcomingActivities = [{
+    id: 1,
+    title: "Formation en Leadership Public",
+    date: "15 Avril 2024",
+    time: "09:00 - 17:00",
+    location: "ENA Abidjan",
+    participants: "25 places disponibles",
+    description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
+    type: "Formation",
+    status: "À venir",
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop"
+  }, {
+    id: 2,
+    title: "Conférence sur la Digitalisation",
+    date: "22 Avril 2024",
+    time: "14:00 - 18:00",
+    location: "Hôtel Ivoire",
+    participants: "100 participants",
+    description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
+    type: "Conférence",
+    status: "À venir",
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop"
+  }];
+  const pastActivities = [{
+    id: 3,
+    title: "Assemblée Générale Ordinaire",
+    date: "20 Mars 2024",
+    time: "09:00 - 16:00",
+    location: "ENA Abidjan",
+    participants: "80 membres présents",
+    description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
+    type: "Assemblée",
+    status: "Terminé",
+    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=250&fit=crop"
+  }, {
+    id: 4,
+    title: "Atelier Gestion de Projet",
+    date: "10 Mars 2024",
+    time: "08:30 - 12:30",
+    location: "Centre de formation",
+    participants: "15 participants",
+    description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
+    type: "Atelier",
+    status: "Terminé",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop"
+  }];
   const handleAddToCalendar = (activity: any) => {
     try {
-      const { startDate, endDate } = parseEventDate(activity.date, activity.time);
-      
+      const {
+        startDate,
+        endDate
+      } = parseEventDate(activity.date, activity.time);
       addToCalendar({
         title: activity.title,
         description: `${activity.description}\n\nType: ${activity.type}\nParticipants: ${activity.participants}`,
@@ -77,27 +70,22 @@ const ActivitesSection = () => {
         endDate,
         location: activity.location
       });
-
       toast({
         title: "Événement ajouté !",
-        description: "L'activité a été sauvegardée dans votre calendrier.",
+        description: "L'activité a été sauvegardée dans votre calendrier."
       });
     } catch (error) {
       toast({
         title: "Erreur",
         description: "Impossible d'ajouter l'événement au calendrier.",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
-
-  return (
-    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>
-            Activités
-          </h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Agenda</h2>
           <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : 'text-base md:text-base'}`}>
             Découvrez nos activités à venir et nos événements récents
           </p>
@@ -110,17 +98,10 @@ const ActivitesSection = () => {
             Activités à venir
           </h3>
           <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
-            {upcomingActivities.map((activity) => (
-              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
-                {activity.image && (
-                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                    <img 
-                      src={activity.image} 
-                      alt={activity.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
+            {upcomingActivities.map(activity => <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
+                {activity.image && <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                    <img src={activity.image} alt={activity.title} className="w-full h-full object-cover" />
+                  </div>}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
@@ -165,17 +146,12 @@ const ActivitesSection = () => {
                         Voir détails
                       </Link>
                     </Button>
-                    <Button
-                      onClick={() => handleAddToCalendar(activity)}
-                      className="bg-green-600 hover:bg-green-700 text-white"
-                      size="sm"
-                    >
+                    <Button onClick={() => handleAddToCalendar(activity)} className="bg-green-600 hover:bg-green-700 text-white" size="sm">
                       <CalendarPlus className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
 
@@ -186,17 +162,10 @@ const ActivitesSection = () => {
             Activités récentes
           </h3>
           <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
-            {pastActivities.map((activity) => (
-              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400 opacity-80">
-                {activity.image && (
-                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                    <img 
-                      src={activity.image} 
-                      alt={activity.title}
-                      className="w-full h-full object-cover grayscale"
-                    />
-                  </div>
-                )}
+            {pastActivities.map(activity => <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400 opacity-80">
+                {activity.image && <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                    <img src={activity.image} alt={activity.title} className="w-full h-full object-cover grayscale" />
+                  </div>}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-gray-500 text-white px-2 py-1 rounded text-xs font-medium">
@@ -241,8 +210,7 @@ const ActivitesSection = () => {
                     </Link>
                   </Button>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
 
@@ -255,8 +223,6 @@ const ActivitesSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ActivitesSection;
