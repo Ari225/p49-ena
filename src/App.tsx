@@ -1,108 +1,67 @@
-
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from '@/components/ui/toaster';
-import { LanguageProvider } from '@/context/LanguageContext';
-import { AuthProvider } from '@/context/AuthContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// Pages
-import Index from '@/pages/Index';
-import Login from '@/pages/Login';
-import Dashboard from '@/pages/Dashboard';
-import Actualites from '@/pages/Actualites';
-import Communiques from '@/pages/Communiques';
-import CarrierePlus from '@/pages/CarrierePlus';
-import EvenementsSociaux from '@/pages/EvenementsSociaux';
-import Gallery from '@/pages/Gallery';
-import Journal from '@/pages/Journal';
-import Contact from '@/pages/Contact';
-import Historique from '@/pages/Historique';
-import Archives from '@/pages/Archives';
-import NotFound from '@/pages/NotFound';
-import ActualiteDetail from '@/pages/ActualiteDetail';
-import CommuniqueDetail from '@/pages/CommuniqueDetail';
-import BlogDetail from '@/pages/BlogDetail';
-import EchoRegionDetail from '@/pages/EchoRegionDetail';
-import Blog from '@/pages/Blog';
-import EchoRegions from '@/pages/EchoRegions';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from '@/pages/Home';
 import Agenda from '@/pages/Agenda';
-import AssembleesGenerales from '@/pages/AssembleesGenerales';
-import DepartsRetraite from '@/pages/DepartsRetraite';
-import DerniereEdition from '@/pages/DerniereEdition';
-import EquipeEditoriale from '@/pages/EquipeEditoriale';
-import EvenementsDifficiles from '@/pages/EvenementsDifficiles';
-import EvenementsHeureux from '@/pages/EvenementsHeureux';
-import EvenementsMalheureux from '@/pages/EvenementsMalheureux';
-import Galerie from '@/pages/Galerie';
-import InstancesDirigeantes from '@/pages/InstancesDirigeantes';
-import Regionales from '@/pages/Regionales';
-import RepertoireMembers from '@/pages/RepertoireMembers';
-import ReunionsConstitution from '@/pages/ReunionsConstitution';
-import Suggestions from '@/pages/Suggestions';
-import Temoignages from '@/pages/Temoignages';
-import TextesOfficiels from '@/pages/TextesOfficiels';
-import Formations from '@/pages/Formations';
-import RenforcementCapacites from '@/pages/RenforcementCapacites';
-import CoachingMentorat from '@/pages/CoachingMentorat';
-import ActualitesConcours from '@/pages/ActualitesConcours';
+import News from '@/pages/News';
+import Contact from '@/pages/Contact';
+import Login from '@/pages/Login';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import DashboardNews from '@/pages/dashboard/DashboardNews';
+import DashboardUsers from '@/pages/dashboard/DashboardUsers';
+import DashboardSettings from '@/pages/dashboard/DashboardSettings';
+import DashboardBlog from '@/pages/dashboard/DashboardBlog';
+import DashboardJournal from '@/pages/dashboard/DashboardJournal';
+import DashboardCommuniques from '@/pages/dashboard/DashboardCommuniques';
+import DashboardEchoRegions from '@/pages/dashboard/DashboardEchoRegions';
+import DashboardCarrieres from '@/pages/dashboard/DashboardCarrieres';
+import DashboardTemoignages from '@/pages/dashboard/DashboardTemoignages';
+import DashboardEvenementsSociaux from '@/pages/dashboard/DashboardEvenementsSociaux';
+import DashboardMediatheque from '@/pages/dashboard/DashboardMediatheque';
+import DashboardEvents from '@/pages/dashboard/DashboardEvents';
+import DashboardPopups from '@/pages/dashboard/DashboardPopups';
+import DashboardNotifications from '@/pages/dashboard/DashboardNotifications';
+import { AuthProvider } from '@/context/AuthContext';
+import { LanguageProvider } from '@/context/LanguageContext';
+import { QueryClient } from 'react-query';
+import { Toaster } from '@/components/ui/sonner';
+import ActiviteDetail from '@/pages/ActiviteDetail';
+import DashboardActivites from '@/pages/dashboard/DashboardActivites';
 
 function App() {
-  const queryClient = new QueryClient();
-
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClient>
       <LanguageProvider>
         <AuthProvider>
-          <Router>
-            <div className="App">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/dashboard/*" element={<Dashboard />} />
-                <Route path="/actualites" element={<Actualites />} />
-                <Route path="/actualites/:id" element={<ActualiteDetail />} />
-                <Route path="/communiques/:id" element={<CommuniqueDetail />} />
-                <Route path="/blog/:id" element={<BlogDetail />} />
-                <Route path="/echo-regions/:id" element={<EchoRegionDetail />} />
-                <Route path="/communiques" element={<Communiques />} />
-                <Route path="/carriere-plus" element={<CarrierePlus />} />
-                <Route path="/evenements-sociaux" element={<EvenementsSociaux />} />
-                <Route path="/gallery" element={<Gallery />} />
-                <Route path="/galerie" element={<Galerie />} />
-                <Route path="/journal" element={<Journal />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/echo-regions" element={<EchoRegions />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/historique" element={<Historique />} />
-                <Route path="/archives" element={<Archives />} />
-                <Route path="/agenda" element={<Agenda />} />
-                <Route path="/assemblees-generales" element={<AssembleesGenerales />} />
-                <Route path="/departs-retraite" element={<DepartsRetraite />} />
-                <Route path="/derniere-edition" element={<DerniereEdition />} />
-                <Route path="/equipe-editoriale" element={<EquipeEditoriale />} />
-                <Route path="/evenements-difficiles" element={<EvenementsDifficiles />} />
-                <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
-                <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
-                <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
-                <Route path="/regionales" element={<Regionales />} />
-                <Route path="/repertoire-membres" element={<RepertoireMembers />} />
-                <Route path="/reunions-constitution" element={<ReunionsConstitution />} />
-                <Route path="/suggestions" element={<Suggestions />} />
-                <Route path="/temoignages" element={<Temoignages />} />
-                <Route path="/textes-officiels" element={<TextesOfficiels />} />
-                <Route path="/formations" element={<Formations />} />
-                <Route path="/renforcement-capacites" element={<RenforcementCapacites />} />
-                <Route path="/coaching-mentorat" element={<CoachingMentorat />} />
-                <Route path="/actualites-concours" element={<ActualitesConcours />} />
-                <Route path="/404" element={<NotFound />} />
-                <Route path="*" element={<Navigate to="/404" replace />} />
-              </Routes>
-            </div>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/agenda" element={<Agenda />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/news" element={<DashboardNews />} />
+              <Route path="/dashboard/users" element={<DashboardUsers />} />
+              <Route path="/dashboard/settings" element={<DashboardSettings />} />
+              <Route path="/dashboard/blog" element={<DashboardBlog />} />
+              <Route path="/dashboard/journal" element={<DashboardJournal />} />
+              <Route path="/dashboard/communiques" element={<DashboardCommuniques />} />
+              <Route path="/dashboard/echo-regions" element={<DashboardEchoRegions />} />
+              <Route path="/dashboard/carrieres" element={<DashboardCarrieres />} />
+              <Route path="/dashboard/temoignages" element={<DashboardTemoignages />} />
+              <Route path="/dashboard/evenements-sociaux" element={<DashboardEvenementsSociaux />} />
+              <Route path="/dashboard/mediatheque" element={<DashboardMediatheque />} />
+              <Route path="/dashboard/events" element={<DashboardEvents />} />
+              <Route path="/dashboard/popups" element={<DashboardPopups />} />
+              <Route path="/dashboard/notifications" element={<DashboardNotifications />} />
+              <Route path="/activites/:id" element={<ActiviteDetail />} />
+              <Route path="/dashboard/activites" element={<DashboardActivites />} />
+            </Routes>
             <Toaster />
-          </Router>
+          </BrowserRouter>
         </AuthProvider>
       </LanguageProvider>
-    </QueryClientProvider>
+    </QueryClient>
   );
 }
 

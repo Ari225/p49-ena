@@ -7,43 +7,53 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Activity, Plus, Edit, Trash2, Calendar, MapPin, Users } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Activity, Plus, Edit, Trash2, Calendar, MapPin, Users, Upload, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
 
 const DashboardActivites = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     type: '',
     date: '',
+    time: '',
     location: '',
-    organizer: '',
+    participants: '',
     description: '',
-    participants: ''
+    status: 'À venir'
   });
 
   const mockActivities = [
     {
       id: '1',
-      title: 'Formation en Leadership',
+      title: 'Formation en Leadership Public',
       type: 'Formation',
       date: '2024-04-15',
+      time: '09:00 - 17:00',
       location: 'ENA Abidjan',
-      organizer: 'Commission Formation',
-      description: 'Formation intensive sur les techniques de leadership moderne.',
-      participants: '30'
+      participants: '25 places disponibles',
+      description: 'Formation intensive sur les techniques de leadership dans l\'administration publique moderne.',
+      status: 'À venir',
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop'
     },
     {
       id: '2',
-      title: 'Séminaire sur la Digitalisation',
-      type: 'Séminaire',
+      title: 'Conférence sur la Digitalisation',
+      type: 'Conférence',
       date: '2024-04-25',
-      location: 'Centre de Conférences',
-      organizer: 'Commission Modernisation',
-      description: 'Exploration des outils numériques pour l\'administration.',
-      participants: '50'
+      time: '14:00 - 18:00',
+      location: 'Hôtel Ivoire',
+      participants: '100 participants',
+      description: 'Conférence sur les enjeux de la transformation numérique dans les services publics.',
+      status: 'À venir',
+      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop'
     }
   ];
 
@@ -51,12 +61,166 @@ const DashboardActivites = () => {
     return <div>Non autorisé</div>;
   }
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Nouvelle activité:', formData);
+    console.log('Nouvelle activité:', { ...formData, image: selectedImage });
+    
+    toast({
+      title: "Activité créée !",
+      description: "L'activité a été ajoutée avec succès.",
+    });
+
+    // Reset form
+    setFormData({
+      title: '',
+      type: '',
+      date: '',
+      time: '',
+      location: '',
+      participants: '',
+      description: '',
+      status: 'À venir'
+    });
+    setSelectedImage(null);
+    setImagePreview(null);
     setShowForm(false);
-    setFormData({ title: '', type: '', date: '', location: '', organizer: '', description: '', participants: '' });
   };
+
+  const ActivityForm = () => (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
+        placeholder="Titre de l'activité"
+        value={formData.title}
+        onChange={(e) => setFormData({...formData, title: e.target.value})}
+        required
+      />
+      
+      <select
+        className="w-full p-2 border rounded-md"
+        value={formData.type}
+        onChange={(e) => setFormData({...formData, type: e.target.value})}
+        required
+      >
+        <option value="">Type d'activité</option>
+        <option value="Formation">Formation</option>
+        <option value="Séminaire">Séminaire</option>
+        <option value="Atelier">Atelier</option>
+        <option value="Conférence">Conférence</option>
+        <option value="Assemblée">Assemblée</option>
+        <option value="Table Ronde">Table Ronde</option>
+      </select>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Input
+          type="date"
+          value={formData.date}
+          onChange={(e) => setFormData({...formData, date: e.target.value})}
+          required
+        />
+        <Input
+          type="time"
+          placeholder="Heure de début"
+          value={formData.time.split(' - ')[0] || ''}
+          onChange={(e) => setFormData({...formData, time: e.target.value + ' - '})}
+          required
+        />
+      </div>
+
+      <Input
+        placeholder="Lieu"
+        value={formData.location}
+        onChange={(e) => setFormData({...formData, location: e.target.value})}
+        required
+      />
+
+      <Input
+        placeholder="Nombre de participants"
+        value={formData.participants}
+        onChange={(e) => setFormData({...formData, participants: e.target.value})}
+        required
+      />
+
+      <Textarea
+        placeholder="Description de l'activité"
+        value={formData.description}
+        onChange={(e) => setFormData({...formData, description: e.target.value})}
+        required
+      />
+
+      <select
+        className="w-full p-2 border rounded-md"
+        value={formData.status}
+        onChange={(e) => setFormData({...formData, status: e.target.value})}
+        required
+      >
+        <option value="À venir">À venir</option>
+        <option value="Terminé">Terminé</option>
+      </select>
+
+      {/* Upload d'image */}
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">Image de l'activité</label>
+        {!imagePreview ? (
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <Upload className="mx-auto h-12 w-12 text-gray-400" />
+            <div className="mt-2">
+              <label htmlFor="image-upload" className="cursor-pointer">
+                <span className="mt-2 block text-sm font-medium text-gray-900">
+                  Cliquez pour téléverser une image
+                </span>
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+              </label>
+            </div>
+          </div>
+        ) : (
+          <div className="relative">
+            <img
+              src={imagePreview}
+              alt="Aperçu"
+              className="w-full h-48 object-cover rounded-lg"
+            />
+            <button
+              type="button"
+              onClick={removeImage}
+              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-2">
+        <Button type="submit" className="flex-1">Publier l'activité</Button>
+        <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+          Annuler
+        </Button>
+      </div>
+    </form>
+  );
 
   if (isMobile) {
     return (
@@ -68,80 +232,34 @@ const DashboardActivites = () => {
           </div>
 
           <div className="mb-4">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90 w-full"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle activité'}
-            </Button>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90 w-full">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouvelle activité
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Ajouter une activité</DialogTitle>
+                </DialogHeader>
+                <ActivityForm />
+              </DialogContent>
+            </Dialog>
           </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Ajouter une activité</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder="Titre de l'activité"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="w-full p-2 border rounded-md"
-                    value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    required
-                  >
-                    <option value="">Type d'activité</option>
-                    <option value="Formation">Formation</option>
-                    <option value="Séminaire">Séminaire</option>
-                    <option value="Atelier">Atelier</option>
-                    <option value="Conférence">Conférence</option>
-                    <option value="Table Ronde">Table Ronde</option>
-                  </select>
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Lieu"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Organisateur"
-                    value={formData.organizer}
-                    onChange={(e) => setFormData({...formData, organizer: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Nombre de participants"
-                    value={formData.participants}
-                    onChange={(e) => setFormData({...formData, participants: e.target.value})}
-                    required
-                  />
-                  <Textarea
-                    placeholder="Description de l'activité"
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    required
-                  />
-                  <Button type="submit" className="w-full">Publier</Button>
-                </form>
-              </CardContent>
-            </Card>
-          )}
 
           <div className="space-y-4">
             {mockActivities.map((activity) => (
               <Card key={activity.id}>
+                {activity.image && (
+                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                    <img 
+                      src={activity.image} 
+                      alt={activity.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center">
                     <Activity className="w-5 h-5 mr-2" />
@@ -151,7 +269,7 @@ const DashboardActivites = () => {
                     <p className="text-sm font-medium text-primary">{activity.type}</p>
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(activity.date).toLocaleDateString('fr-FR')}
+                      {new Date(activity.date).toLocaleDateString('fr-FR')} - {activity.time}
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <MapPin className="w-4 h-4 mr-1" />
@@ -159,13 +277,12 @@ const DashboardActivites = () => {
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Users className="w-4 h-4 mr-1" />
-                      {activity.participants} participants
+                      {activity.participants}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-2">{activity.description}</p>
-                  <p className="text-sm mb-4"><strong>Organisateur:</strong> {activity.organizer}</p>
+                  <p className="text-gray-600 mb-4">{activity.description}</p>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
@@ -198,84 +315,34 @@ const DashboardActivites = () => {
           </div>
 
           <div className="mb-6">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle activité'}
-            </Button>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouvelle activité
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Ajouter une activité</DialogTitle>
+                </DialogHeader>
+                <ActivityForm />
+              </DialogContent>
+            </Dialog>
           </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Ajouter une activité</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Titre de l'activité"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="p-2 border rounded-md"
-                    value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    required
-                  >
-                    <option value="">Type d'activité</option>
-                    <option value="Formation">Formation</option>
-                    <option value="Séminaire">Séminaire</option>
-                    <option value="Atelier">Atelier</option>
-                    <option value="Conférence">Conférence</option>
-                    <option value="Table Ronde">Table Ronde</option>
-                  </select>
-                  <Input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Lieu"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Organisateur"
-                    value={formData.organizer}
-                    onChange={(e) => setFormData({...formData, organizer: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Nombre de participants"
-                    value={formData.participants}
-                    onChange={(e) => setFormData({...formData, participants: e.target.value})}
-                    required
-                  />
-                  <div className="md:col-span-2">
-                    <Textarea
-                      placeholder="Description de l'activité"
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Button type="submit">Publier l'activité</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {mockActivities.map((activity) => (
               <Card key={activity.id}>
+                {activity.image && (
+                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                    <img 
+                      src={activity.image} 
+                      alt={activity.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Activity className="w-5 h-5 mr-2" />
@@ -285,7 +352,7 @@ const DashboardActivites = () => {
                     <p className="font-medium text-primary">{activity.type}</p>
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(activity.date).toLocaleDateString('fr-FR')}
+                      {new Date(activity.date).toLocaleDateString('fr-FR')} - {activity.time}
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <MapPin className="w-4 h-4 mr-1" />
@@ -293,13 +360,12 @@ const DashboardActivites = () => {
                     </div>
                     <div className="flex items-center text-sm text-gray-500">
                       <Users className="w-4 h-4 mr-1" />
-                      {activity.participants} participants
+                      {activity.participants}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-2">{activity.description}</p>
-                  <p className="text-sm mb-4"><strong>Organisateur:</strong> {activity.organizer}</p>
+                  <p className="text-gray-600 mb-4">{activity.description}</p>
                   <div className="flex space-x-2">
                     <Button size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
