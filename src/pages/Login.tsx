@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -59,7 +60,7 @@ const Login = () => {
         {/* Primary overlay */}
           <div className="absolute inset-0 bg-primary/80 mx-0 my-0"></div>
         
-        <div className="w-full max-w-md relative z-10">
+        <div className="w-full max-w-md relative z-10 px-[25px] md:px-0">
           <Card className="px-0 mx-0">
             <CardHeader className="text-center ">
               <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
@@ -97,4 +98,5 @@ const Login = () => {
       </div>
     </Layout>;
 };
+
 export default Login;
