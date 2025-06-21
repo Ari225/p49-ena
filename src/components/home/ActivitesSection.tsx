@@ -3,11 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, MapPin, Users, Clock, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, ChevronRight, CalendarPlus } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
+import { useToast } from '@/hooks/use-toast';
 
 const ActivitesSection = () => {
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
   const upcomingActivities = [
     {
@@ -59,6 +62,31 @@ const ActivitesSection = () => {
     }
   ];
 
+  const handleAddToCalendar = (activity: any) => {
+    try {
+      const { startDate, endDate } = parseEventDate(activity.date, activity.time);
+      
+      addToCalendar({
+        title: activity.title,
+        description: `${activity.description}\n\nType: ${activity.type}\nParticipants: ${activity.participants}`,
+        startDate,
+        endDate,
+        location: activity.location
+      });
+
+      toast({
+        title: "Événement ajouté !",
+        description: "L'activité a été sauvegardée dans votre calendrier.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter l'événement au calendrier.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
@@ -98,7 +126,7 @@ const ActivitesSection = () => {
                     {activity.description}
                   </p>
                   
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-2 text-sm text-gray-600 mb-4">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
                       <span>{activity.date}</span>
@@ -116,6 +144,15 @@ const ActivitesSection = () => {
                       <span>{activity.participants}</span>
                     </div>
                   </div>
+
+                  <Button
+                    onClick={() => handleAddToCalendar(activity)}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    size="sm"
+                  >
+                    <CalendarPlus className="w-4 h-4 mr-2" />
+                    Ajouter au calendrier
+                  </Button>
                 </CardContent>
               </Card>
             ))}
