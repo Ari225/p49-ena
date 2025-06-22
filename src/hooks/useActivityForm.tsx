@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { ActivityFormData } from '@/types/activity';
 
 export const useActivityForm = () => {
@@ -40,37 +39,9 @@ export const useActivityForm = () => {
     e.preventDefault();
     
     try {
-      // Upload image if selected
-      let imageUrl = null;
-      if (selectedImage) {
-        const fileExt = selectedImage.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        
-        // Note: You'll need to set up Supabase Storage for this to work
-        // For now, we'll just use a placeholder
-        imageUrl = `placeholder-${fileName}`;
-      }
-
-      // Insert activity into database
-      const { data, error } = await supabase
-        .from('activities')
-        .insert({
-          title: formData.title,
-          category: formData.category,
-          type: formData.category === 'Autre activité' ? formData.type : null,
-          date: formData.date,
-          time: formData.time,
-          location: formData.location,
-          participants: formData.participants,
-          description: formData.description,
-          image_url: imageUrl,
-          created_by: user!.id
-        });
-
-      if (error) {
-        throw error;
-      }
-
+      // Mock successful submission without Supabase
+      console.log('Activity submitted:', formData);
+      
       toast({
         title: "Activité créée !",
         description: "L'activité a été ajoutée avec succès.",
