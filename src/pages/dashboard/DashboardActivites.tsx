@@ -1,36 +1,22 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Activity, Plus, Edit, Trash2, Calendar, MapPin, Users, Upload, X } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import ActivityForm from '@/components/activities/ActivityForm';
+import ActivityCard from '@/components/activities/ActivityCard';
+import { Activity } from '@/types/activity';
 
 const DashboardActivites = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    type: '',
-    date: '',
-    time: '',
-    location: '',
-    participants: '',
-    description: ''
-  });
 
-  const mockActivities = [
+  const mockActivities: Activity[] = [
     {
       id: '1',
       title: 'Formation en Leadership Public',
@@ -63,222 +49,23 @@ const DashboardActivites = () => {
     return <div>Non autorisé</div>;
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleFormSuccess = () => {
+    setShowForm(false);
   };
 
-  const removeImage = () => {
-    setSelectedImage(null);
-    setImagePreview(null);
+  const handleFormCancel = () => {
+    setShowForm(false);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      // Upload image if selected
-      let imageUrl = null;
-      if (selectedImage) {
-        const fileExt = selectedImage.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        
-        // Note: You'll need to set up Supabase Storage for this to work
-        // For now, we'll just use a placeholder
-        imageUrl = `placeholder-${fileName}`;
-      }
-
-      // Insert activity into database
-      const { data, error } = await supabase
-        .from('activities')
-        .insert({
-          title: formData.title,
-          category: formData.category,
-          type: formData.category === 'Autre activité' ? formData.type : null,
-          date: formData.date,
-          time: formData.time,
-          location: formData.location,
-          participants: formData.participants,
-          description: formData.description,
-          image_url: imageUrl,
-          created_by: user.id
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      toast({
-        title: "Activité créée !",
-        description: "L'activité a été ajoutée avec succès.",
-      });
-
-      // Reset form
-      setFormData({
-        title: '',
-        category: '',
-        type: '',
-        date: '',
-        time: '',
-        location: '',
-        participants: '',
-        description: ''
-      });
-      setSelectedImage(null);
-      setImagePreview(null);
-      setShowForm(false);
-    } catch (error) {
-      console.error('Error creating activity:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de créer l'activité.",
-        variant: "destructive"
-      });
-    }
+  const handleEditActivity = (activity: Activity) => {
+    // TODO: Implement edit functionality
+    console.log('Edit activity:', activity);
   };
 
-  const categoryOptions = [
-    'Les Régionales',
-    'Assemblées Générales', 
-    'Réunions de constitution',
-    'Autre activité'
-  ];
-
-  const typeOptions = [
-    'Formation',
-    'Séminaire',
-    'Atelier',
-    'Conférence',
-    'Assemblée',
-    'Table Ronde'
-  ];
-
-  const ActivityForm = () => (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        placeholder="Titre de l'activité"
-        value={formData.title}
-        onChange={(e) => setFormData({...formData, title: e.target.value})}
-        required
-      />
-      
-      <select
-        className="w-full p-2 border rounded-md"
-        value={formData.category}
-        onChange={(e) => setFormData({...formData, category: e.target.value, type: ''})}
-        required
-      >
-        <option value="">Catégorie</option>
-        {categoryOptions.map(option => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </select>
-
-      {formData.category === 'Autre activité' && (
-        <select
-          className="w-full p-2 border rounded-md"
-          value={formData.type}
-          onChange={(e) => setFormData({...formData, type: e.target.value})}
-          required
-        >
-          <option value="">Type d'activité</option>
-          {typeOptions.map(option => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
-      )}
-
-      <div className="grid grid-cols-2 gap-4">
-        <Input
-          type="date"
-          value={formData.date}
-          onChange={(e) => setFormData({...formData, date: e.target.value})}
-          required
-        />
-        <Input
-          placeholder="Heure (ex: 09:00 - 17:00)"
-          value={formData.time}
-          onChange={(e) => setFormData({...formData, time: e.target.value})}
-          required
-        />
-      </div>
-
-      <Input
-        placeholder="Lieu"
-        value={formData.location}
-        onChange={(e) => setFormData({...formData, location: e.target.value})}
-        required
-      />
-
-      <Input
-        placeholder="Nombre de participants"
-        value={formData.participants}
-        onChange={(e) => setFormData({...formData, participants: e.target.value})}
-        required
-      />
-
-      <Textarea
-        placeholder="Description de l'activité"
-        value={formData.description}
-        onChange={(e) => setFormData({...formData, description: e.target.value})}
-        required
-      />
-
-      {/* Upload d'image */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">Image de l'activité</label>
-        {!imagePreview ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <Upload className="mx-auto h-12 w-12 text-gray-400" />
-            <div className="mt-2">
-              <label htmlFor="image-upload" className="cursor-pointer">
-                <span className="mt-2 block text-sm font-medium text-gray-900">
-                  Cliquez pour téléverser une image
-                </span>
-                <input
-                  id="image-upload"
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                />
-              </label>
-            </div>
-          </div>
-        ) : (
-          <div className="relative">
-            <img
-              src={imagePreview}
-              alt="Aperçu"
-              className="w-full h-48 object-cover rounded-lg"
-            />
-            <button
-              type="button"
-              onClick={removeImage}
-              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="flex gap-2">
-        <Button type="submit" className="flex-1">Publier l'activité</Button>
-        <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-          Annuler
-        </Button>
-      </div>
-    </form>
-  );
+  const handleDeleteActivity = (activity: Activity) => {
+    // TODO: Implement delete functionality
+    console.log('Delete activity:', activity);
+  };
 
   if (isMobile) {
     return (
@@ -301,61 +88,22 @@ const DashboardActivites = () => {
                 <DialogHeader>
                   <DialogTitle>Ajouter une activité</DialogTitle>
                 </DialogHeader>
-                <ActivityForm />
+                <ActivityForm 
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
               </DialogContent>
             </Dialog>
           </div>
 
           <div className="space-y-4">
             {mockActivities.map((activity) => (
-              <Card key={activity.id}>
-                {activity.image && (
-                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                    <img 
-                      src={activity.image} 
-                      alt={activity.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center">
-                    <Activity className="w-5 h-5 mr-2" />
-                    {activity.title}
-                  </CardTitle>
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium text-primary">{activity.category}</p>
-                    {activity.type && (
-                      <p className="text-sm text-gray-600">{activity.type}</p>
-                    )}
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(activity.date).toLocaleDateString('fr-FR')} - {activity.time}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {activity.location}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Users className="w-4 h-4 mr-1" />
-                      {activity.participants}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">{activity.description}</p>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <ActivityCard
+                key={activity.id}
+                activity={activity}
+                onEdit={handleEditActivity}
+                onDelete={handleDeleteActivity}
+              />
             ))}
           </div>
         </div>
@@ -387,61 +135,22 @@ const DashboardActivites = () => {
                 <DialogHeader>
                   <DialogTitle>Ajouter une activité</DialogTitle>
                 </DialogHeader>
-                <ActivityForm />
+                <ActivityForm 
+                  onSuccess={handleFormSuccess}
+                  onCancel={handleFormCancel}
+                />
               </DialogContent>
             </Dialog>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {mockActivities.map((activity) => (
-              <Card key={activity.id}>
-                {activity.image && (
-                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                    <img 
-                      src={activity.image} 
-                      alt={activity.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Activity className="w-5 h-5 mr-2" />
-                    {activity.title}
-                  </CardTitle>
-                  <div className="space-y-1">
-                    <p className="font-medium text-primary">{activity.category}</p>
-                    {activity.type && (
-                      <p className="text-gray-600">{activity.type}</p>
-                    )}
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(activity.date).toLocaleDateString('fr-FR')} - {activity.time}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {activity.location}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Users className="w-4 h-4 mr-1" />
-                      {activity.participants}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">{activity.description}</p>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <ActivityCard
+                key={activity.id}
+                activity={activity}
+                onEdit={handleEditActivity}
+                onDelete={handleDeleteActivity}
+              />
             ))}
           </div>
         </div>
