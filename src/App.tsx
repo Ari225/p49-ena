@@ -27,6 +27,10 @@ import { LanguageProvider } from '@/context/LanguageContext';
 import { Toaster } from '@/components/ui/sonner';
 import ActiviteDetail from '@/pages/ActiviteDetail';
 import DashboardActivites from '@/pages/dashboard/DashboardActivites';
+import Historique from '@/pages/Historique';
+import TextesOfficiels from '@/pages/TextesOfficiels';
+import InstancesDirigeantes from '@/pages/InstancesDirigeantes';
+import RepertoireMembers from '@/pages/RepertoireMembers';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -65,6 +69,12 @@ function App() {
               <Route path="/dashboard/notifications" element={<DashboardNotifications />} />
               <Route path="/activites/:id" element={<ActiviteDetail />} />
               <Route path="/dashboard/activites" element={<DashboardActivites />} />
+              
+              {/* Routes pour les sous-pages de Présentation */}
+              <Route path="/historique" element={<Historique />} />
+              <Route path="/textes-officiels" element={<TextesOfficiels />} />
+              <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
+              <Route path="/repertoire-membres" element={<RepertoireMembers />} />
             </Routes>
             <Toaster />
           </BrowserRouter>
