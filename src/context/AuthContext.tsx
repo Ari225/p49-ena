@@ -1,50 +1,60 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-interface User {
+export interface User {
   id: string;
   username: string;
-  role: string;
-  first_name?: string;
-  last_name?: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  role: 'admin' | 'editor' | 'member';
 }
 
 interface AuthContextType {
   user: User | null;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Mock admin user for development
+  useEffect(() => {
+    const mockUser: User = {
+      id: '1',
+      username: 'admin',
+      firstName: 'Admin',
+      lastName: 'User',
+      email: 'admin@p49.com',
+      role: 'admin'
+    };
+    setUser(mockUser);
+  }, []);
 
   const login = async (username: string, password: string): Promise<boolean> => {
-    // Mock login - accept any credentials for demo
-    if (username && password) {
+    setLoading(true);
+    
+    // Mock login logic
+    if (username === 'admin' && password === 'admin') {
       const mockUser: User = {
         id: '1',
-        username: username,
-        role: username === 'admin' ? 'admin' : 'editor',
-        first_name: 'Utilisateur',
-        last_name: 'Demo'
+        username: 'admin',
+        firstName: 'Admin',
+        lastName: 'User',
+        email: 'admin@p49.com',
+        role: 'admin'
       };
       setUser(mockUser);
+      setLoading(false);
       return true;
     }
+    
+    setLoading(false);
     return false;
   };
 
@@ -53,8 +63,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
