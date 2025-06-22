@@ -14,5 +14,14 @@ export const useTranslation = () => {
     return translations[key] || key;
   };
 
-  return { t };
+  // Mock translateText function for dynamic translations
+  const translateText = async (text: string, targetLang: string, sourceLang: string = 'fr'): Promise<string> => {
+    // Simple mock - just return the original text for now
+    return text;
+  };
+
+  // Mock isTranslating state
+  const isTranslating = false;
+
+  return { t, translateText, isTranslating };
 };
