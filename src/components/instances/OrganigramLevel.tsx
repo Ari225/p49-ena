@@ -17,7 +17,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
   organigramLevels,
   isMobile
 }) => {
-  const verticalSpacing = isMobile ? 280 : 340;
+  const verticalSpacing = isMobile ? 350 : 340;
   
   return (
     <div 
@@ -43,7 +43,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
       )}
       
       <div className="flex justify-center">
-        <div className={`grid ${isMobile ? 'gap-4' : 'gap-8'} ${
+        <div className={`grid ${isMobile ? 'gap-6' : 'gap-8'} ${
           level.length === 1 ? 'grid-cols-1 max-w-sm' :
           level.length === 2 ? `grid-cols-1 ${isMobile ? 'max-w-xs' : 'sm:grid-cols-2'} ${isMobile ? '' : 'max-w-3xl'}` :
           level.length === 3 ? `grid-cols-1 ${isMobile ? 'max-w-xs' : 'sm:grid-cols-2 lg:grid-cols-3'} ${isMobile ? '' : 'max-w-5xl'}` :
