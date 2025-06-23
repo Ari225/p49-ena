@@ -82,10 +82,6 @@ export const useMenuItems = () => {
         {
           label: t('menu.competition_news'),
           href: '/actualites-concours'
-        },
-        {
-          label: 'Carrière+',
-          href: '/carriere-plus'
         }
       ]
     },

@@ -46,7 +46,6 @@ import EquipeEditoriale from '@/pages/EquipeEditoriale';
 import EchoRegions from '@/pages/EchoRegions';
 import Archives from '@/pages/Archives';
 import Suggestions from '@/pages/Suggestions';
-import CarrierePlus from '@/pages/CarrierePlus';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -107,7 +106,6 @@ function App() {
               <Route path="/renforcement-capacites" element={<RenforcementCapacites />} />
               <Route path="/coaching-mentorat" element={<CoachingMentorat />} />
               <Route path="/actualites-concours" element={<ActualitesConcours />} />
-              <Route path="/carriere-plus" element={<CarrierePlus />} />
               
               {/* Routes pour Perspectives 49 */}
               <Route path="/derniere-edition" element={<DerniereEdition />} />

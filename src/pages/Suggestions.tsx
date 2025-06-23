@@ -88,14 +88,25 @@ const Suggestions = () => {
   return (
     <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section */}
-        <section className={`bg-primary text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <div className="flex items-center mb-4">
+        {/* Header Section with Background Image */}
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+              alt="Background suggestions" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <div className="flex items-center justify-center mb-4">
               <Lightbulb className="h-10 w-10 mr-4" />
-              <h1 className="text-4xl font-bold">Faire des Suggestions</h1>
+              <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold animate-fade-in`}>
+                Faire des Suggestions
+              </h1>
             </div>
-            <p className="text-xl opacity-90">
+            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Proposez vos idées pour enrichir notre contenu éditorial
             </p>
           </div>
