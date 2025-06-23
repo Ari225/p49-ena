@@ -84,12 +84,23 @@ const EvenementsHeureux = () => {
   return (
     <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section */}
-        <section className={`bg-gradient-to-r from-green-600 to-green-800 text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4 text-center">
+        {/* Header Section with Background Image */}
+        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/bc525a09-b8a2-469f-b451-2f78bc437b6e.png" 
+              alt="Background événements heureux" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
             <PartyPopper className="w-16 h-16 mx-auto mb-6" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Événements Heureux</h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
+            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+              Événements Heureux
+            </h1>
+            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Célébrons ensemble les moments de joie, les réussites et les bonheurs qui illuminent notre communauté
             </p>
           </div>

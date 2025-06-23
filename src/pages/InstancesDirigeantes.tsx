@@ -17,7 +17,11 @@ const InstancesDirigeantes = () => {
         {/* Hero Section with Background Image */}
         <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
           <div className="absolute inset-0">
-            <img src="/lovable-uploads/86d6f303-a616-4f82-9bdc-8e06f6878a5a.png" alt="Background instances dirigeantes" className="w-full h-full object-cover" />
+            <img 
+              src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+              alt="Background instances dirigeantes" 
+              className="w-full h-full object-cover" 
+            />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           

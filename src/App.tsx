@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -31,6 +30,10 @@ import Historique from '@/pages/Historique';
 import TextesOfficiels from '@/pages/TextesOfficiels';
 import InstancesDirigeantes from '@/pages/InstancesDirigeantes';
 import RepertoireMembers from '@/pages/RepertoireMembers';
+import AssembleesGenerales from '@/pages/AssembleesGenerales';
+import DepartsRetraite from '@/pages/DepartsRetraite';
+import EvenementsHeureux from '@/pages/EvenementsHeureux';
+import EvenementsMalheureux from '@/pages/EvenementsMalheureux';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,6 +78,12 @@ function App() {
               <Route path="/textes-officiels" element={<TextesOfficiels />} />
               <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
+              
+              {/* Routes pour les événements sociaux */}
+              <Route path="/assemblees-generales" element={<AssembleesGenerales />} />
+              <Route path="/departs-retraite" element={<DepartsRetraite />} />
+              <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
+              <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
             </Routes>
             <Toaster />
           </BrowserRouter>

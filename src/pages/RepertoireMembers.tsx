@@ -103,19 +103,29 @@ const RepertoireMembers = () => {
     }
     return items;
   };
-  return <Layout>
+  return (
+    <Layout>
       <div className="min-h-screen bg-gray-50">
-        {/* Header Section */}
-        <div className="bg-primary text-white px-[25px] md:px-[100px] py-8 md:py-[100px]">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
+        {/* Header Section with Background Image */}
+        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/674fac65-3da0-4339-8260-56ec359feae2.png" 
+              alt="Background répertoire membres" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Répertoire des Membres
             </h1>
-            <p className="text-lg md:text-xl text-center text-gray-200 max-w-3xl mx-auto">
+            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
             </p>
           </div>
-        </div>
+        </section>
 
         <div className="container mx-auto px-[25px] md:px-[100px] py-8 md:py-[100px]">
           {/* Search Bar */}
@@ -184,6 +194,8 @@ const RepertoireMembers = () => {
           )}
         </div>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default RepertoireMembers;
