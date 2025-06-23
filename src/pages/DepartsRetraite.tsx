@@ -41,7 +41,7 @@ const DepartsRetraite = () => {
       id: '3',
       eventType: 'Retraite',
       category: 'Retraite',
-      title: 'Départ en retraite de M. Konan Yao',
+      title: 'Départ en retraite de M.Konan Yao',
       memberName: 'M. Konan Yao',
       yearsOfService: '40 ans de service',
       date: '2024-03-15',
@@ -71,7 +71,7 @@ const DepartsRetraite = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
-        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
               src="/lovable-uploads/c88b877d-abfc-430e-a6d4-5a7bc89ff587.png" 
@@ -81,7 +81,7 @@ const DepartsRetraite = () => {
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
             <Trophy className="w-16 h-16 mx-auto mb-6" />
             <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Départs en Retraite
@@ -96,8 +96,8 @@ const DepartsRetraite = () => {
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary mb-4">Nos retraités honorés</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos retraités honorés</h2>
+              <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
                 Rendons hommage à nos collègues qui prennent une retraite bien méritée après des années de service dévoué.
               </p>
             </div>
@@ -113,7 +113,7 @@ const DepartsRetraite = () => {
                     />
                   </div>
                   <CardHeader>
-                    <CardTitle className="text-blue-800 text-lg flex items-center">
+                    <CardTitle className={`text-blue-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
                       <Trophy className="w-5 h-5 mr-2" />
                       {event.title}
                     </CardTitle>
@@ -141,14 +141,14 @@ const DepartsRetraite = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-700 text-sm mb-3">{event.description}</p>
+                    <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
                     <div className="space-y-2 mb-4">
                       <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
                       <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
                       <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
                     </div>
                     <div className="bg-blue-100 p-3 rounded-lg border-l-2 border-blue-300">
-                      <p className="text-sm text-blue-800 italic">
+                      <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-800 italic`}>
                         <Heart className="h-3 w-3 inline mr-1" />
                         {event.thought}
                       </p>
@@ -163,24 +163,24 @@ const DepartsRetraite = () => {
         {/* Statistics Section */}
         <section className={`bg-blue-50 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-primary mb-12">
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
               Statistiques des départs
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center p-6 bg-white">
                 <Trophy className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-                <h3 className="text-2xl font-bold text-blue-800 mb-2">15</h3>
-                <p className="text-blue-700">Départs cette année</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>15</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Départs cette année</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Clock className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-                <h3 className="text-2xl font-bold text-blue-800 mb-2">32 ans</h3>
-                <p className="text-blue-700">Moyenne d'années de service</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>32 ans</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Moyenne d'années de service</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Users className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-                <h3 className="text-2xl font-bold text-blue-800 mb-2">450+</h3>
-                <p className="text-blue-700">Années cumulées d'expérience</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>450+</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Années cumulées d'expérience</p>
               </Card>
             </div>
           </div>

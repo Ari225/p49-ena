@@ -85,7 +85,7 @@ const EvenementsHeureux = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
-        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
               src="/lovable-uploads/bc525a09-b8a2-469f-b451-2f78bc437b6e.png" 
@@ -95,7 +95,7 @@ const EvenementsHeureux = () => {
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
             <PartyPopper className="w-16 h-16 mx-auto mb-6" />
             <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Événements Heureux
@@ -110,8 +110,8 @@ const EvenementsHeureux = () => {
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary mb-4">Nos moments de bonheur</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos moments de bonheur</h2>
+              <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
                 Partageons la joie des naissances, célébrons les promotions et honorons les distinctions de nos membres.
               </p>
             </div>
@@ -129,7 +129,7 @@ const EvenementsHeureux = () => {
                       />
                     </div>
                     <CardHeader>
-                      <CardTitle className="text-green-800 text-lg flex items-center">
+                      <CardTitle className={`text-green-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
                         <IconComponent className="w-5 h-5 mr-2" />
                         {event.title}
                       </CardTitle>
@@ -153,13 +153,13 @@ const EvenementsHeureux = () => {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 text-sm mb-3">{event.description}</p>
+                      <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
                       <div className="space-y-2 mb-4">
                         <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
                         <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
                       </div>
                       <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                        <p className="text-sm text-green-800 italic">
+                        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
                           <Heart className="h-3 w-3 inline mr-1" />
                           {event.thought}
                         </p>
@@ -175,24 +175,24 @@ const EvenementsHeureux = () => {
         {/* Statistics Section */}
         <section className={`bg-green-50 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-primary mb-12">
+            <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
               Nos bonheurs en chiffres
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center p-6 bg-white">
                 <Gift className="w-12 h-12 mx-auto mb-4 text-pink-600" />
-                <h3 className="text-2xl font-bold text-pink-800 mb-2">12</h3>
-                <p className="text-pink-700">Naissances cette année</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>12</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-pink-700`}>Naissances cette année</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Star className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
-                <h3 className="text-2xl font-bold text-yellow-800 mb-2">8</h3>
-                <p className="text-yellow-700">Promotions célébrées</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>8</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-yellow-700`}>Promotions célébrées</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Award className="w-12 h-12 mx-auto mb-4 text-purple-600" />
-                <h3 className="text-2xl font-bold text-purple-800 mb-2">5</h3>
-                <p className="text-purple-700">Distinctions honorées</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>5</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-purple-700`}>Distinctions honorées</p>
               </Card>
             </div>
           </div>

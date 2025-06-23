@@ -29,13 +29,13 @@ const Historique = () => {
     <Layout>
       <div className="bg-accent/30">
         {/* Hero Section with Background Image */}
-        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" alt="Background historique" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
             <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Historique du Réseau
             </h1>
@@ -46,7 +46,7 @@ const Historique = () => {
         </section>
 
         {/* Section La P49 */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-4' : 'px-8 md:px-[100px]'}`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'}`}>
           <div className="container mx-auto px-0">
             <h2 className={`font-bold text-primary mb-12 ${isMobile ? 'text-2xl' : 'text-4xl'} text-center`}>
               La P49 : une promotion d'excellence
@@ -69,7 +69,7 @@ const Historique = () => {
         </section>
 
         {/* Timeline Section */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-4' : 'px-8 md:px-[100px]'} bg-gradient-to-b from-accent/30 to-white`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-gradient-to-b from-accent/30 to-white`}>
           <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
               <h2 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-center text-primary mb-16`}>
@@ -125,20 +125,20 @@ const Historique = () => {
         </section>
 
         {/* Objets de la P49 Section */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-4' : 'px-8 md:px-[100px]'} bg-white`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-white`}>
           <div className="container mx-auto px-0">
             <div className="text-center mb-12">
               <h2 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-primary mb-6`}>
                 Objet de l'association P49 ENA
               </h2>
-              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-700 max-w-4xl mx-auto`}>
+              <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-gray-700 max-w-4xl mx-auto`}>
                 De manière globale, la P49ENA a pour objectif de fédérer les forces et les énergies de chacun de ses membres dans un réseau fort.
               </p>
             </div>
 
             <div className="max-w-6xl mx-auto">
               <div className="mb-12">
-                <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-700 mb-8`}>
+                <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-gray-700 mb-8`}>
                   De manière particulière, elle a pour <strong>objets :</strong>
                 </p>
                 
