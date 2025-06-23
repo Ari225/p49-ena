@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -34,6 +35,18 @@ import AssembleesGenerales from '@/pages/AssembleesGenerales';
 import DepartsRetraite from '@/pages/DepartsRetraite';
 import EvenementsHeureux from '@/pages/EvenementsHeureux';
 import EvenementsMalheureux from '@/pages/EvenementsMalheureux';
+import Regionales from '@/pages/Regionales';
+import ReunionsConstitution from '@/pages/ReunionsConstitution';
+import Formations from '@/pages/Formations';
+import RenforcementCapacites from '@/pages/RenforcementCapacites';
+import CoachingMentorat from '@/pages/CoachingMentorat';
+import ActualitesConcours from '@/pages/ActualitesConcours';
+import DerniereEdition from '@/pages/DerniereEdition';
+import EquipeEditoriale from '@/pages/EquipeEditoriale';
+import EchoRegions from '@/pages/EchoRegions';
+import Archives from '@/pages/Archives';
+import Suggestions from '@/pages/Suggestions';
+import CarrierePlus from '@/pages/CarrierePlus';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,11 +92,29 @@ function App() {
               <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
               
-              {/* Routes pour les événements sociaux */}
+              {/* Routes pour Activités */}
+              <Route path="/regionales" element={<Regionales />} />
               <Route path="/assemblees-generales" element={<AssembleesGenerales />} />
+              <Route path="/reunions-constitution" element={<ReunionsConstitution />} />
+              
+              {/* Routes pour les événements sociaux */}
               <Route path="/departs-retraite" element={<DepartsRetraite />} />
               <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
               <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
+              
+              {/* Routes pour Carrières */}
+              <Route path="/formations" element={<Formations />} />
+              <Route path="/renforcement-capacites" element={<RenforcementCapacites />} />
+              <Route path="/coaching-mentorat" element={<CoachingMentorat />} />
+              <Route path="/actualites-concours" element={<ActualitesConcours />} />
+              <Route path="/carriere-plus" element={<CarrierePlus />} />
+              
+              {/* Routes pour Perspectives 49 */}
+              <Route path="/derniere-edition" element={<DerniereEdition />} />
+              <Route path="/equipe-editoriale" element={<EquipeEditoriale />} />
+              <Route path="/echo-regions" element={<EchoRegions />} />
+              <Route path="/archives" element={<Archives />} />
+              <Route path="/suggestions" element={<Suggestions />} />
             </Routes>
             <Toaster />
           </BrowserRouter>

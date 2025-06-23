@@ -82,6 +82,10 @@ export const useMenuItems = () => {
         {
           label: t('menu.competition_news'),
           href: '/actualites-concours'
+        },
+        {
+          label: 'Carrière+',
+          href: '/carriere-plus'
         }
       ]
     },
@@ -102,7 +106,7 @@ export const useMenuItems = () => {
         },
         {
           label: t('menu.news'),
-          href: '/actualites'
+          href: '/news'
         },
         {
           label: t('menu.archives'),
