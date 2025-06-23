@@ -15,7 +15,7 @@ const BureauExecutifSection = () => {
         </h2>
         
         {/* Organigramme Structure */}
-        <div className="relative max-w-7xl mx-auto" style={{ minHeight: `${organigramLevels.length * 340}px` }}>
+        <div className={`relative max-w-7xl mx-auto ${isMobile ? 'px-4' : ''}`} style={{ minHeight: `${organigramLevels.length * (isMobile ? 280 : 340)}px` }}>
           {organigramLevels.map((level, levelIndex) => (
             <OrganigramLevel
               key={levelIndex}

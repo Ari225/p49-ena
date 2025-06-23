@@ -13,7 +13,7 @@ const InstancesDirigeantes = () => {
 
   return (
     <Layout>
-      <div className="bg-gray-50 pb-0">
+      <div className="bg-gray-50 min-h-screen">
         {/* Hero Section with Background Image */}
         <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
           <div className="absolute inset-0">
@@ -25,7 +25,7 @@ const InstancesDirigeantes = () => {
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
             <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Instances Dirigeantes
             </h1>
@@ -35,22 +35,32 @@ const InstancesDirigeantes = () => {
           </div>
         </section>
 
-        <div className={`container mx-auto ${isMobile ? 'px-[25px] py-8 pb-0' : 'px-[100px] py-12 pb-0'}`}>
+        <div className={`container mx-auto ${isMobile ? 'px-[25px] py-8' : 'px-[100px] py-12'}`}>
           <Tabs defaultValue="bureau" className="w-full">
-            <TabsList className={`grid w-full grid-cols-2 mb-8 ${isMobile ? 'h-auto' : ''}`}>
-              <TabsTrigger value="bureau" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Bureau</TabsTrigger>
-              <TabsTrigger value="commissions" className={`${isMobile ? 'text-base' : 'text-lg'} ${isMobile ? 'py-3' : ''}`}>Commissions</TabsTrigger>
+            <TabsList className={`grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl ${isMobile ? 'h-auto' : 'h-14'}`}>
+              <TabsTrigger 
+                value="bureau" 
+                className={`${isMobile ? 'text-base py-3' : 'text-lg py-4'} font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600`}
+              >
+                Bureau Exécutif
+              </TabsTrigger>
+              <TabsTrigger 
+                value="commissions" 
+                className={`${isMobile ? 'text-base py-3' : 'text-lg py-4'} font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600`}
+              >
+                Commissions
+              </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="bureau" className="space-y-0 pb-0">
-              <div className="space-y-8 pb-0">
+            <TabsContent value="bureau" className="space-y-0">
+              <div className={`space-y-8 ${isMobile ? 'pb-8' : 'pb-12'}`}>
                 <BureauExecutifSection />
                 <CommissairesSection />
                 <DeleguesRegionauxSection />
               </div>
             </TabsContent>
             
-            <TabsContent value="commissions" className="pb-0">
+            <TabsContent value="commissions" className={isMobile ? 'pb-8' : 'pb-12'}>
               <CommissionsSection />
             </TabsContent>
           </Tabs>

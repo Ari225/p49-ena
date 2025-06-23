@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin, Users, Heart, AlertCircle, Stethoscope, Car } from 'lucide-react';
@@ -97,13 +96,13 @@ const DifficultEventsSection = () => {
     <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Partager la peine, apporter le réconfort</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Partager la peine, apporter le réconfort</h2>
+          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
             Dans les moments d'épreuve, notre communauté se mobilise pour exprimer sa solidarité et son soutien inconditionnel.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className={`grid ${isMobile ? 'grid-cols-1 gap-6' : 'grid-cols-1 md:grid-cols-2 gap-8'}`}>
           {malheureuxEvents.map((event) => {
             const IconComponent = getCategoryIcon(event.category);
             return (
@@ -116,11 +115,11 @@ const DifficultEventsSection = () => {
                   />
                 </div>
                 <CardHeader>
-                  <CardTitle className="text-gray-800 text-lg flex items-center">
+                  <CardTitle className={`text-gray-800 ${isMobile ? 'text-base' : 'text-lg'} flex items-center`}>
                     <IconComponent className="w-5 h-5 mr-2" />
                     {event.title}
                   </CardTitle>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className={`space-y-2 ${isMobile ? 'text-xs' : 'text-sm'} text-gray-600`}>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
                       {new Date(event.date).toLocaleDateString('fr-FR', {
@@ -140,13 +139,13 @@ const DifficultEventsSection = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 text-sm mb-3">{event.description}</p>
+                  <p className={`text-gray-700 ${isMobile ? 'text-xs' : 'text-sm'} mb-3`}>{event.description}</p>
                   <div className="space-y-2 mb-4">
-                    <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                    <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
+                    <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}><strong>Catégorie:</strong> {event.category}</p>
+                    <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}><strong>Mot-clé:</strong> {event.keyword}</p>
                   </div>
                   <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-200">
-                    <p className="text-sm text-gray-700 italic">
+                    <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-700 italic`}>
                       <Heart className="h-3 w-3 inline mr-1" />
                       {event.thought}
                     </p>
