@@ -14,17 +14,19 @@ const BureauExecutifSection = () => {
           Bureau Exécutif
         </h2>
         
-        {/* Organigramme Structure */}
-        <div className={`relative max-w-7xl mx-auto ${isMobile ? 'px-4' : ''}`} style={{ minHeight: `${organigramLevels.length * (isMobile ? 350 : 340)}px` }}>
-          {organigramLevels.map((level, levelIndex) => (
-            <OrganigramLevel
-              key={levelIndex}
-              level={level}
-              levelIndex={levelIndex}
-              organigramLevels={organigramLevels}
-              isMobile={isMobile}
-            />
-          ))}
+        {/* Organigramme Structure - Redesigned for better spacing */}
+        <div className={`relative max-w-7xl mx-auto ${isMobile ? 'px-4' : 'px-8'}`}>
+          <div className="space-y-16 md:space-y-20">
+            {organigramLevels.map((level, levelIndex) => (
+              <OrganigramLevel
+                key={levelIndex}
+                level={level}
+                levelIndex={levelIndex}
+                organigramLevels={organigramLevels}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

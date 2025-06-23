@@ -17,17 +17,61 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
   organigramLevels,
   isMobile
 }) => {
-  const verticalSpacing = isMobile ? 350 : 340;
+  // Fonction pour déterminer la configuration de grille optimale
+  const getGridConfig = () => {
+    const memberCount = level.length;
+    
+    if (isMobile) {
+      // Configuration mobile : toujours une seule colonne pour éviter le chevauchement
+      return {
+        gridCols: 'grid-cols-1',
+        maxWidth: 'max-w-sm',
+        gap: 'gap-6'
+      };
+    }
+    
+    // Configuration desktop basée sur le nombre de membres
+    switch (memberCount) {
+      case 1:
+        return {
+          gridCols: 'grid-cols-1',
+          maxWidth: 'max-w-sm',
+          gap: 'gap-8'
+        };
+      case 2:
+        return {
+          gridCols: 'grid-cols-1 sm:grid-cols-2',
+          maxWidth: 'max-w-2xl',
+          gap: 'gap-12'
+        };
+      case 3:
+        return {
+          gridCols: 'grid-cols-1 md:grid-cols-3',
+          maxWidth: 'max-w-5xl',
+          gap: 'gap-10'
+        };
+      case 4:
+        return {
+          gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+          maxWidth: 'max-w-6xl',
+          gap: 'gap-8'
+        };
+      default:
+        return {
+          gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+          maxWidth: 'max-w-7xl',
+          gap: 'gap-8'
+        };
+    }
+  };
+
+  const gridConfig = getGridConfig();
   
   return (
-    <div 
-      key={levelIndex} 
-      className="absolute w-full" 
-      style={{ top: `${levelIndex * verticalSpacing}px` }}
-    >
+    <div className="relative w-full">
       {/* Render connection lines to next level */}
       {levelIndex < organigramLevels.length - 1 && !isMobile && (
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 z-0">
           {organigramLevels[levelIndex + 1].map((_, nextIndex) => (
             <OrganigramConnectionLine
               key={`${levelIndex}-${nextIndex}`}
@@ -42,15 +86,16 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
         </div>
       )}
       
-      <div className="flex justify-center">
-        <div className={`grid ${isMobile ? 'gap-6' : 'gap-8'} ${
-          level.length === 1 ? 'grid-cols-1 max-w-sm' :
-          level.length === 2 ? `grid-cols-1 ${isMobile ? 'max-w-xs' : 'sm:grid-cols-2'} ${isMobile ? '' : 'max-w-3xl'}` :
-          level.length === 3 ? `grid-cols-1 ${isMobile ? 'max-w-xs' : 'sm:grid-cols-2 lg:grid-cols-3'} ${isMobile ? '' : 'max-w-5xl'}` :
-          `grid-cols-1 ${isMobile ? 'max-w-xs' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'} ${isMobile ? '' : 'max-w-7xl'}`
-        }`}>
+      <div className="flex justify-center relative z-10">
+        <div className={`grid ${gridConfig.gridCols} ${gridConfig.maxWidth} ${gridConfig.gap} mx-auto w-full`}>
           {level.map((member, index) => (
-            <div key={index} className="relative transform hover:scale-105 transition-all duration-300 hover:z-10">
+            <div 
+              key={index} 
+              className={`
+                relative transform transition-all duration-300 hover:scale-105 hover:z-20
+                ${isMobile ? 'mx-auto max-w-xs w-full' : ''}
+              `}
+            >
               <MemberOrganigramCard
                 name={member.name}
                 position={member.position}
@@ -60,6 +105,13 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
           ))}
         </div>
       </div>
+      
+      {/* Indicateur de niveau pour debug - peut être retiré */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="absolute top-0 left-0 bg-primary/10 text-primary text-xs px-2 py-1 rounded">
+          Niveau {levelIndex + 1} ({level.length} membres)
+        </div>
+      )}
     </div>
   );
 };

@@ -74,61 +74,61 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
 
   return (
     <>
-      <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer border-2 border-primary/20 hover:border-primary/40 bg-white" onClick={handleCardClick}>
-        <CardContent className={isMobile ? 'p-4' : 'p-6'}>
-          {/* Photo with professional styling inspired by the reference image */}
+      <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm h-full" onClick={handleCardClick}>
+        <CardContent className={`${isMobile ? 'p-4' : 'p-6'} h-full flex flex-col justify-between`}>
+          {/* Photo avec styling professionnel amélioré */}
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <div className="absolute -inset-2 rounded-full border-2 border-dashed border-primary/30 animate-pulse"></div>
-              <Avatar className={`${isMobile ? 'h-16 w-16' : 'h-20 w-20'} ring-4 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300 relative z-10`}>
+              <div className="absolute -inset-3 rounded-full border border-primary/20 animate-pulse opacity-50"></div>
+              <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10"></div>
+              <Avatar className={`${isMobile ? 'h-16 w-16' : 'h-20 w-20'} ring-3 ring-primary/30 group-hover:ring-primary/50 transition-all duration-300 relative z-10 shadow-lg`}>
                 <AvatarImage 
                   src="/lovable-uploads/0eb571bc-9634-49ab-9502-ce03a1464da6.png"
                   alt={name}
                   className="object-cover"
                 />
-                <AvatarFallback className="bg-primary text-white text-lg font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-white text-lg font-bold">
                   {getInitials()}
                 </AvatarFallback>
               </Avatar>
-              {/* Decorative dots */}
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full opacity-70"></div>
-              <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-secondary rounded-full opacity-70"></div>
+              {/* Éléments décoratifs améliorés */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full shadow-sm"></div>
+              <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-secondary rounded-full shadow-sm"></div>
             </div>
           </div>
 
-          {/* Name */}
-          <div className="text-center mb-3">
-            <h3 className={`font-bold ${isMobile ? 'text-base' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors`}>
+          {/* Contenu principal */}
+          <div className="flex-grow flex flex-col justify-center text-center space-y-3">
+            {/* Nom */}
+            <h3 className={`font-bold ${isMobile ? 'text-base' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
               {name}
             </h3>
-          </div>
 
-          {/* Position */}
-          <div className="text-center mb-4">
-            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-tight`}>
+            {/* Position */}
+            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-2`}>
               {position}
             </p>
           </div>
 
-          {/* Phone - Hidden until verified */}
-          <div className="flex items-center justify-center">
+          {/* Section contact */}
+          <div className="flex items-center justify-center mt-4">
             {isVerified ? (
               <button
                 onClick={handlePhoneCall}
-                className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors bg-primary/10 hover:bg-primary/20 rounded-full px-3 py-2"
+                className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors bg-primary/10 hover:bg-primary/20 rounded-full px-4 py-2 text-sm font-medium shadow-sm"
                 title={`Appeler ${name}`}
               >
                 <Phone className="h-3 w-3" />
-                <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>{phone}</span>
+                <span className={isMobile ? 'text-xs' : 'text-sm'}>{phone}</span>
               </button>
             ) : (
               <button
                 onClick={handlePhoneCall}
-                className="flex items-center space-x-2 text-gray-500 bg-gray-100 rounded-full px-3 py-2 cursor-pointer hover:bg-gray-200 transition-colors"
+                className="flex items-center space-x-2 text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-full px-4 py-2 cursor-pointer transition-colors text-sm font-medium shadow-sm"
                 title="Matricule requis pour voir les coordonnées"
               >
                 <Lock className="h-3 w-3" />
-                <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-medium`}>Matricule requis</span>
+                <span className={isMobile ? 'text-xs' : 'text-sm'}>Matricule requis</span>
               </button>
             )}
           </div>
