@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -85,11 +84,22 @@ const EvenementsDifficiles = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`bg-gradient-to-r from-gray-600 to-gray-800 text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4 text-center">
-            <Heart className="w-16 h-16 mx-auto mb-6" />
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Événements Difficiles</h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/8686ede3-f750-45db-a93e-c58913dc701e.png" 
+              alt="Background événements difficiles" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <Heart className={`${isMobile ? 'w-8 h-8' : 'w-12 h-12 md:w-16 md:h-16'} mx-auto mb-4 md:mb-6`} />
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
+              Événements Difficiles
+            </h1>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Dans les moments difficiles, nous nous serrons les coudes et apportons notre soutien à ceux qui en ont besoin
             </p>
           </div>

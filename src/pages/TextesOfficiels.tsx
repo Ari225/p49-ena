@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -50,24 +49,24 @@ const TextesOfficiels = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Hero Section with Background Image */}
-        <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img src="/lovable-uploads/4a30ba3d-842d-4c38-a7d8-1c559a4da49f.png" alt="Background textes officiels" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-4' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
               {t('official_documents_title') || 'Textes Officiels'}
             </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
             </p>
           </div>
         </section>
 
         {/* Introduction */}
-        <section className={`py-12 ${isMobile ? 'px-4' : 'px-8 md:px-[100px]'} bg-accent/10`}>
+        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-accent/10`}>
           <div className="container mx-auto text-center">
             <div className="max-w-3xl mx-auto">
               <h2 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-primary mb-4`}>
@@ -81,7 +80,7 @@ const TextesOfficiels = () => {
         </section>
 
         {/* Documents Grid */}
-        <section className={`py-16 ${isMobile ? 'px-4' : 'px-8 md:px-[100px]'}`}>
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'}`}>
           <div className="container mx-auto">
             <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-8`}>
               {documents.map((document) => (
@@ -136,7 +135,7 @@ const TextesOfficiels = () => {
         </section>
 
         {/* Additional Info */}
-        <section className={`py-12 ${isMobile ? 'px-4' : 'px-8 md:px-[100px]'} bg-primary/5`}>
+        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-primary/5`}>
           <div className="container mx-auto">
             <div className="text-center">
               <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold text-primary mb-4`}>

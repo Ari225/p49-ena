@@ -1,17 +1,19 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Eye, FileText } from 'lucide-react';
 import PDFViewer from '@/components/PDFViewer';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const DerniereEdition = () => {
+  const isMobile = useIsMobile();
+  
   const currentJournal = {
     title: "Perspectives 49 - Bulletin n°1",
     summary: "Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes. Le bulletin s'organise autour de quatre rubriques principales : Actualités citoyennes, Dossier spécial sur l'entrepreneuriat des jeunes, Vie associative et Culture & expressions.",
     coverImage: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
-    pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", // Sample PDF for demonstration
+    pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
     publishDate: "Mars 2024"
   };
 
@@ -53,17 +55,28 @@ const DerniereEdition = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className="bg-primary text-white py-16 px-[100px]">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Dernière Édition</h1>
-            <p className="text-xl opacity-90">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" 
+              alt="Background dernière édition" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
+              Dernière Édition
+            </h1>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Consultez la dernière édition de notre journal Perspectives 49
             </p>
           </div>
         </section>
 
         {/* Current Journal Section */}
-        <section className="py-12 px-[100px]">
+        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* PDF Viewer/Cover */}
@@ -106,7 +119,7 @@ const DerniereEdition = () => {
         </section>
 
         {/* Recent Journals Section */}
-        <section className="py-12 px-[100px] bg-accent/10">
+        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-primary mb-8">Éditions Récentes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -151,7 +164,7 @@ const DerniereEdition = () => {
         </section>
 
         {/* Archives Section */}
-        <section className="py-12 px-[100px]">
+        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-primary mb-8">Archives</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

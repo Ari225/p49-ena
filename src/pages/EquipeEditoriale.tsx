@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
@@ -63,10 +62,21 @@ const EquipeEditoriale = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`bg-primary text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Équipe Éditoriale</h1>
-            <p className="text-xl opacity-90">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" 
+              alt="Background équipe éditoriale" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
+              Équipe Éditoriale
+            </h1>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Rencontrez l'équipe qui donne vie à Perspectives 49
             </p>
           </div>

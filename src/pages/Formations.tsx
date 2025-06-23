@@ -47,16 +47,25 @@ const Formations = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section */}
-        <div className={`bg-primary text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/436fe1b1-52ae-4d7a-a153-a06e2b8567ce.png" 
+              alt="Background formations" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
               Formations
             </h1>
-            <p className="text-xl text-center text-gray-200 max-w-3xl mx-auto">
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Développez vos compétences professionnelles avec nos programmes de formation adaptés
             </p>
           </div>
-        </div>
+        </section>
 
         <div className={`container mx-auto py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
