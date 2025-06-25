@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -83,20 +82,20 @@ const DepartsRetraite = () => {
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
             <Trophy className="w-16 h-16 mx-auto mb-6" />
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Départs en Retraite
             </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Honorons ceux qui ont consacré leur carrière au service de notre institution et célébrons leur nouvelle étape de vie
             </p>
           </div>
         </section>
 
         {/* Events Section */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos retraités honorés</h2>
+              <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos retraités honorés</h2>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
                 Rendons hommage à nos collègues qui prennent une retraite bien méritée après des années de service dévoué.
               </p>
@@ -113,7 +112,7 @@ const DepartsRetraite = () => {
                     />
                   </div>
                   <CardHeader>
-                    <CardTitle className={`text-blue-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
+                    <CardTitle className={`text-blue-800 ${isMobile ? 'text-base' : 'text-xl'} flex items-center`}>
                       <Trophy className="w-5 h-5 mr-2" />
                       {event.title}
                     </CardTitle>
@@ -141,7 +140,7 @@ const DepartsRetraite = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
+                    <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3 text-left`}>{event.description}</p>
                     <div className="space-y-2 mb-4">
                       <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
                       <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
@@ -161,7 +160,7 @@ const DepartsRetraite = () => {
         </section>
 
         {/* Statistics Section */}
-        <section className={`bg-blue-50 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`bg-blue-50 py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
               Statistiques des départs

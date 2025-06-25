@@ -1,106 +1,130 @@
+
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const Historique = () => {
   const isMobile = useIsMobile();
-  const timeline = [{
-    year: 'À ce jour',
-    title: 'Suite de la procédure',
-    description: "La procédure pour l'obtention de l'arrêté est en cours."
-  }, {
-    year: '20 mars 2024',
-    title: 'Récépissé de dépôt de dossier d\'association',
-    description: 'N°0412/PA/SG/D1, il a été délivré par la Préfecture d\'Abidjan, après une déclaration faite.'
-  }, {
-    year: '25 novembre 2023',
-    title: 'Adoption des statuts et règlements intérieurs',
-    description: "À l'occasion d'une assemblée générale qui s'est tenue lors des Régionales de Yamoussoukro, en vue d'officialiser l'existence de l'association."
-  }, {
-    year: '24 juin 2023',
-    title: 'Assemblée générale élective',
-    description: "À l'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d'échanges."
-  }];
-  return <Layout>
+
+  const timeline = [
+    {
+      year: 'À ce jour',
+      title: 'Suite de la procédure',
+      description: "La procédure pour l'obtention de l'arrêté est en cours."
+    },
+    {
+      year: '20 mars 2024',
+      title: 'Récépissé de dépôt de dossier d\'association',
+      description: 'N°0412/PA/SG/D1, il a été délivré par la Préfecture d\'Abidjan, après une déclaration faite.'
+    },
+    {
+      year: '25 novembre 2023',
+      title: 'Adoption des statuts et règlements intérieurs',
+      description: "À l'occasion d'une assemblée générale qui s'est tenue lors des Régionales de Yamoussoukro, en vue d'officialiser l'existence de l'association."
+    },
+    {
+      year: '24 juin 2023',
+      title: 'Assemblée générale élective',
+      description: "À l'ENA, après des réunions tenues par les membres fondateurs en 2017 et en 2019, ainsi que plusieurs cadres d'échanges."
+    }
+  ];
+
+  return (
+    <Layout>
       <div className="bg-accent/30">
         {/* Hero Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" alt="Background historique" className="w-full h-full object-cover" />
+            <img 
+              src="/lovable-uploads/01e1d6d1-f868-4738-9ee3-2feed399f243.png" 
+              alt="Background historique" 
+              className="w-full h-full object-cover" 
+            />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Historique du Réseau
             </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Historique, création et situation administrative de l'association
             </p>
           </div>
         </section>
 
         {/* Section La P49 */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'}`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[15px]' : 'px-8 md:px-[100px]'}`}>
           <div className="container mx-auto px-0">
-            <h2 className={`font-bold text-primary mb-12 ${isMobile ? 'text-2xl' : 'text-4xl'} text-center`}>La P49, une promotion d'excellence</h2>
+            <h2 className={`font-bold text-primary mb-12 ${isMobile ? 'text-xl' : 'text-4xl'} text-center`}>La P49, une promotion d'excellence</h2>
             <div className={`grid grid-cols-1 ${isMobile ? 'gap-6' : 'lg:grid-cols-2 gap-8'} items-center`}>
               <div>
-                <p className={`text-gray-700 leading-relaxed mb-4 text-justify ${isMobile ? 'text-sm' : 'text-base'}`}>
+                <p className={`text-gray-700 leading-relaxed mb-4 text-left ${isMobile ? 'text-sm' : 'text-base'}`}>
                   L'association P49 ENA a été créée dans le but de préserver et renforcer les liens entre les anciens élèves de la 49e promotion de l'École Nationale d'Administration. Cette initiative est le fruit de plusieurs rencontres entre membres fondateurs et de cadres d'échanges ayant conduit à une assemblée générale élective. Pour officialiser l'existence de l'association, les statuts et le règlement intérieur ont été adoptés lors d'une assemblée générale. Une déclaration a ensuite été faite à la Préfecture d'Abidjan, suivie de la délivrance d'un récépissé de dépôt de dossier. Cette déclaration a été publiée au Journal Officiel de la République de Côte d'Ivoire. La procédure pour l'obtention de l'arrêté est actuellement en cours.
                 </p>
               </div>
               <div className={`${isMobile ? 'order-first' : ''}`}>
-                <img alt="Logo P49" src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" className={`w-full ${isMobile ? 'max-w-xs' : 'max-w-md'} mx-auto rounded-lg shadow-lg`} />
+                <img 
+                  alt="Logo P49" 
+                  src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+                  className={`w-full ${isMobile ? 'max-w-xs' : 'max-w-md'} mx-auto rounded-lg shadow-lg`} 
+                />
               </div>
             </div>
           </div>
         </section>
 
         {/* Timeline Section */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-gradient-to-b from-accent/30 to-white`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[15px]' : 'px-8 md:px-[100px]'} bg-gradient-to-b from-accent/30 to-white`}>
           <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-center text-primary mb-16`}>
+              <h2 className={`${isMobile ? 'text-xl' : 'text-4xl'} font-bold text-center text-primary mb-16`}>
                 Chronologie
               </h2>
               <div className="relative">
                 {/* Timeline Line - Hidden on mobile */}
-                {!isMobile && <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary to-secondary"></div>}
+                {!isMobile && (
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary to-secondary"></div>
+                )}
                 
-                {timeline.map((event, index) => <div key={index} className={`relative flex items-center mb-16 ${isMobile ? 'justify-center' : index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                {timeline.map((event, index) => (
+                  <div key={index} className={`relative flex items-center mb-16 ${isMobile ? 'justify-center' : index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                     {/* Timeline Dot - Hidden on mobile */}
-                    {!isMobile && <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full border-4 border-white shadow-xl z-10 flex items-center justify-center">
+                    {!isMobile && (
+                      <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full border-4 border-white shadow-xl z-10 flex items-center justify-center">
                         <div className="w-3 h-3 bg-white rounded-full"></div>
-                      </div>}
+                      </div>
+                    )}
                     
                     {/* Content Card */}
                     <Card className={`${isMobile ? 'w-full' : `w-5/12 ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'}`} shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-l-4 border-l-primary`}>
-                      <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
+                      <CardContent className={`${isMobile ? 'p-4' : 'p-8'}`}>
                         <div className="flex items-center mb-4">
                           <div className="bg-primary text-white font-bold text-lg px-4 py-2 rounded-lg shadow-md">
                             {event.year}
                           </div>
                         </div>
-                        <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-bold mb-4 text-primary`}>
+                        <h3 className={`${isMobile ? 'text-base' : 'text-xl'} font-bold mb-4 text-primary`}>
                           {event.title}
                         </h3>
-                        <p className={`text-gray-700 leading-relaxed text-justify ${isMobile ? 'text-sm' : 'text-base'}`}>
+                        <p className={`text-gray-700 leading-relaxed text-left ${isMobile ? 'text-sm' : 'text-base'}`}>
                           {event.description}
                         </p>
                       </CardContent>
                     </Card>
-                  </div>)}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
         {/* Objets de la P49 Section */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-white`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[15px]' : 'px-8 md:px-[100px]'} bg-white`}>
           <div className="container mx-auto px-0">
             <div className="text-center mb-12">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold text-primary mb-6`}>
+              <h2 className={`${isMobile ? 'text-xl' : 'text-4xl'} font-bold text-primary mb-6`}>
                 Objet de l'association P49 ENA
               </h2>
               <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-gray-700 max-w-4xl mx-auto`}>
@@ -117,7 +141,7 @@ const Historique = () => {
                 <div className={`grid grid-cols-1 ${isMobile ? 'gap-6' : 'lg:grid-cols-2 gap-8'}`}>
                   {/* Objectifs généraux */}
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <CardContent className={`${isMobile ? 'p-6' : 'p-8'}`}>
+                    <CardContent className={`${isMobile ? 'p-4' : 'p-8'}`}>
                       <div className={`space-y-4 text-gray-700 ${isMobile ? 'text-sm' : 'text-base'}`}>
                         <div className="flex items-start">
                           <span className="text-secondary mr-3 text-xl">•</span>
@@ -209,6 +233,8 @@ const Historique = () => {
           </div>
         </section>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Historique;
