@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
@@ -55,7 +54,7 @@ const Historique = () => {
         </section>
 
         {/* Section La P49 */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[15px]' : 'px-8 md:px-[100px]'}`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'}`}>
           <div className="container mx-auto px-0">
             <h2 className={`font-bold text-primary mb-12 ${isMobile ? 'text-xl' : 'text-4xl'} text-center`}>La P49, une promotion d'excellence</h2>
             <div className={`grid grid-cols-1 ${isMobile ? 'gap-6' : 'lg:grid-cols-2 gap-8'} items-center`}>
@@ -76,7 +75,7 @@ const Historique = () => {
         </section>
 
         {/* Timeline Section */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[15px]' : 'px-8 md:px-[100px]'} bg-gradient-to-b from-accent/30 to-white`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-gradient-to-b from-accent/30 to-white`}>
           <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
               <h2 className={`${isMobile ? 'text-xl' : 'text-4xl'} font-bold text-center text-primary mb-16`}>
@@ -89,7 +88,7 @@ const Historique = () => {
                 )}
                 
                 {timeline.map((event, index) => (
-                  <div key={index} className={`relative flex items-center mb-16 ${isMobile ? 'justify-center' : index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                  <div key={index} className={`relative flex items-center ${isMobile ? 'justify-center mb-8' : `mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}`}>
                     {/* Timeline Dot - Hidden on mobile */}
                     {!isMobile && (
                       <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full border-4 border-white shadow-xl z-10 flex items-center justify-center">
@@ -121,7 +120,7 @@ const Historique = () => {
         </section>
 
         {/* Objets de la P49 Section */}
-        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[15px]' : 'px-8 md:px-[100px]'} bg-white`}>
+        <section className={`py-16 md:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 md:px-[100px]'} bg-white`}>
           <div className="container mx-auto px-0">
             <div className="text-center mb-12">
               <h2 className={`${isMobile ? 'text-xl' : 'text-4xl'} font-bold text-primary mb-6`}>
