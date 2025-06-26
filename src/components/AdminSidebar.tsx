@@ -100,7 +100,8 @@ const AdminSidebar = () => {
           <div className="flex py-2 px-2 min-w-max">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.href;
+              const isActive = location.pathname === item.href || 
+                              (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
               return (
                 <Link
                   key={item.href}
@@ -108,7 +109,7 @@ const AdminSidebar = () => {
                   className={cn(
                     'flex flex-col items-center px-3 py-1 text-xs transition-colors min-w-[80px] flex-shrink-0',
                     isActive
-                      ? 'text-secondary'
+                      ? 'text-secondary bg-white/10 rounded-lg'
                       : 'text-white hover:text-secondary/80'
                   )}
                 >
