@@ -1,13 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, Plus, Edit, Trash2, Shield, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Users, Edit, Trash2, Shield, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import AddUserDialog from '@/components/users/AddUserDialog';
 
 interface User {
   id: string;
@@ -63,6 +62,11 @@ const DashboardUsers = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleUserAdded = () => {
+    // Refresh the users list when a new user is added
+    fetchUsers();
   };
 
   const getRoleIcon = (role: string) => {
@@ -134,12 +138,7 @@ const DashboardUsers = () => {
           </div>
 
           <div className="mb-6">
-            <Button asChild className="bg-primary hover:bg-primary/90 w-full">
-              <Link to="/dashboard/add-user">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvel utilisateur
-              </Link>
-            </Button>
+            <AddUserDialog onUserAdded={handleUserAdded} />
           </div>
 
           <Card>
@@ -213,12 +212,7 @@ const DashboardUsers = () => {
           </div>
 
           <div className="mb-6">
-            <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link to="/dashboard/add-user">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvel utilisateur
-              </Link>
-            </Button>
+            <AddUserDialog onUserAdded={handleUserAdded} />
           </div>
 
           <Card>
