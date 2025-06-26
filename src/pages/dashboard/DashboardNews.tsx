@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface NewsItem {
   id: string;
@@ -18,6 +19,7 @@ interface NewsItem {
 
 const DashboardNews = () => {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [news, setNews] = useState<NewsItem[]>([]);
 
   if (!user || user.role !== 'admin') {
@@ -48,6 +50,78 @@ const DashboardNews = () => {
     ];
     setNews(mockNews);
   };
+
+  if (isMobile) {
+    return (
+      <Layout>
+        <div className="px-[25px] py-[50px] pb-20">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-primary leading-tight">
+              Gestion des<br />Actualités
+            </h1>
+            <p className="text-gray-600 mt-2 text-sm">Créer et gérer les actualités du site</p>
+          </div>
+
+          <div className="mb-6">
+            <Button asChild className="bg-primary hover:bg-primary/90 w-full">
+              <Link to="/dashboard/add-news">
+                <Plus className="mr-2 h-4 w-4" />
+                Nouvelle actualité
+              </Link>
+            </Button>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center text-lg">
+                <FileText className="mr-2 h-5 w-5" />
+                Liste des Actualités ({news.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {news.length === 0 ? (
+                  <p className="text-center text-gray-500 py-8">
+                    Aucune actualité créée
+                  </p>
+                ) : (
+                  news.map((item) => (
+                    <div key={item.id} className="p-4 bg-gray-50 rounded-lg">
+                      <div className="mb-3">
+                        <h3 className="font-medium text-sm">{item.title}</h3>
+                        <p className="text-xs text-gray-600 mt-1">
+                          {item.category} - Publié le {new Date(item.published_date).toLocaleDateString('fr-FR')}
+                        </p>
+                        {item.summary && (
+                          <p className="text-xs text-gray-700 mt-2">{item.summary}</p>
+                        )}
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs self-start">
+                          Publié
+                        </span>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Eye className="h-4 w-4 mr-1" />
+                            Voir
+                          </Button>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Edit className="h-4 w-4 mr-1" />
+                            Modifier
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <AdminSidebar />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
