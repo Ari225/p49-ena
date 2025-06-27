@@ -10,9 +10,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { ArrowLeft, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const DashboardAddJournal = () => {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
@@ -66,6 +68,127 @@ const DashboardAddJournal = () => {
       setFormData(prev => ({ ...prev, [fileType]: file }));
     }
   };
+
+  if (isMobile) {
+    return (
+      <Layout>
+        <div className="px-[25px] py-[50px] pb-20">
+          <div className="mb-6">
+            <Link to="/dashboard/journal" className="inline-flex items-center text-primary hover:text-primary/80 mb-4 text-sm">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Retour aux éditions
+            </Link>
+            <h1 className="text-2xl font-bold text-primary leading-tight">
+              Nouvelle<br />Édition
+            </h1>
+            <p className="text-gray-600 mt-2 text-sm">Créer une nouvelle édition du journal</p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Informations de l'édition</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Titre *</label>
+                  <Input
+                    value={formData.title}
+                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                    placeholder="Ex: Perspectives 49 - Janvier 2024"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Résumé *</label>
+                  <Textarea
+                    value={formData.summary}
+                    onChange={(e) => setFormData(prev => ({ ...prev, summary: e.target.value }))}
+                    placeholder="Résumé de cette édition..."
+                    rows={3}
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Nombre de pages</label>
+                    <Input
+                      type="number"
+                      value={formData.pageCount}
+                      onChange={(e) => setFormData(prev => ({ ...prev, pageCount: e.target.value }))}
+                      placeholder="Ex: 24"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Date de publication</label>
+                    <Input
+                      type="date"
+                      value={formData.publishDate}
+                      onChange={(e) => setFormData(prev => ({ ...prev, publishDate: e.target.value }))}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Image de couverture</label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                    <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange(e, 'coverImage')}
+                      className="hidden"
+                      id="cover-upload"
+                    />
+                    <label htmlFor="cover-upload" className="cursor-pointer">
+                      <span className="text-primary font-medium text-sm">Cliquez pour uploader</span>
+                      <span className="text-gray-500 text-sm"> ou glissez-déposez</span>
+                    </label>
+                    {formData.coverImage && (
+                      <p className="mt-2 text-xs text-gray-600">{formData.coverImage.name}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Fichier PDF</label>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                    <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => handleFileChange(e, 'pdfFile')}
+                      className="hidden"
+                      id="pdf-upload"
+                    />
+                    <label htmlFor="pdf-upload" className="cursor-pointer">
+                      <span className="text-primary font-medium text-sm">Cliquez pour uploader le PDF</span>
+                    </label>
+                    {formData.pdfFile && (
+                      <p className="mt-2 text-xs text-gray-600">{formData.pdfFile.name}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col space-y-2 pt-4">
+                  <Button type="submit" disabled={uploading} className="w-full">
+                    {uploading ? 'Création...' : 'Créer l\'édition'}
+                  </Button>
+                  <Button type="button" variant="outline" asChild className="w-full">
+                    <Link to="/dashboard/journal">Annuler</Link>
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+        <AdminSidebar />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
