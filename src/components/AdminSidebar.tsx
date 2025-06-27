@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -100,8 +99,9 @@ const AdminSidebar = () => {
           <div className="flex py-2 px-2 min-w-max">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.href || 
-                              (item.href !== '/dashboard' && location.pathname.startsWith(item.href));
+              const isActive = item.href === '/dashboard' 
+                ? location.pathname === '/dashboard'
+                : location.pathname.startsWith(item.href);
               return (
                 <Link
                   key={item.href}
