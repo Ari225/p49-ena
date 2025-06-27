@@ -6,6 +6,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye, Trash2 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface BlogPost {
   id: string;
@@ -18,6 +19,7 @@ interface BlogPost {
 
 const DashboardBlog = () => {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,12 +67,80 @@ const DashboardBlog = () => {
   if (loading) {
     return (
       <Layout>
-        <div className="flex">
-          <AdminSidebar />
-          <div className="flex-1 ml-64 p-8">
+        <div className={isMobile ? "px-[25px] py-[50px] pb-20" : "flex"}>
+          {!isMobile && <AdminSidebar />}
+          <div className={isMobile ? "" : "flex-1 ml-64 p-8"}>
             <div className="text-center">Chargement...</div>
           </div>
         </div>
+        {isMobile && <AdminSidebar />}
+      </Layout>
+    );
+  }
+
+  if (isMobile) {
+    return (
+      <Layout>
+        <div className="px-[25px] py-[50px] pb-20">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-primary">Gestion du<br />Blog</h1>
+            <p className="text-gray-600 mt-1 text-sm">Gérer les articles du blog</p>
+          </div>
+
+          <div className="mb-4">
+            <Button className="bg-primary hover:bg-primary/90 w-full">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvel article
+            </Button>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center text-lg">
+                <FileText className="mr-2 h-5 w-5" />
+                Articles du Blog
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {posts.length === 0 ? (
+                  <p className="text-center text-gray-500 py-8 text-sm">
+                    Aucun article de blog créé
+                  </p>
+                ) : (
+                  posts.map((post) => (
+                    <div key={post.id} className="p-4 bg-gray-50 rounded-lg">
+                      <div className="mb-3">
+                        <h3 className="font-medium text-sm">{post.title}</h3>
+                        <p className="text-xs text-gray-600 mt-1">
+                          Par {post.author} - Publié le {new Date(post.published_date).toLocaleDateString('fr-FR')}
+                        </p>
+                        {post.summary && (
+                          <p className="text-xs text-gray-700 mt-2 line-clamp-2">{post.summary}</p>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        {getStatusBadge(post.status)}
+                        <div className="flex space-x-1">
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <AdminSidebar />
       </Layout>
     );
   }
