@@ -76,7 +76,7 @@ const AdminSidebar = () => {
       icon: Calendar
     },
     {
-      title: 'Pop-ups & Communiqués',
+      title: 'Pop-ups',
       href: '/dashboard/popups',
       icon: MessageSquare
     },
