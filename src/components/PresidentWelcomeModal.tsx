@@ -1,21 +1,25 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const PresidentWelcomeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+
   useEffect(() => {
     // Check if modal has been dismissed and when
     const dismissedUntil = localStorage.getItem('welcome_modal_dismissed_until');
     const sessionShown = sessionStorage.getItem('welcome_modal_shown');
+    
     const now = new Date().getTime();
-
+    
     // If there's a dismissal time and it hasn't expired, don't show
     if (dismissedUntil && now < parseInt(dismissedUntil)) {
       return;
     }
-
+    
     // If not shown in this session and dismissal time has expired (or doesn't exist)
     if (!sessionShown) {
       const timer = setTimeout(() => {
@@ -25,30 +29,46 @@ const PresidentWelcomeModal = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
   const handleClose = () => {
     setIsOpen(false);
     // Set to reappear in 24 hours
-    const in24Hours = new Date().getTime() + 24 * 60 * 60 * 1000;
+    const in24Hours = new Date().getTime() + (24 * 60 * 60 * 1000);
     localStorage.setItem('welcome_modal_dismissed_until', in24Hours.toString());
   };
+
   const handleNeverShowAgain = () => {
     setIsOpen(false);
     // Set to reappear in 1 week
-    const inOneWeek = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
+    const inOneWeek = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
     localStorage.setItem('welcome_modal_dismissed_until', inOneWeek.toString());
   };
-  return <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-50px)] max-h-[calc(100vh-100px)]' : 'max-w-[calc(100vw-200px)]  max-h-[calc(100vh-100px)]'}`}>
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${
+        isMobile 
+          ? 'max-w-[calc(100vw-50px)] max-h-[calc(100vh-100px)]' 
+          : 'max-w-[calc(100vw-200px)]  max-h-[calc(100vh-100px)]'
+      }`}>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
           <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-1/3'}`}>
-            <img src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" alt="Mme MEL Méléï Marcelle" className={`w-full object-cover ${isMobile ? 'h-[160px] object-top' : 'h-full object-center'}`} />
+            <img 
+              src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
+              alt="Mme MEL Méléï Marcelle" 
+              className={`w-full object-cover ${
+                isMobile 
+                  ? 'h-[160px] object-top' 
+                  : 'h-full object-center'
+              }`}
+            />
           </div>
 
           {/* Welcome Message - Scrollable */}
           <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-260px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <h2 className="text-5xl font-bold mb-10 text-primary">
+              <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-lg' : 'text-2xl'}`}>
                 Message de Bienvenue
               </h2>
               <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
@@ -82,16 +102,24 @@ const PresidentWelcomeModal = () => {
             
             {/* Fixed buttons at bottom with improved separator */}
             <div className="flex flex-col sm:flex-row gap-3 justify-end p-6 md:p-8 pt-4 border-t border-gray-300 bg-white">
-              <Button onClick={handleNeverShowAgain} className="bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm">
+              <Button 
+                onClick={handleNeverShowAgain}
+                className="bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm"
+              >
                 Ne plus revoir
               </Button>
-              <Button onClick={handleClose} className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+              <Button 
+                onClick={handleClose}
+                className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold"
+              >
                 Fermer
               </Button>
             </div>
           </div>
         </div>
       </DialogContent>
-    </Dialog>;
+    </Dialog>
+  );
 };
+
 export default PresidentWelcomeModal;
