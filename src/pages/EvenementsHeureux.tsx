@@ -1,102 +1,94 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin, Users, PartyPopper, Heart, Gift, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const EvenementsHeureux = () => {
   const isMobile = useIsMobile();
-
-  const heureuxEvents = [
-    {
-      id: '1',
-      eventType: 'Heureux',
-      category: 'Naissances',
-      title: 'Naissance de bébé Marie',
-      memberName: 'Famille Kouassi',
-      date: '2024-01-15',
-      location: 'Abidjan',
-      description: 'Nous avons la joie d\'annoncer la naissance de Marie, un petit ange qui illumine déjà la famille.',
-      thought: 'Félicitations aux heureux parents ! Que cette petite merveille vous apporte joie et bonheur.',
-      keyword: 'Naissances',
-      image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
-    },
-    {
-      id: '2',
-      eventType: 'Heureux',
-      category: 'Promotions',
-      title: 'Promotion au grade de Directeur',
-      memberName: 'M. Yao Kouadio',
-      date: '2024-02-10',
-      location: 'Yamoussoukro',
-      description: 'M. Yao Kouadio a été promu au grade de Directeur des Ressources Humaines suite à son excellent travail.',
-      thought: 'Félicitations pour cette promotion bien méritée ! Votre dévouement est enfin récompensé.',
-      keyword: 'Promotions',
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
-    },
-    {
-      id: '3',
-      eventType: 'Heureux',
-      category: 'Distinctions',
-      title: 'Médaille d\'honneur du travail',
-      memberName: 'Mme Akissi Brou',
-      date: '2024-01-25',
-      location: 'Abidjan',
-      description: 'Mme Akissi Brou a reçu la médaille d\'honneur du travail pour ses 25 années de service exemplaire.',
-      thought: 'Un honneur bien mérité ! Votre engagement inspire toute notre communauté.',
-      keyword: 'Distinctions',
-      image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop"
-    },
-    {
-      id: '4',
-      eventType: 'Heureux',
-      category: 'Naissances',
-      title: 'Naissance des jumeaux Paul et Pierre',
-      memberName: 'Famille Diabaté',
-      date: '2024-02-05',
-      location: 'Bouaké',
-      description: 'Double bonheur pour la famille Diabaté avec l\'arrivée des jumeaux Paul et Pierre.',
-      thought: 'Quelle joie immense ! Que ces deux petits anges grandissent en bonne santé.',
-      keyword: 'Naissances',
-      image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
-    }
-  ];
-
+  const heureuxEvents = [{
+    id: '1',
+    eventType: 'Heureux',
+    category: 'Naissances',
+    title: 'Naissance de bébé Marie',
+    memberName: 'Famille Kouassi',
+    date: '2024-01-15',
+    location: 'Abidjan',
+    description: 'Nous avons la joie d\'annoncer la naissance de Marie, un petit ange qui illumine déjà la famille.',
+    thought: 'Félicitations aux heureux parents ! Que cette petite merveille vous apporte joie et bonheur.',
+    keyword: 'Naissances',
+    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+  }, {
+    id: '2',
+    eventType: 'Heureux',
+    category: 'Promotions',
+    title: 'Promotion au grade de Directeur',
+    memberName: 'M. Yao Kouadio',
+    date: '2024-02-10',
+    location: 'Yamoussoukro',
+    description: 'M. Yao Kouadio a été promu au grade de Directeur des Ressources Humaines suite à son excellent travail.',
+    thought: 'Félicitations pour cette promotion bien méritée ! Votre dévouement est enfin récompensé.',
+    keyword: 'Promotions',
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
+  }, {
+    id: '3',
+    eventType: 'Heureux',
+    category: 'Distinctions',
+    title: 'Médaille d\'honneur du travail',
+    memberName: 'Mme Akissi Brou',
+    date: '2024-01-25',
+    location: 'Abidjan',
+    description: 'Mme Akissi Brou a reçu la médaille d\'honneur du travail pour ses 25 années de service exemplaire.',
+    thought: 'Un honneur bien mérité ! Votre engagement inspire toute notre communauté.',
+    keyword: 'Distinctions',
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop"
+  }, {
+    id: '4',
+    eventType: 'Heureux',
+    category: 'Naissances',
+    title: 'Naissance des jumeaux Paul et Pierre',
+    memberName: 'Famille Diabaté',
+    date: '2024-02-05',
+    location: 'Bouaké',
+    description: 'Double bonheur pour la famille Diabaté avec l\'arrivée des jumeaux Paul et Pierre.',
+    thought: 'Quelle joie immense ! Que ces deux petits anges grandissent en bonne santé.',
+    keyword: 'Naissances',
+    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+  }];
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'Naissances': return Gift;
-      case 'Promotions': return Star;
-      case 'Distinctions': return Award;
-      default: return PartyPopper;
+      case 'Naissances':
+        return Gift;
+      case 'Promotions':
+        return Star;
+      case 'Distinctions':
+        return Award;
+      default:
+        return PartyPopper;
     }
   };
-
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Naissances': return 'border-l-pink-500 bg-pink-50';
-      case 'Promotions': return 'border-l-yellow-500 bg-yellow-50';
-      case 'Distinctions': return 'border-l-purple-500 bg-purple-50';
-      default: return 'border-l-green-500 bg-green-50';
+      case 'Naissances':
+        return 'border-l-pink-500 bg-pink-50';
+      case 'Promotions':
+        return 'border-l-yellow-500 bg-yellow-50';
+      case 'Distinctions':
+        return 'border-l-purple-500 bg-purple-50';
+      default:
+        return 'border-l-green-500 bg-green-50';
     }
   };
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/bc525a09-b8a2-469f-b451-2f78bc437b6e.png" 
-              alt="Background événements heureux" 
-              className="w-full h-full object-cover" 
-            />
+            <img src="/lovable-uploads/bc525a09-b8a2-469f-b451-2f78bc437b6e.png" alt="Background événements heureux" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <PartyPopper className="w-16 h-16 mx-auto mb-6" />
+            
             <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Événements Heureux
             </h1>
@@ -117,16 +109,11 @@ const EvenementsHeureux = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {heureuxEvents.map((event) => {
-                const IconComponent = getCategoryIcon(event.category);
-                return (
-                  <Card key={event.id} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)}`}>
+              {heureuxEvents.map(event => {
+              const IconComponent = getCategoryIcon(event.category);
+              return <Card key={event.id} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)}`}>
                     <div className="aspect-video overflow-hidden">
-                      <img 
-                        src={event.image} 
-                        alt={event.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
+                      <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                     </div>
                     <CardHeader>
                       <CardTitle className={`text-green-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
@@ -137,10 +124,10 @@ const EvenementsHeureux = () => {
                         <div className="flex items-center">
                           <Calendar className="w-4 h-4 mr-2" />
                           {new Date(event.date).toLocaleDateString('fr-FR', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                          })}
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
                         </div>
                         <div className="flex items-center">
                           <MapPin className="w-4 h-4 mr-2" />
@@ -165,9 +152,8 @@ const EvenementsHeureux = () => {
                         </p>
                       </div>
                     </CardContent>
-                  </Card>
-                );
-              })}
+                  </Card>;
+            })}
             </div>
           </div>
         </section>
@@ -198,8 +184,6 @@ const EvenementsHeureux = () => {
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default EvenementsHeureux;
