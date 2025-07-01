@@ -1,10 +1,21 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const PresidentWelcomeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  // Tailles de texte configurables
+  const textSizes = {
+    title: isMobile ? 'text-2xl' : 'text-5xl',
+    body: isMobile ? 'text-xs' : 'text-sm',
+    signature: isMobile ? 'text-xs' : 'text-sm',
+    button: isMobile ? 'text-xs' : 'text-sm'
+  };
+
   useEffect(() => {
     // Check if modal has been dismissed and when
     const dismissedUntil = localStorage.getItem('welcome_modal_dismissed_until');
@@ -25,33 +36,41 @@ const PresidentWelcomeModal = () => {
       return () => clearTimeout(timer);
     }
   }, []);
+
   const handleClose = () => {
     setIsOpen(false);
     // Set to reappear in 24 hours
     const in24Hours = new Date().getTime() + 24 * 60 * 60 * 1000;
     localStorage.setItem('welcome_modal_dismissed_until', in24Hours.toString());
   };
+
   const handleNeverShowAgain = () => {
     setIsOpen(false);
     // Set to reappear in 1 week
     const inOneWeek = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
     localStorage.setItem('welcome_modal_dismissed_until', inOneWeek.toString());
   };
-  return <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-50px)]' : 'max-w-[calc(100vw-200px)]  max-h-[calc(100vh-100px)]'}`}>
+
+  return (
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : 'max-w-[calc(100vw-200px)] max-h-[calc(100vh-100px)]'}`} hideCloseButton>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
           <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-1/3'}`}>
-            <img src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" alt="Mme MEL Méléï Marcelle" className={`w-full object-cover ${isMobile ? 'h-[160px] object-top' : 'h-full object-center'}`} />
+            <img 
+              src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
+              alt="Mme MEL Méléï Marcelle" 
+              className={`w-full object-cover ${isMobile ? 'h-[160px] object-top' : 'h-full object-center'}`} 
+            />
           </div>
 
           {/* Welcome Message - Scrollable */}
           <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-260px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              <h2 className="text-5xl font-bold text-primary mb-10">
+              <h2 className={`${textSizes.title} font-bold text-primary mb-6 md:mb-10`}>
                 Message de bienvenue
               </h2>
-              <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
+              <div className={`text-gray-700 leading-relaxed mb-6 ${textSizes.body}`}>
                 <p className="mb-4">
                   Chères visiteuses, chers visiteurs,
                 </p>
@@ -71,27 +90,35 @@ const PresidentWelcomeModal = () => {
                 <p className="mb-4 text-justify">
                   Je vous invite à parcourir nos différentes rubriques et à vous imprégner de l'âme de notre réseau. Que vous soyez membre, partenaire, ami ou simplement curieux, soyez les bienvenus chez nous. Ensemble, continuons de bâtir, d'innover et de faire rayonner les valeurs de la P49.
                 </p>
-                <p className="font-medium text-primary mb-4">
+                <p className={`font-medium text-primary mb-4 ${textSizes.signature}`}>
                   Avec toute ma considération,
                 </p>
-                <p className="font-semibold text-primary">
+                <p className={`font-semibold text-primary ${textSizes.signature}`}>
                   Madame MEL Méléï Marcelle, Présidente du Réseau P49
                 </p>
               </div>
             </div>
             
-            {/* Fixed buttons at bottom with improved separator */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-end p-6 md:p-8 pt-4 border-t border-gray-300 bg-white">
-              <Button onClick={handleNeverShowAgain} className="bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-sm">
+            {/* Fixed buttons at bottom - côte à côte sur mobile */}
+            <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} gap-3 justify-end p-6 md:p-8 pt-4 border-t border-gray-300 bg-white`}>
+              <Button 
+                onClick={handleNeverShowAgain} 
+                className={`bg-white border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 ${textSizes.button} ${isMobile ? 'flex-1' : ''}`}
+              >
                 Ne plus revoir
               </Button>
-              <Button onClick={handleClose} className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+              <Button 
+                onClick={handleClose} 
+                className={`bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${textSizes.button} ${isMobile ? 'flex-1' : ''}`}
+              >
                 Fermer
               </Button>
             </div>
           </div>
         </div>
       </DialogContent>
-    </Dialog>;
+    </Dialog>
+  );
 };
+
 export default PresidentWelcomeModal;
