@@ -66,7 +66,7 @@ const BlogSection = () => {
   return <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Articles de Blog</h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Blog</h2>
           <p className={`text-gray-700 px-4 ${isMobile ? 'text-sm' : 'text-base md:text-base'}`}>
             Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
           </p>
