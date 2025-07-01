@@ -3,85 +3,72 @@ import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin, Users, Heart, Clock, Trophy } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const DepartsRetraite = () => {
   const isMobile = useIsMobile();
-
-  const retraiteEvents = [
-    {
-      id: '1',
-      eventType: 'Retraite',
-      category: 'Retraite',
-      title: 'Départ en retraite de M. Jean Koffi',
-      memberName: 'M. Jean Koffi',
-      yearsOfService: '35 ans de service',
-      date: '2024-02-01',
-      location: 'Bouaké',
-      description: 'Après 35 années de service dévoué au sein de l\'administration, M. Jean Koffi prend une retraite bien méritée.',
-      thought: 'Nous lui souhaitons une retraite heureuse et épanouie ! Merci pour tout ce que vous avez apporté.',
-      keyword: 'Retraite',
-      image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-    },
-    {
-      id: '2',
-      eventType: 'Retraite',
-      category: 'Retraite',
-      title: 'Départ en retraite de Mme Adjoua Koffi',
-      memberName: 'Mme Adjoua Koffi',
-      yearsOfService: '30 ans de service',
-      date: '2024-01-20',
-      location: 'Abidjan',
-      description: 'Mme Adjoua Koffi termine sa carrière après 30 années d\'excellence dans ses fonctions.',
-      thought: 'Votre dévouement restera gravé dans nos mémoires. Profitez pleinement de cette nouvelle étape !',
-      keyword: 'Retraite',
-      image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-    },
-    {
-      id: '3',
-      eventType: 'Retraite',
-      category: 'Retraite',
-      title: 'Départ en retraite de M.Konan Yao',
-      memberName: 'M. Konan Yao',
-      yearsOfService: '40 ans de service',
-      date: '2024-03-15',
-      location: 'Yamoussoukro',
-      description: 'Après 4 décennies de service exemplaire, M. Konan Yao entame sa retraite.',
-      thought: 'Quarante années de dévouement ! Vous avez marqué l\'histoire de notre institution.',
-      keyword: 'Retraite',
-      image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-    },
-    {
-      id: '4',
-      eventType: 'Retraite',
-      category: 'Retraite',
-      title: 'Départ en retraite de Mme Fatou Traoré',
-      memberName: 'Mme Fatou Traoré',
-      yearsOfService: '28 ans de service',
-      date: '2024-02-28',
-      location: 'San-Pédro',
-      description: 'Mme Fatou Traoré clôture brillamment sa carrière après 28 années de loyaux services.',
-      thought: 'Votre sourire et votre professionnalisme vont nous manquer. Belle retraite !',
-      keyword: 'Retraite',
-      image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-    }
-  ];
-
-  return (
-    <Layout>
+  const retraiteEvents = [{
+    id: '1',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de M. Jean Koffi',
+    memberName: 'M. Jean Koffi',
+    yearsOfService: '35 ans de service',
+    date: '2024-02-01',
+    location: 'Bouaké',
+    description: 'Après 35 années de service dévoué au sein de l\'administration, M. Jean Koffi prend une retraite bien méritée.',
+    thought: 'Nous lui souhaitons une retraite heureuse et épanouie ! Merci pour tout ce que vous avez apporté.',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }, {
+    id: '2',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de Mme Adjoua Koffi',
+    memberName: 'Mme Adjoua Koffi',
+    yearsOfService: '30 ans de service',
+    date: '2024-01-20',
+    location: 'Abidjan',
+    description: 'Mme Adjoua Koffi termine sa carrière après 30 années d\'excellence dans ses fonctions.',
+    thought: 'Votre dévouement restera gravé dans nos mémoires. Profitez pleinement de cette nouvelle étape !',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }, {
+    id: '3',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de M.Konan Yao',
+    memberName: 'M. Konan Yao',
+    yearsOfService: '40 ans de service',
+    date: '2024-03-15',
+    location: 'Yamoussoukro',
+    description: 'Après 4 décennies de service exemplaire, M. Konan Yao entame sa retraite.',
+    thought: 'Quarante années de dévouement ! Vous avez marqué l\'histoire de notre institution.',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }, {
+    id: '4',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de Mme Fatou Traoré',
+    memberName: 'Mme Fatou Traoré',
+    yearsOfService: '28 ans de service',
+    date: '2024-02-28',
+    location: 'San-Pédro',
+    description: 'Mme Fatou Traoré clôture brillamment sa carrière après 28 années de loyaux services.',
+    thought: 'Votre sourire et votre professionnalisme vont nous manquer. Belle retraite !',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }];
+  return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/c88b877d-abfc-430e-a6d4-5a7bc89ff587.png" 
-              alt="Background départs retraite" 
-              className="w-full h-full object-cover" 
-            />
+            <img src="/lovable-uploads/c88b877d-abfc-430e-a6d4-5a7bc89ff587.png" alt="Background départs retraite" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <Trophy className="w-16 h-16 mx-auto mb-6" />
+            
             <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Départs en Retraite
             </h1>
@@ -102,14 +89,9 @@ const DepartsRetraite = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {retraiteEvents.map((event) => (
-                <Card key={event.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-blue-500 bg-blue-50">
+              {retraiteEvents.map(event => <Card key={event.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-blue-500 bg-blue-50">
                   <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={event.image} 
-                      alt={event.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
+                    <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                   </div>
                   <CardHeader>
                     <CardTitle className={`text-blue-800 ${isMobile ? 'text-base' : 'text-xl'} flex items-center`}>
@@ -120,10 +102,10 @@ const DepartsRetraite = () => {
                       <div className="flex items-center">
                         <Calendar className="w-4 h-4 mr-2" />
                         {new Date(event.date).toLocaleDateString('fr-FR', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                       </div>
                       <div className="flex items-center">
                         <MapPin className="w-4 h-4 mr-2" />
@@ -153,8 +135,7 @@ const DepartsRetraite = () => {
                       </p>
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
@@ -185,8 +166,6 @@ const DepartsRetraite = () => {
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default DepartsRetraite;
