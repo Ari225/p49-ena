@@ -16,7 +16,7 @@ const AdminSidebar = () => {
       icon: BarChart3
     },
     {
-      title: 'Administrateurs & Rédacteurs',
+      title: 'Admins & Rédacs',
       href: '/dashboard/users',
       icon: Users
     },
