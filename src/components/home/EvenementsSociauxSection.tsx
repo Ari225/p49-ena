@@ -31,7 +31,7 @@ const EvenementsSociauxSection = () => {
   return <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
-          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>Événements sociaux</h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>Évènements sociaux</h2>
           <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : ''}`}>
             La P49 accompagne ses membres dans tous les moments importants de leur vie, 
             qu'ils soient heureux ou difficiles. Découvrez nos événements sociaux.
