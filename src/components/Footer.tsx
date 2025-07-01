@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -39,18 +40,18 @@ const Footer = () => {
     <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
         <div className="flex grid-cols-1 lg:grid-cols-2 gap-[10px] w-full">
-          <div className="flex flex-col w-[50%]">
+          <div className="flex flex-col w-[35%]">
             <FooterLogo />
           </div>
 
-          <div className="flex grid-cols-1 md:grid-cols-3 gap-10 w-[1200px] mt-8">
-            <div className="w-full">
+          <div className="flex grid-cols-1 md:grid-cols-3 gap-12 w-[65%] mt-8 justify-between">
+            <div className="flex-1">
               <FooterLinks />
             </div>
-            <div className="w-full min-w-[50px]">
+            <div className="flex-1">
               <FooterContact />
             </div>
-            <div className="w-full">
+            <div className="flex-1">
               <FooterNewsletter />
             </div>
           </div>
@@ -68,3 +69,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
