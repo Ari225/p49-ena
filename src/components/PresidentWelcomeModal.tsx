@@ -38,7 +38,7 @@ const PresidentWelcomeModal = () => {
     localStorage.setItem('welcome_modal_dismissed_until', inOneWeek.toString());
   };
   return <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-h-[calc(100vh-100px)]' : 'max-w-[calc(100vw-200px)]  max-h-[calc(100vh-100px)]'}`}>
+      <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-50px)]' : 'max-w-[calc(100vw-200px)]  max-h-[calc(100vh-100px)]'}`}>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
           {/* President Photo - Full container coverage */}
           <div className={`relative overflow-hidden ${isMobile ? 'h-[160px]' : 'md:w-1/3'}`}>
