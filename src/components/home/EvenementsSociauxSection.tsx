@@ -1,11 +1,9 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Users, Frown, ChevronRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const EvenementsSociauxSection = () => {
   const isMobile = useIsMobile();
   const events = [{
@@ -30,14 +28,10 @@ const EvenementsSociauxSection = () => {
     color: "bg-gray-100 text-gray-600",
     backgroundImage: "/lovable-uploads/malheur.jpg"
   }];
-
-  return (
-    <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+  return <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
-          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
-            Événements Sociaux
-          </h2>
+          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>Événements sociaux</h2>
           <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : ''}`}>
             La P49 accompagne ses membres dans tous les moments importants de leur vie, 
             qu'ils soient heureux ou difficiles. Découvrez nos événements sociaux.
@@ -45,13 +39,11 @@ const EvenementsSociauxSection = () => {
         </div>
 
         <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} mb-8`}>
-          {events.map((event, index) => (
-            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden relative ${isMobile ? 'mb-4' : ''}`}>
+          {events.map((event, index) => <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden relative ${isMobile ? 'mb-4' : ''}`}>
               {/* Background Image covering entire card */}
-              <div 
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${event.backgroundImage})` }}
-              >
+              <div className="absolute inset-0 bg-cover bg-center" style={{
+            backgroundImage: `url(${event.backgroundImage})`
+          }}>
                 <div className="absolute inset-0 bg-primary/80"></div>
               </div>
               
@@ -78,8 +70,7 @@ const EvenementsSociauxSection = () => {
                   </Button>
                 </CardContent>
               </div>
-            </Card>
-          ))}
+            </Card>)}
         </div>
 
         <div className="text-center">
@@ -91,8 +82,6 @@ const EvenementsSociauxSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default EvenementsSociauxSection;
