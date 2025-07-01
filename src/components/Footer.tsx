@@ -1,5 +1,4 @@
 
-
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -36,8 +35,9 @@ const Footer = () => {
     );
   }
 
+  // Version tablette et desktop
   return (
-    <footer className="bg-primary text-white px-[100px] py-[50px]">
+    <footer className="bg-primary text-white px-[50px] md:px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
         <div className="flex grid-cols-1 lg:grid-cols-2 gap-[10px] w-full">
           <div className="flex flex-col w-[35%]">
@@ -69,4 +69,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
