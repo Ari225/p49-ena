@@ -6,7 +6,7 @@ const FooterContact = () => {
         <div className="space-y-2 text-gray-300 text-xs lg:text-base w-auto lg:w-[200px]">
           <p className="w-auto lg:w-[200px]">Abidjan, Côte d'Ivoire</p>
           <p className="w-auto lg:w-[200px]">infos_reseau@p49-ena.ci</p>
-          <p className="w-auto lg:w-[200px]">27 21 27 47 58</p>
+          <p className="w-auto lg:w-[200px]">+225 27 21 27 47 58</p>
         </div>
       </div>
     </div>;
