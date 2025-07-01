@@ -49,7 +49,7 @@ const PresidentWelcomeModal = () => {
           <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-260px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-6 md:p-8">
               <h2 className="text-5xl font-bold text-primary mb-10">
-                Message de Bienvenue
+                Message de bienvenue
               </h2>
               <div className={`text-gray-700 leading-relaxed mb-6 ${isMobile ? 'text-xs' : 'text-sm'}`}>
                 <p className="mb-4">
