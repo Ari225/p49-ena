@@ -11,7 +11,7 @@ const FooterNewsletter = () => {
   };
   return <div className="text-center lg:text-left mb-6 lg:mb-0">
       <h3 className="text-lg font-semibold mb-3 lg:mb-4">Newsletter</h3>
-      <p className="text-gray-300 text-xs lg:text-sm mb-3 lg:mb-4">Restez informé de nos actualités et évènements</p>
+      <p className="text-gray-300 text-base mb-5 lg:mb-4 lg:text-base">Restez informé de nos actualités et évènements</p>
       <form onSubmit={handleNewsletterSubmit} className="space-y-3 max-w-sm mx-auto lg:mx-0">
         <div className="flex">
           <Input type="email" placeholder="Votre email" value={email} onChange={e => setEmail(e.target.value)} className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-r-none text-xs lg:text-sm" required />
