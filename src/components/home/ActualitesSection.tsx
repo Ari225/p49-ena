@@ -76,7 +76,7 @@ const ActualitesSection = () => {
   }
 
   return (
-    <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+    <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
       <div className="w-full max-w-none px-0">
         <div className={`${isMobile ? 'text-center' : 'flex flex-col sm:flex-row items-center justify-between'} mb-8 md:mb-12 gap-4`}>
           <div className={isMobile ? 'text-center' : 'text-left'}>
@@ -180,7 +180,7 @@ const ActualitesSection = () => {
         ) : (
           // Desktop: Extended carousel with larger center card and smoother transitions
           <div className="relative w-full">
-            <div className="flex items-center justify-between w-full">
+            <div className="flex items-center justify-between w-full gap-4">
               {/* Navigation buttons */}
               <button
                 onClick={prevSlide}
@@ -190,7 +190,7 @@ const ActualitesSection = () => {
               </button>
 
               {/* Extended cards container */}
-              <div className="flex items-center justify-center space-x-8 overflow-hidden flex-1 px-8">
+              <div className="flex items-center justify-center space-x-6 overflow-hidden flex-1">
                 {news.map((item, index) => {
                   const isCenter = index === currentIndex;
                   const isVisible = 
@@ -203,13 +203,14 @@ const ActualitesSection = () => {
                   return (
                     <Link key={item.id} to={`/actualite/${item.id}`}>
                       <Card 
-                        className={`overflow-hidden transition-all duration-700 ease-in-out cursor-pointer bg-white rounded-lg ${
+                        className={`overflow-hidden transition-all duration-700 ease-in-out cursor-pointer bg-white ${
                           isCenter 
-                            ? 'w-[450px] h-[520px] opacity-100 scale-110 hover:shadow-2xl z-10' 
-                            : 'w-[350px] h-[480px] opacity-50 scale-90 hover:opacity-70 z-0'
+                            ? 'w-[450px] h-[520px] opacity-100 scale-110 hover:shadow-2xl z-10 rounded-lg' 
+                            : 'w-[350px] h-[480px] opacity-50 scale-90 hover:opacity-70 z-0 rounded-lg'
                         }`}
+                        style={{ borderRadius: '0.5rem' }}
                       >
-                        <div className="aspect-video overflow-hidden rounded-t-lg">
+                        <div className="aspect-video overflow-hidden" style={{ borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem' }}>
                           <img 
                             src={item.image_url} 
                             alt={item.title}
