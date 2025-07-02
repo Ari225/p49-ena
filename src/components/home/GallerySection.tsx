@@ -5,11 +5,23 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Camera, ChevronRight, Video, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import MediaPopup from '../MediaPopup';
+
+interface GalleryItem {
+  id: number;
+  src: string;
+  alt: string;
+  category: string;
+  type: 'image' | 'video';
+  thumbnail?: string;
+}
 
 const GallerySection = () => {
   const isMobile = useIsMobile();
+  const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   
-  const galleryItems = [
+  const galleryItems: GalleryItem[] = [
     {
       id: 1,
       src: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
@@ -42,6 +54,16 @@ const GallerySection = () => {
     }
   ];
 
+  const handleMediaClick = (item: GalleryItem) => {
+    setSelectedMedia(item);
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedMedia(null);
+  };
+
   return (
     <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
@@ -61,7 +83,11 @@ const GallerySection = () => {
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {galleryItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer">
+            <Card 
+              key={item.id} 
+              className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer"
+              onClick={() => handleMediaClick(item)}
+            >
               <CardContent className="p-0 relative">
                 <div className="aspect-square overflow-hidden">
                   {item.type === 'video' ? (
@@ -96,6 +122,12 @@ const GallerySection = () => {
           ))}
         </div>
       </div>
+
+      <MediaPopup 
+        isOpen={isPopupOpen}
+        onClose={handleClosePopup}
+        mediaItem={selectedMedia}
+      />
     </section>
   );
 };
