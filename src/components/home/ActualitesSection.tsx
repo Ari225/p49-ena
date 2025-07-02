@@ -77,7 +77,7 @@ const ActualitesSection = () => {
 
   return (
     <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
-      <div className="container mx-auto px-0">
+      <div className="w-full max-w-none px-0">
         <div className={`${isMobile ? 'text-center' : 'flex flex-col sm:flex-row items-center justify-between'} mb-8 md:mb-12 gap-4`}>
           <div className={isMobile ? 'text-center' : 'text-left'}>
             <h2 className={`${isMobile ? 'text-2xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-2`}>
@@ -99,11 +99,11 @@ const ActualitesSection = () => {
         </div>
         
         {isMobile ? (
-          // Mobile: Slide carousel
+          // Mobile: Slide carousel with navigation buttons
           <div className="relative">
             <div className="overflow-hidden rounded-lg">
               <div 
-                className="flex transition-transform duration-500 ease-in-out"
+                className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
               >
                 {news.map((item) => (
@@ -151,17 +151,20 @@ const ActualitesSection = () => {
               </div>
             </div>
             
-            {/* Navigation dots */}
-            <div className="flex justify-center mt-6 space-x-2">
-              {news.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentIndex ? 'bg-primary' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
+            {/* Navigation buttons for mobile */}
+            <div className="flex justify-center items-center mt-6 space-x-4">
+              <button
+                onClick={prevSlide}
+                className="p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <ChevronLeft className="h-5 w-5 text-primary" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <ChevronRight className="h-5 w-5 text-primary" />
+              </button>
             </div>
 
             {/* Mobile button */}
@@ -175,19 +178,19 @@ const ActualitesSection = () => {
             </div>
           </div>
         ) : (
-          // Desktop: Center-focused carousel with scaling
-          <div className="relative">
-            <div className="flex items-center justify-center space-x-6">
+          // Desktop: Extended carousel with larger center card and smoother transitions
+          <div className="relative w-full">
+            <div className="flex items-center justify-between w-full">
               {/* Navigation buttons */}
               <button
                 onClick={prevSlide}
-                className="p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow z-10"
+                className="p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow z-10 flex-shrink-0"
               >
                 <ChevronLeft className="h-6 w-6 text-primary" />
               </button>
 
-              {/* Cards container */}
-              <div className="flex items-center space-x-4 overflow-hidden">
+              {/* Extended cards container */}
+              <div className="flex items-center justify-center space-x-8 overflow-hidden flex-1 px-8">
                 {news.map((item, index) => {
                   const isCenter = index === currentIndex;
                   const isVisible = 
@@ -200,10 +203,10 @@ const ActualitesSection = () => {
                   return (
                     <Link key={item.id} to={`/actualite/${item.id}`}>
                       <Card 
-                        className={`overflow-hidden transition-all duration-500 cursor-pointer bg-white ${
+                        className={`overflow-hidden transition-all duration-700 ease-in-out cursor-pointer bg-white ${
                           isCenter 
-                            ? 'w-96 opacity-100 scale-100 hover:shadow-2xl' 
-                            : 'w-80 opacity-60 scale-90 hover:opacity-80'
+                            ? 'w-[450px] h-[520px] opacity-100 scale-110 hover:shadow-2xl z-10' 
+                            : 'w-[350px] h-[480px] opacity-50 scale-90 hover:opacity-70 z-0'
                         }`}
                       >
                         <div className="aspect-video overflow-hidden">
@@ -249,7 +252,7 @@ const ActualitesSection = () => {
               {/* Navigation buttons */}
               <button
                 onClick={nextSlide}
-                className="p-2 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow z-10"
+                className="p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-shadow z-10 flex-shrink-0"
               >
                 <ChevronRight className="h-6 w-6 text-primary" />
               </button>

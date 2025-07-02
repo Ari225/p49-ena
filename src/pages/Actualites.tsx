@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, User, Tag, Clock, Search } from 'lucide-react';
+import { Calendar, Clock, Search, Eye } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Link } from 'react-router-dom';
 
 const Actualites = () => {
   const isMobile = useIsMobile();
@@ -15,34 +16,58 @@ const Actualites = () => {
   // Sample data - in a real app, this would come from an API
   const actualites = [
     {
-      id: 1,
+      id: '1',
       title: "Nouvelle réforme de la fonction publique annoncée",
       excerpt: "Le gouvernement annonce une série de réformes visant à moderniser l'administration publique ivoirienne...",
-      author: "Direction P49",
+      category: "Réforme",
       date: "2024-01-15",
-      category: "reforme",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=250&fit=crop",
+      image: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg",
       readTime: "5 min"
     },
     {
-      id: 2,
+      id: '2',
       title: "Assemblée générale 2024 : Un succès remarquable",
       excerpt: "Plus de 300 membres ont participé à l'assemblée générale annuelle de la P49 qui s'est tenue...",
-      author: "Bureau Exécutif",
+      category: "Événement",
       date: "2024-01-10",
-      category: "evenement",
-      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=250&fit=crop",
+      image: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg",
       readTime: "3 min"
     },
     {
-      id: 3,
+      id: '3',
       title: "Lancement du programme de formation digitale",
       excerpt: "La P49 lance un nouveau programme de formation aux outils numériques pour ses membres...",
-      author: "Commission Formation",
+      category: "Formation",
       date: "2024-01-05",
-      category: "formation",
-      image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=250&fit=crop",
+      image: "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg",
       readTime: "4 min"
+    },
+    {
+      id: '4',
+      title: "Séminaire de développement professionnel",
+      excerpt: "Un séminaire intensif pour le renforcement des capacités professionnelles.",
+      category: "Formation",
+      date: "2024-01-20",
+      image: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg",
+      readTime: "5 min"
+    },
+    {
+      id: '5',
+      title: "Nouveau programme de mentorat",
+      excerpt: "Lancement du programme de mentorat pour les jeunes diplômés.",
+      category: "Programme",
+      date: "2024-01-18",
+      image: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg",
+      readTime: "4 min"
+    },
+    {
+      id: '6',
+      title: "Conférence internationale sur la gouvernance",
+      excerpt: "Participation à la conférence internationale sur les bonnes pratiques.",
+      category: "Conférence",
+      date: "2024-01-16",
+      image: "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg",
+      readTime: "6 min"
     }
   ];
 
@@ -57,7 +82,7 @@ const Actualites = () => {
   const filteredActualites = actualites.filter(actualite => {
     const matchesSearch = actualite.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          actualite.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || actualite.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || actualite.category.toLowerCase() === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -120,44 +145,44 @@ const Actualites = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredActualites.map((actualite) => (
-                <Card key={actualite.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="aspect-video overflow-hidden">
-                    <img 
-                      src={actualite.image} 
-                      alt={actualite.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardHeader>
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
-                      <div className="flex items-center">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        {new Date(actualite.date).toLocaleDateString('fr-FR')}
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {actualite.readTime}
-                      </div>
+                <Link key={actualite.id} to={`/actualite/${actualite.id}`}>
+                  <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white">
+                    <div className="aspect-video overflow-hidden">
+                      <img 
+                        src={actualite.image} 
+                        alt={actualite.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
                     </div>
-                    <CardTitle className="text-primary hover:text-primary/80 transition-colors">
-                      {actualite.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {actualite.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <User className="h-4 w-4 mr-1" />
-                        {actualite.author}
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                        <div className="flex items-center bg-primary/10 px-2 py-1 rounded-full">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          {new Date(actualite.date).toLocaleDateString('fr-FR')}
+                        </div>
+                        <span className="bg-secondary/20 text-secondary px-2 py-1 rounded-full font-medium">
+                          {actualite.category}
+                        </span>
                       </div>
-                      <Button variant="outline" size="sm">
-                        Lire plus
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                      <h3 className="font-bold text-primary hover:text-primary/80 transition-colors mb-3 text-lg leading-tight line-clamp-2">
+                        {actualite.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                        {actualite.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-xs text-gray-500">
+                          <Clock className="h-3 w-3 mr-1" />
+                          <span>{actualite.readTime} de lecture</span>
+                        </div>
+                        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/5 transition-colors">
+                          <Eye className="h-4 w-4 mr-1" />
+                          Lire
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>

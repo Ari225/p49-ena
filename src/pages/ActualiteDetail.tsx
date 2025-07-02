@@ -1,157 +1,169 @@
-import React, { useState, useEffect } from 'react';
+
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, ArrowLeft, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Calendar, Clock, ArrowLeft, Share2, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-interface NewsDetail {
-  id: string;
-  title: string;
-  content: string;
-  summary: string;
-  category: string;
-  image_url: string;
-  images?: string[];
-  published_date: string;
-  author: string;
-  tags?: string[];
-}
-const ActualiteDetail = () => {
-  const {
-    id
-  } = useParams<{
-    id: string;
-  }>();
-  const isMobile = useIsMobile();
-  const [news, setNews] = useState<NewsDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    fetchNewsDetail();
-  }, [id]);
-  const fetchNewsDetail = async () => {
-    try {
-      setLoading(true);
-      // Mock detailed data
-      const mockNewsDetail: NewsDetail = {
-        id: id || '1',
-        title: 'Nouvelle formation en leadership',
-        content: `Cette formation spécialisée en leadership s'adresse aux membres de la P49 souhaitant développer leurs compétences managériales et leur capacité à diriger des équipes.
 
-        Le programme comprend plusieurs modules :
+const ActualiteDetail = () => {
+  const { id } = useParams();
+  const isMobile = useIsMobile();
+
+  // Mock data - in a real app, this would be fetched based on the ID
+  const actualiteData = {
+    '1': {
+      title: "Nouvelle réforme de la fonction publique annoncée",
+      content: `
+        <p>Le gouvernement ivoirien a annoncé aujourd'hui une série de réformes majeures visant à moderniser l'administration publique. Ces changements, qui entreront en vigueur dès le début de l'année prochaine, concernent plusieurs aspects cruciaux du service public.</p>
         
-        1. Les fondamentaux du leadership moderne
-        2. La communication efficace en équipe
-        3. La gestion des conflits et la négociation
-        4. Le leadership transformationnel
-        5. L'intelligence émotionnelle au service du management
+        <h3>Les principales mesures</h3>
+        <p>Parmi les mesures phares de cette réforme, on retrouve :</p>
+        <ul>
+          <li>La digitalisation des procédures administratives</li>
+          <li>L'amélioration des conditions de travail des fonctionnaires</li>
+          <li>La mise en place d'un système d'évaluation des performances</li>
+          <li>Le renforcement de la formation continue</li>
+        </ul>
         
-        Cette formation se déroulera sur 5 jours consécutifs et sera animée par des experts reconnus dans le domaine du leadership et du management public.
+        <h3>Impact sur les membres de la P49</h3>
+        <p>Ces réformes auront un impact direct sur les membres de la Promotion 49 de l'École Nationale d'Administration. En tant que cadres de l'administration publique, ils seront en première ligne pour mettre en œuvre ces changements.</p>
         
-        Les participants recevront un certificat de participation et pourront bénéficier d'un suivi personnalisé post-formation.`,
-        summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
-        category: 'Formation',
-        image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-        images: ['/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg', '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg', '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'],
-        published_date: '2024-01-15',
-        author: 'Équipe P49',
-        tags: ['Leadership', 'Formation', 'Management', 'Développement professionnel']
-      };
-      setNews(mockNewsDetail);
-    } catch (error) {
-      console.error('Error fetching news detail:', error);
-    } finally {
-      setLoading(false);
+        <p>La P49 s'engage à accompagner ses membres dans cette transition, notamment à travers des sessions de formation et d'information qui seront organisées dans les prochaines semaines.</p>
+      `,
+      category: "Réforme",
+      date: "2024-01-15",
+      author: "Direction P49",
+      image: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg",
+      readTime: "5 min"
+    },
+    '2': {
+      title: "Assemblée générale 2024 : Un succès remarquable",
+      content: `
+        <p>L'assemblée générale annuelle de la Promotion 49 de l'ENA s'est tenue avec un succès remarquable, rassemblant plus de 300 membres de notre promotion.</p>
+        
+        <h3>Les temps forts de l'événement</h3>
+        <p>Cette assemblée a été marquée par plusieurs moments importants :</p>
+        <ul>
+          <li>Présentation du bilan annuel des activités</li>
+          <li>Élection du nouveau bureau exécutif</li>
+          <li>Adoption du budget pour l'année en cours</li>
+          <li>Présentation des projets futurs</li>
+        </ul>
+        
+        <h3>Perspectives d'avenir</h3>
+        <p>Les membres présents ont exprimé leur satisfaction quant aux réalisations de l'année écoulée et ont approuvé à l'unanimité les orientations stratégiques pour les mois à venir.</p>
+      `,
+      category: "Événement",
+      date: "2024-01-10",
+      author: "Bureau Exécutif",
+      image: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg",
+      readTime: "3 min"
     }
   };
-  if (loading) {
-    return <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">Chargement...</div>
-        </div>
-      </Layout>;
-  }
-  if (!news) {
-    return <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Actualité non trouvée</h1>
+
+  const actualite = actualiteData[id as keyof typeof actualiteData] || actualiteData['1'];
+
+  return (
+    <Layout>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className={`bg-white shadow-sm ${isMobile ? 'px-[25px] py-4' : 'px-[100px] py-6'}`}>
+          <div className="container mx-auto">
             <Link to="/actualites">
-              <Button>Retour aux actualités</Button>
+              <Button variant="ghost" className="mb-4 text-primary hover:text-primary/80">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Retour aux actualités
+              </Button>
             </Link>
           </div>
         </div>
-      </Layout>;
-  }
-  return <Layout>
-      <div className="bg-white min-h-screen">
-        {/* Back Button */}
-        <section className={`py-6 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <Link to="/actualites">
-            <Button variant="outline" className="flex items-center">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Retour aux actualités
-            </Button>
-          </Link>
-        </section>
 
         {/* Article Content */}
-        <article className={`pb-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-0">
-            {/* Header */}
+        <article className={`bg-white ${isMobile ? 'px-[25px] py-8' : 'px-[100px] py-12'}`}>
+          <div className="container mx-auto max-w-4xl">
+            {/* Article Header */}
             <header className="mb-8">
-              <div className="flex items-center gap-4 mb-4">
-                <Badge variant="secondary">{news.category}</Badge>
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  {new Date(news.published_date).toLocaleDateString('fr-FR')}
+              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center bg-primary/10 px-3 py-1 rounded-full">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    {new Date(actualite.date).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="h-4 w-4 mr-1" />
+                    {actualite.readTime} de lecture
+                  </div>
+                  <div className="flex items-center">
+                    <User className="h-4 w-4 mr-1" />
+                    {actualite.author}
+                  </div>
                 </div>
-                <div className="flex items-center text-sm text-gray-500">
-                  <User className="w-4 h-4 mr-2" />
-                  {news.author}
-                </div>
+                <Button variant="outline" size="sm">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Partager
+                </Button>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-                {news.title}
+              
+              <span className="bg-secondary/20 text-secondary px-3 py-1 rounded-full font-medium text-sm mb-4 inline-block">
+                {actualite.category}
+              </span>
+              
+              <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl md:text-4xl'} font-bold text-primary mb-6 leading-tight`}>
+                {actualite.title}
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                {news.summary}
-              </p>
             </header>
 
-            {/* Main Image */}
-            {news.image_url && <div className="mb-8">
-                <img src={news.image_url} alt={news.title} className="w-full h-96 object-cover rounded-lg shadow-lg" />
-              </div>}
-
-            {/* Content */}
-            <div className="prose prose-lg max-w-none mb-8">
-              {news.content.split('\n').map((paragraph, index) => <p key={index} className="mb-4 text-gray-700 leading-relaxed">
-                  {paragraph.trim()}
-                </p>)}
+            {/* Featured Image */}
+            <div className="aspect-video overflow-hidden rounded-lg mb-8">
+              <img 
+                src={actualite.image} 
+                alt={actualite.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            {/* Additional Images */}
-            {news.images && news.images.length > 1 && <div className="mb-8">
-                <h3 className="text-xl font-semibold text-primary mb-4">Images supplémentaires</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {news.images.slice(1).map((image, index) => <img key={index} src={image} alt={`${news.title} - Image ${index + 2}`} className="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow" />)}
-                </div>
-              </div>}
+            {/* Article Body */}
+            <div 
+              className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: actualite.content }}
+            />
 
-            {/* Tags */}
-            {news.tags && news.tags.length > 0 && <div className="mb-8">
-                <h3 className="text-lg font-semibold text-primary mb-3">Mots-clés</h3>
-                <div className="flex flex-wrap gap-2">
-                  {news.tags.map((tag, index) => <Badge key={index} variant="outline">
-                      {tag}
-                    </Badge>)}
+            {/* Article Footer */}
+            <footer className="mt-12 pt-8 border-t border-gray-200">
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-gray-500">
+                  Publié par <span className="font-medium text-primary">{actualite.author}</span>
                 </div>
-              </div>}
+                <Button variant="outline" size="sm">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Partager cet article
+                </Button>
+              </div>
+            </footer>
           </div>
         </article>
+
+        {/* Related Articles Section */}
+        <section className={`bg-gray-50 ${isMobile ? 'px-[25px] py-8' : 'px-[100px] py-12'}`}>
+          <div className="container mx-auto max-w-4xl">
+            <h2 className="text-2xl font-bold text-primary mb-6">Articles similaires</h2>
+            <div className="text-center">
+              <Link to="/actualites">
+                <Button className="bg-primary text-white hover:bg-primary/90">
+                  Voir toutes les actualités
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default ActualiteDetail;
