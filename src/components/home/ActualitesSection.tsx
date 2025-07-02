@@ -109,8 +109,8 @@ const ActualitesSection = () => {
                 {news.map((item) => (
                   <div key={item.id} className="w-full flex-shrink-0">
                     <Link to={`/actualite/${item.id}`}>
-                      <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white mx-2">
-                        <div className="aspect-video overflow-hidden">
+                      <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white mx-2 rounded-lg">
+                        <div className="aspect-video overflow-hidden rounded-t-lg">
                           <img 
                             src={item.image_url} 
                             alt={item.title}
@@ -203,13 +203,13 @@ const ActualitesSection = () => {
                   return (
                     <Link key={item.id} to={`/actualite/${item.id}`}>
                       <Card 
-                        className={`overflow-hidden transition-all duration-700 ease-in-out cursor-pointer bg-white ${
+                        className={`overflow-hidden transition-all duration-700 ease-in-out cursor-pointer bg-white rounded-lg ${
                           isCenter 
                             ? 'w-[450px] h-[520px] opacity-100 scale-110 hover:shadow-2xl z-10' 
                             : 'w-[350px] h-[480px] opacity-50 scale-90 hover:opacity-70 z-0'
                         }`}
                       >
-                        <div className="aspect-video overflow-hidden">
+                        <div className="aspect-video overflow-hidden rounded-t-lg">
                           <img 
                             src={item.image_url} 
                             alt={item.title}
