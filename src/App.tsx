@@ -21,6 +21,10 @@ import Gallery from "./pages/Gallery";
 import Journal from "./pages/Journal";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import EvenementsSociaux from "./pages/EvenementsSociaux";
+import EvenementsHeureux from "./pages/EvenementsHeureux";
+import DepartsRetraite from "./pages/DepartsRetraite";
+import EvenementsMalheureux from "./pages/EvenementsMalheureux";
 
 // Dashboard Pages
 import DashboardBlog from "./pages/dashboard/DashboardBlog";
@@ -53,6 +57,10 @@ const App = () => (
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/journal" element={<Journal />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/evenements-sociaux" element={<EvenementsSociaux />} />
+              <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
+              <Route path="/departs-retraite" element={<DepartsRetraite />} />
+              <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
               <Route path="*" element={<NotFound />} />
 
               {/* Dashboard Routes */}
