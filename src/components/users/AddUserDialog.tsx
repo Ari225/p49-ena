@@ -20,12 +20,16 @@ interface UserFormData {
   email: string;
   role: string;
   password: string;
+  address: string;
+  confirmPassword: string;
   profileImage: File | null;
 }
 
 const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) => {
   const [open, setOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState<UserFormData>({
     username: '',
     firstName: '',
@@ -33,14 +37,46 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
     email: '',
     role: '',
     password: '',
+    address: '',
+    confirmPassword: '',
     profileImage: null
   });
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setFormData(prev => ({ ...prev, profileImage: file }));
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    setFormData(prev => ({ ...prev, profileImage: null }));
+  };
+
+  const handleFormDataChange = (field: keyof UserFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.username || !formData.firstName || !formData.lastName || !formData.role || !formData.password) {
       toast.error('Veuillez remplir tous les champs obligatoires');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Les mots de passe ne correspondent pas');
       return;
     }
 
@@ -60,9 +96,13 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
         email: '',
         role: '',
         password: '',
+        address: '',
+        confirmPassword: '',
         profileImage: null
       });
       
+      setSelectedImage(null);
+      setImagePreview(null);
       setOpen(false);
       onUserAdded();
     } catch (error) {
@@ -88,18 +128,20 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <ProfileImageUpload
-            profileImage={formData.profileImage}
-            onImageChange={(image) => setFormData(prev => ({ ...prev, profileImage: image }))}
+            selectedImage={selectedImage}
+            imagePreview={imagePreview}
+            onImageChange={handleImageChange}
+            onRemoveImage={handleRemoveImage}
           />
 
           <UserTypeSelection
-            selectedRole={formData.role}
-            onRoleChange={(role) => setFormData(prev => ({ ...prev, role }))}
+            selectedUserType={formData.role}
+            onUserTypeChange={(role) => setFormData(prev => ({ ...prev, role }))}
           />
 
           <UserFormFields
             formData={formData}
-            onFormDataChange={setFormData}
+            onFormDataChange={handleFormDataChange}
           />
 
           <div className="flex justify-end space-x-4 pt-4">
