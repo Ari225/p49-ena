@@ -11,12 +11,12 @@ const AdminSidebar = () => {
 
   const menuItems = [
     {
-      title: 'Tableau de bord',
+      title: 'Portail',
       href: '/dashboard',
       icon: BarChart3
     },
     {
-      title: 'Admins & Rédacs',
+      title: 'Utilisateurs',
       href: '/dashboard/users',
       icon: Users
     },
@@ -26,7 +26,7 @@ const AdminSidebar = () => {
       icon: FileText
     },
     {
-      title: 'Articles Blog',
+      title: 'Blog',
       href: '/dashboard/blog',
       icon: PenTool
     },
@@ -56,7 +56,7 @@ const AdminSidebar = () => {
       icon: Star
     },
     {
-      title: 'Événements Sociaux',
+      title: 'Évènements sociaux',
       href: '/dashboard/evenements-sociaux',
       icon: PartyPopper
     },
@@ -71,7 +71,7 @@ const AdminSidebar = () => {
       icon: PlayCircle
     },
     {
-      title: 'Événements',
+      title: 'Évènements',
       href: '/dashboard/events',
       icon: Calendar
     },
