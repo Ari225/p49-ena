@@ -9,7 +9,7 @@ const ValuesSection = () => {
   const values = [
     {
       title: "Connexion",
-      description: "Maintenir des liens solides entre tous les membres du réseau",
+      description: "Entretenir des liens solides entre membres du réseau",
       icon: Handshake
     },
     {
@@ -19,7 +19,7 @@ const ValuesSection = () => {
     },
     {
       title: "Solidarité",
-      description: "Soutenir et accompagner chaque membre dans sa carrière",
+      description: "Accompagner chaque membre dans sa carrière",
       icon: Heart
     },
     {
