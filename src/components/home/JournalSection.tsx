@@ -1,10 +1,14 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+
 const JournalSection = () => {
   const isMobile = useIsMobile();
-  return <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+  
+  return (
+    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
         <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-8 md:mb-12 ${isMobile ? 'text-center' : 'text-center lg:text-left'}`}>Notre journal</h2>
         <div className={`flex ${isMobile ? 'flex-col space-y-6' : 'flex-col lg:flex-row'} items-center ${!isMobile ? 'space-y-6 lg:space-y-0 lg:space-x-12' : ''}`}>
@@ -28,12 +32,12 @@ const JournalSection = () => {
             </p>
             <div className={`flex ${isMobile ? 'flex-row gap-3 w-full' : 'flex-row gap-3 md:gap-4'} justify-center`}>
               <Button asChild className={`bg-primary text-white hover:bg-primary transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${isMobile ? 'flex-1 py-3' : 'px-4 py-2 rounded flex items-center text-sm md:text-base'}`}>
-                <Link to="/derniere-edition" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+                <Link to="/journal" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
                   Dernière édition
                 </Link>
               </Button>
               <Button asChild variant="outline" className={`border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200 ${isMobile ? 'flex-1 py-3' : 'text-sm md:text-base px-4 md:px-6 py-2 md:py-3'}`}>
-                <Link to="/archives" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-base">
+                <Link to="/journal" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-base">
                   Archives
                 </Link>
               </Button>
@@ -41,6 +45,8 @@ const JournalSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default JournalSection;

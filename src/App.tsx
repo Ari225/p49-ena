@@ -55,6 +55,7 @@ const App = () => (
               <Route path="/communiques" element={<Communiques />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/galerie" element={<Gallery />} />
               <Route path="/journal" element={<Journal />} />
               <Route path="/login" element={<Login />} />
               <Route path="/evenements-sociaux" element={<EvenementsSociaux />} />
