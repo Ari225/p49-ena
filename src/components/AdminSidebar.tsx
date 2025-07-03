@@ -42,6 +42,7 @@ const AdminSidebar = () => {
     },
     {
       title: 'Écho des Régions',
+      mobileTitle: 'Écho régions',
       href: '/dashboard/echo-regions',
       icon: MapPin
     },
@@ -57,6 +58,7 @@ const AdminSidebar = () => {
     },
     {
       title: 'Évènements sociaux',
+      mobileTitle: 'Év. sociaux',
       href: '/dashboard/evenements-sociaux',
       icon: PartyPopper
     },
@@ -102,6 +104,7 @@ const AdminSidebar = () => {
               const isActive = item.href === '/dashboard' 
                 ? location.pathname === '/dashboard'
                 : location.pathname.startsWith(item.href);
+              const displayTitle = item.mobileTitle || item.title;
               return (
                 <Link
                   key={item.href}
@@ -115,7 +118,7 @@ const AdminSidebar = () => {
                 >
                   <Icon className="h-5 w-5 mb-1" />
                   <span className="text-xs text-center leading-tight whitespace-nowrap">
-                    {item.title.split(' ').map((word, index, array) => (
+                    {displayTitle.split(' ').map((word, index, array) => (
                       <span key={index}>
                         {word}
                         {index < array.length - 1 && index === Math.floor(array.length / 2) - 1 ? <br /> : ' '}
