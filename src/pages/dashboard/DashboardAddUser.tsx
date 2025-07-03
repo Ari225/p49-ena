@@ -81,7 +81,7 @@ const DashboardAddUser = () => {
             <p className="text-gray-600 mt-2">Créer un nouveau compte utilisateur</p>
           </div>
 
-          <Card>
+          <Card className="rounded-lg">
             <CardHeader>
               <CardTitle>Informations de l'utilisateur</CardTitle>
             </CardHeader>

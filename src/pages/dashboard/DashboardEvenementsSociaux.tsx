@@ -503,7 +503,7 @@ const DashboardEvenementsSociaux = () => {
                   Nouvel événement
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+              <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {editingEvent ? 'Modifier l\'événement social' : 'Ajouter un événement social'}
@@ -604,7 +604,7 @@ const DashboardEvenementsSociaux = () => {
                   Nouvel événement social
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {editingEvent ? 'Modifier l\'événement social' : 'Ajouter un événement social'}
