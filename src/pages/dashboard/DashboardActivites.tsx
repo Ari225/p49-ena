@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -72,7 +71,7 @@ const DashboardActivites = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion des<br />Activités</h1>
+            <h1 className="text-2xl font-bold text-primary">Gestion des Activités</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer les activités de formation</p>
           </div>
 
@@ -84,9 +83,9 @@ const DashboardActivites = () => {
                   Nouvelle activité
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+              <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-hidden rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle>Ajouter une activité</DialogTitle>
+                  <DialogTitle className="text-primary">Ajouter une activité</DialogTitle>
                 </DialogHeader>
                 <ActivityForm 
                   onSuccess={handleFormSuccess}
@@ -131,9 +130,9 @@ const DashboardActivites = () => {
                   Nouvelle activité
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-hidden rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle>Ajouter une activité</DialogTitle>
+                  <DialogTitle className="text-primary text-xl">Ajouter une activité</DialogTitle>
                 </DialogHeader>
                 <ActivityForm 
                   onSuccess={handleFormSuccess}
