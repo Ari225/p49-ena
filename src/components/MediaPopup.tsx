@@ -23,7 +23,7 @@ const MediaPopup: React.FC<MediaPopupProps> = ({ isOpen, onClose, mediaItem }) =
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-full mx-4 sm:mx-auto p-0" hideCloseButton>
+      <DialogContent className="w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto p-0" hideCloseButton>
         <DialogHeader className="p-6 pb-0">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-primary text-lg">

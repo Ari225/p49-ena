@@ -25,7 +25,7 @@ const PDFViewer = ({ pdfUrl, title, triggerButton }: PDFViewerProps) => {
       <DialogTrigger asChild>
         {triggerButton || defaultTrigger}
       </DialogTrigger>
-      <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+      <DialogContent className="w-[95%] max-w-4xl h-[80vh] flex flex-col rounded-lg mx-auto">
         <DialogHeader className="flex flex-row items-center justify-between">
           <DialogTitle className="text-lg font-semibold text-primary">
             {title}

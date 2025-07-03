@@ -12,7 +12,7 @@ interface MapPopupProps {
 const MapPopup: React.FC<MapPopupProps> = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-full mx-4 sm:mx-auto">
+      <DialogContent className="w-[95%] max-w-4xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center text-primary">
             <MapPin className="h-5 w-5 mr-2" />

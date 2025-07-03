@@ -91,7 +91,7 @@ const DashboardPopups = () => {
                   Nouveau pop-up
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto">
+              <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
                   <DialogTitle>Ajouter un pop-up</DialogTitle>
                 </DialogHeader>
@@ -139,7 +139,7 @@ const DashboardPopups = () => {
                   Nouveau pop-up
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
                   <DialogTitle>Ajouter un pop-up</DialogTitle>
                 </DialogHeader>
