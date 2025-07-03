@@ -9,7 +9,7 @@ const ValuesSection = () => {
   const values = [
     {
       title: "Connexion",
-      description: "Entretenir des liens solides entre membres du réseau",
+      description: "Maintenir des liens solides entre tous les membres du réseau",
       icon: Handshake
     },
     {
@@ -19,7 +19,7 @@ const ValuesSection = () => {
     },
     {
       title: "Solidarité",
-      description: "Accompagner chaque membre dans sa carrière",
+      description: "Soutenir et accompagner chaque membre dans sa carrière",
       icon: Heart
     },
     {
@@ -82,7 +82,7 @@ const ValuesSection = () => {
                 <h3 className="text-primary mb-2 md:mb-3 text-lg md:text-xl font-semibold">
                   {value.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-700 text-center px-2 font-normal" style={{ minHeight: '3rem' }}>
+                <p className="text-sm leading-relaxed text-gray-700 text-center px-5 font-normal" style={{ minHeight: '3rem' }}>
                   {value.description}
                 </p>
               </div>
