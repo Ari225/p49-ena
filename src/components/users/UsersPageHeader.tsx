@@ -21,7 +21,7 @@ const UsersPageHeader = ({ userCount, onUserAdded, isMobile = false }: UsersPage
         </div>
 
         <div className="mb-6 w-full">
-          <AddUserDialog onUserAdded={onUserAdded} />
+          <AddUserDialog onUserAdded={onUserAdded} isMobile={true} />
         </div>
 
         <div className="flex items-center justify-between mb-4">
@@ -42,7 +42,7 @@ const UsersPageHeader = ({ userCount, onUserAdded, isMobile = false }: UsersPage
       </div>
 
       <div className="mb-6">
-        <AddUserDialog onUserAdded={onUserAdded} />
+        <AddUserDialog onUserAdded={onUserAdded} isMobile={false} />
       </div>
     </>
   );
