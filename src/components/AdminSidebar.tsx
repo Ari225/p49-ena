@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Users, FileText, Calendar, Settings, PenTool, MessageSquare, BarChart3, Bell, BookOpen, MapPin, Briefcase, Star, PartyPopper, Activity, PlayCircle } from 'lucide-react';
@@ -8,6 +8,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const AdminSidebar = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const activeItemRef = useRef<HTMLAnchorElement>(null);
 
   const menuItems = [
     {
@@ -94,10 +96,21 @@ const AdminSidebar = () => {
     }
   ];
 
+  // Auto-scroll to active item in mobile view
+  useEffect(() => {
+    if (isMobile && activeItemRef.current && scrollContainerRef.current) {
+      activeItemRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }, [location.pathname, isMobile]);
+
   if (isMobile) {
     return (
       <div className="fixed bottom-0 left-0 right-0 bg-primary border-t border-gray-200 z-50">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" ref={scrollContainerRef}>
           <div className="flex py-2 px-2 min-w-max">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -109,6 +122,7 @@ const AdminSidebar = () => {
                 <Link
                   key={item.href}
                   to={item.href}
+                  ref={isActive ? activeItemRef : null}
                   className={cn(
                     'flex flex-col items-center px-3 py-1 text-xs transition-colors min-w-[80px] flex-shrink-0',
                     isActive
