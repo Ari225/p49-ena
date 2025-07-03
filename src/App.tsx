@@ -9,6 +9,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 
 // Pages
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
 import Historique from "./pages/Historique";
 import InstancesDirigeantes from "./pages/InstancesDirigeantes";
 import Actualites from "./pages/Actualites";
@@ -46,6 +47,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/historique" element={<Historique />} />
               <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
               <Route path="/actualites" element={<Actualites />} />
