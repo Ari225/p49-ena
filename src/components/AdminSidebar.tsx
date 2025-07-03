@@ -118,12 +118,7 @@ const AdminSidebar = () => {
                 >
                   <Icon className="h-5 w-5 mb-1" />
                   <span className="text-xs text-center leading-tight whitespace-nowrap">
-                    {displayTitle.split(' ').map((word, index, array) => (
-                      <span key={index}>
-                        {word}
-                        {index < array.length - 1 && index === Math.floor(array.length / 2) - 1 ? <br /> : ' '}
-                      </span>
-                    ))}
+                    {displayTitle}
                   </span>
                 </Link>
               );
