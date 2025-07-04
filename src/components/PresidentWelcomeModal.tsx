@@ -96,7 +96,7 @@ const PresidentWelcomeModal = () => {
                 <p className={`font-semibold text-primary mb-4 md:mb-4 ${textSizes.signature}`}>
                   Madame MEL Méléï Marcelle
                 </p>
-                <p className={`font-semibold text-primary`}>
+                <p className={`font-medium text-primary`}>
                   Présidente du Réseau P49
                 </p>
               </div>
