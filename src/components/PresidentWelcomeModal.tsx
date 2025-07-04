@@ -12,7 +12,7 @@ const PresidentWelcomeModal = () => {
   const textSizes = {
     title: isMobile ? 'text-xl' : 'text-5xl', // Réduit de text-2xl à text-xl
     body: isMobile ? 'text-xs' : 'text-base',
-    signature: isMobile ? 'text-xs' : 'text-sm',
+    signature: isMobile ? 'text-xs' : 'text-xl',
     button: isMobile ? 'text-xs' : 'text-sm'
   };
 
@@ -67,7 +67,7 @@ const PresidentWelcomeModal = () => {
           {/* Welcome Message - Hauteur réduite pour le texte et les boutons */}
           <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-4 md:p-8">
-              <h2 className={`${textSizes.title} font-bold text-primary mb-4 md:mb-10`}>
+              <h2 className={`${textSizes.title} font-bold text-primary mb-4 md:mb-15`}>
                 Message de bienvenue
               </h2>
               <div className={`text-gray-700 leading-relaxed mb-4 ${textSizes.body}`}>
@@ -90,10 +90,10 @@ const PresidentWelcomeModal = () => {
                 <p className="mb-4 text-justify">
                   Je vous invite à parcourir nos différentes rubriques et à vous imprégner de l'âme de notre réseau. Que vous soyez membre, partenaire, ami ou simplement curieux, soyez les bienvenus chez nous. Ensemble, continuons de bâtir, d'innover et de faire rayonner les valeurs de la P49.
                 </p>
-                <p className={`font-medium text-primary mb-3 ${textSizes.signature}`}>
+                <p className="mb-15 text-justify">
                   Avec toute ma considération,
                 </p>
-                <p className={`font-semibold text-primary ${textSizes.signature}`}>
+                <p className={`font-semibold mb-4 text-primary ${textSizes.signature}`}>
                   Madame MEL Méléï Marcelle
                 </p>
                 <p className={`font-semibold text-primary ${textSizes.signature}`}>
