@@ -76,11 +76,7 @@ const PresidentWelcomeModal = () => {
   };
 
   const handleCancelNeverShow = () => {
-    // Reporter le modal de 1-2 jours (générer aléatoirement entre 1 et 2 jours)
-    const randomDays = Math.random() < 0.5 ? 1 : 2;
-    const postponeUntil = new Date().getTime() + (randomDays * 24 * 60 * 60 * 1000);
-    setCookie('welcome_modal_postponed_until', postponeUntil.toString(), randomDays);
-    setIsOpen(false);
+    // Fermer seulement le pop-up de confirmation, garder le modal principal ouvert
     setShowNeverShowConfirm(false);
   };
 
@@ -94,9 +90,8 @@ const PresidentWelcomeModal = () => {
     setShowCloseConfirm(false);
   };
 
-  const handleNeverShowFromClose = () => {
-    setCookie('welcome_modal_never_show', 'true', 365); // 1 an
-    setIsOpen(false);
+  const handleCancelClose = () => {
+    // Fermer seulement le pop-up de confirmation, garder le modal principal ouvert
     setShowCloseConfirm(false);
   };
 
@@ -202,7 +197,7 @@ const PresidentWelcomeModal = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className={isMobile ? 'flex-col space-y-2 sm:space-y-0' : ''}>
-            <AlertDialogCancel onClick={handleNeverShowFromClose}>
+            <AlertDialogCancel onClick={handleCancelClose}>
               Annuler
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmClose}>
