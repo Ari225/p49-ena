@@ -50,7 +50,7 @@ const ConfirmationDialogs = ({
 
       {/* Pop-up de confirmation pour "Fermer" */}
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
-        <AlertDialogContent className={`rounded-lg ${isMobile ? 'mx-4 max-w-[calc(100vw-32px)] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
+        <AlertDialogContent className={`rounded-lg ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
           <AlertDialogHeader>
             <AlertDialogTitle>Information</AlertDialogTitle>
             <AlertDialogDescription>
