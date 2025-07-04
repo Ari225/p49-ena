@@ -11,7 +11,7 @@ const PresidentWelcomeModal = () => {
   // Tailles de texte configurables
   const textSizes = {
     title: isMobile ? 'text-xl' : 'text-5xl', // Réduit de text-2xl à text-xl
-    body: isMobile ? 'text-xs' : 'text-sm',
+    body: isMobile ? 'text-xs' : 'text-base',
     signature: isMobile ? 'text-xs' : 'text-sm',
     button: isMobile ? 'text-xs' : 'text-sm'
   };
@@ -90,7 +90,7 @@ const PresidentWelcomeModal = () => {
                 <p className="mb-4 text-justify">
                   Je vous invite à parcourir nos différentes rubriques et à vous imprégner de l'âme de notre réseau. Que vous soyez membre, partenaire, ami ou simplement curieux, soyez les bienvenus chez nous. Ensemble, continuons de bâtir, d'innover et de faire rayonner les valeurs de la P49.
                 </p>
-                <p className="mb-4 text-justify">
+                <p className={`font-medium text-primary mb-3 ${textSizes.signature}`}>
                   Avec toute ma considération,
                 </p>
                 <p className={`font-semibold text-primary ${textSizes.signature}`}>
