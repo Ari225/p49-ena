@@ -67,9 +67,12 @@ const PresidentWelcomeModal = () => {
           {/* Welcome Message - Hauteur réduite pour le texte et les boutons */}
           <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-4 md:p-8">
+              {/* Titre avec mb-15 */}
               <h2 className={`${textSizes.title} font-bold text-primary mb-15`}>
                 Message de bienvenue
               </h2>
+              
+              {/* Corps du message avec mb-15 */}
               <div className={`text-gray-700 leading-relaxed mb-15 ${textSizes.body}`}>
                 <p className="mb-4">
                   Chères visiteuses, chers visiteurs,
@@ -94,6 +97,8 @@ const PresidentWelcomeModal = () => {
                   Avec toute ma considération,
                 </p>
               </div>
+              
+              {/* Signatures avec mb-5 entre nom et poste */}
               <p className={`font-semibold mb-5 text-primary ${textSizes.signature}`}>
                 Madame MEL Méléï Marcelle
               </p>
