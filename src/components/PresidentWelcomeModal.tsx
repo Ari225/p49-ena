@@ -10,7 +10,7 @@ const PresidentWelcomeModal = () => {
 
   // Tailles de texte configurables
   const textSizes = {
-    title: isMobile ? 'text-xl' : 'text-5xl', // Réduit de text-2xl à text-xl
+    title: isMobile ? 'text-xl' : 'text-5xl',
     body: isMobile ? 'text-xs' : 'text-base',
     signature: isMobile ? 'text-base' : 'text-lg',
     button: isMobile ? 'text-xs' : 'text-sm'
@@ -29,11 +29,8 @@ const PresidentWelcomeModal = () => {
 
     // If not shown in this session and dismissal time has expired (or doesn't exist)
     if (!sessionShown) {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-        sessionStorage.setItem('welcome_modal_shown', 'true');
-      }, 2000);
-      return () => clearTimeout(timer);
+      setIsOpen(true);
+      sessionStorage.setItem('welcome_modal_shown', 'true');
     }
   }, []);
 
@@ -55,7 +52,7 @@ const PresidentWelcomeModal = () => {
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : 'max-w-[calc(100vw-200px)] max-h-[calc(100vh-100px)]'}`} hideCloseButton>
         <div className={`flex flex-col md:flex-row w-full h-full rounded-lg overflow-hidden`}>
-          {/* President Photo - Hauteur augmentée sur mobile */}
+          {/* President Photo */}
           <div className={`relative overflow-hidden ${isMobile ? 'h-[200px]' : 'md:w-1/3'}`}>
             <img 
               src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
@@ -64,13 +61,13 @@ const PresidentWelcomeModal = () => {
             />
           </div>
 
-          {/* Welcome Message - Hauteur réduite pour le texte et les boutons */}
+          {/* Welcome Message */}
           <div className={`flex flex-col ${isMobile ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : 'max-h-[calc(100vh-160px)]'}`}>
             <div className="flex-1 overflow-y-auto p-4 md:p-8">
-              <h2 className={`${textSizes.title} font-bold text-primary mb-4 md:mb-10`}>
+              <h2 className={`${textSizes.title} font-bold text-primary mb-15`}>
                 Message de bienvenue
               </h2>
-              <div className={`text-gray-700 leading-relaxed mb-4 ${textSizes.body}`}>
+              <div className={`text-gray-700 leading-relaxed mb-15 ${textSizes.body}`}>
                 <p className="mb-4">
                   Chères visiteuses, chers visiteurs,
                 </p>
@@ -90,10 +87,13 @@ const PresidentWelcomeModal = () => {
                 <p className="mb-4 text-justify">
                   Je vous invite à parcourir nos différentes rubriques et à vous imprégner de l'âme de notre réseau. Que vous soyez membre, partenaire, ami ou simplement curieux, soyez les bienvenus chez nous. Ensemble, continuons de bâtir, d'innover et de faire rayonner les valeurs de la P49.
                 </p>
-                <p className={`text-primary mb-4 md:mb-10`}>
+                <p className={`text-primary mb-4`}>
                   Avec toute ma considération,
                 </p>
-                <p className={`font-semibold text-primary mb-4 md:mb-2 ${textSizes.signature}`}>
+              </div>
+              
+              <div>
+                <p className={`font-semibold text-primary mb-5 ${textSizes.signature}`}>
                   Madame MEL Méléï Marcelle
                 </p>
                 <p className={`font-medium text-primary`}>
@@ -102,7 +102,7 @@ const PresidentWelcomeModal = () => {
               </div>
             </div>
             
-            {/* Fixed buttons at bottom - Hauteur réduite */}
+            {/* Fixed buttons at bottom */}
             <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} gap-3 justify-end p-4 md:p-8 pt-2 border-t border-gray-300 bg-white`}>
               <Button 
                 onClick={handleNeverShowAgain} 
