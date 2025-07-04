@@ -62,7 +62,7 @@ const ConfirmationDialogs = ({
               Annuler
             </AlertDialogCancel>
             <AlertDialogAction onClick={onConfirmClose} className={isMobile ? 'flex-1 m-0' : ''}>
-              Ok
+              Confirmer
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
