@@ -30,14 +30,14 @@ const ConfirmationDialogs = ({
     <>
       {/* Pop-up de confirmation pour "Ne plus revoir" */}
       <AlertDialog open={showNeverShowConfirm} onOpenChange={setShowNeverShowConfirm}>
-        <AlertDialogContent className={isMobile ? 'mx-4 max-w-[calc(100vw-32px)] left-4 right-4 translate-x-0' : ''}>
+        <AlertDialogContent className={`rounded-lg ${isMobile ? 'mx-4 max-w-[calc(100vw-32px)]' : ''}`}>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmation</AlertDialogTitle>
             <AlertDialogDescription>
               Vous ne verrez plus jamais ce message. Voulez-vous continuer ?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className={isMobile ? 'flex-row space-x-2 space-y-0' : ''}>
+          <AlertDialogFooter className={isMobile ? 'flex-row gap-2 space-y-0' : ''}>
             <AlertDialogCancel onClick={onCancelNeverShow}>
               Annuler
             </AlertDialogCancel>
@@ -50,14 +50,14 @@ const ConfirmationDialogs = ({
 
       {/* Pop-up de confirmation pour "Fermer" */}
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
-        <AlertDialogContent className={isMobile ? 'mx-4 max-w-[calc(100vw-32px)] left-4 right-4 translate-x-0' : ''}>
+        <AlertDialogContent className={`rounded-lg ${isMobile ? 'mx-4 max-w-[calc(100vw-32px)]' : ''}`}>
           <AlertDialogHeader>
             <AlertDialogTitle>Information</AlertDialogTitle>
             <AlertDialogDescription>
               Vous pourrez voir ce message à nouveau
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className={isMobile ? 'flex-row space-x-2 space-y-0' : ''}>
+          <AlertDialogFooter className={isMobile ? 'flex-row gap-2 space-y-0' : ''}>
             <AlertDialogCancel onClick={onCancelClose}>
               Annuler
             </AlertDialogCancel>
