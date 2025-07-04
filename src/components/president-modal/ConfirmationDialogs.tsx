@@ -54,7 +54,7 @@ const ConfirmationDialogs = ({
           <AlertDialogHeader>
             <AlertDialogTitle>Information</AlertDialogTitle>
             <AlertDialogDescription>
-              Vous pourrez voir ce message à nouveau
+              Vous pourrez voir ce message à nouveau.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className={isMobile ? 'flex-row justify-center gap-3 space-y-0' : ''}>
