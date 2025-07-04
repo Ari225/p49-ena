@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -56,11 +55,8 @@ const PresidentWelcomeModal = () => {
 
     // Si pas encore montré dans cette session
     if (!sessionShown) {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-        sessionStorage.setItem('welcome_modal_shown', 'true');
-      }, 2000);
-      return () => clearTimeout(timer);
+      setIsOpen(true);
+      sessionStorage.setItem('welcome_modal_shown', 'true');
     }
   }, []);
 
@@ -178,16 +174,16 @@ const PresidentWelcomeModal = () => {
 
       {/* Pop-up de confirmation pour "Ne plus revoir" */}
       <AlertDialog open={showNeverShowConfirm} onOpenChange={setShowNeverShowConfirm}>
-        <AlertDialogContent>
+        <AlertDialogContent className={isMobile ? 'mx-4 max-w-[calc(100vw-32px)]' : ''}>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmation</AlertDialogTitle>
             <AlertDialogDescription>
               Vous ne verrez plus jamais ce message. Voulez-vous continuer ?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className={isMobile ? 'flex-col space-y-2 sm:space-y-0' : ''}>
             <AlertDialogCancel onClick={handleCancelNeverShow}>
-              Revoir à nouveau
+              Annuler
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmNeverShow}>
               Confirmer
@@ -198,16 +194,16 @@ const PresidentWelcomeModal = () => {
 
       {/* Pop-up de confirmation pour "Fermer" */}
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
-        <AlertDialogContent>
+        <AlertDialogContent className={isMobile ? 'mx-4 max-w-[calc(100vw-32px)]' : ''}>
           <AlertDialogHeader>
             <AlertDialogTitle>Information</AlertDialogTitle>
             <AlertDialogDescription>
               Vous pourrez voir ce message à nouveau
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className={isMobile ? 'flex-col space-y-2 sm:space-y-0' : ''}>
             <AlertDialogCancel onClick={handleNeverShowFromClose}>
-              Ne plus revoir
+              Annuler
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmClose}>
               Ok
