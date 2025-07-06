@@ -1,42 +1,48 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Star, Plus, Edit, Trash2, User } from 'lucide-react';
+import TestimonialFormDialog from '@/components/testimonials/TestimonialFormDialog';
+import TestimonialCard from '@/components/testimonials/TestimonialCard';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const DashboardTemoignages = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    position: '',
-    content: '',
-    rating: '5'
-  });
 
   const mockTestimonials = [
     {
       id: '1',
-      name: 'Dr. Kouakou Marie',
-      position: 'Directrice Générale, Ministère de l\'Éducation',
-      content: 'La P49 m\'a permis de développer un réseau professionnel solide et de bénéficier d\'opportunités de formation continue.',
-      rating: 5,
+      name: 'Dr. Kouassi Marie',
+      position: 'Directrice Générale, Ministère de l\'Économie',
+      content: 'Le réseau P49 m\'a permis de développer mes compétences et de créer des liens durables avec des professionnels exceptionnels. C\'est une communauté qui valorise l\'excellence et l\'entraide.',
+      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face',
       date: '2024-03-15'
     },
     {
       id: '2',
-      name: 'M. Traoré Seydou',
+      name: 'M. Yao Jean-Baptiste',
       position: 'Préfet de Région',
-      content: 'Grâce au réseau P49, j\'ai pu échanger avec d\'autres collègues sur les meilleures pratiques administratives.',
-      rating: 5,
+      content: 'Une communauté exceptionnelle qui favorise l\'excellence dans le service public. Les formations et les échanges nous permettent de mieux servir nos concitoyens.',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       date: '2024-03-10'
+    },
+    {
+      id: '3',
+      name: 'Mme. Touré Fatou',
+      position: 'Directrice des Ressources Humaines',
+      content: 'L\'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien qui nous accompagne dans nos défis professionnels et personnels.',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+      date: '2024-03-08'
+    },
+    {
+      id: '4',
+      name: 'Dr. Diallo Mamadou',
+      position: 'Conseiller du Président',
+      content: 'La formation continue proposée par le réseau est de très haute qualité. Elle nous permet de rester à la pointe des meilleures pratiques administratives.',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+      date: '2024-03-05'
     }
   ];
 
@@ -44,20 +50,19 @@ const DashboardTemoignages = () => {
     return <div>Non autorisé</div>;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (formData: any) => {
     console.log('Nouveau témoignage:', formData);
-    setShowForm(false);
-    setFormData({ name: '', position: '', content: '', rating: '5' });
+    // TODO: Implement actual submission logic
   };
 
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, index) => (
-      <Star
-        key={index}
-        className={`w-4 h-4 ${index < rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
-      />
-    ));
+  const handleEdit = (testimonial: any) => {
+    console.log('Modifier témoignage:', testimonial);
+    // TODO: Implement edit logic
+  };
+
+  const handleDelete = (id: string) => {
+    console.log('Supprimer témoignage:', id);
+    // TODO: Implement delete logic
   };
 
   if (isMobile) {
@@ -69,87 +74,18 @@ const DashboardTemoignages = () => {
             <p className="text-gray-600 mt-1 text-sm">Gérer les témoignages des membres</p>
           </div>
 
-          <div className="mb-4">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90 w-full"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouveau témoignage'}
-            </Button>
+          <div className="mb-6">
+            <TestimonialFormDialog onSubmit={handleSubmit} />
           </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Ajouter un témoignage</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder="Nom complet"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Poste/Fonction"
-                    value={formData.position}
-                    onChange={(e) => setFormData({...formData, position: e.target.value})}
-                    required
-                  />
-                  <Textarea
-                    placeholder="Témoignage"
-                    value={formData.content}
-                    onChange={(e) => setFormData({...formData, content: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="w-full p-2 border rounded-md"
-                    value={formData.rating}
-                    onChange={(e) => setFormData({...formData, rating: e.target.value})}
-                  >
-                    <option value="5">5 étoiles</option>
-                    <option value="4">4 étoiles</option>
-                    <option value="3">3 étoiles</option>
-                    <option value="2">2 étoiles</option>
-                    <option value="1">1 étoile</option>
-                  </select>
-                  <Button type="submit" className="w-full">Publier</Button>
-                </form>
-              </CardContent>
-            </Card>
-          )}
 
           <div className="space-y-4">
             {mockTestimonials.map((testimonial) => (
-              <Card key={testimonial.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center">
-                      <User className="w-8 h-8 text-primary bg-primary/10 rounded-full p-1 mr-3" />
-                      <div>
-                        <CardTitle className="text-lg">{testimonial.name}</CardTitle>
-                        <p className="text-sm text-gray-600">{testimonial.position}</p>
-                      </div>
-                    </div>
-                    <div className="flex">{renderStars(testimonial.rating)}</div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <TestimonialCard
+                key={testimonial.id}
+                testimonial={testimonial}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
         </div>
@@ -170,88 +106,17 @@ const DashboardTemoignages = () => {
           </div>
 
           <div className="mb-6">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouveau témoignage'}
-            </Button>
+            <TestimonialFormDialog onSubmit={handleSubmit} />
           </div>
 
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Ajouter un témoignage</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                      placeholder="Nom complet"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      required
-                    />
-                    <Input
-                      placeholder="Poste/Fonction"
-                      value={formData.position}
-                      onChange={(e) => setFormData({...formData, position: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <Textarea
-                    placeholder="Témoignage"
-                    value={formData.content}
-                    onChange={(e) => setFormData({...formData, content: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="w-full p-2 border rounded-md"
-                    value={formData.rating}
-                    onChange={(e) => setFormData({...formData, rating: e.target.value})}
-                  >
-                    <option value="5">5 étoiles</option>
-                    <option value="4">4 étoiles</option>
-                    <option value="3">3 étoiles</option>
-                    <option value="2">2 étoiles</option>
-                    <option value="1">1 étoile</option>
-                  </select>
-                  <Button type="submit">Publier le témoignage</Button>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockTestimonials.map((testimonial) => (
-              <Card key={testimonial.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center">
-                      <User className="w-10 h-10 text-primary bg-primary/10 rounded-full p-2 mr-3" />
-                      <div>
-                        <CardTitle>{testimonial.name}</CardTitle>
-                        <p className="text-gray-600">{testimonial.position}</p>
-                      </div>
-                    </div>
-                    <div className="flex">{renderStars(testimonial.rating)}</div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4 italic">"{testimonial.content}"</p>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <TestimonialCard
+                key={testimonial.id}
+                testimonial={testimonial}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
         </div>
