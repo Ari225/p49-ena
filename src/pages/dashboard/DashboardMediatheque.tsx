@@ -77,7 +77,7 @@ const DashboardMediatheque = () => {
     return (
       <Layout>
         <div className="px-4 py-6 pb-20 min-h-screen">
-          <div className="mb-6 max-w-full">
+          <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary leading-tight">
               Gestion de la<br />Médiathèque
             </h1>
@@ -88,9 +88,9 @@ const DashboardMediatheque = () => {
             <MediaFormDialog onSubmit={handleSubmit} />
           </div>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-3">
             {mockMedia.map((media) => (
-              <div key={media.id} className="w-full">
+              <div key={media.id} className="min-w-0">
                 <MediaCard
                   media={media}
                   onEdit={handleEdit}
@@ -110,8 +110,8 @@ const DashboardMediatheque = () => {
       <div className="flex min-h-screen">
         <AdminSidebar />
         
-        <div className="flex-1 ml-64 p-6 overflow-hidden">
-          <div className="mb-8 max-w-full">
+        <div className="flex-1 ml-64 p-6">
+          <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion de la Médiathèque</h1>
             <p className="text-gray-600 mt-2">Gérer les contenus multimédias (vidéos, photos, documents)</p>
           </div>
@@ -120,7 +120,7 @@ const DashboardMediatheque = () => {
             <MediaFormDialog onSubmit={handleSubmit} />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 auto-rows-fr">
+          <div className="grid grid-cols-2 gap-6">
             {mockMedia.map((media) => (
               <div key={media.id} className="min-w-0">
                 <MediaCard

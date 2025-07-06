@@ -50,8 +50,8 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
   };
 
   return (
-    <Card className="h-full hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary overflow-hidden">
-      <CardHeader className="pb-3 p-4">
+    <Card className="h-full hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
+      <CardHeader className="pb-2 p-3">
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center space-x-2 min-w-0 flex-1">
             {getMediaIcon(media.type)}
@@ -63,17 +63,17 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
             {media.category}
           </Badge>
         </div>
-        <CardTitle className="text-base text-primary line-clamp-2 leading-tight">
+        <CardTitle className="text-sm text-primary line-clamp-2 leading-tight">
           {media.title}
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="pt-0 p-4 flex flex-col h-full">
-        <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-3 leading-relaxed">
+      <CardContent className="pt-0 p-3 flex flex-col h-full">
+        <p className="text-gray-600 text-xs mb-3 flex-1 line-clamp-2 leading-relaxed">
           {media.description}
         </p>
         
-        <div className="space-y-3 mt-auto">
+        <div className="space-y-2 mt-auto">
           <div className="flex items-center text-xs text-gray-500">
             <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
             <span className="truncate">
@@ -83,24 +83,24 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
           
           {media.tags.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {media.tags.slice(0, 3).map((tag, index) => (
-                <span key={index} className="bg-accent/20 text-primary px-2 py-1 rounded-full text-xs truncate max-w-[80px]">
+              {media.tags.slice(0, 2).map((tag, index) => (
+                <span key={index} className="bg-accent/20 text-primary px-1.5 py-0.5 rounded-full text-xs truncate max-w-[70px]">
                   {tag}
                 </span>
               ))}
-              {media.tags.length > 3 && (
-                <span className="text-gray-500 text-xs flex-shrink-0">+{media.tags.length - 3}</span>
+              {media.tags.length > 2 && (
+                <span className="text-gray-500 text-xs flex-shrink-0">+{media.tags.length - 2}</span>
               )}
             </div>
           )}
           
-          <div className="flex gap-2 pt-2 border-t">
+          <div className="flex gap-1 pt-2 border-t">
             {onEdit && (
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onEdit(media)}
-                className="flex-1 text-xs h-8"
+                className="flex-1 text-xs h-7 px-2"
               >
                 <Edit className="h-3 w-3 mr-1" />
                 <span className="hidden sm:inline">Modifier</span>
@@ -111,7 +111,7 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
               <Button
                 size="sm"
                 variant="outline"
-                className="flex-1 text-red-600 hover:text-red-700 text-xs h-8"
+                className="flex-1 text-red-600 hover:text-red-700 text-xs h-7 px-2"
                 onClick={() => onDelete(media.id)}
               >
                 <Trash2 className="h-3 w-3 mr-1" />
