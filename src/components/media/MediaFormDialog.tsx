@@ -74,30 +74,31 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           Nouveau média
         </Button>
       </DialogTrigger>
-      <DialogContent className={`${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : 'max-w-md'} rounded-lg`}>
-        <DialogHeader>
-          <DialogTitle>Ajouter un média</DialogTitle>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-md'}`}>
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-lg">Ajouter un média</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Titre *</Label>
+            <Label htmlFor="title" className="text-sm font-medium">Titre *</Label>
             <Input
               id="title"
               value={formData.title}
               onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+              className="w-full"
               required
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="type">Type *</Label>
+            <Label htmlFor="type" className="text-sm font-medium">Type *</Label>
             <Select
               value={formData.type}
               onValueChange={(value: 'Photos' | 'Vidéos' | 'Documents') => 
                 setFormData(prev => ({ ...prev, type: value, media: null }))
               }
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Choisir le type de média" />
               </SelectTrigger>
               <SelectContent>
@@ -110,8 +111,8 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           
           {formData.type && (
             <div className="space-y-2">
-              <Label htmlFor="media">Média *</Label>
-              <div className="flex items-center space-x-2">
+              <Label htmlFor="media" className="text-sm font-medium">Média *</Label>
+              <div className="w-full">
                 <Input
                   id="media"
                   type="file"
@@ -124,48 +125,52 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
                   type="button"
                   variant="outline"
                   onClick={() => document.getElementById('media')?.click()}
-                  className="w-full"
+                  className="w-full justify-start text-left"
                 >
-                  <Upload className="mr-2 h-4 w-4" />
-                  {formData.media ? formData.media.name : `Choisir ${formData.type.toLowerCase()}`}
+                  <Upload className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">
+                    {formData.media ? formData.media.name : `Choisir ${formData.type.toLowerCase()}`}
+                  </span>
                 </Button>
               </div>
             </div>
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
+            <Label htmlFor="description" className="text-sm font-medium">Description *</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
+              className="w-full resize-none"
               required
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="tags">Tags</Label>
+            <Label htmlFor="tags" className="text-sm font-medium">Tags</Label>
             <Input
               id="tags"
               value={formData.tags}
               onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
               placeholder="Séparer par des virgules"
+              className="w-full"
             />
           </div>
           
-          <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'justify-end space-x-2'}`}>
+          <div className={`flex pt-4 border-t ${isMobile ? 'flex-col gap-3' : 'justify-end gap-2'}`}>
             <Button
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
-              className={isMobile ? 'w-full' : ''}
+              className={isMobile ? 'w-full' : 'min-w-[80px]'}
             >
               Annuler
             </Button>
             <Button
               type="submit"
-              className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full' : ''}`}
+              className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full' : 'min-w-[80px]'}`}
             >
               Publier
             </Button>

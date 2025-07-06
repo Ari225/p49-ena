@@ -26,13 +26,13 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
   const getMediaIcon = (type: string) => {
     switch (type) {
       case 'Vidéo':
-        return <PlayCircle className="w-5 h-5 text-red-500" />;
+        return <PlayCircle className="w-4 h-4 text-red-500 flex-shrink-0" />;
       case 'Images':
-        return <Image className="w-5 h-5 text-blue-500" />;
+        return <Image className="w-4 h-4 text-blue-500 flex-shrink-0" />;
       case 'Document':
-        return <FileText className="w-5 h-5 text-green-500" />;
+        return <FileText className="w-4 h-4 text-green-500 flex-shrink-0" />;
       default:
-        return <PlayCircle className="w-5 h-5" />;
+        return <PlayCircle className="w-4 h-4 flex-shrink-0" />;
     }
   };
 
@@ -50,69 +50,73 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
   };
 
   return (
-    <Card className="h-full hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-2">
+    <Card className="h-full hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary overflow-hidden">
+      <CardHeader className="pb-3 p-4">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <div className="flex items-center space-x-2 min-w-0 flex-1">
             {getMediaIcon(media.type)}
-            <Badge className={`text-xs ${getTypeColor(media.type)}`}>
+            <Badge className={`text-xs ${getTypeColor(media.type)} flex-shrink-0`}>
               {media.type}
             </Badge>
           </div>
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="outline" className="text-xs flex-shrink-0">
             {media.category}
           </Badge>
         </div>
-        <CardTitle className="text-lg text-primary line-clamp-2">
+        <CardTitle className="text-base text-primary line-clamp-2 leading-tight">
           {media.title}
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="pt-0 flex flex-col h-full">
-        <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-3">
+      <CardContent className="pt-0 p-4 flex flex-col h-full">
+        <p className="text-gray-600 text-sm mb-4 flex-1 line-clamp-3 leading-relaxed">
           {media.description}
         </p>
         
-        <div className="space-y-3">
-          <div className="flex items-center text-sm text-gray-500">
-            <Calendar className="w-4 h-4 mr-1" />
-            {new Date(media.date).toLocaleDateString('fr-FR')}
+        <div className="space-y-3 mt-auto">
+          <div className="flex items-center text-xs text-gray-500">
+            <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
+            <span className="truncate">
+              {new Date(media.date).toLocaleDateString('fr-FR')}
+            </span>
           </div>
           
           {media.tags.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {media.tags.slice(0, 3).map((tag, index) => (
-                <span key={index} className="bg-accent/20 text-primary px-2 py-1 rounded-full text-xs">
+                <span key={index} className="bg-accent/20 text-primary px-2 py-1 rounded-full text-xs truncate max-w-[80px]">
                   {tag}
                 </span>
               ))}
               {media.tags.length > 3 && (
-                <span className="text-gray-500 text-xs">+{media.tags.length - 3}</span>
+                <span className="text-gray-500 text-xs flex-shrink-0">+{media.tags.length - 3}</span>
               )}
             </div>
           )}
           
-          <div className="flex space-x-2 pt-2 border-t">
+          <div className="flex gap-2 pt-2 border-t">
             {onEdit && (
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onEdit(media)}
-                className="flex-1 text-xs"
+                className="flex-1 text-xs h-8"
               >
                 <Edit className="h-3 w-3 mr-1" />
-                Modifier
+                <span className="hidden sm:inline">Modifier</span>
+                <span className="sm:hidden">Mod.</span>
               </Button>
             )}
             {onDelete && (
               <Button
                 size="sm"
                 variant="outline"
-                className="flex-1 text-red-600 hover:text-red-700 text-xs"
+                className="flex-1 text-red-600 hover:text-red-700 text-xs h-8"
                 onClick={() => onDelete(media.id)}
               >
                 <Trash2 className="h-3 w-3 mr-1" />
-                Supprimer
+                <span className="hidden sm:inline">Supprimer</span>
+                <span className="sm:hidden">Sup.</span>
               </Button>
             )}
           </div>
