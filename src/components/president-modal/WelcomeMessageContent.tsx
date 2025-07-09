@@ -36,7 +36,7 @@ const WelcomeMessageContent = () => {
         <p className="mb-4 text-justify">
           Je vous invite à parcourir nos différentes rubriques et à vous imprégner de l'âme de notre réseau. Que vous soyez membre, partenaire, ami ou simplement curieux, soyez les bienvenus chez nous. Ensemble, continuons de bâtir, d'innover et de faire rayonner les valeurs de la P49.
         </p>
-        <p className={`text-primary mb-15`}>
+        <p className={`text-primary`}>
           Avec toute ma considération,
         </p>
       </div>
