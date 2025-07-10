@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import NewsCarousel from './news/NewsCarousel';
 import NewsGrid from './news/NewsGrid';
 
 interface NewsItem {
@@ -86,14 +87,53 @@ const ActualitesSection = () => {
               <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[10px] md:mb-[10px] font-bold`}>
                 Actualités récentes
               </h2>
-              <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'} italic text-gray-700`}>
+              <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'} text-gray-700`}>
                 Découvrez les dernières nouvelles de la P49
               </p>
             </div>
-            
-            {/* Button in top right - only for desktop */}
             {!isMobile && !isTablet && (
-              <div className="flex-shrink-0">
+              <Button asChild className="bg-primary hover:bg-primary/90 text-white">
+                <Link to="/actualites" className="flex items-center gap-2">
+                  <span>Voir toutes les actualités</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            )}
+          </div>
+          
+          {isMobile ? (
+            <>
+              <NewsCarousel
+                news={news}
+                currentIndex={currentIndex}
+                onPrevious={prevSlide}
+                onNext={nextSlide}
+                onDotClick={handleDotClick}
+              />
+              
+              {/* Mobile button */}
+              <div className="text-center mt-8">
+                <Button asChild className="bg-primary hover:bg-primary/90 text-white w-full">
+                  <Link to="/actualites" className="flex items-center gap-2 text-sm">
+                    Voir toutes les actualités
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <NewsGrid
+                news={news}
+                currentIndex={currentIndex}
+                onPrevious={prevSlide}
+                onNext={nextSlide}
+                onDotClick={handleDotClick}
+                variant={isTablet ? 'tablet' : 'desktop'}
+              />
+              
+              {/* Tablet/Desktop button */}
+              <div className="text-center mt-8">
                 <Button asChild className="bg-primary hover:bg-primary/90 text-white">
                   <Link to="/actualites" className="flex items-center gap-2 text-base">
                     Voir toutes les actualités
@@ -101,17 +141,8 @@ const ActualitesSection = () => {
                   </Link>
                 </Button>
               </div>
-            )}
-          </div>
-          
-          <NewsGrid
-            news={news}
-            currentIndex={currentIndex}
-            onPrevious={prevSlide}
-            onNext={nextSlide}
-            onDotClick={handleDotClick}
-            variant={isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop'}
-          />
+            </>
+          )}
         </div>
       </div>
     </section>
