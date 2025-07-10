@@ -55,10 +55,13 @@ const Header = () => {
                 </Link>
               </div>
 
-              {/* Right Section - Language & Menu */}
-              <div className="flex items-center space-x-4 flex-shrink-0">
+              {/* Center Section - Language Switchers */}
+              <div className="flex items-center justify-center flex-1">
                 <LanguageToggle />
-                <UserMenu />
+              </div>
+
+              {/* Right Section - Menu */}
+              <div className="flex items-center flex-shrink-0">
                 <MobileMenu />
               </div>
             </div>

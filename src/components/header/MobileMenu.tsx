@@ -29,18 +29,18 @@ const MobileMenu = () => {
           variant="ghost" 
           size="sm" 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className={`${isTab ? 'p-3' : 'p-2'}`}
+          className={`${isTab ? 'p-4' : 'p-2'}`}
         >
           {isMobileMenuOpen ? (
-            <X className={`${isTab ? 'h-6 w-6' : 'h-5 w-5'}`} />
+            <X className={`${isTab ? 'h-7 w-7' : 'h-5 w-5'}`} />
           ) : (
-            <Menu className={`${isTab ? 'h-6 w-6' : 'h-5 w-5'}`} />
+            <Menu className={`${isTab ? 'h-7 w-7' : 'h-5 w-5'}`} />
           )}
         </Button>
       </div>
 
-      {/* Mobile Menu Overlay with slide animation */}
-      <div className={`absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      {/* Mobile Menu Overlay with slide animation - Full width */}
+      <div className={`fixed top-full left-0 right-0 w-screen bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <nav className="px-[25px] py-[15px]">
           {menuItems.map(menu => (
             <div key={menu.title}>
