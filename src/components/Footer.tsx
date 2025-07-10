@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import FooterLogo from './footer/FooterLogo';
 import FooterLinks from './footer/FooterLinks';
 import FooterContact from './footer/FooterContact';
@@ -11,6 +11,7 @@ import FooterSocial from './footer/FooterSocial';
 const Footer = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
 
   if (isMobile) {
     return (
@@ -35,9 +36,40 @@ const Footer = () => {
     );
   }
 
-  // Version tablette et desktop
+  if (isTab) {
+    return (
+      <footer className="bg-primary text-white px-[50px] py-[40px]">
+        <div className="container mx-auto px-0">
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col items-center">
+              <FooterLogo />
+            </div>
+
+            <div className="grid grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <FooterLinks />
+                <FooterContact />
+              </div>
+              <div>
+                <FooterNewsletter />
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between text-sm text-gray-400 mt-8 pt-4 border-t border-gray-600">
+            <div>
+              © 2024 P49 ENA. {t('footer.rights')}.
+            </div>
+            <FooterSocial />
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
+  // Desktop version
   return (
-    <footer className="bg-primary text-white px-[50px] md:px-[100px] py-[50px]">
+    <footer className="bg-primary text-white px-[100px] py-[50px]">
       <div className="container mx-auto px-0">
         <div className="flex grid-cols-1 lg:grid-cols-2 gap-[10px] w-full">
           <div className="flex flex-col w-[35%]">

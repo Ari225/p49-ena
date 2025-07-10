@@ -6,65 +6,185 @@ import BureauExecutifSection from '@/components/instances/BureauExecutifSection'
 import CommissairesSection from '@/components/instances/CommissairesSection';
 import DeleguesRegionauxSection from '@/components/instances/DeleguesRegionauxSection';
 import CommissionsSection from '@/components/instances/CommissionsSection';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const InstancesDirigeantes = () => {
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
 
   return (
     <Layout>
       <div className="bg-gray-50 min-h-screen">
-        {/* Hero Section with Background Image */}
-        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
-          <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
-              alt="Background instances dirigeantes" 
-              className="w-full h-full object-cover" 
-            />
-            <div className="absolute inset-0 bg-primary/80"></div>
-          </div>
-          
-          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
-              Instances Dirigeantes
-            </h1>
-            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
-              Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
-            </p>
-          </div>
-        </section>
+        {/* Hero Section with Background Image - Mobile */}
+        {isMobile && (
+          <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
+            <div className="absolute inset-0">
+              <img 
+                src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+                alt="Background instances dirigeantes" 
+                className="w-full h-full object-cover" 
+              />
+              <div className="absolute inset-0 bg-primary/80"></div>
+            </div>
+            
+            <div className="relative z-10 text-center px-[25px]">
+              <h1 className="text-2xl font-bold mb-2 animate-fade-in">
+                Instances Dirigeantes
+              </h1>
+              <p className="text-sm italic mb-4 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
+              </p>
+            </div>
+          </section>
+        )}
 
-        <div className={`container mx-auto ${isMobile ? 'px-[25px] py-8' : 'px-[100px] py-12'}`}>
-          <Tabs defaultValue="bureau" className="w-full">
-            <TabsList className={`grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl ${isMobile ? 'h-auto' : 'h-14'}`}>
-              <TabsTrigger 
-                value="bureau" 
-                className={`${isMobile ? 'text-base py-3' : 'text-lg py-4'} font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600`}
-              >
-                Bureau Exécutif
-              </TabsTrigger>
-              <TabsTrigger 
-                value="commissions" 
-                className={`${isMobile ? 'text-base py-3' : 'text-lg py-4'} font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600`}
-              >
-                Commissions
-              </TabsTrigger>
-            </TabsList>
+        {/* Hero Section with Background Image - Tablet */}
+        {isTab && (
+          <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
+            <div className="absolute inset-0">
+              <img 
+                src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+                alt="Background instances dirigeantes" 
+                className="w-full h-full object-cover" 
+              />
+              <div className="absolute inset-0 bg-primary/80"></div>
+            </div>
             
-            <TabsContent value="bureau" className="space-y-0">
-              <div className={`space-y-8 ${isMobile ? 'pb-8' : 'pb-12'}`}>
-                <BureauExecutifSection />
-                <CommissairesSection />
-                <DeleguesRegionauxSection />
-              </div>
-            </TabsContent>
+            <div className="relative z-10 text-center px-[50px]">
+              <h1 className="text-3xl font-bold mb-3 animate-fade-in">
+                Instances Dirigeantes
+              </h1>
+              <p className="text-base italic mb-5 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
+              </p>
+            </div>
+          </section>
+        )}
+
+        {/* Hero Section with Background Image - Desktop */}
+        {!isMobile && !isTab && (
+          <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+            <div className="absolute inset-0">
+              <img 
+                src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+                alt="Background instances dirigeantes" 
+                className="w-full h-full object-cover" 
+              />
+              <div className="absolute inset-0 bg-primary/80"></div>
+            </div>
             
-            <TabsContent value="commissions" className={isMobile ? 'pb-8' : 'pb-12'}>
-              <CommissionsSection />
-            </TabsContent>
-          </Tabs>
-        </div>
+            <div className="relative z-10 text-center px-8 lg:px-[100px]">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-4 animate-fade-in">
+                Instances Dirigeantes
+              </h1>
+              <p className="text-lg md:text-xl italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
+              </p>
+            </div>
+          </section>
+        )}
+
+        {/* Content Section - Mobile */}
+        {isMobile && (
+          <div className="container mx-auto px-[25px] py-8">
+            <Tabs defaultValue="bureau" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-auto">
+                <TabsTrigger 
+                  value="bureau" 
+                  className="text-base py-3 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                >
+                  Bureau Exécutif
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="commissions" 
+                  className="text-base py-3 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                >
+                  Commissions
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="bureau" className="space-y-0">
+                <div className="space-y-8 pb-8">
+                  <BureauExecutifSection />
+                  <CommissairesSection />
+                  <DeleguesRegionauxSection />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="commissions" className="pb-8">
+                <CommissionsSection />
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
+
+        {/* Content Section - Tablet */}
+        {isTab && (
+          <div className="container mx-auto px-[50px] py-10">
+            <Tabs defaultValue="bureau" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-10 bg-white shadow-lg border-0 p-2 rounded-xl h-16">
+                <TabsTrigger 
+                  value="bureau" 
+                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                >
+                  Bureau Exécutif
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="commissions" 
+                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                >
+                  Commissions
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="bureau" className="space-y-0">
+                <div className="space-y-10 pb-10">
+                  <BureauExecutifSection />
+                  <CommissairesSection />
+                  <DeleguesRegionauxSection />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="commissions" className="pb-10">
+                <CommissionsSection />
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
+
+        {/* Content Section - Desktop */}
+        {!isMobile && !isTab && (
+          <div className="container mx-auto px-[100px] py-12">
+            <Tabs defaultValue="bureau" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-14">
+                <TabsTrigger 
+                  value="bureau" 
+                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                >
+                  Bureau Exécutif
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="commissions" 
+                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                >
+                  Commissions
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="bureau" className="space-y-0">
+                <div className="space-y-8 pb-12">
+                  <BureauExecutifSection />
+                  <CommissairesSection />
+                  <DeleguesRegionauxSection />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="commissions" className="pb-12">
+                <CommissionsSection />
+              </TabsContent>
+            </Tabs>
+          </div>
+        )}
       </div>
     </Layout>
   );
