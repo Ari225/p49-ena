@@ -89,7 +89,7 @@ const Gallery = () => {
           <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Médiathèque</h1>
             <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
-              Revivez les moments forts de notre communauté à travers nos albums photos
+              Revivez les moments forts de notre communauté à travers nos photos et vidéos
             </p>
           </div>
         </section>
