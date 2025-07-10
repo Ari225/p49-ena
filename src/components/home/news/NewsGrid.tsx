@@ -19,7 +19,7 @@ interface NewsGridProps {
   onPrevious: () => void;
   onNext: () => void;
   onDotClick: (index: number) => void;
-  variant: 'tablet' | 'desktop';
+  variant: 'mobile' | 'tablet' | 'desktop';
 }
 
 const NewsGrid: React.FC<NewsGridProps> = ({
@@ -30,6 +30,27 @@ const NewsGrid: React.FC<NewsGridProps> = ({
   onDotClick,
   variant
 }) => {
+  if (variant === 'mobile') {
+    return (
+      <div className="relative">
+        <div className="mb-6">
+          <div className="transition-all duration-500 ease-out">
+            <NewsCard item={news[currentIndex]} variant="mobile" />
+          </div>
+        </div>
+
+        <NewsNavigation
+          currentIndex={currentIndex}
+          totalItems={news.length}
+          onPrevious={onPrevious}
+          onNext={onNext}
+          onDotClick={onDotClick}
+          variant="mobile"
+        />
+      </div>
+    );
+  }
+
   if (variant === 'tablet') {
     return (
       <div className="relative">
