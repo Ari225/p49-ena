@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Menu, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { useMenuItems } from './MenuItems';
 import UserMenu from './UserMenu';
+import { useIsTablet } from '@/hooks/use-mobile';
 
 const MobileMenu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const menuItems = useMenuItems();
+  const isTab = useIsTablet();
 
   const handleSubmenuToggle = (itemLabel: string) => {
     setOpenSubmenu(openSubmenu === itemLabel ? null : itemLabel);
@@ -27,14 +29,18 @@ const MobileMenu = () => {
           variant="ghost" 
           size="sm" 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className="p-2"
+          className={`${isTab ? 'p-3' : 'p-2'}`}
         >
-          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {isMobileMenuOpen ? (
+            <X className={`${isTab ? 'h-6 w-6' : 'h-5 w-5'}`} />
+          ) : (
+            <Menu className={`${isTab ? 'h-6 w-6' : 'h-5 w-5'}`} />
+          )}
         </Button>
       </div>
 
       {/* Mobile Menu Overlay with slide animation */}
-      <div className={`absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`absolute top-full ${isTab ? 'left-1/2 transform -translate-x-1/2 w-80' : 'left-0 right-0'} bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} ${isTab ? 'rounded-b-lg border-l border-r' : ''}`}>
         <nav className="px-[25px] py-[15px]">
           {menuItems.map(menu => (
             <div key={menu.title}>
