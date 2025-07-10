@@ -84,7 +84,7 @@ const ActualitesSection = () => {
           {/* Header section */}
           <div className={`${isMobile ? 'text-center mb-8' : isTablet ? 'text-center mb-10' : 'flex flex-col sm:flex-row items-center justify-between mb-12'} gap-6`}>
             <div className={`${isMobile || isTablet ? 'text-center' : 'text-left'}`}>
-              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+              <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[25px] md:mb-[25px] font-bold`}>
                 Actualités Récentes
               </h2>
               <p className="text-gray-600 text-lg max-w-2xl">
