@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
@@ -98,7 +99,7 @@ const Gallery = () => {
         </section>
 
         {/* Search Section */}
-        <section className={`py-8 bg-white backdrop-blur-sm ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+        <section className={`py-8 bg-white backdrop-blur-sm ${isMobile ? 'px-[25px] w-full' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="max-w-md mx-auto relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -114,7 +115,7 @@ const Gallery = () => {
         </section>
 
         {/* Gallery Grid */}
-        <section className={`py-16 bg-white ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredGalleries.map((gallery) => (
