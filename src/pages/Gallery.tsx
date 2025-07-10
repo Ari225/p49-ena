@@ -74,21 +74,25 @@ const Gallery = () => {
 
   return (
     <Layout>
-      <div className="bg-white min-h-screen">
+      <div className="bg-accent/30">
         {/* Header Section */}
         <section 
-          className={`bg-primary/90 backdrop-blur-sm text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'} relative overflow-hidden`}
-          style={{
-            backgroundImage: `url('/lovable-uploads/f8333693-f1e8-4657-ad09-b60382767706.png')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
+          className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}
         >
-          <div className="absolute inset-0 bg-primary/80"></div>
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Médiathèque</h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/f8333693-f1e8-4657-ad09-b60382767706.png" 
+              alt="Background médiathèque" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+              Médiathèque
+            </h1>
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Revivez les moments forts de notre communauté à travers nos photos et vidéos
             </p>
           </div>
