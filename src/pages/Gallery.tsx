@@ -76,8 +76,17 @@ const Gallery = () => {
     <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`bg-primary/90 backdrop-blur-sm text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4 text-center">
+        <section 
+          className={`bg-primary/90 backdrop-blur-sm text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'} relative overflow-hidden`}
+          style={{
+            backgroundImage: `url('/lovable-uploads/f8333693-f1e8-4657-ad09-b60382767706.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        >
+          <div className="absolute inset-0 bg-primary/80"></div>
+          <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Médiathèque</h1>
             <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto">
               Revivez les moments forts de notre communauté à travers nos albums photos
@@ -102,15 +111,7 @@ const Gallery = () => {
         </section>
 
         {/* Gallery Grid */}
-        <section 
-          className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}
-          style={{
-            backgroundImage: `url('/lovable-uploads/f8333693-f1e8-4657-ad09-b60382767706.png')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed'
-          }}
-        >
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredGalleries.map((gallery) => (
