@@ -42,7 +42,7 @@ const Header = () => {
       {/* Tablet Header */}
       {isTab && (
         <div className="hidden md:block lg:hidden">
-          <div className="container mx-auto px-[50px] py-[12px]">
+          <div className="container mx-auto px-[50px] py-[15px]">
             <div className="flex items-center justify-between h-16">
               {/* Logo - Left Section */}
               <div className="flex-shrink-0">
@@ -55,13 +55,10 @@ const Header = () => {
                 </Link>
               </div>
 
-              {/* Center Section - Language Switchers */}
-              <div className="flex items-center justify-center flex-1">
+              {/* Right Section - Language & Menu */}
+              <div className="flex items-center space-x-4 flex-shrink-0">
                 <LanguageToggle />
-              </div>
-
-              {/* Right Section - Hamburger Menu */}
-              <div className="flex items-center">
+                <UserMenu />
                 <MobileMenu />
               </div>
             </div>
@@ -72,7 +69,7 @@ const Header = () => {
       {/* Mobile Header */}
       <div className="md:block lg:hidden">
         {!isTab && (
-          <div className="flex items-center justify-between px-[25px] py-3">
+          <div className="flex items-center justify-between px-[25px] py-[15px]">
             {/* Logo on the left */}
             <div className="flex items-center space-x-2 flex-1">
               <Link to="/" className="flex items-center space-x-2">
