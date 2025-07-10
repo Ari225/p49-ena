@@ -58,7 +58,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
               <span>3 min</span>
             </div>
           </div>
-          <h3 className={`font-bold text-primary leading-tight line-clamp-2 mb-3 ${
+          <h3 className={`font-semibold text-primary leading-tight line-clamp-2 mb-3 ${
             isCenter && variant === 'desktop' ? 'text-xl' : 
             variant === 'mobile' ? 'text-base' : 
             variant === 'tablet' ? 'text-lg' : 'text-lg'
