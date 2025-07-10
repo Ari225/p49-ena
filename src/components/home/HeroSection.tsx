@@ -52,7 +52,7 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
         <h1 className={`font-bold mb-4 md:mb-6 animate-fade-in mt-10 ${
           isMobile ? 'text-3xl' : 
           isTab ? 'text-4xl' :
-          'text-4xl md:text-5xl lg:text-6xl' // Desktop
+          'text-6xl md:text-6xl lg:text-6xl' // Desktop
         }`}>
           {t('home.hero_title')}
         </h1>
