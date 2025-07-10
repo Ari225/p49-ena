@@ -40,7 +40,7 @@ const MobileMenu = () => {
       </div>
 
       {/* Mobile Menu Overlay with slide animation - Full width */}
-      <div className={`fixed top-full left-0 right-0 w-screen bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`fixed top-full left-0 right-0 w-screen bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-60px)] overflow-y-auto z-40 transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
         <nav className="px-[25px] py-[15px]">
           {menuItems.map(menu => (
             <div key={menu.title}>
