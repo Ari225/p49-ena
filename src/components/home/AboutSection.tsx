@@ -12,7 +12,7 @@ const AboutSection = () => {
   const isTab = useIsTablet();
   
   return (
-    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${
+    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
       isMobile ? 'px-[25px]' : 
       isTab ? 'px-[50px]' :
       'px-8 md:px-12 lg:px-[100px]' // Desktop
