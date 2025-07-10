@@ -3,17 +3,16 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, Trash2, PlayCircle, Image, FileText, Calendar } from 'lucide-react';
+import { Edit, Trash2, Image, Video, Calendar } from 'lucide-react';
 
 interface MediaItem {
   id: string;
   title: string;
-  type: string;
   category: string;
   description: string;
-  url: string;
+  media_urls: string[];
   date: string;
-  tags: string[];
+  created_at: string;
 }
 
 interface MediaCardProps {
@@ -23,29 +22,46 @@ interface MediaCardProps {
 }
 
 const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
-  const getMediaIcon = (type: string) => {
-    switch (type) {
-      case 'Vidéo':
-        return <PlayCircle className="w-4 h-4 text-red-500 flex-shrink-0" />;
-      case 'Images':
-        return <Image className="w-4 h-4 text-blue-500 flex-shrink-0" />;
-      case 'Document':
-        return <FileText className="w-4 h-4 text-green-500 flex-shrink-0" />;
+  const getMediaIcon = () => {
+    // Check if there are any video URLs (simple check for common video extensions)
+    const hasVideo = media.media_urls.some(url => 
+      url.includes('.mp4') || url.includes('.mov') || url.includes('.avi') || url.includes('video')
+    );
+    
+    if (hasVideo) {
+      return <Video className="w-4 h-4 text-red-500 flex-shrink-0" />;
+    }
+    return <Image className="w-4 h-4 text-blue-500 flex-shrink-0" />;
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Événements':
+        return 'bg-blue-100 text-blue-800';
+      case 'Formation':
+        return 'bg-green-100 text-green-800';
+      case 'Archives':
+        return 'bg-purple-100 text-purple-800';
+      case 'Assemblées Générales':
+        return 'bg-orange-100 text-orange-800';
+      case 'Régionales':
+        return 'bg-teal-100 text-teal-800';
+      case 'Cérémonies':
+        return 'bg-pink-100 text-pink-800';
+      case 'Partenariats':
+        return 'bg-indigo-100 text-indigo-800';
+      case 'Événements Sociaux':
+        return 'bg-yellow-100 text-yellow-800';
       default:
-        return <PlayCircle className="w-4 h-4 flex-shrink-0" />;
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'Vidéo':
-        return 'bg-red-100 text-red-800';
-      case 'Images':
-        return 'bg-blue-100 text-blue-800';
-      case 'Document':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString('fr-FR');
+    } catch {
+      return dateString;
     }
   };
 
@@ -54,12 +70,12 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
       <CardHeader className="pb-2 p-3">
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex items-center space-x-2 min-w-0 flex-1">
-            {getMediaIcon(media.type)}
-            <Badge className={`text-xs ${getTypeColor(media.type)} flex-shrink-0`}>
-              {media.type}
+            {getMediaIcon()}
+            <Badge className={`text-xs flex-shrink-0`}>
+              {media.media_urls.length} média{media.media_urls.length > 1 ? 's' : ''}
             </Badge>
           </div>
-          <Badge variant="outline" className="text-xs flex-shrink-0">
+          <Badge variant="outline" className={`text-xs flex-shrink-0 ${getCategoryColor(media.category)}`}>
             {media.category}
           </Badge>
         </div>
@@ -77,22 +93,9 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
           <div className="flex items-center text-xs text-gray-500">
             <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
             <span className="truncate">
-              {new Date(media.date).toLocaleDateString('fr-FR')}
+              {formatDate(media.date)}
             </span>
           </div>
-          
-          {media.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {media.tags.slice(0, 2).map((tag, index) => (
-                <span key={index} className="bg-accent/20 text-primary px-1.5 py-0.5 rounded-full text-xs truncate max-w-[70px]">
-                  {tag}
-                </span>
-              ))}
-              {media.tags.length > 2 && (
-                <span className="text-gray-500 text-xs flex-shrink-0">+{media.tags.length - 2}</span>
-              )}
-            </div>
-          )}
           
           <div className="flex gap-1 pt-2 border-t">
             {onEdit && (

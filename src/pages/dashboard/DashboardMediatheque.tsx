@@ -1,76 +1,96 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import MediaFormDialog from '@/components/media/MediaFormDialog';
 import MediaCard from '@/components/media/MediaCard';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+interface MediaItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  media_urls: string[];
+  date: string;
+  created_at: string;
+}
 
 const DashboardMediatheque = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const { toast } = useToast();
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const mockMedia = [
-    {
-      id: '1',
-      title: 'Discours du Président - Assemblée Générale 2024',
-      type: 'Vidéo',
-      category: 'Événements',
-      description: 'Allocution du président lors de l\'AG annuelle. Un moment historique qui marque les grandes orientations de notre réseau pour l\'année à venir.',
-      url: 'https://example.com/video1',
-      date: '2024-03-20',
-      tags: ['AG', 'Président', 'Discours', 'Orientations']
-    },
-    {
-      id: '2',
-      title: 'Galerie Photos - Séminaire Leadership',
-      type: 'Images',
-      category: 'Formation',
-      description: 'Collection de photos du séminaire sur le leadership administratif organisé pour les membres de la P49.',
-      url: 'https://example.com/gallery1',
-      date: '2024-03-15',
-      tags: ['Leadership', 'Formation', 'Photos', 'Séminaire']
-    },
-    {
-      id: '3',
-      title: 'Rapport Annuel 2023',
-      type: 'Document',
-      category: 'Archives',
-      description: 'Document complet présentant les activités, réalisations et perspectives du réseau P49 pour l\'année 2023.',
-      url: 'https://example.com/report2023',
-      date: '2024-02-28',
-      tags: ['Rapport', 'Annuel', '2023', 'Bilan']
-    },
-    {
-      id: '4',
-      title: 'Cérémonie de Remise des Prix',
-      type: 'Vidéo',
-      category: 'Événements',
-      description: 'Vidéo complète de la cérémonie de remise des prix d\'excellence aux membres méritants.',
-      url: 'https://example.com/ceremony',
-      date: '2024-02-15',
-      tags: ['Cérémonie', 'Prix', 'Excellence', 'Mérite']
+  // Fetch media items from Supabase
+  const fetchMediaItems = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('media_items')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setMediaItems(data || []);
+    } catch (error) {
+      console.error('Error fetching media items:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les médias.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchMediaItems();
+  }, []);
 
   if (!user || user.role !== 'admin') {
     return <div>Non autorisé</div>;
   }
 
-  const handleSubmit = (formData: any) => {
+  const handleSubmit = async (formData: any) => {
     console.log('Nouveau média:', formData);
-    // TODO: Implement actual submission logic
+    // Refresh the media list after successful submission
+    await fetchMediaItems();
   };
 
-  const handleEdit = (media: any) => {
+  const handleEdit = (media: MediaItem) => {
     console.log('Modifier média:', media);
     // TODO: Implement edit logic
   };
 
-  const handleDelete = (id: string) => {
-    console.log('Supprimer média:', id);
-    // TODO: Implement delete logic
+  const handleDelete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('media_items')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Média supprimé",
+        description: "Le média a été supprimé avec succès.",
+      });
+
+      await fetchMediaItems();
+    } catch (error) {
+      console.error('Error deleting media:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer le média.",
+        variant: "destructive"
+      });
+    }
   };
 
   if (isMobile) {
@@ -88,17 +108,28 @@ const DashboardMediatheque = () => {
             <MediaFormDialog onSubmit={handleSubmit} />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            {mockMedia.map((media) => (
-              <div key={media.id} className="min-w-0">
-                <MediaCard
-                  media={media}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-8">
+              <div className="text-gray-500">Chargement des médias...</div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3">
+              {mediaItems.map((media) => (
+                <div key={media.id} className="min-w-0">
+                  <MediaCard
+                    media={media}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                </div>
+              ))}
+              {mediaItems.length === 0 && (
+                <div className="col-span-2 text-center py-8 text-gray-500">
+                  Aucun média trouvé. Ajoutez votre premier média !
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <AdminSidebar />
       </Layout>
@@ -113,24 +144,35 @@ const DashboardMediatheque = () => {
         <div className="flex-1 ml-64 p-6">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion de la Médiathèque</h1>
-            <p className="text-gray-600 mt-2">Gérer les contenus multimédias (vidéos, photos, documents)</p>
+            <p className="text-gray-600 mt-2">Gérer les contenus multimédias (images et vidéos)</p>
           </div>
 
           <div className="mb-6">
             <MediaFormDialog onSubmit={handleSubmit} />
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            {mockMedia.map((media) => (
-              <div key={media.id} className="min-w-0">
-                <MediaCard
-                  media={media}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-8">
+              <div className="text-gray-500">Chargement des médias...</div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-6">
+              {mediaItems.map((media) => (
+                <div key={media.id} className="min-w-0">
+                  <MediaCard
+                    media={media}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                  />
+                </div>
+              ))}
+              {mediaItems.length === 0 && (
+                <div className="col-span-2 text-center py-8 text-gray-500">
+                  Aucun média trouvé. Ajoutez votre premier média !
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Layout>

@@ -6,15 +6,17 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Upload } from 'lucide-react';
+import { Plus, Upload, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MediaFormData {
   title: string;
-  type: 'Photos' | 'Vidéos' | 'Documents' | '';
-  media: File | null;
+  category: string;
+  date: string;
   description: string;
-  tags: string;
+  mediaFiles: File[];
 }
 
 interface MediaFormDialogProps {
@@ -23,45 +25,122 @@ interface MediaFormDialogProps {
 
 const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<MediaFormData>({
     title: '',
-    type: '',
-    media: null,
+    category: '',
+    date: '',
     description: '',
-    tags: ''
+    mediaFiles: []
   });
   const isMobile = useIsMobile();
+  const { toast } = useToast();
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData(prev => ({ ...prev, media: file }));
+    const files = Array.from(e.target.files || []);
+    const validFiles = files.filter(file => 
+      file.type.startsWith('image/') || file.type.startsWith('video/')
+    );
+    
+    if (validFiles.length !== files.length) {
+      toast({
+        title: "Fichiers non valides",
+        description: "Seules les images et vidéos sont acceptées.",
+        variant: "destructive"
+      });
+    }
+    
+    setFormData(prev => ({ 
+      ...prev, 
+      mediaFiles: [...prev.mediaFiles, ...validFiles] 
+    }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const removeMediaFile = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      mediaFiles: prev.mediaFiles.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.type) {
-      onSubmit(formData as MediaFormData & { type: 'Photos' | 'Vidéos' | 'Documents' });
-      setFormData({ title: '', type: '', media: null, description: '', tags: '' });
+    if (!formData.title || !formData.category || !formData.date || !formData.description) {
+      toast({
+        title: "Champs requis",
+        description: "Veuillez remplir tous les champs obligatoires.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Upload media files and get URLs
+      const mediaUrls: string[] = [];
+      
+      for (const file of formData.mediaFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        
+        // For now, we'll use placeholder URLs since we don't have storage configured
+        // TODO: Implement actual file upload to Supabase Storage
+        mediaUrls.push(`https://placeholder.com/${fileName}`);
+      }
+
+      // Insert media item into database
+      const { error } = await supabase
+        .from('media_items')
+        .insert({
+          title: formData.title,
+          category: formData.category,
+          date: formData.date,
+          description: formData.description,
+          media_urls: mediaUrls
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Média ajouté !",
+        description: "Le média a été ajouté avec succès à la médiathèque.",
+      });
+
+      onSubmit(formData);
+      resetForm();
       setOpen(false);
+    } catch (error) {
+      console.error('Error creating media:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'ajouter le média.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   const resetForm = () => {
-    setFormData({ title: '', type: '', media: null, description: '', tags: '' });
+    setFormData({
+      title: '',
+      category: '',
+      date: '',
+      description: '',
+      mediaFiles: []
+    });
   };
 
-  const getAcceptedFileTypes = () => {
-    switch (formData.type) {
-      case 'Photos':
-        return 'image/*';
-      case 'Vidéos':
-        return 'video/*';
-      case 'Documents':
-        return '.pdf,.doc,.docx,.txt';
-      default:
-        return '*/*';
-    }
-  };
+  const categories = [
+    'Événements',
+    'Formation', 
+    'Archives',
+    'Assemblées Générales',
+    'Régionales',
+    'Cérémonies',
+    'Partenariats',
+    'Événements Sociaux'
+  ];
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
@@ -91,50 +170,76 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="type" className="text-sm font-medium">Type *</Label>
+            <Label htmlFor="category" className="text-sm font-medium">Catégorie *</Label>
             <Select
-              value={formData.type}
-              onValueChange={(value: 'Photos' | 'Vidéos' | 'Documents') => 
-                setFormData(prev => ({ ...prev, type: value, media: null }))
-              }
+              value={formData.category}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choisir le type de média" />
+                <SelectValue placeholder="Choisir une catégorie" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Photos">Photos</SelectItem>
-                <SelectItem value="Vidéos">Vidéos</SelectItem>
-                <SelectItem value="Documents">Documents</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="date" className="text-sm font-medium">Date *</Label>
+            <Input
+              id="date"
+              type="date"
+              value={formData.date}
+              onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+              className="w-full"
+              required
+            />
+          </div>
           
-          {formData.type && (
-            <div className="space-y-2">
-              <Label htmlFor="media" className="text-sm font-medium">Média *</Label>
-              <div className="w-full">
-                <Input
-                  id="media"
-                  type="file"
-                  accept={getAcceptedFileTypes()}
-                  onChange={handleMediaChange}
-                  className="hidden"
-                  required
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => document.getElementById('media')?.click()}
-                  className="w-full justify-start text-left"
-                >
-                  <Upload className="mr-2 h-4 w-4 flex-shrink-0" />
-                  <span className="truncate">
-                    {formData.media ? formData.media.name : `Choisir ${formData.type.toLowerCase()}`}
-                  </span>
-                </Button>
-              </div>
+          <div className="space-y-2">
+            <Label htmlFor="media" className="text-sm font-medium">Médias</Label>
+            <div className="w-full">
+              <Input
+                id="media"
+                type="file"
+                accept="image/*,video/*"
+                multiple
+                onChange={handleMediaChange}
+                className="hidden"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => document.getElementById('media')?.click()}
+                className="w-full justify-start text-left"
+              >
+                <Upload className="mr-2 h-4 w-4 flex-shrink-0" />
+                Ajouter des images et vidéos
+              </Button>
             </div>
-          )}
+            
+            {formData.mediaFiles.length > 0 && (
+              <div className="space-y-2 max-h-32 overflow-y-auto">
+                {formData.mediaFiles.map((file, index) => (
+                  <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                    <span className="text-xs truncate flex-1">{file.name}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeMediaFile(index)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           
           <div className="space-y-2">
             <Label htmlFor="description" className="text-sm font-medium">Description *</Label>
@@ -148,31 +253,22 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
             />
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="tags" className="text-sm font-medium">Tags</Label>
-            <Input
-              id="tags"
-              value={formData.tags}
-              onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value }))}
-              placeholder="Séparer par des virgules"
-              className="w-full"
-            />
-          </div>
-          
           <div className={`flex pt-4 border-t ${isMobile ? 'flex-col gap-3' : 'justify-end gap-2'}`}>
             <Button
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
               className={isMobile ? 'w-full' : 'min-w-[80px]'}
+              disabled={loading}
             >
               Annuler
             </Button>
             <Button
               type="submit"
               className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full' : 'min-w-[80px]'}`}
+              disabled={loading}
             >
-              Publier
+              {loading ? 'Publication...' : 'Publier'}
             </Button>
           </div>
         </form>

@@ -1,75 +1,86 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Calendar, Eye, Search } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
+
+interface MediaItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  media_urls: string[];
+  date: string;
+  created_at: string;
+}
 
 const Gallery = () => {
   const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState('');
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const galleries = [
-    {
-      id: 1,
-      title: "Gala annuel 2024",
-      category: "events",
-      date: "2024-03-15",
-      imageCount: 45,
-      thumbnail: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=300&fit=crop",
-      description: "Photos du gala annuel de la promotion 49"
-    },
-    {
-      id: 2,
-      title: "Formation leadership",
-      category: "formation",
-      date: "2024-02-20",
-      imageCount: 32,
-      thumbnail: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop",
-      description: "Séances de formation en leadership et management"
-    },
-    {
-      id: 3,
-      title: "Assemblée générale",
-      category: "meetings",
-      date: "2024-01-10",
-      imageCount: 28,
-      thumbnail: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop",
-      description: "Assemblée générale annuelle des membres"
-    },
-    {
-      id: 4,
-      title: "Activités sportives",
-      category: "sports",
-      date: "2024-02-05",
-      imageCount: 56,
-      thumbnail: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=300&fit=crop",
-      description: "Tournoi sportif inter-promotions"
-    },
-    {
-      id: 5,
-      title: "Conférence innovation",
-      category: "formation",
-      date: "2024-01-25",
-      imageCount: 23,
-      thumbnail: "https://images.unsplash.com/photo-1559223607-b4d0555ae227?w=400&h=300&fit=crop",
-      description: "Conférence sur l'innovation dans l'administration"
-    },
-    {
-      id: 6,
-      title: "Soirée culturelle",
-      category: "events",
-      date: "2023-12-15",
-      imageCount: 67,
-      thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop",
-      description: "Soirée de célébration de la culture ivoirienne"
+  // Fetch media items from Supabase
+  const fetchMediaItems = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('media_items')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+
+      setMediaItems(data || []);
+    } catch (error) {
+      console.error('Error fetching media items:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const filteredGalleries = galleries.filter(gallery => 
-    gallery.title.toLowerCase().includes(searchQuery.toLowerCase())
+  useEffect(() => {
+    fetchMediaItems();
+  }, []);
+
+  const filteredItems = mediaItems.filter(item => 
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const formatDate = (dateString: string) => {
+    try {
+      return new Date(dateString).toLocaleDateString('fr-FR');
+    } catch {
+      return dateString;
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'Événements':
+        return 'bg-blue-100 text-blue-800';
+      case 'Formation':
+        return 'bg-green-100 text-green-800';
+      case 'Archives':
+        return 'bg-purple-100 text-purple-800';
+      case 'Assemblées Générales':
+        return 'bg-orange-100 text-orange-800';
+      case 'Régionales':
+        return 'bg-teal-100 text-teal-800';
+      case 'Cérémonies':
+        return 'bg-pink-100 text-pink-800';
+      case 'Partenariats':
+        return 'bg-indigo-100 text-indigo-800';
+      case 'Événements Sociaux':
+        return 'bg-yellow-100 text-yellow-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   return (
     <Layout>
@@ -104,7 +115,7 @@ const Gallery = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 type="text"
-                placeholder="Rechercher par titre..."
+                placeholder="Rechercher par titre ou catégorie..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-white/90 backdrop-blur-sm"
@@ -116,45 +127,69 @@ const Gallery = () => {
         {/* Gallery Grid */}
         <section className={`py-16 bg-white ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredGalleries.map((gallery) => (
-                <Card key={gallery.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white/90 backdrop-blur-sm">
-                  <div className="relative aspect-video overflow-hidden">
-                    <img 
-                      src={gallery.thumbnail} 
-                      alt={gallery.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="flex items-center text-white">
-                        <Eye className="w-5 h-5 mr-2" />
-                        <span className="font-semibold">Voir les photos</span>
-                      </div>
-                    </div>
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-black/70 text-white">
-                        {gallery.imageCount} photos
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-primary mb-2">{gallery.title}</h3>
-                    <p className="text-gray-600 text-sm mb-3">{gallery.description}</p>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      {new Date(gallery.date).toLocaleDateString('fr-FR')}
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-            
-            {filteredGalleries.length === 0 && (
-              <div className="text-center py-12">
-                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-8 max-w-md mx-auto">
-                  <p className="text-gray-500 text-lg">Aucun résultat trouvé pour "{searchQuery}"</p>
-                </div>
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="text-gray-500 text-lg">Chargement des médias...</div>
               </div>
+            ) : (
+              <>
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-primary mb-2">
+                    Nos médias
+                  </h2>
+                  <p className="text-gray-600">
+                    {filteredItems.length} élément{filteredItems.length > 1 ? 's' : ''} trouvé{filteredItems.length > 1 ? 's' : ''}
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredItems.map((item) => (
+                    <Card key={item.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white/90 backdrop-blur-sm">
+                      <div className="relative aspect-video overflow-hidden">
+                        <img 
+                          src={item.media_urls[0] || "https://images.unsplash.com/photo-1559223607-b4d0555ae227?w=400&h=300&fit=crop"} 
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                          <div className="flex items-center text-white">
+                            <Eye className="w-5 h-5 mr-2" />
+                            <span className="font-semibold">Voir les médias</span>
+                          </div>
+                        </div>
+                        <div className="absolute top-4 right-4">
+                          <Badge className="bg-black/70 text-white">
+                            {item.media_urls.length} média{item.media_urls.length > 1 ? 's' : ''}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <div className="mb-2">
+                          <Badge className={`text-xs ${getCategoryColor(item.category)}`}>
+                            {item.category}
+                          </Badge>
+                        </div>
+                        <h3 className="text-xl font-semibold text-primary mb-2">{item.title}</h3>
+                        <p className="text-gray-600 text-sm mb-3">{item.description}</p>
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          {formatDate(item.date)}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+                
+                {filteredItems.length === 0 && !loading && (
+                  <div className="text-center py-12">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-lg p-8 max-w-md mx-auto">
+                      <p className="text-gray-500 text-lg">
+                        {searchQuery ? `Aucun résultat trouvé pour "${searchQuery}"` : 'Aucun média disponible pour le moment.'}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </section>
