@@ -82,8 +82,8 @@ const ActualitesSection = () => {
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="w-full max-w-none px-0">
           {/* Header section */}
-          <div className={`${isMobile ? 'text-center mb-8' : isTablet ? 'text-center mb-10' : 'flex flex-col sm:flex-row items-center justify-between mb-12'} gap-6`}>
-            <div className={`${isMobile || isTablet ? 'text-center' : 'text-left'}`}>
+          <div className={`${isMobile ? 'text-center mb-8' : isTablet ? 'text-center mb-10' : 'text-center mb-12'} gap-6`}>
+            <div className="text-center">
               <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[10px] md:mb-[10px] font-bold`}>
                 Actualités récentes
               </h2>
@@ -91,14 +91,6 @@ const ActualitesSection = () => {
                 Découvrez les dernières nouvelles de la P49
               </p>
             </div>
-            {!isMobile && !isTablet && (
-              <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-                <Link to="/actualites" className="flex items-center gap-2">
-                  <span>Voir toutes les actualités</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
-            )}
           </div>
           
           {isMobile ? (
@@ -132,17 +124,15 @@ const ActualitesSection = () => {
                 variant={isTablet ? 'tablet' : 'desktop'}
               />
               
-              {/* Tablet button only */}
-              {isTablet && (
-                <div className="text-center mt-8">
-                  <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-                    <Link to="/actualites" className="flex items-center gap-2 text-base">
-                      Voir toutes les actualités
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              )}
+              {/* Desktop and Tablet button below the cards and dots */}
+              <div className="text-center mt-8">
+                <Button asChild className="bg-primary hover:bg-primary/90 text-white">
+                  <Link to="/actualites" className="flex items-center gap-2 text-base">
+                    Voir toutes les actualités
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </>
           )}
         </div>
