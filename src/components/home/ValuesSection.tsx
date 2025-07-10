@@ -80,7 +80,7 @@ const ValuesSection = () => {
                 <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 bg-secondary/80">
                   <value.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-primary mb-3 text-xl font-semibold">
+                <h3 className="text-primary mb-3 text-lg font-semibold">
                   {value.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-gray-700 text-center font-normal px-4">
@@ -96,7 +96,7 @@ const ValuesSection = () => {
                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 bg-secondary/80">
                   <value.icon className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-primary mb-2 md:mb-3 text-3xl md:text-3xl font-semibold">
+                <h3 className="text-primary mb-2 md:mb-3 text-xl md:text-xl font-semibold">
                   {value.title}
                 </h3>
                 <p style={{ minHeight: '3rem' }} className="text-sm leading-relaxed text-gray-700 text-center font-normal px-[50px]">
