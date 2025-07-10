@@ -88,7 +88,7 @@ const ActualitesSection = () => {
                 Actualités récentes
               </h2>
               <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'} text-gray-700`}>
-                Découvrez les dernières nouvelles et événements marquants de la P49
+                Découvrez les dernières nouvelles de la P49
               </p>
             </div>
             {!isMobile && !isTablet && (
