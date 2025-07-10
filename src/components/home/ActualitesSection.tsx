@@ -91,9 +91,9 @@ const ActualitesSection = () => {
                 Découvrez les dernières nouvelles de la P49
               </p>
             </div>
-            {!isDesktop && !isTablet && (
+            {!isMobile && !isTablet && (
               <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-                <Link to="/actualites" className="flex items-center gap-2 text-3xl">
+                <Link to="/actualites" className="flex items-center gap-2">
                   <span>Voir toutes les actualités</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -135,7 +135,7 @@ const ActualitesSection = () => {
               {/* Tablet/Desktop button */}
               <div className="text-center mt-8">
                 <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-                  <Link to="/actualites" className="flex items-center gap-2 text-3xl">
+                  <Link to="/actualites" className="flex items-center gap-2 text-xs">
                     Voir toutes les actualités
                     <ArrowRight className="h-4 w-4" />
                   </Link>
