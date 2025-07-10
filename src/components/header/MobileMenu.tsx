@@ -7,7 +7,11 @@ import { useMenuItems } from './MenuItems';
 import UserMenu from './UserMenu';
 import { useIsTablet } from '@/hooks/use-mobile';
 
-const MobileMenu = () => {
+interface MobileMenuProps {
+  variant?: 'mobile' | 'tablet';
+}
+
+const MobileMenu: React.FC<MobileMenuProps> = ({ variant = 'mobile' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const menuItems = useMenuItems();
@@ -29,24 +33,24 @@ const MobileMenu = () => {
           variant="ghost" 
           size="sm" 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className={`${isTab ? 'p-4' : 'p-2'}`}
+          className={`${isTab || variant === 'tablet' ? 'p-4' : 'p-2'}`}
         >
           {isMobileMenuOpen ? (
-            <X className={`${isTab ? 'h-10 w-10' : 'h-7 w-7'}`} />
+            <X className={`${isTab || variant === 'tablet' ? 'h-10 w-10' : 'h-7 w-7'}`} />
           ) : (
-            <Menu className={`${isTab ? 'h-10 w-10' : 'h-7 w-7'}`} />
+            <Menu className={`${isTab || variant === 'tablet' ? 'h-10 w-10' : 'h-7 w-7'}`} />
           )}
         </Button>
       </div>
 
       {/* Mobile Menu Overlay with slide animation - Full width */}
-      <div className={`fixed ${isTab ? 'top-[92px]' : 'top-[70px]'} left-0 right-0 w-screen bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-${isTab ? '92px' : '70px'})] overflow-y-auto z-40 transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
-        <nav className={`${isTab ? 'px-[50px]' : 'px-[15px]'} py-[15px]`}>
+      <div className={`fixed ${isTab || variant === 'tablet' ? 'top-[92px]' : 'top-[70px]'} left-0 right-0 w-screen bg-white shadow-lg border-t border-gray-200 max-h-[calc(100vh-${isTab || variant === 'tablet' ? '92px' : '70px'})] overflow-y-auto z-40 transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'}`}>
+        <nav className={`${isTab || variant === 'tablet' ? 'px-[50px]' : 'px-[15px]'} py-[15px]`}>
           {menuItems.map(menu => (
             <div key={menu.title}>
               <button 
                 onClick={() => handleSubmenuToggle(menu.title)} 
-                className={`w-full flex items-center justify-between ${isTab ? 'px-8' : 'px-4'} py-3 text-left text-gray-700 hover:text-primary transition-colors text-sm font-medium`}
+                className={`w-full flex items-center justify-between ${isTab || variant === 'tablet' ? 'px-8' : 'px-4'} py-3 text-left text-gray-700 hover:text-primary transition-colors text-sm font-medium`}
               >
                 <span className="text-left">{menu.title}</span>
                 {openSubmenu === menu.title ? 
@@ -61,7 +65,7 @@ const MobileMenu = () => {
                       key={item.href} 
                       to={item.href} 
                       onClick={closeMobileMenu} 
-                      className={`block ${isTab ? 'px-12' : 'px-8'} py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors text-left`}
+                      className={`block ${isTab || variant === 'tablet' ? 'px-12' : 'px-8'} py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors text-left`}
                     >
                       {item.label}
                     </Link>

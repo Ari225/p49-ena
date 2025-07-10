@@ -3,18 +3,30 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MapPopup from '../MapPopup';
 
-const FooterContact = () => {
+interface FooterContactProps {
+  variant?: 'mobile' | 'tablet' | 'desktop';
+}
+
+const FooterContact: React.FC<FooterContactProps> = ({ variant = 'desktop' }) => {
   const [isMapOpen, setIsMapOpen] = useState(false);
 
   return (
     <div className="flex justify-center lg:justify-start mb-6 lg:mb-0">
       <div className="text-center lg:text-left w-full min-w-[50px] lg:w-[200px]">
         <Link to="/contact">
-          <h3 className="text-lg font-semibold mb-3 lg:mb-4 w-auto lg:w-20 hover:text-secondary transition-colors cursor-pointer">
+          <h3 className={`font-semibold mb-3 lg:mb-4 w-auto lg:w-20 hover:text-secondary transition-colors cursor-pointer ${
+            variant === 'mobile' ? 'text-base' :
+            variant === 'tablet' ? 'text-lg' :
+            'text-lg'
+          }`}>
             Coordonnées
           </h3>
         </Link>
-        <div className="space-y-2 text-gray-300 text-xs lg:text-base w-auto lg:w-[200px]">
+        <div className={`space-y-2 text-gray-300 w-auto lg:w-[200px] ${
+          variant === 'mobile' ? 'text-xs' :
+          variant === 'tablet' ? 'text-sm' :
+          'text-xs lg:text-base'
+        }`}>
           <button 
             onClick={() => setIsMapOpen(true)}
             className="w-auto lg:w-[200px] text-left hover:text-secondary transition-colors cursor-pointer"
