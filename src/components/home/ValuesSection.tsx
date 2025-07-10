@@ -83,7 +83,7 @@ const ValuesSection = () => {
                 <h3 className="text-primary mb-3 text-lg font-semibold">
                   {value.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-700 text-center font-normal px-4">
+                <p className="text-sm leading-relaxed text-gray-700 text-center font-normal px-[50px]">
                   {value.description}
                 </p>
               </div>
