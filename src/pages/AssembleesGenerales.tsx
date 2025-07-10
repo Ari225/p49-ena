@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import AssembleeCard from '@/components/assemblees/AssembleeCard';
 import AssembleesInfoSection from '@/components/assemblees/AssembleesInfoSection';
 import ProcessusDemocratiqueSection from '@/components/assemblees/ProcessusDemocratiqueSection';
@@ -11,6 +11,7 @@ import { assembleesPassees, assembleesFutures } from '@/components/assemblees/as
 
 const AssembleesGenerales = () => {
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('prochaines');
 
   return (
@@ -21,7 +22,11 @@ const AssembleesGenerales = () => {
         <AssembleesInfoSection />
 
         {/* Contenu principal */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-16 ${
+          isMobile ? 'px-[25px]' : 
+          isTab ? 'px-[50px]' :
+          'px-[100px]' // Desktop
+        }`}>
           <div className="container mx-auto px-4">
             {/* Onglets */}
             <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
