@@ -1,11 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Camera, ChevronRight, Video, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import MediaPopup from '../MediaPopup';
+import { supabase } from '@/integrations/supabase/client';
+
+interface MediaItem {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  media_urls: string[];
+  date: string;
+  created_at: string;
+}
 
 interface GalleryItem {
   id: number;
@@ -14,45 +25,91 @@ interface GalleryItem {
   category: string;
   type: 'image' | 'video';
   thumbnail?: string;
+  mediaCount: number;
 }
 
 const GallerySection = () => {
   const isMobile = useIsMobile();
   const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
-  const galleryItems: GalleryItem[] = [
-    {
-      id: 1,
-      src: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-      alt: 'Événement P49',
-      category: 'Événements',
-      type: 'image'
-    },
-    {
-      id: 2,
-      src: 'https://videos.pexels.com/video-files/3196036/3196036-uhd_2560_1440_25fps.mp4',
-      alt: 'Formation P49',
-      category: 'Formations',
-      type: 'video',
-      thumbnail: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg'
-    },
-    {
-      id: 3,
-      src: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg',
-      alt: 'Assemblée P49',
-      category: 'Assemblées',
-      type: 'image'
-    },
-    {
-      id: 4,
-      src: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4',
-      alt: 'Cérémonie P49',
-      category: 'Cérémonies',
-      type: 'video',
-      thumbnail: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png'
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch media items from Supabase
+  const fetchMediaItems = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('media_items')
+        .select('*')
+        .order('date', { ascending: false })
+        .limit(4); // Only get first 4 items for home page
+
+      if (error) throw error;
+
+      // Transform Supabase data to GalleryItem format
+      const transformedItems: GalleryItem[] = (data || []).map((item: MediaItem, index: number) => {
+        const firstMediaUrl = item.media_urls[0] || '';
+        const isVideo = firstMediaUrl.includes('.mp4') || firstMediaUrl.includes('.mov') || firstMediaUrl.includes('video');
+        
+        return {
+          id: index + 1,
+          src: firstMediaUrl,
+          alt: item.title,
+          category: item.category,
+          type: isVideo ? 'video' : 'image',
+          thumbnail: isVideo ? firstMediaUrl : undefined,
+          mediaCount: item.media_urls.length
+        };
+      });
+
+      setGalleryItems(transformedItems);
+    } catch (error) {
+      console.error('Error fetching media items:', error);
+      // Fallback to default items if there's an error
+      setGalleryItems([
+        {
+          id: 1,
+          src: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
+          alt: 'Événement P49',
+          category: 'Événements',
+          type: 'image',
+          mediaCount: 1
+        },
+        {
+          id: 2,
+          src: 'https://videos.pexels.com/video-files/3196036/3196036-uhd_2560_1440_25fps.mp4',
+          alt: 'Formation P49',
+          category: 'Formations',
+          type: 'video',
+          thumbnail: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
+          mediaCount: 1
+        },
+        {
+          id: 3,
+          src: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg',
+          alt: 'Assemblée P49',
+          category: 'Assemblées',
+          type: 'image',
+          mediaCount: 1
+        },
+        {
+          id: 4,
+          src: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4',
+          alt: 'Cérémonie P49',
+          category: 'Cérémonies',
+          type: 'video',
+          thumbnail: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
+          mediaCount: 1
+        }
+      ]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchMediaItems();
+  }, []);
 
   const handleMediaClick = (item: GalleryItem) => {
     setSelectedMedia(item);
@@ -63,6 +120,18 @@ const GallerySection = () => {
     setIsPopupOpen(false);
     setSelectedMedia(null);
   };
+
+  if (loading) {
+    return (
+      <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+        <div className="container mx-auto px-0">
+          <div className="flex justify-center items-center py-12">
+            <div className="text-gray-500 text-lg">Chargement des médias...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
@@ -93,7 +162,7 @@ const GallerySection = () => {
                   {item.type === 'video' ? (
                     <>
                       <img 
-                        src={item.thumbnail} 
+                        src={item.thumbnail || item.src} 
                         alt={item.alt}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -112,9 +181,10 @@ const GallerySection = () => {
                   )}
                 </div>
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                  <div className="flex items-center text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm">
-                    {item.type === 'video' && <Video className="w-4 h-4 mr-1" />}
-                    <span>{item.category}</span>
+                  <div className="flex flex-col items-center text-white font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm text-center">
+                    {item.type === 'video' && <Video className="w-4 h-4 mb-1" />}
+                    <span className="px-2">{item.category}</span>
+                    <span className="text-xs mt-1">{item.mediaCount} média{item.mediaCount > 1 ? 's' : ''}</span>
                   </div>
                 </div>
               </CardContent>
