@@ -78,7 +78,7 @@ const ActualitesSection = () => {
   }
 
   return (
-    <section className="bg-gray-300 py-16 md:py-20">
+    <section className="bg-gray/30 py-16 md:py-20">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="w-full max-w-none px-0">
           {/* Header section */}
