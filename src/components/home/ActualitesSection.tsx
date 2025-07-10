@@ -114,7 +114,7 @@ const ActualitesSection = () => {
               {/* Mobile button */}
               <div className="text-center mt-8">
                 <Button asChild className="bg-primary hover:bg-primary/90 text-white w-full">
-                  <Link to="/actualites" className="flex items-center gap-2 text-sm italic">
+                  <Link to="/actualites" className="flex items-center gap-2 text-sm">
                     Voir toutes les actualités
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -134,8 +134,8 @@ const ActualitesSection = () => {
               
               {/* Tablet/Desktop button */}
               <div className="text-center mt-8">
-                <Button asChild className="bg-primary hover:bg-primary/90 text-white text-base">
-                  <Link to="/actualites" className="flex items-center gap-2">
+                <Button asChild className="bg-primary hover:bg-primary/90 text-white">
+                  <Link to="/actualites" className="flex items-center gap-2  text-3xl">
                     Voir toutes les actualités
                     <ArrowRight className="h-4 w-4" />
                   </Link>
