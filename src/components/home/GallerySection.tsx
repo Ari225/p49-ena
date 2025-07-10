@@ -38,13 +38,20 @@ const GallerySection = () => {
   // Fetch media items from Supabase
   const fetchMediaItems = async () => {
     try {
+      console.log('Fetching media items from Supabase...');
+      
       const { data, error } = await supabase
         .from('media_items')
         .select('*')
         .order('date', { ascending: false })
         .limit(4); // Only get first 4 items for home page
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      console.log('Media items fetched:', data);
 
       // Transform Supabase data to GalleryItem format
       const transformedItems: GalleryItem[] = (data || []).map((item: MediaItem, index: number) => {
@@ -62,46 +69,12 @@ const GallerySection = () => {
         };
       });
 
+      console.log('Transformed items:', transformedItems);
       setGalleryItems(transformedItems);
     } catch (error) {
       console.error('Error fetching media items:', error);
-      // Fallback to default items if there's an error
-      setGalleryItems([
-        {
-          id: 1,
-          src: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          alt: 'Événement P49',
-          category: 'Événements',
-          type: 'image',
-          mediaCount: 1
-        },
-        {
-          id: 2,
-          src: 'https://videos.pexels.com/video-files/3196036/3196036-uhd_2560_1440_25fps.mp4',
-          alt: 'Formation P49',
-          category: 'Formations',
-          type: 'video',
-          thumbnail: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-          mediaCount: 1
-        },
-        {
-          id: 3,
-          src: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg',
-          alt: 'Assemblée P49',
-          category: 'Assemblées',
-          type: 'image',
-          mediaCount: 1
-        },
-        {
-          id: 4,
-          src: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4',
-          alt: 'Cérémonie P49',
-          category: 'Cérémonies',
-          type: 'video',
-          thumbnail: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
-          mediaCount: 1
-        }
-      ]);
+      // Si il y a une erreur, ne pas afficher de données par défaut
+      setGalleryItems([]);
     } finally {
       setLoading(false);
     }
@@ -127,6 +100,36 @@ const GallerySection = () => {
         <div className="container mx-auto px-0">
           <div className="flex justify-center items-center py-12">
             <div className="text-gray-500 text-lg">Chargement des médias...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Si aucun média n'est trouvé, afficher un message approprié
+  if (galleryItems.length === 0) {
+    return (
+      <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+        <div className="container mx-auto px-0">
+          <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
+            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary flex items-center`}>
+              <Camera className="w-6 h-6 mr-2" />
+              Médiathèque
+            </h2>
+            <Button asChild className="bg-primary text-white font-semibold hover:bg-primary rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] h-10">
+              <Link to="/gallery" className="flex items-center">
+                <span className="hidden sm:inline">Voir la galerie</span>
+                <span className="sm:hidden">Voir plus</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </Button>
+          </div>
+          
+          <div className="flex justify-center items-center py-12">
+            <div className="text-gray-500 text-center">
+              <p className="text-lg mb-4">Aucun média disponible pour le moment.</p>
+              <p className="text-sm">Ajoutez des médias via le tableau de bord administrateur.</p>
+            </div>
           </div>
         </div>
       </section>
