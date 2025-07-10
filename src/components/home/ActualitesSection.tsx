@@ -132,15 +132,17 @@ const ActualitesSection = () => {
                 variant={isTablet ? 'tablet' : 'desktop'}
               />
               
-              {/* Tablet/Desktop button */}
-              <div className="text-center mt-8">
-                <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-                  <Link to="/actualites" className="flex items-center gap-2 text-base">
-                    Voir toutes les actualités
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
+              {/* Tablet button only */}
+              {isTablet && (
+                <div className="text-center mt-8">
+                  <Button asChild className="bg-primary hover:bg-primary/90 text-white">
+                    <Link to="/actualites" className="flex items-center gap-2 text-base">
+                      Voir toutes les actualités
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </>
           )}
         </div>
