@@ -59,7 +59,8 @@ const NewsCard: React.FC<NewsCardProps> = ({
             </div>
           </div>
           <h3 className={`font-bold text-primary leading-tight line-clamp-2 mb-3 ${
-            isCenter && variant === 'desktop' ? 'text-xl' : 
+            isCenter && variant === 'desktop' ? 'text-xl text-center' : 
+            variant === 'desktop' ? 'text-lg text-center' :
             variant === 'mobile' ? 'text-xl' : 
             variant === 'tablet' ? 'text-lg' : 'text-lg'
           }`}>
