@@ -33,7 +33,7 @@ const ValuesSection = () => {
   return (
     <section className={`bg-white ${isMobile ? 'py-[50px] px-[25px]' : isTablet ? 'py-[50px] px-[50px]' : 'py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
-        <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-center text-primary mb-[50px] md:mb-[50px] font-bold`}>
+        <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-center text-primary mb-[75px] md:mb-[75px] font-bold`}>
           Valeurs de la P49
         </h2>
         
@@ -99,7 +99,7 @@ const ValuesSection = () => {
                 <h3 className="text-primary mb-2 md:mb-3 text-xl md:text-xl font-semibold">
                   {value.title}
                 </h3>
-                <p style={{ minHeight: '3rem' }} className="text-sm leading-relaxed text-gray-700 text-center font-normal px-[50px]">
+                <p style={{ minHeight: '3rem' }} className="text-lg leading-relaxed text-gray-700 text-center font-normal px-[50px]">
                   {value.description}
                 </p>
               </div>
