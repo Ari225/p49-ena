@@ -84,10 +84,10 @@ const ActualitesSection = () => {
           {/* Header section */}
           <div className={`${isMobile ? 'text-center mb-8' : isTablet ? 'text-center mb-10' : 'flex flex-col sm:flex-row items-center justify-between mb-12'} gap-6`}>
             <div className={`${isMobile || isTablet ? 'text-center' : 'text-left'}`}>
-              <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[25px] md:mb-[25px] font-bold`}>
-                Actualités Récentes
+              <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[15px] md:mb-[15px] font-bold`}>
+                Actualités récentes
               </h2>
-              <p className="text-gray-600 text-lg max-w-2xl">
+              <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'} text-gray-700`}>
                 Découvrez les dernières nouvelles et événements marquants de la P49
               </p>
             </div>
