@@ -39,7 +39,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
             }`} 
           />
           <div className="absolute top-4 left-4">
-            <span className="bg-white/90 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
+            <span className="bg-secondary/80 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
               {item.category}
             </span>
           </div>
