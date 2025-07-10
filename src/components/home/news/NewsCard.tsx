@@ -60,12 +60,12 @@ const NewsCard: React.FC<NewsCardProps> = ({
           </div>
           <h3 className={`font-bold text-primary leading-tight line-clamp-2 mb-3 ${
             isCenter && variant === 'desktop' ? 'text-xl' : 
-            variant === 'mobile' ? 'text-xl' : 
+            variant === 'mobile' ? 'text-base' : 
             variant === 'tablet' ? 'text-lg' : 'text-lg'
           }`}>
             {item.title}
           </h3>
-          <p className="text-gray-600 line-clamp-3 leading-relaxed mb-4 text-sm">
+          <p className="text-gray-700 line-clamp-3 leading-relaxed mb-4 text-sm">
             {item.summary}
           </p>
           {showReadButton && (
