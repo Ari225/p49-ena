@@ -1,14 +1,15 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useIsTablet } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import LanguageToggle from './header/LanguageToggle';
 import UserMenu from './header/UserMenu';
 import DesktopNavigation from './header/DesktopNavigation';
 import MobileMenu from './header/MobileMenu';
 
 const Header = () => {
-  const isTab = useIsTablet();
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   return (
     <header className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
@@ -40,7 +41,7 @@ const Header = () => {
       </div>
 
       {/* Tablet Header */}
-      {isTab && (
+      {isTablet && (
         <div className="hidden md:block lg:hidden">
           <div className="container mx-auto px-[50px] py-[15px]">
             <div className="flex items-center justify-between h-16">
@@ -57,12 +58,12 @@ const Header = () => {
 
               {/* Center Section - Language Switchers */}
               <div className="flex items-center justify-center flex-1">
-                <LanguageToggle />
+                <LanguageToggle variant="tablet" />
               </div>
 
               {/* Right Section - Menu */}
               <div className="flex items-center flex-shrink-0">
-                <MobileMenu />
+                <MobileMenu variant="tablet" />
               </div>
             </div>
           </div>
@@ -71,7 +72,7 @@ const Header = () => {
 
       {/* Mobile Header */}
       <div className="md:block lg:hidden">
-        {!isTab && (
+        {!isTablet && (
           <div className="flex items-center justify-between px-[25px] py-[15px]">
             {/* Logo on the left */}
             <div className="flex items-center space-x-2 flex-1">

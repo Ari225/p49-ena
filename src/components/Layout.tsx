@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Preloader from './Preloader';
 import ScrollToTopButton from './ScrollToTopButton';
 import { useLocation } from 'react-router-dom';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const isDashboard = location.pathname.startsWith('/dashboard');
 
   return (

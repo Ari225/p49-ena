@@ -21,10 +21,12 @@ const NewsNavigation: React.FC<NewsNavigationProps> = ({
 }) => {
   const buttonClass = variant === 'mobile' 
     ? "p-2 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-300"
+    : variant === 'tablet'
+    ? "p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100"
     : "p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100";
 
-  const dotSpacing = variant === 'mobile' ? 'space-x-2' : 'space-x-3';
-  const dotSize = variant === 'mobile' ? 'w-2 h-2' : 'w-3 h-3';
+  const dotSpacing = variant === 'mobile' ? 'space-x-2' : variant === 'tablet' ? 'space-x-2.5' : 'space-x-3';
+  const dotSize = variant === 'mobile' ? 'w-2 h-2' : variant === 'tablet' ? 'w-2.5 h-2.5' : 'w-3 h-3';
 
   if (variant === 'desktop') {
     return (
@@ -45,7 +47,7 @@ const NewsNavigation: React.FC<NewsNavigationProps> = ({
   }
 
   return (
-    <div className={`flex justify-center items-center ${variant === 'mobile' ? 'mt-6 space-x-4' : 'mt-8 space-x-6'}`}>
+    <div className={`flex justify-center items-center ${variant === 'mobile' ? 'mt-6 space-x-4' : variant === 'tablet' ? 'mt-7 space-x-5' : 'mt-8 space-x-6'}`}>
       <button onClick={onPrevious} className={buttonClass}>
         <ChevronLeft className="h-5 w-5 text-primary" />
       </button>
