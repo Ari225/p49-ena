@@ -84,7 +84,7 @@ const ActualitesSection = () => {
           {/* Header section */}
           <div className={`${isMobile ? 'text-center mb-8' : isTablet ? 'text-center mb-10' : 'flex flex-col sm:flex-row items-center justify-between mb-12'} gap-6`}>
             <div className={`${isMobile || isTablet ? 'text-center' : 'text-left'}`}>
-              <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[15px] md:mb-[15px] font-bold`}>
+              <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[10px] md:mb-[10px] font-bold`}>
                 Actualités récentes
               </h2>
               <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'} italic text-gray-700`}>
@@ -113,8 +113,8 @@ const ActualitesSection = () => {
               
               {/* Mobile button */}
               <div className="text-center mt-8">
-                <Button asChild className="bg-primary hover:bg-primary/90 text-white text-sm w-full">
-                  <Link to="/actualites" className="flex items-center gap-2">
+                <Button asChild className="bg-primary hover:bg-primary/90 text-white w-full">
+                  <Link to="/actualites" className="flex items-center gap-2 text-sm">
                     Voir toutes les actualités
                     <ArrowRight className="h-4 w-4" />
                   </Link>
