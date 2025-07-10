@@ -99,7 +99,7 @@ const ValuesSection = () => {
                 <h3 className="text-primary mb-2 md:mb-3 text-xl md:text-xl font-semibold">
                   {value.title}
                 </h3>
-                <p style={{ minHeight: '3rem' }} className="text-lg leading-relaxed text-gray-700 text-center font-normal px-[50px]">
+                <p style={{ minHeight: '3rem' }} className="text-base leading-relaxed text-gray-700 text-center font-normal px-[50px]">
                   {value.description}
                 </p>
               </div>
