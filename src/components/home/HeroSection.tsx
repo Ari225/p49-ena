@@ -66,7 +66,7 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
         <Button asChild className={`bg-secondary/80 text-primary hover:bg-primary/80 hover:text-white font-medium ${
           isMobile ? 'px-6 py-2 text-sm' : 
           isTab ? 'px-7 py-2 text-base' :
-          'px-6 md:px-8 py-2 md:py-3 text-base lg:text-lg' // Desktop
+          'px-6 md:px-8 py-2 md:py-3 text-lg lg:text-lg' // Desktop
         }`}>
           <Link to="/historique">
             Notre histoire
