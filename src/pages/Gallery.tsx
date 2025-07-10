@@ -74,15 +74,7 @@ const Gallery = () => {
 
   return (
     <Layout>
-      <div 
-        className="bg-white min-h-screen"
-        style={{
-          backgroundImage: `url('/lovable-uploads/f8333693-f1e8-4657-ad09-b60382767706.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      >
+      <div className="bg-white min-h-screen">
         {/* Header Section */}
         <section className={`bg-primary/90 backdrop-blur-sm text-white py-20 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4 text-center">
@@ -110,7 +102,15 @@ const Gallery = () => {
         </section>
 
         {/* Gallery Grid */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section 
+          className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}
+          style={{
+            backgroundImage: `url('/lovable-uploads/f8333693-f1e8-4657-ad09-b60382767706.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundAttachment: 'fixed'
+          }}
+        >
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredGalleries.map((gallery) => (
