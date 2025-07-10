@@ -22,7 +22,12 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
   }, [backgroundImages.length]);
 
   return (
-    <section className={`relative ${isMobile ? 'h-[60vh]' : 'h-screen'} flex items-center justify-center text-white overflow-hidden`}>
+    <section className={`relative flex items-center justify-center text-white overflow-hidden ${
+      // Mobile
+      isMobile ? 'h-[60vh]' : 
+      // Tablet & Desktop
+      'h-screen'
+    }`}>
       {/* Background Images Carousel */}
       <div className="absolute inset-0">
         {backgroundImages.map((image, index) => (
@@ -39,14 +44,42 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
       </div>
       
       {/* Content */}
-      <div className={`relative z-10 text-center w-full ${isMobile ? 'px-[25px] py-[50px]' : 'px-4 md:px-8 lg:px-[100px]'} my-0`}>
-        <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in mt-10`}>
+      <div className={`relative z-10 text-center w-full my-0 ${
+        // Mobile
+        isMobile ? 'px-[25px] py-[50px]' : 
+        // Tablet
+        'md:px-[50px] md:py-[60px] ' +
+        // Desktop
+        'lg:px-[100px]'
+      }`}>
+        <h1 className={`font-bold mb-4 md:mb-6 animate-fade-in mt-10 ${
+          // Mobile
+          isMobile ? 'text-3xl' : 
+          // Tablet
+          'text-4xl md:text-5xl ' +
+          // Desktop
+          'lg:text-6xl'
+        }`}>
           {t('home.hero_title')}
         </h1>
-        <p className={`${isMobile ? 'text-sm px-2' : 'text-sm md:text-lg px-4 lg:text-lg'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal`}>
+        <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
+          // Mobile
+          isMobile ? 'text-sm px-2' : 
+          // Tablet
+          'text-base md:text-lg px-4 ' +
+          // Desktop
+          'lg:text-lg'
+        }`}>
           {t('home.hero_subtitle')}
         </p>
-        <Button asChild className={`bg-secondary text-primary hover:bg-secondary/80 font-semibold ${isMobile ? 'px-6 py-2 text-sm' : 'px-4 md:px-8 py-2 md:py-3 text-sm md:text-lg'}`}>
+        <Button asChild className={`bg-secondary text-primary hover:bg-secondary/80 font-semibold ${
+          // Mobile
+          isMobile ? 'px-6 py-2 text-sm' : 
+          // Tablet
+          'px-6 md:px-8 py-2 md:py-3 text-base ' +
+          // Desktop
+          'lg:text-lg'
+        }`}>
           <Link to="/historique">
             Notre histoire
           </Link>

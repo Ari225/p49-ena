@@ -11,27 +11,91 @@ const AboutSection = () => {
   const isMobile = useIsMobile();
   
   return (
-    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
-      <div className={`container mx-auto ${isMobile ? 'px-0' : 'px-[50px]'}`}>
-        <div className={`flex flex-col ${isMobile ? 'space-y-6' : 'lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-12'}`}>
-          <div className={`${isMobile ? 'w-full flex justify-center' : 'lg:w-1/3 w-full'}`}>
+    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${
+      // Mobile
+      isMobile ? 'px-[25px]' : 
+      // Tablet
+      'px-8 md:px-12 ' +
+      // Desktop
+      'lg:px-[100px]'
+    }`}>
+      <div className={`container mx-auto ${
+        // Mobile
+        isMobile ? 'px-0' : 
+        // Tablet
+        'px-4 md:px-[30px] ' +
+        // Desktop
+        'lg:px-[50px]'
+      }`}>
+        <div className={`flex flex-col items-center ${
+          // Mobile
+          isMobile ? 'space-y-6' : 
+          // Tablet
+          'md:space-y-8 ' +
+          // Desktop
+          'lg:flex-row lg:space-y-0 lg:space-x-12'
+        }`}>
+          <div className={`${
+            // Mobile
+            isMobile ? 'w-full flex justify-center' : 
+            // Tablet
+            'w-full md:w-2/3 ' +
+            // Desktop
+            'lg:w-1/3'
+          }`}>
             <img 
               src="/lovable-uploads/P49Grid.webp" 
               alt="P49" 
-              className={`${isMobile ? 'w-full h-full' : 'w-full h-full md:w-full md:h-full'} object-contain`}
+              className={`object-contain ${
+                // Mobile
+                isMobile ? 'w-full h-full' : 
+                // Tablet & Desktop
+                'w-full h-full'
+              }`}
             />
           </div>
-          <div className={`${isMobile ? 'w-full' : 'lg:w-2/3 w-full'}`}>
-            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-6 md:mb-10 text-center ${isMobile ? '' : 'lg:text-right'}`}>
+          <div className={`${
+            // Mobile
+            isMobile ? 'w-full' : 
+            // Tablet
+            'w-full ' +
+            // Desktop
+            'lg:w-2/3'
+          }`}>
+            <h2 className={`font-bold text-primary mb-6 md:mb-10 ${
+              // Mobile
+              isMobile ? 'text-xl text-center' : 
+              // Tablet
+              'text-2xl md:text-3xl text-center ' +
+              // Desktop
+              'lg:text-right'
+            }`}>
               {t('home.about_title')}
             </h2>
-            <p className={`text-gray-700 leading-relaxed mb-6 md:mb-10 ${isMobile ? 'text-sm' : 'text-base md:text-base'} text-justify font-normal`}>
+            <p className={`text-gray-700 leading-relaxed mb-6 md:mb-10 text-justify font-normal ${
+              // Mobile
+              isMobile ? 'text-sm' : 
+              // Tablet & Desktop
+              'text-base'
+            }`}>
               {t('home.about_description')}
             </p>
-            <div className={`flex ${isMobile ? 'justify-center' : 'justify-center lg:justify-end'}`}>
+            <div className={`flex ${
+              // Mobile
+              isMobile ? 'justify-center' : 
+              // Tablet
+              'justify-center ' +
+              // Desktop
+              'lg:justify-end'
+            }`}>
               <Button 
                 asChild 
-                className={`bg-primary text-white hover:bg-primary rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${isMobile ? 'w-full justify-center py-3' : 'px-4 py-2'}`}
+                className={`bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${
+                  // Mobile
+                  isMobile ? 'w-full justify-center py-3 text-sm' : 
+                  // Tablet & Desktop
+                  'px-4 py-2 text-sm md:text-base'
+                }`}
               >
                 <Link to="/historique">
                   En savoir plus

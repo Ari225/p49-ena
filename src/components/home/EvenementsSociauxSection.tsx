@@ -37,21 +37,55 @@ const EvenementsSociauxSection = () => {
   ];
 
   return (
-    <section className={`py-16 bg-accent/10 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+    <section className={`py-16 bg-accent/10 ${
+      // Mobile
+      isMobile ? 'px-[25px]' : 
+      // Tablet
+      'px-8 md:px-12 ' +
+      // Desktop
+      'lg:px-[100px]'
+    }`}>
       <div className="container mx-auto px-0">
-        <div className={`text-center mb-${isMobile ? '8' : '12'}`}>
-          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-${isMobile ? '3' : '4'}`}>
+        <div className={`text-center ${
+          // Mobile
+          isMobile ? 'mb-8' : 
+          // Tablet & Desktop
+          'mb-8 md:mb-12'
+        }`}>
+          <h2 className={`font-bold text-primary ${
+            // Mobile
+            isMobile ? 'text-xl mb-3' : 
+            // Tablet & Desktop
+            'text-2xl md:text-3xl mb-4'
+          }`}>
             Évènements sociaux
           </h2>
-          <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : ''}`}>
+          <p className={`text-gray-700 max-w-3xl mx-auto ${
+            // Mobile
+            isMobile ? 'text-sm' : 
+            // Tablet & Desktop
+            'text-base'
+          }`}>
             La P49 accompagne ses membres dans tous les moments importants de leur vie, 
             qu'ils soient heureux ou difficiles. Découvrez nos événements sociaux.
           </p>
         </div>
 
-        <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-3 gap-8'} mb-8`}>
+        <div className={`grid mb-8 ${
+          // Mobile
+          isMobile ? 'grid-cols-1 gap-4 mb-4' : 
+          // Tablet
+          'grid-cols-1 md:grid-cols-2 gap-6 ' +
+          // Desktop
+          'lg:grid-cols-3 lg:gap-8'
+        }`}>
           {events.map((event, index) => (
-            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden relative ${isMobile ? 'mb-4' : ''}`}>
+            <Card key={index} className={`hover:shadow-lg transition-shadow duration-300 overflow-hidden relative ${
+              // Mobile
+              isMobile ? 'mb-4' : 
+              // Tablet & Desktop
+              ''
+            }`}>
               {/* Background Image covering entire card */}
               <div 
                 className="absolute inset-0 bg-cover bg-center" 
@@ -62,17 +96,42 @@ const EvenementsSociauxSection = () => {
               
               {/* Content overlay */}
               <div className="relative z-10 text-white">
-                <CardHeader className={`text-center pb-${isMobile ? '2' : '4'}`}>
-                  <div className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-${isMobile ? '2' : '4'}`}>
-                    <event.icon className={`${isMobile ? 'h-6 w-6' : 'h-8 w-8'} text-white`} />
+                <CardHeader className={`text-center ${
+                  // Mobile
+                  isMobile ? 'pb-2' : 
+                  // Tablet & Desktop
+                  'pb-4'
+                }`}>
+                  <div className={`rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto ${
+                    // Mobile
+                    isMobile ? 'w-12 h-12 mb-2' : 
+                    // Tablet & Desktop
+                    'w-16 h-16 mb-4'
+                  }`}>
+                    <event.icon className={`text-white ${
+                      // Mobile
+                      isMobile ? 'h-6 w-6' : 
+                      // Tablet & Desktop
+                      'h-8 w-8'
+                    }`} />
                   </div>
-                  <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-white`}>
+                  <CardTitle className={`text-white ${
+                    // Mobile
+                    isMobile ? 'text-lg' : 
+                    // Tablet & Desktop
+                    'text-xl'
+                  }`}>
                     {event.title}
                   </CardTitle>
                 </CardHeader>
                 
                 <CardContent className="text-center p-6">
-                  <p className={`text-white/90 mb-${isMobile ? '4' : '6'} ${isMobile ? 'text-sm' : ''}`}>
+                  <p className={`text-white/90 ${
+                    // Mobile
+                    isMobile ? 'mb-4 text-sm' : 
+                    // Tablet & Desktop
+                    'mb-6 text-base'
+                  }`}>
                     {event.description}
                   </p>
                   <Button asChild className="w-full bg-white text-primary hover:bg-white/90">
@@ -88,10 +147,20 @@ const EvenementsSociauxSection = () => {
         </div>
 
         <div className="text-center">
-          <p className={`text-gray-600 mb-4 ${isMobile ? 'text-sm' : ''}`}>
+          <p className={`text-gray-600 mb-4 ${
+            // Mobile
+            isMobile ? 'text-sm' : 
+            // Tablet & Desktop
+            'text-base'
+          }`}>
             Vous souhaitez partager un événement ou avez besoin de soutien ?
           </p>
-          <Button asChild variant="outline" className={isMobile ? 'w-full' : ''}>
+          <Button asChild variant="outline" className={
+            // Mobile
+            isMobile ? 'w-full' : 
+            // Tablet & Desktop
+            ''
+          }>
             <Link to="/contact">Nous contacter</Link>
           </Button>
         </div>

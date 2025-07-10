@@ -24,18 +24,56 @@ const AchievementsSection = () => {
   }];
   
   return (
-    <section className={`bg-primary text-white py-8 md:py-12 lg:py-[50px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+    <section className={`bg-primary text-white py-8 md:py-12 lg:py-[50px] ${
+      // Mobile
+      isMobile ? 'px-[25px]' : 
+      // Tablet
+      'px-8 md:px-12 ' +
+      // Desktop
+      'lg:px-[100px]'
+    }`}>
       <div className="container mx-auto px-4">
-        <div className={`grid ${isMobile ? 'grid-cols-2 gap-4' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'}`}>
+        <div className={`grid gap-6 md:gap-8 ${
+          // Mobile
+          isMobile ? 'grid-cols-2 gap-4' : 
+          // Tablet
+          'grid-cols-2 md:grid-cols-4 ' +
+          // Desktop
+          'lg:grid-cols-4'
+        }`}>
           {achievements.map((achievement, index) => (
-            <div key={index} className={`text-center ${isMobile ? 'p-3' : ''}`}>
-              <div className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-secondary/80 mb-2`}>
+            <div key={index} className={`text-center ${
+              // Mobile
+              isMobile ? 'p-3' : 
+              // Tablet & Desktop
+              'p-4'
+            }`}>
+              <div className={`font-bold text-secondary/80 mb-2 ${
+                // Mobile
+                isMobile ? 'text-xl' : 
+                // Tablet
+                'text-2xl md:text-3xl ' +
+                // Desktop
+                'lg:text-3xl'
+              }`}>
                 {achievement.number}
               </div>
-              <h3 className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} font-semibold mb-2`}>
+              <h3 className={`font-semibold mb-2 ${
+                // Mobile
+                isMobile ? 'text-base' : 
+                // Tablet
+                'text-lg md:text-xl ' +
+                // Desktop
+                'lg:text-xl'
+              }`}>
                 {achievement.title}
               </h3>
-              <p className={`text-white-700 ${isMobile ? 'text-xs' : 'text-sm md:text-sm'} font-normal`}>
+              <p className={`text-white-700 font-normal ${
+                // Mobile
+                isMobile ? 'text-xs' : 
+                // Tablet & Desktop
+                'text-sm'
+              }`}>
                 {achievement.description}
               </p>
             </div>

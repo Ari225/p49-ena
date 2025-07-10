@@ -44,7 +44,7 @@ const GallerySection = () => {
         .from('media_items')
         .select('*')
         .order('date', { ascending: false })
-        .limit(4); // Only get first 4 items for home page
+        .limit(4);
 
       if (error) {
         console.error('Supabase error:', error);
@@ -53,7 +53,6 @@ const GallerySection = () => {
 
       console.log('Media items fetched:', data);
 
-      // Transform Supabase data to GalleryItem format
       const transformedItems: GalleryItem[] = (data || []).map((item: MediaItem, index: number) => {
         const firstMediaUrl = item.media_urls[0] || '';
         const isVideo = firstMediaUrl.includes('.mp4') || firstMediaUrl.includes('.mov') || firstMediaUrl.includes('video');
@@ -73,7 +72,6 @@ const GallerySection = () => {
       setGalleryItems(transformedItems);
     } catch (error) {
       console.error('Error fetching media items:', error);
-      // Si il y a une erreur, ne pas afficher de données par défaut
       setGalleryItems([]);
     } finally {
       setLoading(false);
@@ -96,7 +94,14 @@ const GallerySection = () => {
 
   if (loading) {
     return (
-      <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+      <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
+        // Mobile
+        isMobile ? 'px-[25px]' : 
+        // Tablet
+        'px-8 md:px-12 ' +
+        // Desktop
+        'lg:px-[100px]'
+      }`}>
         <div className="container mx-auto px-0">
           <div className="flex justify-center items-center py-12">
             <div className="text-gray-500 text-lg">Chargement des médias...</div>
@@ -106,13 +111,29 @@ const GallerySection = () => {
     );
   }
 
-  // Si aucun média n'est trouvé, afficher un message approprié
   if (galleryItems.length === 0) {
     return (
-      <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+      <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
+        // Mobile
+        isMobile ? 'px-[25px]' : 
+        // Tablet
+        'px-8 md:px-12 ' +
+        // Desktop
+        'lg:px-[100px]'
+      }`}>
         <div className="container mx-auto px-0">
-          <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
-            <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary flex items-center`}>
+          <div className={`flex items-center justify-between mb-8 md:mb-12 gap-4 ${
+            // Mobile
+            isMobile ? 'flex-row' : 
+            // Tablet & Desktop
+            'flex-col sm:flex-row'
+          }`}>
+            <h2 className={`font-bold text-primary flex items-center ${
+              // Mobile
+              isMobile ? 'text-xl' : 
+              // Tablet & Desktop
+              'text-2xl md:text-3xl'
+            }`}>
               <Camera className="w-6 h-6 mr-2" />
               Médiathèque
             </h2>
@@ -137,10 +158,27 @@ const GallerySection = () => {
   }
 
   return (
-    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+    <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
+      // Mobile
+      isMobile ? 'px-[25px]' : 
+      // Tablet
+      'px-8 md:px-12 ' +
+      // Desktop
+      'lg:px-[100px]'
+    }`}>
       <div className="container mx-auto px-0">
-        <div className={`flex ${isMobile ? 'flex-row' : 'flex-col sm:flex-row'} items-center justify-between mb-8 md:mb-12 gap-4`}>
-          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary flex items-center`}>
+        <div className={`flex items-center justify-between mb-8 md:mb-12 gap-4 ${
+          // Mobile
+          isMobile ? 'flex-row' : 
+          // Tablet & Desktop
+          'flex-col sm:flex-row'
+        }`}>
+          <h2 className={`font-bold text-primary flex items-center ${
+            // Mobile
+            isMobile ? 'text-xl' : 
+            // Tablet & Desktop
+            'text-2xl md:text-3xl'
+          }`}>
             <Camera className="w-6 h-6 mr-2" />
             Médiathèque
           </h2>
@@ -153,7 +191,14 @@ const GallerySection = () => {
           </Button>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div className={`grid gap-4 md:gap-6 ${
+          // Mobile
+          isMobile ? 'grid-cols-2' : 
+          // Tablet
+          'grid-cols-2 md:grid-cols-3 ' +
+          // Desktop
+          'lg:grid-cols-4'
+        }`}>
           {galleryItems.map((item) => (
             <Card 
               key={item.id} 

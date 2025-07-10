@@ -10,16 +10,40 @@ const CarrierePlusSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className={`bg-accent/30 py-[100px] ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+    <section className={`bg-accent/30 py-[100px] ${
+      // Mobile
+      isMobile ? 'px-[25px]' : 
+      // Tablet
+      'px-8 md:px-12 ' +
+      // Desktop
+      'lg:px-[100px]'
+    }`}>
       <div className="container mx-auto px-0 font-normal text-base text-gray-700">
         <div className="text-center mb-12">
-          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>Carrières+</h2>
-          <p className={`text-gray-700 mx-auto font-normal ${isMobile ? 'text-sm' : ''}`}>
+          <h2 className={`font-bold text-primary mb-4 ${
+            // Mobile
+            isMobile ? 'text-xl' : 
+            // Tablet & Desktop
+            'text-2xl md:text-3xl'
+          }`}>Carrières+</h2>
+          <p className={`text-gray-700 mx-auto font-normal ${
+            // Mobile
+            isMobile ? 'text-sm' : 
+            // Tablet & Desktop
+            'text-base'
+          }`}>
             Développez votre potentiel avec nos opportunités de formation et nos programmes d'accompagnement
           </p>
         </div>
         
-        <div className={`grid ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-3'} gap-8 mb-12`}>
+        <div className={`grid gap-8 mb-12 ${
+          // Mobile
+          isMobile ? 'grid-cols-1' : 
+          // Tablet
+          'grid-cols-1 md:grid-cols-2 ' +
+          // Desktop
+          'lg:grid-cols-3'
+        }`}>
           {/* Concours/Formation en vedette */}
           <Card className="overflow-hidden">
             <CardContent className="p-6">
@@ -61,7 +85,12 @@ const CarrierePlusSection = () => {
           </Card>
 
           {/* Statistiques */}
-          <Card className="overflow-hidden">
+          <Card className={`overflow-hidden ${
+            // Mobile & Tablet
+            isMobile || window.innerWidth < 1024 ? 'md:col-span-2 lg:col-span-1' : 
+            // Desktop
+            ''
+          }`}>
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-secondary/80 rounded-full flex items-center justify-center">
@@ -79,9 +108,7 @@ const CarrierePlusSection = () => {
                     <span className="font-bold text-primary">12</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                    <div className="bg-primary h-2 rounded-full" style={{
-                    width: '80%'
-                  }}></div>
+                    <div className="bg-primary h-2 rounded-full" style={{width: '80%'}}></div>
                   </div>
                 </div>
                 <div>
@@ -90,9 +117,7 @@ const CarrierePlusSection = () => {
                     <span className="font-bold text-primary">150+</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                    <div className="bg-secondary h-2 rounded-full" style={{
-                    width: '90%'
-                  }}></div>
+                    <div className="bg-secondary h-2 rounded-full" style={{width: '90%'}}></div>
                   </div>
                 </div>
               </div>
@@ -101,7 +126,12 @@ const CarrierePlusSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : ''}`}>
+          <Button asChild className={`bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${
+            // Mobile
+            isMobile ? 'w-full' : 
+            // Tablet & Desktop
+            ''
+          }`}>
             <Link to="/formations" className="flex items-center justify-center">
               Découvrir nos opportunités
               <ChevronRight className="h-4 w-4 ml-1" />
