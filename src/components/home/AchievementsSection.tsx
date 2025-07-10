@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const AchievementsSection = () => {
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
   
   const achievements = [{
     number: "+800",
@@ -25,54 +26,40 @@ const AchievementsSection = () => {
   
   return (
     <section className={`bg-primary text-white py-8 md:py-12 lg:py-[50px] ${
-      // Mobile
       isMobile ? 'px-[25px]' : 
-      // Tablet
-      'px-8 md:px-12 ' +
-      // Desktop
-      'lg:px-[100px]'
+      isTab ? 'px-[50px]' :
+      'px-8 md:px-12 lg:px-[100px]' // Desktop
     }`}>
       <div className="container mx-auto px-4">
         <div className={`grid gap-6 md:gap-8 ${
-          // Mobile
           isMobile ? 'grid-cols-2 gap-4' : 
-          // Tablet
-          'grid-cols-2 md:grid-cols-4 ' +
-          // Desktop
-          'lg:grid-cols-4'
+          isTab ? 'grid-cols-2 gap-6' :
+          'grid-cols-2 md:grid-cols-4 lg:grid-cols-4' // Desktop
         }`}>
           {achievements.map((achievement, index) => (
             <div key={index} className={`text-center ${
-              // Mobile
               isMobile ? 'p-3' : 
-              // Tablet & Desktop
-              'p-4'
+              isTab ? 'p-5' :
+              'p-4' // Desktop
             }`}>
               <div className={`font-bold text-secondary/80 mb-2 ${
-                // Mobile
                 isMobile ? 'text-xl' : 
-                // Tablet
-                'text-2xl md:text-3xl ' +
-                // Desktop
-                'lg:text-3xl'
+                isTab ? 'text-2xl' :
+                'text-2xl md:text-3xl lg:text-3xl' // Desktop
               }`}>
                 {achievement.number}
               </div>
               <h3 className={`font-semibold mb-2 ${
-                // Mobile
                 isMobile ? 'text-base' : 
-                // Tablet
-                'text-lg md:text-xl ' +
-                // Desktop
-                'lg:text-xl'
+                isTab ? 'text-lg' :
+                'text-lg md:text-xl lg:text-xl' // Desktop
               }`}>
                 {achievement.title}
               </h3>
               <p className={`text-white-700 font-normal ${
-                // Mobile
                 isMobile ? 'text-xs' : 
-                // Tablet & Desktop
-                'text-sm'
+                isTab ? 'text-sm' :
+                'text-sm' // Desktop
               }`}>
                 {achievement.description}
               </p>

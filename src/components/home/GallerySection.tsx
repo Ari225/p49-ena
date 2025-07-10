@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Camera, ChevronRight, Video, Play } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import MediaPopup from '../MediaPopup';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -30,12 +29,12 @@ interface GalleryItem {
 
 const GallerySection = () => {
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
   const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch media items from Supabase
   const fetchMediaItems = async () => {
     try {
       console.log('Fetching media items from Supabase...');
@@ -95,12 +94,9 @@ const GallerySection = () => {
   if (loading) {
     return (
       <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
-        // Mobile
         isMobile ? 'px-[25px]' : 
-        // Tablet
-        'px-8 md:px-12 ' +
-        // Desktop
-        'lg:px-[100px]'
+        isTab ? 'px-[50px]' :
+        'px-8 md:px-12 lg:px-[100px]' // Desktop
       }`}>
         <div className="container mx-auto px-0">
           <div className="flex justify-center items-center py-12">
@@ -114,25 +110,20 @@ const GallerySection = () => {
   if (galleryItems.length === 0) {
     return (
       <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
-        // Mobile
         isMobile ? 'px-[25px]' : 
-        // Tablet
-        'px-8 md:px-12 ' +
-        // Desktop
-        'lg:px-[100px]'
+        isTab ? 'px-[50px]' :
+        'px-8 md:px-12 lg:px-[100px]' // Desktop
       }`}>
         <div className="container mx-auto px-0">
           <div className={`flex items-center justify-between mb-8 md:mb-12 gap-4 ${
-            // Mobile
             isMobile ? 'flex-row' : 
-            // Tablet & Desktop
-            'flex-col sm:flex-row'
+            isTab ? 'flex-row' :
+            'flex-col sm:flex-row' // Desktop
           }`}>
             <h2 className={`font-bold text-primary flex items-center ${
-              // Mobile
               isMobile ? 'text-xl' : 
-              // Tablet & Desktop
-              'text-2xl md:text-3xl'
+              isTab ? 'text-2xl' :
+              'text-2xl md:text-3xl' // Desktop
             }`}>
               <Camera className="w-6 h-6 mr-2" />
               Médiathèque
@@ -159,25 +150,20 @@ const GallerySection = () => {
 
   return (
     <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${
-      // Mobile
       isMobile ? 'px-[25px]' : 
-      // Tablet
-      'px-8 md:px-12 ' +
-      // Desktop
-      'lg:px-[100px]'
+      isTab ? 'px-[50px]' :
+      'px-8 md:px-12 lg:px-[100px]' // Desktop
     }`}>
       <div className="container mx-auto px-0">
         <div className={`flex items-center justify-between mb-8 md:mb-12 gap-4 ${
-          // Mobile
           isMobile ? 'flex-row' : 
-          // Tablet & Desktop
-          'flex-col sm:flex-row'
+          isTab ? 'flex-row' :
+          'flex-col sm:flex-row' // Desktop
         }`}>
           <h2 className={`font-bold text-primary flex items-center ${
-            // Mobile
             isMobile ? 'text-xl' : 
-            // Tablet & Desktop
-            'text-2xl md:text-3xl'
+            isTab ? 'text-2xl' :
+            'text-2xl md:text-3xl' // Desktop
           }`}>
             <Camera className="w-6 h-6 mr-2" />
             Médiathèque
@@ -192,12 +178,9 @@ const GallerySection = () => {
         </div>
         
         <div className={`grid gap-4 md:gap-6 ${
-          // Mobile
           isMobile ? 'grid-cols-2' : 
-          // Tablet
-          'grid-cols-2 md:grid-cols-3 ' +
-          // Desktop
-          'lg:grid-cols-4'
+          isTab ? 'grid-cols-3' :
+          'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' // Desktop
         }`}>
           {galleryItems.map((item) => (
             <Card 

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface HeroSectionProps {
   backgroundImages: string[];
@@ -12,6 +12,7 @@ interface HeroSectionProps {
 const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
@@ -23,10 +24,9 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
 
   return (
     <section className={`relative flex items-center justify-center text-white overflow-hidden ${
-      // Mobile
       isMobile ? 'h-[60vh]' : 
-      // Tablet & Desktop
-      'h-screen'
+      isTab ? 'h-[70vh]' :
+      'h-screen' // Desktop
     }`}>
       {/* Background Images Carousel */}
       <div className="absolute inset-0">
@@ -45,40 +45,28 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
       
       {/* Content */}
       <div className={`relative z-10 text-center w-full my-0 ${
-        // Mobile
         isMobile ? 'px-[25px] py-[50px]' : 
-        // Tablet
-        'md:px-[50px] md:py-[60px] ' +
-        // Desktop
-        'lg:px-[100px]'
+        isTab ? 'px-[50px] py-[60px]' :
+        'lg:px-[100px]' // Desktop
       }`}>
         <h1 className={`font-bold mb-4 md:mb-6 animate-fade-in mt-10 ${
-          // Mobile
           isMobile ? 'text-3xl' : 
-          // Tablet
-          'text-4xl md:text-5xl ' +
-          // Desktop
-          'lg:text-6xl'
+          isTab ? 'text-4xl' :
+          'text-4xl md:text-5xl lg:text-6xl' // Desktop
         }`}>
           {t('home.hero_title')}
         </h1>
         <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
-          // Mobile
           isMobile ? 'text-sm px-2' : 
-          // Tablet
-          'text-base md:text-lg px-4 ' +
-          // Desktop
-          'lg:text-lg'
+          isTab ? 'text-base px-4' :
+          'text-base md:text-lg px-4 lg:text-lg' // Desktop
         }`}>
           {t('home.hero_subtitle')}
         </p>
         <Button asChild className={`bg-secondary text-primary hover:bg-secondary/80 font-semibold ${
-          // Mobile
           isMobile ? 'px-6 py-2 text-sm' : 
-          // Tablet
-          'px-6 md:px-8 py-2 md:py-3 text-base ' +
-          // Desktop
-          'lg:text-lg'
+          isTab ? 'px-7 py-2 text-base' :
+          'px-6 md:px-8 py-2 md:py-3 text-base lg:text-lg' // Desktop
         }`}>
           <Link to="/historique">
             Notre histoire

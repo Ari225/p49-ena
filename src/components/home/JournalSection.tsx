@@ -2,44 +2,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const JournalSection = () => {
   const isMobile = useIsMobile();
+  const isTab = useIsTablet();
   
   return (
     <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${
-      // Mobile
       isMobile ? 'px-[25px]' : 
-      // Tablet
-      'px-8 md:px-12 ' +
-      // Desktop
-      'lg:px-[100px]'
+      isTab ? 'px-[50px]' :
+      'px-8 md:px-12 lg:px-[100px]' // Desktop
     }`}>
       <div className="container mx-auto px-0">
         <h2 className={`font-bold text-primary mb-8 md:mb-12 ${
-          // Mobile
           isMobile ? 'text-xl text-center' : 
-          // Tablet
-          'text-2xl md:text-3xl text-center ' +
-          // Desktop
-          'lg:text-left'
+          isTab ? 'text-2xl text-center' :
+          'text-2xl md:text-3xl text-center lg:text-left' // Desktop
         }`}>Notre journal</h2>
         <div className={`flex items-center ${
-          // Mobile
           isMobile ? 'flex-col space-y-6' : 
-          // Tablet
-          'flex-col md:space-y-8 ' +
-          // Desktop
-          'lg:flex-row lg:space-y-0 lg:space-x-12'
+          isTab ? 'flex-col space-y-8' :
+          'flex-col md:space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12' // Desktop
         }`}>
           <div className={`${
-            // Mobile
             isMobile ? 'w-full max-w-[280px]' : 
-            // Tablet
-            'w-full md:max-w-[400px] ' +
-            // Desktop
-            'lg:w-1/3 lg:max-w-none'
+            isTab ? 'w-full max-w-[350px]' :
+            'w-full md:max-w-[400px] lg:w-1/3 lg:max-w-none' // Desktop
           }`}>
             <div className="bg-white rounded-lg shadow-xl">
               <div className="bg-white rounded-lg p-0 py-0 px-0 mx-0">
@@ -48,30 +37,21 @@ const JournalSection = () => {
             </div>
           </div>
           <div className={`rounded-xl bg-transparent ${
-            // Mobile
             isMobile ? 'w-full py-0 px-0' : 
-            // Tablet
-            'w-full py-6 md:py-8 px-4 md:px-[20px] ' +
-            // Desktop
-            'lg:w-2/3 lg:py-0'
+            isTab ? 'w-full py-6 px-4' :
+            'w-full py-6 md:py-8 px-4 md:px-[20px] lg:w-2/3 lg:py-0' // Desktop
           }`}>
             <h3 className={`font-semibold mb-6 text-center bg-primary text-white py-2 rounded-lg ${
-              // Mobile
               isMobile ? 'text-base md:mb-10' : 
-              // Tablet
-              'text-lg md:text-xl py-2 md:py-[10px] ' +
-              // Desktop
-              'md:mb-10'
+              isTab ? 'text-lg py-3 mb-8' :
+              'text-lg md:text-xl py-2 md:py-[10px] md:mb-10' // Desktop
             }`}>
               Perspectives 49 - Bulletin n°1
             </h3>
             <p className={`leading-relaxed text-justify font-normal text-gray-700 ${
-              // Mobile
               isMobile ? 'mb-6 text-sm' : 
-              // Tablet
-              'mb-8 md:mb-10 text-sm md:text-base ' +
-              // Desktop
-              'md:mb-10'
+              isTab ? 'mb-8 text-base' :
+              'mb-8 md:mb-10 text-sm md:text-base md:mb-10' // Desktop
             }`}>
               Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
 
@@ -80,26 +60,23 @@ const JournalSection = () => {
               Avec une approche rigoureuse et accessible, Perspectives 49 ambitionne d'informer, de questionner et d'inspirer.
             </p>
             <div className={`flex justify-center ${
-              // Mobile
               isMobile ? 'flex-row gap-3 w-full' : 
-              // Tablet & Desktop
-              'flex-row gap-3 md:gap-4'
+              isTab ? 'flex-row gap-4' :
+              'flex-row gap-3 md:gap-4' // Desktop
             }`}>
               <Button asChild className={`bg-primary text-white hover:bg-primary transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${
-                // Mobile
                 isMobile ? 'flex-1 py-3' : 
-                // Tablet & Desktop
-                'px-4 py-2 rounded flex items-center text-sm md:text-base'
+                isTab ? 'px-6 py-3 text-base' :
+                'px-4 py-2 rounded flex items-center text-sm md:text-base' // Desktop
               }`}>
                 <Link to="/journal" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
                   Dernière édition
                 </Link>
               </Button>
               <Button asChild variant="outline" className={`border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200 ${
-                // Mobile
                 isMobile ? 'flex-1 py-3' : 
-                // Tablet & Desktop
-                'text-sm md:text-base px-4 md:px-6 py-2 md:py-3'
+                isTab ? 'px-6 py-3 text-base' :
+                'text-sm md:text-base px-4 md:px-6 py-2 md:py-3' // Desktop
               }`}>
                 <Link to="/journal" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-base">
                   Archives
