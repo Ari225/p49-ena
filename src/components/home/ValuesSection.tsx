@@ -31,9 +31,9 @@ const ValuesSection = () => {
   ];
 
   return (
-    <section className={`bg-white ${isMobile ? 'py-[50px] px-[25px]' : isTablet ? 'py-16 px-8' : 'py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]'}`}>
+    <section className={`bg-white ${isMobile ? 'py-[50px] px-[25px]' : isTablet ? 'py-[50px] px-[50px]' : 'py-12 md:py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
-        <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-2xl md:text-3xl'} text-center text-primary mb-6 md:mb-8 font-bold`}>
+        <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-center text-primary mb-15 font-bold`}>
           Valeurs de la P49
         </h2>
         
