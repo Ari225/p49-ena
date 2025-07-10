@@ -114,7 +114,7 @@ const ActualitesSection = () => {
               {/* Mobile button */}
               <div className="text-center mt-8">
                 <Button asChild className="bg-primary hover:bg-primary/90 text-white w-full">
-                  <Link to="/actualites" className="flex items-center gap-2 text-sm">
+                  <Link to="/actualites" className="flex items-center gap-2 text-sm italic">
                     Voir toutes les actualités
                     <ArrowRight className="h-4 w-4" />
                   </Link>
