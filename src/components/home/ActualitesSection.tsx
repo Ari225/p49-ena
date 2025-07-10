@@ -106,16 +106,15 @@ const ActualitesSection = () => {
                   {news.map((item) => (
                     <div key={item.id} className="w-full flex-shrink-0">
                       <Link to={`/actualite/${item.id}`}>
-                        <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer bg-white border border-gray-100">
+                        <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group cursor-pointer bg-white border border-gray-200">
                           <div className="aspect-[16/10] overflow-hidden relative">
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10"></div>
                             <img 
                               src={item.image_url} 
                               alt={item.title}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
-                            <div className="absolute top-4 left-4 z-20">
-                              <span className="bg-secondary text-primary px-3 py-1.5 rounded-full font-medium text-sm shadow-sm">
+                            <div className="absolute top-4 left-4">
+                              <span className="bg-white/90 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
                                 {item.category}
                               </span>
                             </div>
@@ -190,105 +189,101 @@ const ActualitesSection = () => {
               </div>
             </div>
           ) : (
-            // Desktop: carousel with enhanced cards
+            // Desktop: nouvelle approche avec grille responsive
             <div className="relative">
-              <div className="flex items-center justify-center gap-6">
-                {/* Navigation buttons */}
-                <button
-                  onClick={prevSlide}
-                  className="p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100"
-                >
-                  <ChevronLeft className="h-5 w-5 text-primary" />
-                </button>
+              {/* Navigation buttons - positionnés en overlay */}
+              <button
+                onClick={prevSlide}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100"
+              >
+                <ChevronLeft className="h-5 w-5 text-primary" />
+              </button>
+              
+              <button
+                onClick={nextSlide}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100"
+              >
+                <ChevronRight className="h-5 w-5 text-primary" />
+              </button>
 
-                {/* Cards container */}
-                <div className="flex items-center justify-center space-x-6 overflow-hidden flex-1 max-w-6xl">
+              {/* Conteneur des cartes avec overflow visible */}
+              <div className="mx-12 overflow-visible">
+                <div className="grid grid-cols-3 gap-6 transition-all duration-700 ease-out">
                   {news.map((item, index) => {
                     const isCenter = index === currentIndex;
-                    const isVisible = 
-                      index === currentIndex ||
-                      index === (currentIndex - 1 + news.length) % news.length ||
-                      index === (currentIndex + 1) % news.length;
-
-                    if (!isVisible) return null;
+                    const isPrev = index === (currentIndex - 1 + news.length) % news.length;
+                    const isNext = index === (currentIndex + 1) % news.length;
+                    
+                    if (!isCenter && !isPrev && !isNext) return null;
 
                     return (
-                      <Link key={item.id} to={`/actualite/${item.id}`}>
-                        <Card 
-                          className={`overflow-hidden transition-all duration-700 ease-out cursor-pointer bg-white border border-gray-100 hover:shadow-xl ${
-                            isCenter 
-                              ? 'w-[480px] h-[580px] opacity-100 scale-105 z-20 shadow-lg' 
-                              : 'w-[400px] h-[520px] opacity-75 scale-95 z-10'
-                          }`}
-                        >
-                          <div className="aspect-[16/10] overflow-hidden relative">
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
-                            <img 
-                              src={item.image_url} 
-                              alt={item.title}
-                              className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
-                            />
-                            <div className="absolute top-4 left-4 z-20">
-                              <span className="bg-secondary text-primary px-3 py-1.5 rounded-full font-medium text-sm shadow-lg backdrop-blur-sm">
-                                {item.category}
-                              </span>
+                      <div key={item.id} className={`transition-all duration-700 ease-out ${
+                        isCenter ? 'scale-105 z-20' : 'scale-95 opacity-75 z-10'
+                      }`}>
+                        <Link to={`/actualite/${item.id}`}>
+                          <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-200 h-full">
+                            <div className="aspect-[16/10] overflow-hidden relative">
+                              <img 
+                                src={item.image_url} 
+                                alt={item.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              />
+                              <div className="absolute top-4 left-4">
+                                <span className="bg-white/90 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
+                                  {item.category}
+                                </span>
+                              </div>
+                              {isCenter && (
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20"></div>
+                              )}
                             </div>
-                            {isCenter && (
-                              <div className="absolute bottom-4 right-4 z-20">
-                                <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                                  <Eye className="h-4 w-4 text-primary" />
+                            <CardContent className="p-6">
+                              <div className="flex items-center text-sm text-gray-500 gap-4 mb-3">
+                                <div className="flex items-center bg-gray-50 px-2 py-1 rounded-md">
+                                  <Calendar className="h-3 w-3 mr-1" />
+                                  {new Date(item.published_date).toLocaleDateString('fr-FR')}
+                                </div>
+                                <div className="flex items-center">
+                                  <Clock className="h-3 w-3 mr-1" />
+                                  <span>3 min</span>
                                 </div>
                               </div>
-                            )}
-                          </div>
-                          <CardContent className="p-6">
-                            <div className="flex items-center text-sm text-gray-500 gap-4 mb-3">
-                              <div className="flex items-center bg-gray-50 px-3 py-1 rounded-full">
-                                <Calendar className="h-4 w-4 mr-2" />
-                                {new Date(item.published_date).toLocaleDateString('fr-FR')}
-                              </div>
-                              <div className="flex items-center">
-                                <Clock className="h-4 w-4 mr-1" />
-                                <span>3 min de lecture</span>
-                              </div>
-                            </div>
-                            <h3 className={`font-bold text-primary leading-tight line-clamp-2 mb-3 ${
-                              isCenter ? 'text-xl' : 'text-lg'
-                            }`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 line-clamp-3 leading-relaxed mb-4">
-                              {item.summary}
-                            </p>
-                            {isCenter && (
-                              <Button variant="ghost" className="text-primary hover:text-white hover:bg-primary transition-all duration-300 w-full">
-                                <span>Lire l'article complet</span>
-                                <ArrowRight className="h-4 w-4 ml-2" />
-                              </Button>
-                            )}
-                          </CardContent>
-                        </Card>
-                      </Link>
+                              <h3 className={`font-bold text-primary leading-tight line-clamp-2 mb-3 ${
+                                isCenter ? 'text-xl' : 'text-lg'
+                              }`}>
+                                {item.title}
+                              </h3>
+                              <p className="text-gray-600 line-clamp-3 leading-relaxed mb-4 text-sm">
+                                {item.summary}
+                              </p>
+                              {isCenter && (
+                                <div className="flex items-center justify-between">
+                                  <Button variant="ghost" size="sm" className="text-primary hover:text-white hover:bg-primary transition-all duration-300">
+                                    <Eye className="h-4 w-4 mr-2" />
+                                    Lire l'article
+                                  </Button>
+                                  <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors duration-300" />
+                                </div>
+                              )}
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      </div>
                     );
                   })}
                 </div>
-
-                <button
-                  onClick={nextSlide}
-                  className="p-3 rounded-full bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100"
-                >
-                  <ChevronRight className="h-5 w-5 text-primary" />
-                </button>
               </div>
 
               {/* Desktop dots indicator */}
-              <div className="flex justify-center mt-8 space-x-2">
+              <div className="flex justify-center mt-8 space-x-3">
                 {news.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      index === currentIndex ? 'bg-primary w-8' : 'bg-gray-300'
+                    className={`w-3 h-3 rounded-full transition-all duration-300 border-2 ${
+                      index === currentIndex 
+                        ? 'bg-primary border-primary scale-110' 
+                        : 'bg-transparent border-gray-300 hover:border-primary'
                     }`}
                   />
                 ))}
