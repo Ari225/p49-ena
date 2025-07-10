@@ -65,7 +65,11 @@ const NewsCard: React.FC<NewsCardProps> = ({
           }`}>
             {item.title}
           </h3>
-          <p className="text-gray-700 line-clamp-3 leading-relaxed mb-4 text-sm">
+          <p className={`text-gray-700 line-clamp-3 leading-relaxed mb-4 ${
+            isCenter && variant === 'desktop' ? 'text-sm' : 
+            variant === 'mobile' ? 'text-xs' : 
+            variant === 'tablet' ? 'text-sm' : 'text-sm'
+          }`}>
             {item.summary}
           </p>
           {showReadButton && (
