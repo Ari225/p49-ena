@@ -79,14 +79,14 @@ const ActualiteDetail = () => {
         </div>
 
         {/* Hero Image Section */}
-        <div className="relative">
+        <div className={`relative ${isMobile ? '-mx-4' : isTablet ? '-mx-8' : '-mx-16'}`}>
           <div className={`${isMobile ? 'h-64' : isTablet ? 'h-80' : 'h-96'} overflow-hidden`}>
             <img 
               src={actualite.image} 
               alt={actualite.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-gray-100"
             />
-            <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent ${isMobile ? '-mx-4' : isTablet ? '-mx-8' : '-mx-16'}`}></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           </div>
           
           {/* Article Meta Overlay */}
