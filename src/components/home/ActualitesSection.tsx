@@ -77,7 +77,7 @@ const ActualitesSection = () => {
   }
 
   return (
-    <section className={`bg-accent/30 py-16 md:py-20 ${
+    <section className={`bg-accent/30 py-16 md:py-20 mx-auto px-0 ${
       isMobile ? 'px-[25px]' : isTablet ? 'px-[50px]' : 'px-4 md:px-8 lg:px-[100px]'
     }`}>
       <div className="w-full">
