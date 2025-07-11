@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -134,20 +135,16 @@ const CommuniquesSection = () => {
             </div>
           </div>
         ) : isTab ? (
-          // Tablet layout: Image au-dessus, communiqués en dessous
-          <div className="flex flex-col space-y-6">
-            {/* Image container - au dessus */}
-            <div className="w-full">
-              <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-                <img 
-                  alt="Communiqué sélectionné" 
-                  src={selectedImage} 
-                  className="w-full h-64 object-cover transition-all duration-300" 
-                />
+          // Tablet layout: Image on top, communiqués carousel below
+          <div className="flex flex-col gap-6">
+            {/* Image container */}
+            <div className="w-full bg-transparent flex items-center justify-center">
+              <div className="w-full bg-white shadow-xl rounded-lg px-0 py-0">
+                <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
               </div>
             </div>
             
-            {/* Communiqués carousel - en dessous */}
+            {/* Communiqués carousel */}
             <div className="relative">
               <div className="overflow-hidden">
                 <div className="flex transition-transform duration-300 ease-in-out" style={{
@@ -156,7 +153,7 @@ const CommuniquesSection = () => {
                   {communiques.map(communique => (
                     <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
                       <Card className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                        <CardContent className="p-4">
+                        <CardContent className="p-4 px-[16px] py-[16px]">
                           <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-base`}>
                             {communique.title}
                           </h3>
@@ -170,7 +167,7 @@ const CommuniquesSection = () => {
                 </div>
               </div>
               
-              {/* Navigation arrows - en dessous du carousel */}
+              {/* Navigation arrows */}
               <div className="flex justify-center gap-4 mt-4">
                 <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
                   <ChevronLeft className="h-4 w-4" />
