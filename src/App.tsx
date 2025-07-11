@@ -79,6 +79,7 @@ const App = () => (
               
               {/* Actualités */}
               <Route path="/actualites" element={<Actualites />} />
+              <Route path="/news" element={<Actualites />} />
               <Route path="/actualite/:id" element={<ActualiteDetail />} />
               <Route path="/actualites-concours" element={<ActualitesConcours />} />
               
@@ -132,6 +133,7 @@ const App = () => (
               
               {/* Répertoire */}
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
+              <Route path="/repertoire-members" element={<RepertoireMembers />} />
               
               {/* Suggestions */}
               <Route path="/suggestions" element={<Suggestions />} />
