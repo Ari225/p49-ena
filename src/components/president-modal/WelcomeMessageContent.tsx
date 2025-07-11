@@ -13,7 +13,7 @@ const WelcomeMessageContent = () => {
 
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-8">
-      <h2 className={`${textSizes.title} font-bold text-primary mb-15`}>
+      <h2 className={`${textSizes.title} font-bold text-primary mb-[50px] md:mb-[50px]`}>
         Message de bienvenue
       </h2>
       <div className={`text-gray-700 leading-relaxed mb-15 ${textSizes.body}`}>
