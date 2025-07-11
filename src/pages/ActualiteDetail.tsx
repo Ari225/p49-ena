@@ -3,12 +3,13 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, ArrowLeft, Share2, User, BookOpen, Tag, ChevronRight } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight, Eye } from 'lucide-react';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const ActualiteDetail = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   // Mock data - in a real app, this would be fetched based on the ID
   const actualiteData = {
@@ -66,96 +67,100 @@ const ActualiteDetail = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        {/* Hero Section with Featured Image */}
-        <section className="relative h-[60vh] overflow-hidden">
-          <div className="absolute inset-0">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        {/* Back Navigation */}
+        <div className={`${isMobile ? 'px-4 py-4' : isTablet ? 'px-8 py-6' : 'px-16 py-8'} bg-white border-b`}>
+          <Link to="/actualites">
+            <Button variant="ghost" className="text-primary hover:bg-primary/5 p-2">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour aux actualités
+            </Button>
+          </Link>
+        </div>
+
+        {/* Hero Image Section */}
+        <div className="relative">
+          <div className={`${isMobile ? 'h-64' : isTablet ? 'h-80' : 'h-96'} overflow-hidden`}>
             <img 
               src={actualite.image} 
               alt={actualite.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           </div>
           
-          <div className={`relative z-10 h-full flex flex-col justify-between ${isMobile ? 'px-[25px] py-6' : 'px-[100px] py-8'}`}>
-            {/* Back Button */}
-            <div>
-              <Link to="/actualites">
-                <Button variant="secondary" className="bg-white/90 backdrop-blur-sm text-primary hover:bg-white transition-all duration-300 shadow-lg">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Retour aux actualités
-                </Button>
-              </Link>
-            </div>
-
-            {/* Article Info Overlay */}
-            <div className="text-white">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="flex items-center bg-primary/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <Tag className="h-4 w-4 mr-2" />
-                  <span className="font-medium">{actualite.category}</span>
-                </div>
-                <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <Calendar className="h-4 w-4 mr-2" />
+          {/* Article Meta Overlay */}
+          <div className={`absolute bottom-0 left-0 right-0 ${isMobile ? 'p-4' : isTablet ? 'p-6' : 'p-8'}`}>
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+              <div className="flex items-center bg-secondary/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                <Tag className="h-3 w-3 mr-1.5" />
+                <span className="text-sm font-medium text-primary">{actualite.category}</span>
+              </div>
+              <div className="flex items-center bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full text-white">
+                <Calendar className="h-3 w-3 mr-1.5" />
+                <span className="text-sm">
                   {new Date(actualite.date).toLocaleDateString('fr-FR', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                   })}
-                </div>
-              </div>
-              
-              <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl'} font-bold mb-4 leading-tight drop-shadow-lg`}>
-                {actualite.title}
-              </h1>
-
-              <div className="flex items-center space-x-6 text-white/90">
-                <div className="flex items-center">
-                  <User className="h-4 w-4 mr-2" />
-                  <span>{actualite.author}</span>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2" />
-                  <span>{actualite.readTime} de lecture</span>
-                </div>
-                <div className="flex items-center">
-                  <BookOpen className="h-4 w-4 mr-2" />
-                  <span>Article</span>
-                </div>
+                </span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         {/* Article Content */}
-        <article className={`bg-white ${isMobile ? 'px-[25px] py-12' : 'px-[100px] py-16'}`}>
+        <div className={`${isMobile ? 'px-4 py-8' : isTablet ? 'px-8 py-12' : 'px-16 py-16'}`}>
           <div className="max-w-4xl mx-auto">
-            {/* Share Button */}
-            <div className="flex justify-end mb-8">
-              <Button variant="outline" className="hover:bg-primary hover:text-white transition-colors duration-300">
-                <Share2 className="h-4 w-4 mr-2" />
-                Partager cet article
-              </Button>
+            {/* Article Header */}
+            <div className="mb-8">
+              <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold text-primary mb-6 leading-tight`}>
+                {actualite.title}
+              </h1>
+
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-200">
+                <div className="flex items-center space-x-6 text-gray-600">
+                  <div className="flex items-center">
+                    <User className="h-4 w-4 mr-2" />
+                    <span className="font-medium">{actualite.author}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="h-4 w-4 mr-2" />
+                    <span>{actualite.readTime} de lecture</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Eye className="h-4 w-4 mr-2" />
+                    <span>Article</span>
+                  </div>
+                </div>
+                
+                <Button variant="outline" className="hover:bg-primary hover:text-white transition-colors duration-300">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  {isMobile ? 'Partager' : 'Partager cet article'}
+                </Button>
+              </div>
             </div>
 
             {/* Article Body */}
-            <div 
-              className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: actualite.content }}
-            />
+            <div className="prose prose-lg max-w-none">
+              <div 
+                className="text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: actualite.content }}
+              />
+            </div>
 
             {/* Article Footer */}
-            <footer className="mt-16 pt-8 border-t border-gray-200">
-              <div className="bg-gray-50 rounded-lg p-6">
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                       <User className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-primary">Publié par {actualite.author}</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="font-semibold text-primary text-lg">Publié par {actualite.author}</p>
+                      <p className="text-gray-600">
                         Le {new Date(actualite.date).toLocaleDateString('fr-FR', {
                           year: 'numeric',
                           month: 'long',
@@ -164,31 +169,39 @@ const ActualiteDetail = () => {
                       </p>
                     </div>
                   </div>
-                  <Button variant="outline" className="hover:bg-primary hover:text-white transition-colors duration-300">
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Partager
-                  </Button>
+                  {!isMobile && (
+                    <Button variant="outline" className="hover:bg-primary hover:text-white transition-colors duration-300">
+                      <Share2 className="h-4 w-4 mr-2" />
+                      Partager
+                    </Button>
+                  )}
                 </div>
               </div>
-            </footer>
+            </div>
           </div>
-        </article>
+        </div>
 
-        {/* Related Articles Section */}
-        <section className={`bg-gradient-to-r from-primary/5 to-secondary/5 ${isMobile ? 'px-[25px] py-12' : 'px-[100px] py-16'}`}>
+        {/* Related Articles CTA */}
+        <div className={`bg-gradient-to-r from-primary to-primary/90 text-white ${isMobile ? 'px-4 py-12' : isTablet ? 'px-8 py-16' : 'px-16 py-20'}`}>
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-primary mb-6">Découvrez plus d'actualités</h2>
-            <p className="text-gray-600 mb-8 text-lg">
-              Restez informé des dernières nouvelles de la P49 et de l'administration publique
+            <h2 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold mb-4`}>
+              Découvrez plus d'actualités
+            </h2>
+            <p className={`${isMobile ? 'text-base' : 'text-lg'} mb-8 opacity-90 max-w-2xl mx-auto`}>
+              Restez informé des dernières nouvelles de la P49 et de l'administration publique ivoirienne
             </p>
             <Link to="/actualites">
-              <Button className="bg-primary text-white hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 shadow-lg px-8 py-3 text-lg">
+              <Button 
+                size="lg" 
+                variant="secondary" 
+                className="bg-secondary text-primary hover:bg-secondary/90 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
                 Voir toutes les actualités
                 <ChevronRight className="h-5 w-5 ml-2" />
               </Button>
             </Link>
           </div>
-        </section>
+        </div>
       </div>
     </Layout>
   );
