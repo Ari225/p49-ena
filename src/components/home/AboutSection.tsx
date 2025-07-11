@@ -54,7 +54,7 @@ const AboutSection = () => {
             }`}>
               {t('home.about_title')}
             </h2>
-            <p className={`text-gray-700 leading-relaxed mb-6 md:mb-10 text-justify font-normal ${
+            <p className={`text-gray-700 leading-relaxed text-justify font-normal ${
               isMobile ? 'text-xs' : 
               isTab ? 'text-sm' :
               'text-base' // Desktop
