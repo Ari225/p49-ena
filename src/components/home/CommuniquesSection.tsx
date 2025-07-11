@@ -56,6 +56,11 @@ const CommuniquesSection = () => {
   const handleCommuniqueClick = (image: string, id: number) => {
     setSelectedImage(image);
     setSelectedId(id);
+    // Find the index of the selected communique and update carousel position
+    const selectedIndex = communiques.findIndex(comm => comm.id === id);
+    if (selectedIndex !== -1) {
+      setCurrentSlideIndex(selectedIndex);
+    }
   };
 
   const nextSlide = () => {
@@ -148,16 +153,16 @@ const CommuniquesSection = () => {
             <div className="relative">
               <div className="overflow-hidden">
                 <div className="flex transition-transform duration-300 ease-in-out" style={{
-                  transform: `translateX(-${currentSlideIndex * 33.333}%)`
+                  transform: `translateX(-${(currentSlideIndex - 1) * 33.333}%)`
                 }}>
                   {communiques.map(communique => (
                     <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
-                      <Card className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                        <CardContent className="p-4 px-[16px] py-[16px]">
-                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-base`}>
+                      <Card className={`h-32 bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                        <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between">
+                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-base line-clamp-2`}>
                             {communique.title}
                           </h3>
-                          <p className={`text-xs text-${communique.color}-600 font-normal`}>
+                          <p className={`text-xs text-${communique.color}-600 font-normal line-clamp-2`}>
                             {communique.description}
                           </p>
                         </CardContent>
