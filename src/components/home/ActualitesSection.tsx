@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import NewsCarousel from './news/NewsCarousel';
 import NewsGrid from './news/NewsGrid';
-
 interface NewsItem {
   id: string;
   title: string;
@@ -15,13 +13,11 @@ interface NewsItem {
   image_url: string;
   published_date: string;
 }
-
 const ActualitesSection = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [news, setNews] = useState<NewsItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
   useEffect(() => {
     fetchNews();
   }, []);
@@ -34,7 +30,6 @@ const ActualitesSection = () => {
     }, 6000);
     return () => clearInterval(interval);
   }, [news.length]);
-
   const fetchNews = async () => {
     const mockNews: NewsItem[] = [{
       id: '4',
@@ -60,25 +55,19 @@ const ActualitesSection = () => {
     }];
     setNews(mockNews);
   };
-
   const nextSlide = () => {
     setCurrentIndex(prev => (prev + 1) % news.length);
   };
-
   const prevSlide = () => {
     setCurrentIndex(prev => (prev - 1 + news.length) % news.length);
   };
-
   const handleDotClick = (index: number) => {
     setCurrentIndex(index);
   };
-
   if (news.length === 0) {
     return null;
   }
-
-  return (
-    <section className="bg-accent/30 py-16 md:py-20">
+  return <section className="bg-accent/30 py-16 md:py-20 px-[50px]">
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="w-full max-w-none px-0">
           {/* Header section */}
@@ -93,15 +82,8 @@ const ActualitesSection = () => {
             </div>
           </div>
           
-          {isMobile ? (
-            <>
-              <NewsCarousel
-                news={news}
-                currentIndex={currentIndex}
-                onPrevious={prevSlide}
-                onNext={nextSlide}
-                onDotClick={handleDotClick}
-              />
+          {isMobile ? <>
+              <NewsCarousel news={news} currentIndex={currentIndex} onPrevious={prevSlide} onNext={nextSlide} onDotClick={handleDotClick} />
               
               {/* Mobile button */}
               <div className="text-center mt-[50px] md:mt-[50px]">
@@ -112,17 +94,8 @@ const ActualitesSection = () => {
                   </Link>
                 </Button>
               </div>
-            </>
-          ) : (
-            <>
-              <NewsGrid
-                news={news}
-                currentIndex={currentIndex}
-                onPrevious={prevSlide}
-                onNext={nextSlide}
-                onDotClick={handleDotClick}
-                variant={isTablet ? 'tablet' : 'desktop'}
-              />
+            </> : <>
+              <NewsGrid news={news} currentIndex={currentIndex} onPrevious={prevSlide} onNext={nextSlide} onDotClick={handleDotClick} variant={isTablet ? 'tablet' : 'desktop'} />
               
               {/* Desktop and Tablet button below the cards and dots */}
               <div className="text-center mt-[50px] md:mt-[50px]">
@@ -133,12 +106,9 @@ const ActualitesSection = () => {
                   </Link>
                 </Button>
               </div>
-            </>
-          )}
+            </>}
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ActualitesSection;
