@@ -90,7 +90,7 @@ const ActualitesSection = () => {
             <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} text-primary mb-[10px] md:mb-[10px] font-bold`}>
               Actualités récentes
             </h2>
-            <p className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base'} text-gray-700 mb-[75px] md:mb-[75px]`}>
+            <p className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base'} text-gray-700 mb-[50px] md:mb-[50px]`}>
               Découvrez les dernières nouvelles de la P49
             </p>
           </div>

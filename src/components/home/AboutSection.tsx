@@ -47,7 +47,7 @@ const AboutSection = () => {
             isTab ? 'w-full' :
             'w-full lg:w-2/3' // Desktop
           }`}>
-            <h2 className={`font-bold text-primary mb-[75px] md:mb-[75px] ${
+            <h2 className={`font-bold text-primary mb-[50px] md:mb-[50px] ${
               isMobile ? 'text-xl text-center' : 
               isTab ? 'text-2xl text-center' :
               'text-3xl md:text-3xl text-center lg:text-right' // Desktop
