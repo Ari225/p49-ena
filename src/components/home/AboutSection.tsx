@@ -19,7 +19,7 @@ const AboutSection = () => {
     }`}>
       <div className={`container mx-auto ${
         isMobile ? 'px-0' : 
-        isTab ? 'px-[40px]' :
+        isTab ? 'px-0' :
         'px-4 md:px-[30px] lg:px-[50px]' // Desktop
       }`}>
         <div className={`flex flex-col items-center ${
