@@ -115,10 +115,10 @@ const CommuniquesSection = () => {
                     <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
                       <Card className={`bg-${communique.color}-50 border-${communique.color}-200 rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                         <CardContent className="p-4 px-[24px] py-[20px]">
-                          <h3 className={`font-bold text-${communique.color}-800 mb-3 text-lg leading-tight tracking-wide`}>
+                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
                             {communique.title}
                           </h3>
-                          <p className={`text-sm text-${communique.color}-600 font-medium leading-relaxed`}>
+                          <p className={`text-sm text-${communique.color}-600 font-normal`}>
                             {communique.description}
                           </p>
                         </CardContent>
@@ -159,10 +159,10 @@ const CommuniquesSection = () => {
                     <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
                       <Card className={`h-32 bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                         <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between">
-                          <h3 className={`font-bold text-${communique.color}-800 mb-2 text-sm line-clamp-2 leading-tight tracking-wide`}>
+                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-base line-clamp-2`}>
                             {communique.title}
                           </h3>
-                          <p className={`text-xs text-${communique.color}-600 font-medium line-clamp-2 leading-relaxed`}>
+                          <p className={`text-xs text-${communique.color}-600 font-normal line-clamp-2`}>
                             {communique.description}
                           </p>
                         </CardContent>
@@ -198,10 +198,10 @@ const CommuniquesSection = () => {
               {communiques.map(communique => (
                 <Card key={communique.id} className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                   <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                    <h3 className={`font-bold text-${communique.color}-800 mb-3 text-xl md:text-xl leading-tight tracking-wide`}>
+                    <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl md:text-xl`}>
                       {communique.title}
                     </h3>
-                    <p className={`text-sm md:text-base text-${communique.color}-600 font-medium leading-relaxed`}>
+                    <p className={`text-sm md:text-sm text-${communique.color}-600 font-normal`}>
                       {communique.description}
                     </p>
                   </CardContent>
