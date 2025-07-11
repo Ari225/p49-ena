@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -79,7 +80,7 @@ const ActualitesSection = () => {
 
   return (
     <section className={`bg-accent/30 py-16 md:py-20 ${
-      isMobile ? 'px-4' : isTablet ? 'px-8' : 'px-16'
+      isMobile ? 'px-[25px]' : isTablet ? 'px-[50px]' : 'px-[100px]'
     }`}>
       <div className="w-auto">
         <div className="w-auto max-w-none">
@@ -138,3 +139,4 @@ const ActualitesSection = () => {
 };
 
 export default ActualitesSection;
+
