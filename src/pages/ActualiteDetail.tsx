@@ -86,7 +86,7 @@ const ActualiteDetail = () => {
               alt={actualite.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent ${isMobile ? '-mx-4' : isTablet ? '-mx-8' : '-mx-16'}`}></div>
           </div>
           
           {/* Article Meta Overlay */}
