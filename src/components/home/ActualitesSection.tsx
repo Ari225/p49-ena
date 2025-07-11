@@ -78,10 +78,10 @@ const ActualitesSection = () => {
 
   return (
     <section className={`bg-accent/30 py-16 md:py-20 ${
-      isMobile ? 'px-[25px]' : isTablet ? 'px-[50px]' : 'px-4 md:px-8 lg:px-[100px]'
+      isMobile ? 'px-[25px]' : isTablet ? 'px-[50px]' : 'px-[100px]'
     }`}>
-      <div className="w-full">
-        <div className="w-full max-w-none">
+      <div className="w-auto">
+        <div className="w-auto max-w-none">
           {/* Header section */}
           <div className={`${isMobile ? 'text-center mb-8 w-full' : isTablet ? 'text-center mb-10' : 'text-center mb-12'} gap-6`}>
             <div className="text-center">
