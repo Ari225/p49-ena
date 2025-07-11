@@ -55,6 +55,10 @@ import DashboardCommuniques from "./pages/dashboard/DashboardCommuniques";
 import DashboardJournal from "./pages/dashboard/DashboardJournal";
 import DashboardUsers from "./pages/dashboard/DashboardUsers";
 import DashboardSettings from "./pages/dashboard/DashboardSettings";
+import DashboardSubmitted from "./pages/dashboard/DashboardSubmitted";
+import DashboardNotifications from "./pages/dashboard/DashboardNotifications";
+import DashboardProfile from "./pages/dashboard/DashboardProfile";
+import DashboardNewArticle from "./pages/dashboard/DashboardNewArticle";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +71,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              {/* Main Routes */}
               <Route path="/" element={<Index />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
               <Route path="/historique" element={<Historique />} />
@@ -126,7 +131,7 @@ const App = () => (
               <Route path="/equipe-editoriale" element={<EquipeEditoriale />} />
               
               {/* Répertoire */}
-              <Route path="/repertoire-members" element={<RepertoireMembers />} />
+              <Route path="/repertoire-membres" element={<RepertoireMembers />} />
               
               {/* Suggestions */}
               <Route path="/suggestions" element={<Suggestions />} />
@@ -140,9 +145,6 @@ const App = () => (
               {/* Auth */}
               <Route path="/login" element={<Login />} />
               
-              {/* 404 */}
-              <Route path="*" element={<NotFound />} />
-
               {/* Dashboard Routes */}
               <Route path="/dashboard/blog" element={<DashboardBlog />} />
               <Route path="/dashboard/carrieres" element={<DashboardCarrieres />} />
@@ -150,6 +152,13 @@ const App = () => (
               <Route path="/dashboard/journal" element={<DashboardJournal />} />
               <Route path="/dashboard/users" element={<DashboardUsers />} />
               <Route path="/dashboard/settings" element={<DashboardSettings />} />
+              <Route path="/dashboard/submitted" element={<DashboardSubmitted />} />
+              <Route path="/dashboard/notifications" element={<DashboardNotifications />} />
+              <Route path="/dashboard/profile" element={<DashboardProfile />} />
+              <Route path="/dashboard/new-article" element={<DashboardNewArticle />} />
+              
+              {/* 404 - Must be last */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
