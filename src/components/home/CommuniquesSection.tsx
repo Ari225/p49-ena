@@ -86,7 +86,7 @@ const CommuniquesSection = () => {
       'px-4 md:px-8 lg:px-[100px]' // Desktop
     }`}>
       <div className="container mx-auto px-0">
-        <div className="flex items-center justify-between mb-6 md:mb-8">
+        <div className="flex items-center justify-between mb-[50px] md:mb-[50px]">
           <h2 className={`font-bold text-primary ${
             isMobile ? 'text-xl' : 
             isTab ? 'text-2xl' :
