@@ -135,29 +135,47 @@ const CommuniquesSection = () => {
             </div>
           </div>
         ) : isTab ? (
-          // Tablet layout: Image on left, communiqués stacked on right
-          <div className="flex flex-row gap-8">
+          // Tablet layout: Image on top, communiqués carousel below
+          <div className="flex flex-col gap-6">
             {/* Image container */}
-            <div className="w-1/2 bg-transparent flex items-center justify-center">
+            <div className="w-full bg-transparent flex items-center justify-center">
               <div className="w-full bg-white shadow-xl rounded-lg px-0 py-0">
                 <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
               </div>
             </div>
             
-            {/* Communiqués stacked */}
-            <div className="w-1/2 space-y-3">
-              {communiques.map(communique => (
-                <Card key={communique.id} className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                  <CardContent className="p-4 px-[24px] py-[20px]">
-                    <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-lg`}>
-                      {communique.title}
-                    </h3>
-                    <p className={`text-sm text-${communique.color}-600 font-normal`}>
-                      {communique.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+            {/* Communiqués carousel */}
+            <div className="relative">
+              <div className="overflow-hidden">
+                <div className="flex transition-transform duration-300 ease-in-out" style={{
+                  transform: `translateX(-${currentSlideIndex * 33.333}%)`
+                }}>
+                  {communiques.map(communique => (
+                    <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
+                      <Card className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                        <CardContent className="p-4 px-[16px] py-[16px]">
+                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-base`}>
+                            {communique.title}
+                          </h3>
+                          <p className={`text-xs text-${communique.color}-600 font-normal`}>
+                            {communique.description}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Navigation arrows */}
+              <div className="flex justify-center gap-4 mt-4">
+                <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
