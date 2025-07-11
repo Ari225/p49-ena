@@ -50,13 +50,13 @@ const AboutSection = () => {
             <h2 className={`font-bold text-primary mb-6 md:mb-10 ${
               isMobile ? 'text-xl text-center' : 
               isTab ? 'text-2xl text-center' :
-              'text-2xl md:text-3xl text-center lg:text-right' // Desktop
+              'text-3xl md:text-3xl text-center lg:text-right' // Desktop
             }`}>
               {t('home.about_title')}
             </h2>
             <p className={`text-gray-700 leading-relaxed mb-6 md:mb-10 text-justify font-normal ${
-              isMobile ? 'text-sm' : 
-              isTab ? 'text-base' :
+              isMobile ? 'text-xs' : 
+              isTab ? 'text-sm' :
               'text-base' // Desktop
             }`}>
               {t('home.about_description')}
