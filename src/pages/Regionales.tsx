@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Users, Clock, Camera } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Camera, Euro } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Regionales = () => {
@@ -52,42 +53,19 @@ const Regionales = () => {
   const regionalesFutures = [
     {
       id: 4,
-      titre: "Régionale Centre 2024",
-      date: "28 Juin 2024",
+      titre: "Régionale Centre 2025",
+      dateDebut: "28 juin 2025",
+      dateFin: "30 juin 2025",
       lieu: "Yamoussoukro",
-      participants: 45,
-      duree: "1 jour",
-      image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=250&fit=crop",
+      image: "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png",
       resume: "Rencontre axée sur l'innovation et la transformation digitale de l'administration publique. Ateliers sur les nouvelles technologies.",
-      themes: ["Innovation", "Digital", "Administration"],
       status: "À venir",
-      inscriptions: "Ouvertes"
-    },
-    {
-      id: 5,
-      titre: "Régionale Nord 2024",
-      date: "20 Juillet 2024",
-      lieu: "Korhogo",
-      participants: 38,
-      duree: "2 jours",
-      image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=250&fit=crop",
-      resume: "Focus sur le développement rural et les défis sécuritaires dans la région Nord. Rencontres avec les autorités locales.",
-      themes: ["Développement rural", "Sécurité", "Autorités locales"],
-      status: "À venir",
-      inscriptions: "Bientôt"
-    },
-    {
-      id: 6,
-      titre: "Régionale Lagunes 2024",
-      date: "15 Septembre 2024",
-      lieu: "Grand-Bassam",
-      participants: 60,
-      duree: "2 jours",
-      image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=250&fit=crop",
-      resume: "Régionale spéciale sur le tourisme et la préservation du patrimoine. Visite des sites historiques et culturels.",
-      themes: ["Tourisme", "Patrimoine", "Culture"],
-      status: "À venir",
-      inscriptions: "Bientôt"
+      inscriptions: "Ouvertes",
+      tarifs: {
+        membre: "50 000 FCFA",
+        nonMembre: "75 000 FCFA",
+        etudiant: "25 000 FCFA"
+      }
     }
   ];
 
@@ -156,6 +134,65 @@ const Regionales = () => {
     </Card>
   );
 
+  const RegionaleFutureCard = ({ regionale }: { regionale: any }) => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-md">
+      <div className="relative">
+        <img 
+          src={regionale.image} 
+          alt={regionale.titre}
+          className="w-full h-48 object-cover"
+        />
+        <Badge className={`absolute top-2 right-2 ${getStatusColor(regionale.status)}`}>
+          {regionale.status}
+        </Badge>
+      </div>
+      <CardContent className="p-6">
+        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
+        <p className="text-gray-600 text-sm mb-4">{regionale.resume}</p>
+        
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center text-sm text-gray-600">
+            <Calendar className="h-4 w-4 mr-2" />
+            Du {regionale.dateDebut} au {regionale.dateFin}
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <MapPin className="h-4 w-4 mr-2" />
+            {regionale.lieu}
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <p className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <Euro className="h-4 w-4 mr-2" />
+            Tarifs de participation :
+          </p>
+          <div className="space-y-1 text-sm text-gray-600">
+            <div className="flex justify-between">
+              <span>Membres P49 :</span>
+              <span className="font-medium">{regionale.tarifs.membre}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Non-membres :</span>
+              <span className="font-medium">{regionale.tarifs.nonMembre}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Étudiants :</span>
+              <span className="font-medium">{regionale.tarifs.etudiant}</span>
+            </div>
+          </div>
+        </div>
+
+        {regionale.inscriptions && (
+          <div className="mt-4">
+            <Badge className="bg-blue-100 text-blue-800">
+              Inscriptions : {regionale.inscriptions}
+            </Badge>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
@@ -163,7 +200,7 @@ const Regionales = () => {
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
-              src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+              src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" 
               alt="Background régionales" 
               className="w-full h-full object-cover" 
             />
@@ -207,31 +244,33 @@ const Regionales = () => {
         {/* Contenu principal */}
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            {/* Onglets */}
-            <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
-              <Button
-                variant={selectedTab === 'futures' ? 'default' : 'ghost'}
-                onClick={() => setSelectedTab('futures')}
-                className="flex-1"
-              >
-                À venir
-              </Button>
-              <Button
-                variant={selectedTab === 'passees' ? 'default' : 'ghost'}
-                onClick={() => setSelectedTab('passees')}
-                className="flex-1"
-              >
-                Passées
-              </Button>
+            {/* Onglets centrés */}
+            <div className="flex justify-center mb-8">
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
+                <Button
+                  variant={selectedTab === 'futures' ? 'default' : 'ghost'}
+                  onClick={() => setSelectedTab('futures')}
+                  className="flex-1"
+                >
+                  À venir
+                </Button>
+                <Button
+                  variant={selectedTab === 'passees' ? 'default' : 'ghost'}
+                  onClick={() => setSelectedTab('passees')}
+                  className="flex-1"
+                >
+                  Passées
+                </Button>
+              </div>
             </div>
 
             {/* Contenu des onglets */}
             {selectedTab === 'futures' && (
               <div>
-                <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Régionales</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines Régionales</h2>
+                <div className="flex justify-center">
                   {regionalesFutures.map((regionale) => (
-                    <RegionaleCard key={regionale.id} regionale={regionale} />
+                    <RegionaleFutureCard key={regionale.id} regionale={regionale} />
                   ))}
                 </div>
               </div>
@@ -239,7 +278,7 @@ const Regionales = () => {
 
             {selectedTab === 'passees' && (
               <div>
-                <h2 className="text-2xl font-bold text-primary mb-6">Régionales Passées</h2>
+                <h2 className="text-2xl font-bold text-primary mb-6 text-center">Régionales Passées</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {regionalesPassees.map((regionale) => (
                     <RegionaleCard key={regionale.id} regionale={regionale} />
