@@ -203,7 +203,7 @@ const Communiques = () => {
         </section>
 
         {/* Search and Filter Section */}
-        <section className={`py-8 bg-gray-50 ${
+        <section className={`py-8 bg-white ${
           isMobile ? 'px-[25px]' : 
           isTablet ? 'px-[50px]' : 
           'px-[100px]'
