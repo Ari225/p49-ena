@@ -7,7 +7,7 @@ import { Calendar, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface CommuniqueItem {
   id: string;
@@ -22,6 +22,7 @@ interface CommuniqueItem {
 
 const Communiques = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [communiques, setCommuniques] = useState<CommuniqueItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,7 +35,6 @@ const Communiques = () => {
   const fetchCommuniques = async () => {
     try {
       setLoading(true);
-      // Mock data with updated urgency mapping
       const mockCommuniques: CommuniqueItem[] = [
         {
           id: '1',
@@ -119,27 +119,26 @@ const Communiques = () => {
     }
   };
 
-  // Text styles matching home page CommuniquesSection
-  const textStyles = {
-    mobile: {
-      title: 'text-base font-semibold mb-[10px]',
-      description: 'text-xs font-normal'
-    },
-    tablet: {
-      title: 'text-lg font-semibold mb-[10px]',
-      description: 'text-sm font-normal'
-    },
-    desktop: {
-      title: 'text-xl font-semibold mb-[10px]',
-      description: 'text-base font-normal'
+  const getTextStyles = () => {
+    if (isMobile) {
+      return {
+        title: 'text-base font-semibold mb-[10px]',
+        description: 'text-xs font-normal'
+      };
+    } else if (isTablet) {
+      return {
+        title: 'text-lg font-semibold mb-[10px]',
+        description: 'text-sm font-normal'
+      };
+    } else {
+      return {
+        title: 'text-xl font-semibold mb-[10px]',
+        description: 'text-base font-normal'
+      };
     }
   };
 
-  const getCurrentTextStyles = () => {
-    if (isMobile) return textStyles.mobile;
-    // For tablet detection, we'll use CSS classes that respond to screen size
-    return textStyles.desktop; // Default to desktop, CSS will handle tablet
-  };
+  const textStyles = getTextStyles();
 
   if (loading) {
     return (
@@ -154,8 +153,12 @@ const Communiques = () => {
   return (
     <Layout>
       <div className="bg-white min-h-screen">
-        {/* Hero Section with new image */}
-        <section className={`bg-primary text-white py-16 relative overflow-hidden ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        {/* Hero Section */}
+        <section className={`relative ${
+          isMobile ? 'h-[30vh]' : 
+          isTablet ? 'h-[45vh]' : 
+          'h-[60vh]'
+        } flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
               src="/lovable-uploads/2b7ea072-aed2-4cb0-9d55-f1286499dc01.png" 
@@ -164,72 +167,147 @@ const Communiques = () => {
             />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
-          <div className="container mx-auto px-4 relative z-10">
-            <h1 className="text-4xl font-bold mb-4">Communiqués</h1>
-            <p className="text-xl opacity-90">
+          
+          <div className={`relative z-10 text-center ${
+            isMobile ? 'px-[25px]' : 
+            isTablet ? 'px-[50px]' : 
+            'px-8 lg:px-[100px]'
+          }`}>
+            <h1 className={`font-bold mb-4 md:mb-6 animate-fade-in ${
+              isMobile ? 'text-2xl' : 
+              isTablet ? 'text-3xl' : 
+              'text-4xl md:text-5xl lg:text-6xl'
+            }`}>
+              Communiqués
+            </h1>
+            <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto ${
+              isMobile ? 'text-sm' : 
+              isTablet ? 'text-base' : 
+              'text-lg md:text-xl'
+            }`}>
               Informations officielles et communications importantes
             </p>
           </div>
         </section>
 
         {/* Search and Filter Section */}
-        <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-8 bg-gray-50 ${
+          isMobile ? 'px-[25px]' : 
+          isTablet ? 'px-[50px]' : 
+          'px-[100px]'
+        }`}>
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row gap-4 items-center md:items-center">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Rechercher un communiqué..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+            {isMobile ? (
+              // Mobile layout: search bar above, buttons below
+              <div className="space-y-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Rechercher un communiqué..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 w-full"
+                  />
+                </div>
+                <div className="flex gap-2 flex-wrap justify-center">
+                  <Button
+                    variant={urgencyFilter === 'all' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('all')}
+                    size="sm"
+                  >
+                    Tous
+                  </Button>
+                  <Button
+                    variant={urgencyFilter === 'urgent' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('urgent')}
+                    size="sm"
+                    className={urgencyFilter === 'urgent' ? 'bg-red-600 hover:bg-red-700' : 'border-red-200 text-red-600 hover:bg-red-50'}
+                  >
+                    Urgent
+                  </Button>
+                  <Button
+                    variant={urgencyFilter === 'important' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('important')}
+                    size="sm"
+                    className={urgencyFilter === 'important' ? 'bg-orange-600 hover:bg-orange-700' : 'border-orange-200 text-orange-600 hover:bg-orange-50'}
+                  >
+                    Important
+                  </Button>
+                  <Button
+                    variant={urgencyFilter === 'normal' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('normal')}
+                    size="sm"
+                    className={urgencyFilter === 'normal' ? 'bg-green-600 hover:bg-green-700' : 'border-green-200 text-green-600 hover:bg-green-50'}
+                  >
+                    Non urgent
+                  </Button>
+                </div>
               </div>
-              <div className="flex gap-2 flex-wrap">
-                <Button
-                  variant={urgencyFilter === 'all' ? 'default' : 'outline'}
-                  onClick={() => setUrgencyFilter('all')}
-                  size="sm"
-                >
-                  Tous
-                </Button>
-                <Button
-                  variant={urgencyFilter === 'urgent' ? 'default' : 'outline'}
-                  onClick={() => setUrgencyFilter('urgent')}
-                  size="sm"
-                  className={urgencyFilter === 'urgent' ? 'bg-red-600 hover:bg-red-700' : 'border-red-200 text-red-600 hover:bg-red-50'}
-                >
-                  Urgent
-                </Button>
-                <Button
-                  variant={urgencyFilter === 'important' ? 'default' : 'outline'}
-                  onClick={() => setUrgencyFilter('important')}
-                  size="sm"
-                  className={urgencyFilter === 'important' ? 'bg-orange-600 hover:bg-orange-700' : 'border-orange-200 text-orange-600 hover:bg-orange-50'}
-                >
-                  Important
-                </Button>
-                <Button
-                  variant={urgencyFilter === 'normal' ? 'default' : 'outline'}
-                  onClick={() => setUrgencyFilter('normal')}
-                  size="sm"
-                  className={urgencyFilter === 'normal' ? 'bg-green-600 hover:bg-green-700' : 'border-green-200 text-green-600 hover:bg-green-50'}
-                >
-                  Non urgent
-                </Button>
+            ) : (
+              // Desktop and Tablet layout: centered elements
+              <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Rechercher un communiqué..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <Button
+                    variant={urgencyFilter === 'all' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('all')}
+                    size="sm"
+                  >
+                    Tous
+                  </Button>
+                  <Button
+                    variant={urgencyFilter === 'urgent' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('urgent')}
+                    size="sm"
+                    className={urgencyFilter === 'urgent' ? 'bg-red-600 hover:bg-red-700' : 'border-red-200 text-red-600 hover:bg-red-50'}
+                  >
+                    Urgent
+                  </Button>
+                  <Button
+                    variant={urgencyFilter === 'important' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('important')}
+                    size="sm"
+                    className={urgencyFilter === 'important' ? 'bg-orange-600 hover:bg-orange-700' : 'border-orange-200 text-orange-600 hover:bg-orange-50'}
+                  >
+                    Important
+                  </Button>
+                  <Button
+                    variant={urgencyFilter === 'normal' ? 'default' : 'outline'}
+                    onClick={() => setUrgencyFilter('normal')}
+                    size="sm"
+                    className={urgencyFilter === 'normal' ? 'bg-green-600 hover:bg-green-700' : 'border-green-200 text-green-600 hover:bg-green-50'}
+                  >
+                    Non urgent
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
 
         {/* Communiques Grid */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-12 ${
+          isMobile ? 'px-[25px]' : 
+          isTablet ? 'px-[50px]' : 
+          'px-[100px]'
+        }`}>
           <div className="container mx-auto px-4">
             {filteredCommuniques.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className={`grid gap-8 ${
+                isMobile ? 'grid-cols-1' : 
+                isTablet ? 'grid-cols-2' : 
+                'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+              }`}>
                 {filteredCommuniques.map((item) => {
                   const styles = getCardStyles(item.urgency);
-                  const currentTextStyles = getCurrentTextStyles();
                   
                   return (
                     <Link key={item.id} to={`/communiques/${item.id}`}>
@@ -251,12 +329,12 @@ const Communiques = () => {
                               {new Date(item.published_date).toLocaleDateString('fr-FR')}
                             </div>
                           </div>
-                          <CardTitle className={`${currentTextStyles.title} ${styles.textTitle} md:text-lg lg:text-xl`}>
+                          <CardTitle className={`${textStyles.title} ${styles.textTitle}`}>
                             {item.title}
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="flex-grow flex items-start">
-                          <p className={`${currentTextStyles.description} ${styles.textDesc} md:text-sm lg:text-base`}>
+                          <p className={`${textStyles.description} ${styles.textDesc}`}>
                             {item.description}
                           </p>
                         </CardContent>
