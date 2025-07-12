@@ -173,7 +173,7 @@ const Communiques = () => {
         </section>
 
         {/* Search and Filter Section */}
-        <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'} items-center`}>
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
               <div className="relative flex-1 max-w-md">
