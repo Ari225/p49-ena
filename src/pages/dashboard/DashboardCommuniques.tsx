@@ -283,7 +283,7 @@ const DashboardCommuniques = () => {
               <Card key={communique.id} className="overflow-hidden">
                 <div className={isTablet ? "flex" : ""}>
                   {communique.image_url && (
-                    <div className={isTablet ? "w-48 h-32 flex-shrink-0" : "h-48"}>
+                    <div className={isTablet ? "w-32 h-24 flex-shrink-0" : "h-48"}>
                       <img 
                         src={communique.image_url} 
                         alt={communique.title} 
@@ -291,8 +291,8 @@ const DashboardCommuniques = () => {
                       />
                     </div>
                   )}
-                  <div className={isTablet ? "flex-1 flex flex-col" : ""}>
-                    <CardHeader className={isTablet ? "flex-shrink-0" : ""}>
+                  <div className={isTablet ? "flex-1 flex flex-col min-w-0" : ""}>
+                    <CardHeader className={isTablet ? "flex-shrink-0 pb-2" : ""}>
                       <div className="flex items-center justify-between mb-2">
                         {getUrgencyBadge(communique.urgency)}
                         <div className="flex items-center text-sm text-gray-500">
@@ -300,12 +300,12 @@ const DashboardCommuniques = () => {
                           {new Date(communique.published_date).toLocaleDateString('fr-FR')}
                         </div>
                       </div>
-                      <CardTitle className="text-xl font-semibold mb-2">
+                      <CardTitle className={isTablet ? "text-lg font-semibold mb-1 truncate" : "text-xl font-semibold mb-2"}>
                         {communique.title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className={isTablet ? "flex-grow flex flex-col justify-between" : ""}>
-                      <p className="text-base text-gray-600 mb-4">
+                    <CardContent className={isTablet ? "flex-grow flex flex-col justify-between pt-0" : ""}>
+                      <p className={isTablet ? "text-sm text-gray-600 mb-3 line-clamp-2" : "text-base text-gray-600 mb-4"}>
                         {communique.description}
                       </p>
                       <div className="flex space-x-2">
