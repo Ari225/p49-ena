@@ -245,7 +245,7 @@ const CommuniquesSection = () => {
                 return (
                   <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                     <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                      <h3 className={`${isMobile ? 'text-base' : isTab ? 'text-lg' : 'text-xl'} font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px]`}>
+                      <h3 className={`${isMobile ? 'text-xs' : isTab ? 'text-lg' : 'text-xl'} font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px]`}>
                         {communique.title}
                       </h3>
                       <p className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-base'} ${styles.textDesc} font-normal`}>
