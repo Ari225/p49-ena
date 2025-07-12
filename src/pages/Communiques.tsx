@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -207,7 +208,9 @@ const Communiques = () => {
           isTablet ? 'px-[50px]' : 
           'px-[100px]'
         }`}>
-          <div className="container mx-auto px-4">
+          <div className={`${
+            isMobile || isTablet ? '' : 'container mx-auto px-4'
+          }`}>
             {isMobile ? (
               // Mobile layout: search bar above, buttons below
               <div className="space-y-4">
@@ -310,7 +313,9 @@ const Communiques = () => {
           isTablet ? 'px-[50px]' : 
           'px-[100px]'
         }`}>
-          <div className="container mx-auto px-4">
+          <div className={`${
+            isMobile || isTablet ? '' : 'container mx-auto px-4'
+          }`}>
             {filteredCommuniques.length > 0 ? (
               <div className={`grid gap-8 ${
                 isMobile ? 'grid-cols-1' : 
