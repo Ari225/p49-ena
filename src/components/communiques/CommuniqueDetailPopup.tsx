@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -50,7 +49,7 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
 
   const getDialogStyles = () => {
     if (isMobile) {
-      return "max-w-[95vw] max-h-[90vh] mx-auto my-auto overflow-y-auto p-0";
+      return "max-w-[95vw] max-h-[90vh] mx-auto my-auto overflow-y-auto p-0 rounded-xl";
     } else if (isTablet) {
       return "max-w-[85vw] max-h-[85vh] mx-8 overflow-y-auto p-0";
     } else {
