@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,16 +20,28 @@ const formSchema = z.object({
   })
 });
 
+interface CommuniqueItem {
+  id: string;
+  title: string;
+  description: string;
+  type: string;
+  urgency: 'normal' | 'urgent' | 'important';
+  published_date: string;
+  image_url?: string;
+}
+
 interface CommuniqueFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
+  editingCommunique?: CommuniqueItem | null;
 }
 
 const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
   isOpen,
   onClose,
-  onSubmit
+  onSubmit,
+  editingCommunique
 }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -39,9 +51,30 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
     defaultValues: {
       title: '',
       description: '',
-      urgency: 'normal'
+      urgency: 'normal' as const
     }
   });
+
+  useEffect(() => {
+    if (editingCommunique) {
+      form.reset({
+        title: editingCommunique.title,
+        description: editingCommunique.description,
+        urgency: editingCommunique.urgency
+      });
+      if (editingCommunique.image_url) {
+        setImagePreview(editingCommunique.image_url);
+      }
+    } else {
+      form.reset({
+        title: '',
+        description: '',
+        urgency: 'normal'
+      });
+      setSelectedImage(null);
+      setImagePreview(null);
+    }
+  }, [editingCommunique, form]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -64,7 +97,8 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
     const formData = {
       ...data,
       image: selectedImage,
-      published_date: new Date().toISOString().split('T')[0]
+      published_date: editingCommunique?.published_date || new Date().toISOString().split('T')[0],
+      id: editingCommunique?.id
     };
     onSubmit(formData);
     form.reset();
@@ -84,7 +118,9 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="w-[95vw] max-w-md mx-auto rounded-xl">
         <DialogHeader>
-          <DialogTitle>Ajouter un communiqué</DialogTitle>
+          <DialogTitle>
+            {editingCommunique ? 'Modifier le communiqué' : 'Ajouter un communiqué'}
+          </DialogTitle>
         </DialogHeader>
         
         <Form {...form}>
@@ -165,7 +201,7 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Niveau d'urgence</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Sélectionner le niveau d'urgence" />
@@ -187,7 +223,7 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
                 Annuler
               </Button>
               <Button type="submit" className="bg-primary hover:bg-primary/90">
-                Publier
+                {editingCommunique ? 'Modifier' : 'Publier'}
               </Button>
             </div>
           </form>

@@ -6,9 +6,11 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Calendar } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Eye } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CommuniqueFormDialog from '@/components/communiques/CommuniqueFormDialog';
+import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopup';
+import CommuniqueDeleteConfirm from '@/components/communiques/CommuniqueDeleteConfirm';
 import { useToast } from '@/hooks/use-toast';
 
 interface CommuniqueItem {
@@ -26,6 +28,10 @@ const DashboardCommuniques = () => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [selectedCommunique, setSelectedCommunique] = useState<CommuniqueItem | null>(null);
+  const [editingCommunique, setEditingCommunique] = useState<CommuniqueItem | null>(null);
   const [communiques, setCommuniques] = useState<CommuniqueItem[]>([
     {
       id: '1',
@@ -52,25 +58,77 @@ const DashboardCommuniques = () => {
   }
 
   const handleSubmit = (formData: any) => {
-    console.log('Nouveau communiqué:', formData);
+    console.log('Données du communiqué:', formData);
     
-    const newCommunique: CommuniqueItem = {
-      id: Date.now().toString(),
-      title: formData.title,
-      description: formData.description,
-      type: formData.urgency === 'urgent' ? 'Communiqué urgent' : 
-            formData.urgency === 'important' ? 'Information importante' : 'Information',
-      urgency: formData.urgency,
-      published_date: formData.published_date,
-      image_url: formData.image ? URL.createObjectURL(formData.image) : undefined
-    };
+    if (formData.id) {
+      // Modification
+      setCommuniques(prev => prev.map(c => 
+        c.id === formData.id 
+          ? {
+              ...c,
+              title: formData.title,
+              description: formData.description,
+              urgency: formData.urgency,
+              type: formData.urgency === 'urgent' ? 'Communiqué urgent' : 
+                    formData.urgency === 'important' ? 'Information importante' : 'Information',
+              image_url: formData.image ? URL.createObjectURL(formData.image) : c.image_url
+            }
+          : c
+      ));
+      
+      toast({
+        title: "Communiqué modifié",
+        description: "Le communiqué a été modifié avec succès.",
+      });
+    } else {
+      // Ajout
+      const newCommunique: CommuniqueItem = {
+        id: Date.now().toString(),
+        title: formData.title,
+        description: formData.description,
+        type: formData.urgency === 'urgent' ? 'Communiqué urgent' : 
+              formData.urgency === 'important' ? 'Information importante' : 'Information',
+        urgency: formData.urgency,
+        published_date: formData.published_date,
+        image_url: formData.image ? URL.createObjectURL(formData.image) : undefined
+      };
 
-    setCommuniques(prev => [newCommunique, ...prev]);
+      setCommuniques(prev => [newCommunique, ...prev]);
+      
+      toast({
+        title: "Communiqué publié",
+        description: "Le communiqué a été publié avec succès.",
+      });
+    }
     
-    toast({
-      title: "Communiqué publié",
-      description: "Le communiqué a été publié avec succès.",
-    });
+    setEditingCommunique(null);
+  };
+
+  const handleEdit = (communique: CommuniqueItem) => {
+    setEditingCommunique(communique);
+    setShowForm(true);
+  };
+
+  const handleDelete = (communique: CommuniqueItem) => {
+    setSelectedCommunique(communique);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedCommunique) {
+      setCommuniques(prev => prev.filter(c => c.id !== selectedCommunique.id));
+      toast({
+        title: "Communiqué supprimé",
+        description: "Le communiqué a été supprimé avec succès.",
+      });
+    }
+    setShowDeleteConfirm(false);
+    setSelectedCommunique(null);
+  };
+
+  const handleViewDetail = (communique: CommuniqueItem) => {
+    setSelectedCommunique(communique);
+    setShowDetail(true);
   };
 
   const getUrgencyBadge = (urgency: string) => {
@@ -161,11 +219,28 @@ const DashboardCommuniques = () => {
                       {communique.description}
                     </p>
                     <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleViewDetail(communique)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Voir
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleEdit(communique)}
+                      >
                         <Edit className="h-4 w-4 mr-1" />
                         Modifier
                       </Button>
-                      <Button size="sm" variant="outline" className="text-red-600">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="text-red-600"
+                        onClick={() => handleDelete(communique)}
+                      >
                         <Trash2 className="h-4 w-4 mr-1" />
                         Supprimer
                       </Button>
@@ -177,10 +252,34 @@ const DashboardCommuniques = () => {
           </div>
         </div>
         <AdminSidebar />
+        
         <CommuniqueFormDialog
           isOpen={showForm}
-          onClose={() => setShowForm(false)}
+          onClose={() => {
+            setShowForm(false);
+            setEditingCommunique(null);
+          }}
           onSubmit={handleSubmit}
+          editingCommunique={editingCommunique}
+        />
+
+        <CommuniqueDetailPopup
+          communique={selectedCommunique}
+          isOpen={showDetail}
+          onClose={() => {
+            setShowDetail(false);
+            setSelectedCommunique(null);
+          }}
+        />
+
+        <CommuniqueDeleteConfirm
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setSelectedCommunique(null);
+          }}
+          onConfirm={confirmDelete}
+          communiqueTitle={selectedCommunique?.title || ''}
         />
       </Layout>
     );
@@ -207,48 +306,70 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Version tablet : 1 communiqué par ligne */}
+          <div className="space-y-4">
             {communiques.map((communique) => {
               const styles = getCardStyles(communique.urgency);
               
               return (
-                <Card key={communique.id} className={`overflow-hidden h-full flex flex-col ${styles.bg} ${styles.border}`}>
-                  {communique.image_url && (
-                    <div className="h-48 flex-shrink-0">
-                      <img 
-                        src={communique.image_url} 
-                        alt={communique.title} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <CardHeader className="flex-shrink-0">
-                    <div className="flex items-center justify-between mb-2">
-                      {getUrgencyBadge(communique.urgency)}
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(communique.published_date).toLocaleDateString('fr-FR')}
+                <Card key={communique.id} className={`overflow-hidden ${styles.bg} ${styles.border}`}>
+                  <div className="flex">
+                    {communique.image_url && (
+                      <div className="w-48 h-32 flex-shrink-0">
+                        <img 
+                          src={communique.image_url} 
+                          alt={communique.title} 
+                          className="w-full h-full object-cover"
+                        />
                       </div>
+                    )}
+                    <div className="flex-1 flex flex-col">
+                      <CardHeader className="flex-shrink-0">
+                        <div className="flex items-center justify-between mb-2">
+                          {getUrgencyBadge(communique.urgency)}
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Calendar className="w-4 h-4 mr-1" />
+                            {new Date(communique.published_date).toLocaleDateString('fr-FR')}
+                          </div>
+                        </div>
+                        <CardTitle className={`text-xl font-semibold mb-2 ${styles.textTitle}`}>
+                          {communique.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex-grow flex flex-col justify-between">
+                        <p className={`text-base mb-4 ${styles.textDesc}`}>
+                          {communique.description}
+                        </p>
+                        <div className="flex space-x-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleViewDetail(communique)}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            Voir
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleEdit(communique)}
+                          >
+                            <Edit className="h-4 w-4 mr-1" />
+                            Modifier
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="text-red-600"
+                            onClick={() => handleDelete(communique)}
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Supprimer
+                          </Button>
+                        </div>
+                      </CardContent>
                     </div>
-                    <CardTitle className={`text-xl font-semibold mb-2 ${styles.textTitle}`}>
-                      {communique.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-grow flex flex-col justify-between">
-                    <p className={`text-base mb-4 ${styles.textDesc}`}>
-                      {communique.description}
-                    </p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Modifier
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-red-600">
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Supprimer
-                      </Button>
-                    </div>
-                  </CardContent>
+                  </div>
                 </Card>
               );
             })}
@@ -257,8 +378,31 @@ const DashboardCommuniques = () => {
 
         <CommuniqueFormDialog
           isOpen={showForm}
-          onClose={() => setShowForm(false)}
+          onClose={() => {
+            setShowForm(false);
+            setEditingCommunique(null);
+          }}
           onSubmit={handleSubmit}
+          editingCommunique={editingCommunique}
+        />
+
+        <CommuniqueDetailPopup
+          communique={selectedCommunique}
+          isOpen={showDetail}
+          onClose={() => {
+            setShowDetail(false);
+            setSelectedCommunique(null);
+          }}
+        />
+
+        <CommuniqueDeleteConfirm
+          isOpen={showDeleteConfirm}
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setSelectedCommunique(null);
+          }}
+          onConfirm={confirmDelete}
+          communiqueTitle={selectedCommunique?.title || ''}
         />
       </div>
     </Layout>

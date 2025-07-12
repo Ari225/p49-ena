@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Dialog,
@@ -14,10 +15,9 @@ interface CommuniqueItem {
   title: string;
   description: string;
   type: string;
-  color: string;
-  image: string;
-  published_date: string;
   urgency: 'normal' | 'urgent' | 'important';
+  published_date: string;
+  image_url?: string;
 }
 
 interface CommuniqueDetailPopupProps {
@@ -49,7 +49,7 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
 
   const getDialogStyles = () => {
     if (isMobile) {
-      return "max-w-[95vw] max-h-[90vh] mx-auto my-auto overflow-y-auto p-0 rounded-xl";
+      return "w-[95vw] max-w-[95vw] max-h-[90vh] mx-auto my-auto overflow-y-auto p-0 rounded-xl";
     } else if (isTablet) {
       return "max-w-[85vw] max-h-[85vh] mx-8 overflow-y-auto p-0";
     } else {
@@ -98,10 +98,10 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
         </DialogHeader>
         
         <div className={`space-y-4 ${getPaddingStyles()}`}>
-          {communique.image && (
+          {communique.image_url && (
             <div className="w-full">
               <img 
-                src={communique.image} 
+                src={communique.image_url} 
                 alt={communique.title}
                 className="w-full h-auto object-contain rounded-lg"
               />
