@@ -126,7 +126,7 @@ const Communiques = () => {
       description: 'text-xs font-normal'
     },
     tablet: {
-      title: 'text-lg font-semibold mb-[10px]',
+      title: 'text-2xl font-semibold mb-[10px]',
       description: 'text-sm font-normal'
     },
     desktop: {
