@@ -9,7 +9,7 @@ const AssembleesHeader = () => {
     <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
       <div className="absolute inset-0">
         <img 
-          src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+          src="/lovable-uploads/ag_bg.webp" 
           alt="Background assemblées générales" 
           className="w-full h-full object-cover" 
         />
