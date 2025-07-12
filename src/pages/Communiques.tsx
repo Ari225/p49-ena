@@ -358,7 +358,7 @@ const Communiques = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-500 mb-4">Aucun communiqué trouvé.</p>
+                <p className="text-gray-700 mb-4">Aucun communiqué trouvé.</p>
                 <Button onClick={() => {setSearchTerm(''); setUrgencyFilter('all');}}>
                   Afficher tous les communiqués
                 </Button>
