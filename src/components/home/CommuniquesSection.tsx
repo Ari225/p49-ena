@@ -156,7 +156,7 @@ const CommuniquesSection = () => {
                       <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
                         <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                           <CardContent className="p-4 px-[24px] py-[20px]">
-                            <h3 className={`font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px] text-base`}>
+                            <h3 className={`font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px] text-2xl`}>
                               {communique.title}
                             </h3>
                             <p className={`text-xs ${styles.textDesc} font-normal`}>
