@@ -122,7 +122,7 @@ const Communiques = () => {
   // Text styles matching home page CommuniquesSection
   const textStyles = {
     mobile: {
-      title: 'text-2xl font-semibold mb-[10px]',
+      title: 'text-base font-semibold mb-[10px]',
       description: 'text-xs font-normal'
     },
     tablet: {
