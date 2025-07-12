@@ -201,8 +201,8 @@ const CommuniquesSection = () => {
                     const styles = colorStyles[communique.color];
                     return (
                       <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
-                        <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                          <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between">
+                        <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                          <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between text-center">
                             <h3 className={`font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px] text-lg line-clamp-2`}>
                               {communique.title}
                             </h3>
