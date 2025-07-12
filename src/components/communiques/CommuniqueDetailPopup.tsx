@@ -46,27 +46,29 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center justify-between mb-4">
-            {getUrgencyBadge(communique.urgency)}
-            <div className="flex items-center text-sm text-gray-500">
-              <Calendar className="w-4 h-4 mr-1" />
-              {new Date(communique.published_date).toLocaleDateString('fr-FR')}
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+        <DialogHeader className="px-6 pt-6 pb-0">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              {getUrgencyBadge(communique.urgency)}
+              <div className="flex items-center text-sm text-gray-500">
+                <Calendar className="w-4 h-4 mr-1" />
+                {new Date(communique.published_date).toLocaleDateString('fr-FR')}
+              </div>
             </div>
           </div>
-          <DialogTitle className="text-xl font-semibold text-left">
+          <DialogTitle className="text-xl font-semibold text-left pr-8">
             {communique.title}
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-4">
+        <div className="space-y-4 px-6 pb-6">
           {communique.image && (
-            <div className="w-full h-64 rounded-lg overflow-hidden">
+            <div className="w-full">
               <img 
                 src={communique.image} 
                 alt={communique.title}
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain rounded-lg"
               />
             </div>
           )}
