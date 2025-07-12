@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -14,42 +13,82 @@ const CommuniquesSection = () => {
   const [selectedImage, setSelectedImage] = useState<string>('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg');
   const [selectedId, setSelectedId] = useState<number>(1);
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
-  
+
+  // Définition des styles de couleurs fixes
+  const colorStyles = {
+    red: {
+      bg: 'bg-red-50',
+      border: 'border-red-200',
+      textTitle: 'text-red-800',
+      textDesc: 'text-red-600'
+    },
+    blue: {
+      bg: 'bg-blue-50',
+      border: 'border-blue-200',
+      textTitle: 'text-blue-800',
+      textDesc: 'text-blue-600'
+    },
+    green: {
+      bg: 'bg-green-50',
+      border: 'border-green-200',
+      textTitle: 'text-green-800',
+      textDesc: 'text-green-600'
+    },
+    purple: {
+      bg: 'bg-purple-50',
+      border: 'border-purple-200',
+      textTitle: 'text-purple-800',
+      textDesc: 'text-purple-600'
+    },
+    orange: {
+      bg: 'bg-orange-50',
+      border: 'border-orange-200',
+      textTitle: 'text-orange-800',
+      textDesc: 'text-orange-600'
+    },
+    indigo: {
+      bg: 'bg-indigo-50',
+      border: 'border-indigo-200',
+      textTitle: 'text-indigo-800',
+      textDesc: 'text-indigo-600'
+    }
+  };
+
   const communiques = [{
     id: 1,
     title: 'Communiqué urgent',
     description: 'Report de l\'événement prévu le 25 mars 2024.',
-    color: 'red',
+    color: 'red' as keyof typeof colorStyles,
     image: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg'
   }, {
     id: 2,
     title: 'Nouvelle inscription',
     description: 'Ouverture des inscriptions pour la formation de mars.',
-    color: 'blue',
+    color: 'blue' as keyof typeof colorStyles,
     image: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'
   }, {
     id: 3,
     title: 'Félicitations',
     description: 'Promotion de plusieurs membres à de nouveaux postes.',
-    color: 'green',
+    color: 'green' as keyof typeof colorStyles,
     image: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg'
   }, {
     id: 4,
     title: 'Communiqué de presse',
     description: 'Publication des résultats du dernier concours interne.',
-    color: 'purple',
+    color: 'purple' as keyof typeof colorStyles,
     image: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'
   }, {
     id: 5,
     title: 'Communiqué ENA',
     description: 'Nouvelles directives pour les formations continues.',
-    color: 'orange',
+    color: 'orange' as keyof typeof colorStyles,
     image: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png'
   }, {
     id: 6,
     title: 'Communiqué P49',
     description: 'Assemblée générale extraordinaire du réseau P49.',
-    color: 'indigo',
+    color: 'indigo' as keyof typeof colorStyles,
     image: '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png'
   }];
 
@@ -111,20 +150,23 @@ const CommuniquesSection = () => {
                 <div className="flex transition-transform duration-300 ease-in-out" style={{
                   transform: `translateX(-${currentSlideIndex * 100}%)`
                 }}>
-                  {communiques.map(communique => (
-                    <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
-                      <Card className={`bg-${communique.color}-50 border-${communique.color}-200 rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                        <CardContent className="p-4 px-[24px] py-[20px]">
-                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-xl`}>
-                            {communique.title}
-                          </h3>
-                          <p className={`text-sm text-${communique.color}-600 font-normal`}>
-                            {communique.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
+                  {communiques.map(communique => {
+                    const styles = colorStyles[communique.color];
+                    return (
+                      <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
+                        <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                          <CardContent className="p-4 px-[24px] py-[20px]">
+                            <h3 className={`font-semibold ${styles.textTitle} mb-2 text-xl`}>
+                              {communique.title}
+                            </h3>
+                            <p className={`text-sm ${styles.textDesc} font-normal`}>
+                              {communique.description}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               
@@ -155,20 +197,23 @@ const CommuniquesSection = () => {
                 <div className="flex transition-transform duration-300 ease-in-out" style={{
                   transform: `translateX(-${(currentSlideIndex - 1) * 33.333}%)`
                 }}>
-                  {communiques.map(communique => (
-                    <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
-                      <Card className={`h-32 bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                        <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between">
-                          <h3 className={`font-semibold text-${communique.color}-800 mb-2 text-base line-clamp-2`}>
-                            {communique.title}
-                          </h3>
-                          <p className={`text-xs text-${communique.color}-600 font-normal line-clamp-2`}>
-                            {communique.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  ))}
+                  {communiques.map(communique => {
+                    const styles = colorStyles[communique.color];
+                    return (
+                      <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
+                        <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                          <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between">
+                            <h3 className={`font-semibold ${styles.textTitle} mb-2 text-base line-clamp-2`}>
+                              {communique.title}
+                            </h3>
+                            <p className={`text-xs ${styles.textDesc} font-normal line-clamp-2`}>
+                              {communique.description}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               
@@ -195,18 +240,21 @@ const CommuniquesSection = () => {
             
             {/* Communiqués stacked */}
             <div className="flex-1 space-y-3 md:space-y-4">
-              {communiques.map(communique => (
-                <Card key={communique.id} className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                  <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                    <h3 className={`${isMobile ? 'text-base' : isTab ? 'text-lg' : 'text-xl'} font-semibold text-${communique.color}-800 mb-[10px] md:mb-[10px]`}>
-                      {communique.title}
-                    </h3>
-                    <p className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-base'} text-${communique.color}-600 font-normal`}>
-                      {communique.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+              {communiques.map(communique => {
+                const styles = colorStyles[communique.color];
+                return (
+                  <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                    <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
+                      <h3 className={`${isMobile ? 'text-base' : isTab ? 'text-lg' : 'text-xl'} font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px]`}>
+                        {communique.title}
+                      </h3>
+                      <p className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-base'} ${styles.textDesc} font-normal`}>
+                        {communique.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         )}
