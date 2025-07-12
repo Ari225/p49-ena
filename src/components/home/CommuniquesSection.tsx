@@ -54,32 +54,6 @@ const CommuniquesSection = () => {
     }
   };
 
-  // STYLES DES TEXTES SELON LES VERSIONS
-  const textStyles = {
-    // MOBILE - Styles pour version mobile
-    mobile: {
-      title: 'text-xl font-semibold', // Titre mobile
-      description: 'text-sm font-normal' // Description mobile
-    },
-    // TABLET - Styles pour version tablette
-    tablet: {
-      title: 'text-base font-semibold line-clamp-2', // Titre tablette
-      description: 'text-xs font-normal line-clamp-2' // Description tablette
-    },
-    // DESKTOP - Styles pour version desktop
-    desktop: {
-      title: 'text-xl font-semibold', // Titre desktop
-      description: 'text-base font-normal' // Description desktop
-    }
-  };
-
-  // Fonction pour obtenir les styles de texte selon le device
-  const getTextStyles = () => {
-    if (isMobile) return textStyles.mobile;
-    if (isTab) return textStyles.tablet;
-    return textStyles.desktop;
-  };
-
   const communiques = [{
     id: 1,
     title: 'Communiqué urgent',
@@ -144,8 +118,6 @@ const CommuniquesSection = () => {
     setSelectedId(currentCommunique.id);
   };
 
-  const currentTextStyles = getTextStyles();
-
   return (
     <section className={`py-12 md:py-16 lg:py-[100px] bg-accent/30 ${
       isMobile ? 'px-[25px]' : 
@@ -184,12 +156,10 @@ const CommuniquesSection = () => {
                       <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
                         <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                           <CardContent className="p-4 px-[24px] py-[20px]">
-                            {/* TITRE MOBILE */}
-                            <h3 className={`${currentTextStyles.title} ${styles.textTitle} mb-2`}>
+                            <h3 className={`font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px] text-base`}>
                               {communique.title}
                             </h3>
-                            {/* DESCRIPTION MOBILE */}
-                            <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                            <p className={`text-xs ${styles.textDesc} font-normal`}>
                               {communique.description}
                             </p>
                           </CardContent>
@@ -233,12 +203,10 @@ const CommuniquesSection = () => {
                       <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
                         <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-2 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                           <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between">
-                            {/* TITRE TABLET */}
-                            <h3 className={`${currentTextStyles.title} ${styles.textTitle} mb-2`}>
+                            <h3 className={`font-semibold ${styles.textTitle} mb-2 text-base line-clamp-2`}>
                               {communique.title}
                             </h3>
-                            {/* DESCRIPTION TABLET */}
-                            <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                            <p className={`text-xs ${styles.textDesc} font-normal line-clamp-2`}>
                               {communique.description}
                             </p>
                           </CardContent>
@@ -277,12 +245,10 @@ const CommuniquesSection = () => {
                 return (
                   <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                     <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                      {/* TITRE DESKTOP */}
-                      <h3 className={`${currentTextStyles.title} ${styles.textTitle} mb-[10px] md:mb-[10px]`}>
+                      <h3 className={`${isMobile ? 'text-xs' : isTab ? 'text-lg' : 'text-xl'} font-semibold ${styles.textTitle} mb-[10px] md:mb-[10px]`}>
                         {communique.title}
                       </h3>
-                      {/* DESCRIPTION DESKTOP */}
-                      <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                      <p className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-base'} ${styles.textDesc} font-normal`}>
                         {communique.description}
                       </p>
                     </CardContent>
