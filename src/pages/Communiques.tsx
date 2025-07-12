@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,8 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopup';
 
 interface CommuniqueItem {
   id: string;
@@ -27,6 +26,8 @@ const Communiques = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [urgencyFilter, setUrgencyFilter] = useState<string>('all');
+  const [selectedCommunique, setSelectedCommunique] = useState<CommuniqueItem | null>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     fetchCommuniques();
@@ -139,6 +140,16 @@ const Communiques = () => {
   };
 
   const textStyles = getTextStyles();
+
+  const handleCardClick = (communique: CommuniqueItem) => {
+    setSelectedCommunique(communique);
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedCommunique(null);
+  };
 
   if (loading) {
     return (
@@ -310,36 +321,38 @@ const Communiques = () => {
                   const styles = getCardStyles(item.urgency);
                   
                   return (
-                    <Link key={item.id} to={`/communiques/${item.id}`}>
-                      <Card className={`overflow-hidden hover:shadow-lg transition-shadow ${styles.bg} ${styles.border} h-full flex flex-col`}>
-                        {item.image && (
-                          <div className="h-48 flex-shrink-0">
-                            <img 
-                              src={item.image} 
-                              alt={item.title} 
-                              className="w-full h-full object-cover"
-                            />
+                    <Card 
+                      key={item.id} 
+                      className={`overflow-hidden hover:shadow-lg transition-shadow cursor-pointer ${styles.bg} ${styles.border} h-full flex flex-col`}
+                      onClick={() => handleCardClick(item)}
+                    >
+                      {item.image && (
+                        <div className="h-48 flex-shrink-0">
+                          <img 
+                            src={item.image} 
+                            alt={item.title} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <CardHeader className="flex-shrink-0">
+                        <div className="flex items-center justify-between mb-2">
+                          {getUrgencyBadge(item.urgency)}
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Calendar className="w-4 h-4 mr-1" />
+                            {new Date(item.published_date).toLocaleDateString('fr-FR')}
                           </div>
-                        )}
-                        <CardHeader className="flex-shrink-0">
-                          <div className="flex items-center justify-between mb-2">
-                            {getUrgencyBadge(item.urgency)}
-                            <div className="flex items-center text-sm text-gray-500">
-                              <Calendar className="w-4 h-4 mr-1" />
-                              {new Date(item.published_date).toLocaleDateString('fr-FR')}
-                            </div>
-                          </div>
-                          <CardTitle className={`${textStyles.title} ${styles.textTitle}`}>
-                            {item.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="flex-grow flex items-start">
-                          <p className={`${textStyles.description} ${styles.textDesc}`}>
-                            {item.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </Link>
+                        </div>
+                        <CardTitle className={`${textStyles.title} ${styles.textTitle}`}>
+                          {item.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="flex-grow flex items-start">
+                        <p className={`${textStyles.description} ${styles.textDesc}`}>
+                          {item.description}
+                        </p>
+                      </CardContent>
+                    </Card>
                   );
                 })}
               </div>
@@ -353,6 +366,12 @@ const Communiques = () => {
             )}
           </div>
         </section>
+
+        <CommuniqueDetailPopup
+          communique={selectedCommunique}
+          isOpen={isPopupOpen}
+          onClose={handleClosePopup}
+        />
       </div>
     </Layout>
   );
