@@ -82,7 +82,7 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md mx-4 sm:mx-0">
+      <DialogContent className="w-[95vw] max-w-md mx-auto rounded-xl">
         <DialogHeader>
           <DialogTitle>Ajouter un communiqué</DialogTitle>
         </DialogHeader>
