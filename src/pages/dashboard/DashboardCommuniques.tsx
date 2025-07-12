@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit, Trash2, Calendar, Eye } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import CommuniqueFormDialog from '@/components/communiques/CommuniqueFormDialog';
 import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopup';
 import CommuniqueDeleteConfirm from '@/components/communiques/CommuniqueDeleteConfirm';
@@ -26,6 +26,7 @@ interface CommuniqueItem {
 const DashboardCommuniques = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
@@ -142,32 +143,6 @@ const DashboardCommuniques = () => {
     }
   };
 
-  const getCardStyles = (urgency: string) => {
-    switch (urgency) {
-      case 'urgent':
-        return {
-          bg: 'bg-red-50',
-          border: 'border-red-200',
-          textTitle: 'text-red-800',
-          textDesc: 'text-red-600'
-        };
-      case 'important':
-        return {
-          bg: 'bg-orange-50',
-          border: 'border-orange-200',
-          textTitle: 'text-orange-800',
-          textDesc: 'text-orange-600'
-        };
-      default:
-        return {
-          bg: 'bg-green-50',
-          border: 'border-green-200',
-          textTitle: 'text-green-800',
-          textDesc: 'text-green-600'
-        };
-    }
-  };
-
   if (isMobile) {
     return (
       <Layout>
@@ -187,68 +162,64 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
-          <div className="space-y-4">
-            {communiques.map((communique) => {
-              const styles = getCardStyles(communique.urgency);
-              
-              return (
-                <Card key={communique.id} className={`overflow-hidden ${styles.bg} ${styles.border}`}>
-                  {communique.image_url && (
-                    <div className="h-48">
-                      <img 
-                        src={communique.image_url} 
-                        alt={communique.title} 
-                        className="w-full h-full object-cover"
-                      />
+          <div className="grid gap-6">
+            {communiques.map((communique) => (
+              <Card key={communique.id} className="overflow-hidden">
+                {communique.image_url && (
+                  <div className="h-48">
+                    <img 
+                      src={communique.image_url} 
+                      alt={communique.title} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    {getUrgencyBadge(communique.urgency)}
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      {new Date(communique.published_date).toLocaleDateString('fr-FR')}
                     </div>
-                  )}
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      {getUrgencyBadge(communique.urgency)}
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(communique.published_date).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-                    <CardTitle className={`text-base font-semibold mb-2 ${styles.textTitle}`}>
-                      {communique.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className={`text-xs mb-4 ${styles.textDesc}`}>
-                      {communique.description}
-                    </p>
-                    <div className="flex space-x-2">
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleViewDetail(communique)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        Voir
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleEdit(communique)}
-                      >
-                        <Edit className="h-4 w-4 mr-1" />
-                        Modifier
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="text-red-600"
-                        onClick={() => handleDelete(communique)}
-                      >
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Supprimer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                  </div>
+                  <CardTitle className="text-base font-semibold mb-2">
+                    {communique.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-gray-600 mb-4">
+                    {communique.description}
+                  </p>
+                  <div className="flex space-x-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleViewDetail(communique)}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Voir
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEdit(communique)}
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Modifier
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="text-red-600"
+                      onClick={() => handleDelete(communique)}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Supprimer
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
         <AdminSidebar />
@@ -306,73 +277,69 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
-          {/* Version tablet : 1 communiqué par ligne */}
-          <div className="space-y-4">
-            {communiques.map((communique) => {
-              const styles = getCardStyles(communique.urgency);
-              
-              return (
-                <Card key={communique.id} className={`overflow-hidden ${styles.bg} ${styles.border}`}>
-                  <div className="flex">
-                    {communique.image_url && (
-                      <div className="w-48 h-32 flex-shrink-0">
-                        <img 
-                          src={communique.image_url} 
-                          alt={communique.title} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <div className="flex-1 flex flex-col">
-                      <CardHeader className="flex-shrink-0">
-                        <div className="flex items-center justify-between mb-2">
-                          {getUrgencyBadge(communique.urgency)}
-                          <div className="flex items-center text-sm text-gray-500">
-                            <Calendar className="w-4 h-4 mr-1" />
-                            {new Date(communique.published_date).toLocaleDateString('fr-FR')}
-                          </div>
-                        </div>
-                        <CardTitle className={`text-xl font-semibold mb-2 ${styles.textTitle}`}>
-                          {communique.title}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="flex-grow flex flex-col justify-between">
-                        <p className={`text-base mb-4 ${styles.textDesc}`}>
-                          {communique.description}
-                        </p>
-                        <div className="flex space-x-2">
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            onClick={() => handleViewDetail(communique)}
-                          >
-                            <Eye className="h-4 w-4 mr-1" />
-                            Voir
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            onClick={() => handleEdit(communique)}
-                          >
-                            <Edit className="h-4 w-4 mr-1" />
-                            Modifier
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="text-red-600"
-                            onClick={() => handleDelete(communique)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Supprimer
-                          </Button>
-                        </div>
-                      </CardContent>
+          {/* Version Desktop : Grille 2 colonnes, Version Tablet : 1 communiqué par ligne */}
+          <div className={isTablet ? "space-y-4" : "grid grid-cols-1 lg:grid-cols-2 gap-6"}>
+            {communiques.map((communique) => (
+              <Card key={communique.id} className="overflow-hidden">
+                <div className={isTablet ? "flex" : ""}>
+                  {communique.image_url && (
+                    <div className={isTablet ? "w-48 h-32 flex-shrink-0" : "h-48"}>
+                      <img 
+                        src={communique.image_url} 
+                        alt={communique.title} 
+                        className="w-full h-full object-cover"
+                      />
                     </div>
+                  )}
+                  <div className={isTablet ? "flex-1 flex flex-col" : ""}>
+                    <CardHeader className={isTablet ? "flex-shrink-0" : ""}>
+                      <div className="flex items-center justify-between mb-2">
+                        {getUrgencyBadge(communique.urgency)}
+                        <div className="flex items-center text-sm text-gray-500">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {new Date(communique.published_date).toLocaleDateString('fr-FR')}
+                        </div>
+                      </div>
+                      <CardTitle className="text-xl font-semibold mb-2">
+                        {communique.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className={isTablet ? "flex-grow flex flex-col justify-between" : ""}>
+                      <p className="text-base text-gray-600 mb-4">
+                        {communique.description}
+                      </p>
+                      <div className="flex space-x-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleViewDetail(communique)}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          Voir
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleEdit(communique)}
+                        >
+                          <Edit className="h-4 w-4 mr-1" />
+                          Modifier
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="text-red-600"
+                          onClick={() => handleDelete(communique)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Supprimer
+                        </Button>
+                      </div>
+                    </CardContent>
                   </div>
-                </Card>
-              );
-            })}
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
 

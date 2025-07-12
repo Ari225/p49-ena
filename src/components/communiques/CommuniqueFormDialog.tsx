@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -51,7 +50,7 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
     defaultValues: {
       title: '',
       description: '',
-      urgency: 'normal' as const
+      urgency: 'normal' as 'normal' | 'urgent' | 'important'
     }
   });
 
@@ -69,7 +68,7 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
       form.reset({
         title: '',
         description: '',
-        urgency: 'normal'
+        urgency: 'normal' as 'normal' | 'urgent' | 'important'
       });
       setSelectedImage(null);
       setImagePreview(null);
