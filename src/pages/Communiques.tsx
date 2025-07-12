@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -101,22 +100,22 @@ const Communiques = () => {
         return {
           bg: 'bg-red-50',
           border: 'border-red-200',
-          textTitle: 'text-red-800',
-          textDesc: 'text-red-600'
+          textTitle: 'text-gray-900',
+          textDesc: 'text-gray-600'
         };
       case 'important':
         return {
           bg: 'bg-orange-50',
           border: 'border-orange-200',
-          textTitle: 'text-orange-800',
-          textDesc: 'text-orange-600'
+          textTitle: 'text-gray-900',
+          textDesc: 'text-gray-600'
         };
       default:
         return {
           bg: 'bg-green-50',
           border: 'border-green-200',
-          textTitle: 'text-green-800',
-          textDesc: 'text-green-600'
+          textTitle: 'text-gray-900',
+          textDesc: 'text-gray-600'
         };
     }
   };
@@ -328,7 +327,7 @@ const Communiques = () => {
                   return (
                     <Card 
                       key={item.id} 
-                      className={`overflow-hidden hover:shadow-lg transition-shadow cursor-pointer ${styles.bg} ${styles.border} h-full flex flex-col`}
+                      className={`overflow-hidden hover:shadow-lg transition-shadow cursor-pointer bg-white border-gray-200 h-full flex flex-col`}
                       onClick={() => handleCardClick(item)}
                     >
                       {item.image && (
