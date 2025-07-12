@@ -198,7 +198,7 @@ const CommuniquesSection = () => {
               {communiques.map(communique => (
                 <Card key={communique.id} className={`bg-${communique.color}-50 border-${communique.color}-200 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
                   <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                    <h3 className={`${isMobile ? 'text-base' : isTab ? 'text-lg' : 'text-xl'} font-semibold text-${communique.color}-800 mb-2`}>
+                    <h3 className={`${isMobile ? 'text-base' : isTab ? 'text-lg' : 'text-4xl'} font-semibold text-${communique.color}-800 mb-2`}>
                       {communique.title}
                     </h3>
                     <p className={`text-sm md:text-sm text-${communique.color}-600 font-normal`}>
