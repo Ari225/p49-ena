@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -203,14 +202,12 @@ const Communiques = () => {
         </section>
 
         {/* Search and Filter Section */}
-        <section className={`py-8 bg-gray-50 ${
+        <section className={`py-8 bg-white ${
           isMobile ? 'px-[25px]' : 
           isTablet ? 'px-[50px]' : 
           'px-[100px]'
         }`}>
-          <div className={`${
-            isMobile || isTablet ? '' : 'container mx-auto px-4'
-          }`}>
+          <div className="container mx-auto px-4">
             {isMobile ? (
               // Mobile layout: search bar above, buttons below
               <div className="space-y-4">
@@ -313,9 +310,7 @@ const Communiques = () => {
           isTablet ? 'px-[50px]' : 
           'px-[100px]'
         }`}>
-          <div className={`${
-            isMobile || isTablet ? '' : 'container mx-auto px-4'
-          }`}>
+          <div className="container mx-auto px-4">
             {filteredCommuniques.length > 0 ? (
               <div className={`grid gap-8 ${
                 isMobile ? 'grid-cols-1' : 
@@ -363,7 +358,7 @@ const Communiques = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-700 mb-4">Aucun communiqué trouvé.</p>
+                <p className="text-gray-500 mb-4">Aucun communiqué trouvé.</p>
                 <Button onClick={() => {setSearchTerm(''); setUrgencyFilter('all');}}>
                   Afficher tous les communiqués
                 </Button>
