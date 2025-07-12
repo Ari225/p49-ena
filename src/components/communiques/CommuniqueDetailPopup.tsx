@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from 'lucide-react';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface CommuniqueItem {
   id: string;
@@ -31,6 +32,9 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
   isOpen,
   onClose
 }) => {
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+
   if (!communique) return null;
 
   const getUrgencyBadge = (urgency: string) => {
@@ -44,10 +48,40 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
     }
   };
 
+  const getDialogStyles = () => {
+    if (isMobile) {
+      return "max-w-[95vw] max-h-[90vh] mx-auto my-auto overflow-y-auto p-0";
+    } else if (isTablet) {
+      return "max-w-[85vw] max-h-[85vh] mx-8 overflow-y-auto p-0";
+    } else {
+      return "max-w-4xl max-h-[90vh] overflow-y-auto p-0";
+    }
+  };
+
+  const getPaddingStyles = () => {
+    if (isMobile) {
+      return "px-4 pb-4";
+    } else if (isTablet) {
+      return "px-6 pb-6";
+    } else {
+      return "px-6 pb-6";
+    }
+  };
+
+  const getHeaderPaddingStyles = () => {
+    if (isMobile) {
+      return "px-4 pt-4 pb-0";
+    } else if (isTablet) {
+      return "px-6 pt-6 pb-0";
+    } else {
+      return "px-6 pt-6 pb-0";
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
-        <DialogHeader className="px-6 pt-6 pb-0">
+      <DialogContent className={getDialogStyles()}>
+        <DialogHeader className={getHeaderPaddingStyles()}>
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex items-center gap-3">
               {getUrgencyBadge(communique.urgency)}
@@ -57,12 +91,14 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
               </div>
             </div>
           </div>
-          <DialogTitle className="text-xl font-semibold text-left pr-8">
+          <DialogTitle className={`font-semibold text-left pr-8 ${
+            isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-xl'
+          }`}>
             {communique.title}
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-4 px-6 pb-6">
+        <div className={`space-y-4 ${getPaddingStyles()}`}>
           {communique.image && (
             <div className="w-full">
               <img 
@@ -74,7 +110,9 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
           )}
           
           <div className="prose max-w-none">
-            <p className="text-gray-700 leading-relaxed">
+            <p className={`text-gray-700 leading-relaxed ${
+              isMobile ? 'text-sm' : 'text-base'
+            }`}>
               {communique.description}
             </p>
           </div>
