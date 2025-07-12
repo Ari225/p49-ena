@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -277,67 +276,63 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
-          {/* Version Desktop : Grille 2 colonnes, Version Tablet : 1 communiqué par ligne */}
+          {/* Version Desktop : Grille 2 colonnes, Version Tablet : 1 communiqué par ligne comme dans Communiques.tsx */}
           <div className={isTablet ? "space-y-4" : "grid grid-cols-1 lg:grid-cols-2 gap-6"}>
             {communiques.map((communique) => (
-              <Card key={communique.id} className="overflow-hidden">
-                <div className={isTablet ? "flex" : ""}>
-                  {communique.image_url && (
-                    <div className={isTablet ? "w-32 h-24 flex-shrink-0" : "h-48"}>
-                      <img 
-                        src={communique.image_url} 
-                        alt={communique.title} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className={isTablet ? "flex-1 flex flex-col min-w-0" : ""}>
-                    <CardHeader className={isTablet ? "flex-shrink-0 pb-2" : ""}>
-                      <div className="flex items-center justify-between mb-2">
-                        {getUrgencyBadge(communique.urgency)}
-                        <div className="flex items-center text-sm text-gray-500">
-                          <Calendar className="w-4 h-4 mr-1" />
-                          {new Date(communique.published_date).toLocaleDateString('fr-FR')}
-                        </div>
-                      </div>
-                      <CardTitle className={isTablet ? "text-lg font-semibold mb-1 truncate" : "text-xl font-semibold mb-2"}>
-                        {communique.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className={isTablet ? "flex-grow flex flex-col justify-between pt-0" : ""}>
-                      <p className={isTablet ? "text-sm text-gray-600 mb-3 line-clamp-2" : "text-base text-gray-600 mb-4"}>
-                        {communique.description}
-                      </p>
-                      <div className="flex space-x-2">
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleViewDetail(communique)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                          Voir
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleEdit(communique)}
-                        >
-                          <Edit className="h-4 w-4 mr-1" />
-                          Modifier
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          className="text-red-600"
-                          onClick={() => handleDelete(communique)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Supprimer
-                        </Button>
-                      </div>
-                    </CardContent>
+              <Card key={communique.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+                {communique.image_url && (
+                  <div className="h-48 flex-shrink-0">
+                    <img 
+                      src={communique.image_url} 
+                      alt={communique.title} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
+                )}
+                <CardHeader className="flex-shrink-0">
+                  <div className="flex items-center justify-between mb-2">
+                    {getUrgencyBadge(communique.urgency)}
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Calendar className="w-4 h-4 mr-1" />
+                      {new Date(communique.published_date).toLocaleDateString('fr-FR')}
+                    </div>
+                  </div>
+                  <CardTitle className={isTablet ? "text-lg font-semibold mb-2" : "text-xl font-semibold mb-2"}>
+                    {communique.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow flex flex-col justify-between">
+                  <p className={isTablet ? "text-sm text-gray-600 mb-4" : "text-base text-gray-600 mb-4"}>
+                    {communique.description}
+                  </p>
+                  <div className="flex space-x-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleViewDetail(communique)}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Voir
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => handleEdit(communique)}
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Modifier
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="text-red-600"
+                      onClick={() => handleDelete(communique)}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Supprimer
+                    </Button>
+                  </div>
+                </CardContent>
               </Card>
             ))}
           </div>
