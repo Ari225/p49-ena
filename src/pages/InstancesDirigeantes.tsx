@@ -88,16 +88,16 @@ const InstancesDirigeantes = () => {
         {isMobile && (
           <div className="container mx-auto px-[25px] py-8">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-auto justify-center items-center">
-                <TabsTrigger
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-auto justify-center items-center">
+                <TabsTrigger 
                   value="bureau" 
-                  className="text-base py-3 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                  className="text-base py-3 px-4 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
                 >
                   Bureau Exécutif
                 </TabsTrigger>
                 <TabsTrigger 
                   value="commissions" 
-                  className="text-base py-3 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                  className="text-base py-3 px-4 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
                 >
                   Commissions
                 </TabsTrigger>
@@ -122,16 +122,16 @@ const InstancesDirigeantes = () => {
         {isTab && (
           <div className="container mx-auto px-[50px] py-10">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-10 bg-white shadow-lg border-0 p-2 rounded-xl h-16 justify-center items-center">
-                <TabsTrigger
+              <TabsList className="grid w-full grid-cols-2 mb-10 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-18 justify-center items-center">
+                <TabsTrigger 
                   value="bureau" 
-                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                  className="text-lg py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
                 >
                   Bureau Exécutif
                 </TabsTrigger>
                 <TabsTrigger 
                   value="commissions" 
-                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                  className="text-lg py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
                 >
                   Commissions
                 </TabsTrigger>
@@ -156,16 +156,16 @@ const InstancesDirigeantes = () => {
         {!isMobile && !isTab && (
           <div className="container mx-auto px-[100px] py-12">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-14 justify-center items-center">
-                <TabsTrigger
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-16 justify-center items-center">
+                <TabsTrigger 
                   value="bureau" 
-                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                  className="text-lg py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
                 >
                   Bureau Exécutif
                 </TabsTrigger>
                 <TabsTrigger 
                   value="commissions" 
-                  className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
+                  className="text-lg py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
                 >
                   Commissions
                 </TabsTrigger>
