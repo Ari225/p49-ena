@@ -32,7 +32,7 @@ const InstancesDirigeantes = () => {
                 Instances dirigeantes
               </h1>
               <p className="text-sm italic mb-4 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Découvrez le bureau exécutif et les commissions du réseau P49-ENA
+                Découvrez le bureau exécutif et les commissions du réseau
               </p>
             </div>
           </section>
@@ -55,7 +55,7 @@ const InstancesDirigeantes = () => {
                 Instances dirigeantes
               </h1>
               <p className="text-base italic mb-5 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Découvrez le bureau exécutif et les commissions du réseau P49-ENA
+                Découvrez le bureau exécutif et les commissions du réseau
               </p>
             </div>
           </section>
@@ -78,7 +78,7 @@ const InstancesDirigeantes = () => {
                 Instances dirigeantes
               </h1>
               <p className="text-lg md:text-lg italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Découvrez le bureau exécutif et les commissions du réseau P49-ENA
+                Découvrez le bureau exécutif et les commissions du réseau
               </p>
             </div>
           </section>
