@@ -26,17 +26,17 @@ const HistoriqueHero = () => {
         isTablet ? 'px-[50px]' : 
         'px-8 lg:px-[100px]'
       }`}>
-        <h1 className={`font-bold mb-4 md:mb-6 animate-fade-in ${
-          isMobile ? 'text2xl' : 
+        <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
+          isMobile ? 'text-2xl' : 
           isTablet ? 'text-4xl' : 
           'text-6xl md:text-6xl lg:text-6xl'
         }`}>
           Historique du Réseau
         </h1>
         <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto ${
-          isMobile ? 'text-sm' : 
-          isTablet ? 'text-base' : 
-          'text-lg md:text-xl'
+          isMobile ? 'text-sm px-2' : 
+          isTablet ? 'text-base px-4' : 
+          'text-lg md:text-lg px-4'
         }`}>
           Historique, création et situation administrative de l'association
         </p>
