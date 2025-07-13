@@ -136,7 +136,7 @@ const ObjectifsSection = () => {
 
           <div className="max-w-6xl mx-auto">
             <div className="mb-12">
-              <p className="text-sm text-gray-700 mb-[10px] md:mb-[10px]">
+              <p className="text-sm text-center text-gray-700 mb-[10px] md:mb-[10px]">
                 De manière particulière, elle a pour <strong>objets :</strong>
               </p>
               
@@ -175,7 +175,7 @@ const ObjectifsSection = () => {
                 <div className="space-y-8">
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-6">
-                      <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary/80 text-primary text-center font-bold text-base px-4 py-2 rounded-lg mb-4">
                         Au titre des actions sociales
                       </div>
                       <div className="space-y-3 text-gray-700 text-sm">
@@ -197,7 +197,7 @@ const ObjectifsSection = () => {
 
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-6">
-                      <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary/80 text-primary text-center font-bold text-base px-4 py-2 rounded-lg mb-4">
                         Au titre des activités relatives au domaine professionnel
                       </div>
                       <div className="space-y-3 text-gray-700 text-sm">
@@ -248,7 +248,7 @@ const ObjectifsSection = () => {
 
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="text-base text-gray-700 mb-[10px] md:mb-[10px]">
+            <p className="text-base text-center text-gray-700 mb-[10px] md:mb-[10px]">
               De manière particulière, elle a pour <strong>objets :</strong>
             </p>
             
@@ -287,7 +287,7 @@ const ObjectifsSection = () => {
               <div className="space-y-8">
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                    <div className="bg-secondary/80 text-primary text-center font-bold text-base px-4 py-2 rounded-lg mb-4">
                       Au titre des actions sociales
                     </div>
                     <div className="space-y-3 text-gray-700 text-base">
@@ -309,7 +309,7 @@ const ObjectifsSection = () => {
 
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                    <div className="bg-secondary/80 text-primary text-center font-bold text-base px-4 py-2 rounded-lg mb-4">
                       Au titre des activités relatives au domaine professionnel
                     </div>
                     <div className="space-y-3 text-gray-700 text-base">
