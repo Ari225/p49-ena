@@ -31,7 +31,7 @@ const HistoriqueHero = () => {
           isTablet ? 'text-4xl' : 
           'text-6xl md:text-6xl lg:text-6xl'
         }`}>
-          Historique du Réseau
+          Historique du réseau
         </h1>
         <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
           isMobile ? 'text-sm' : 

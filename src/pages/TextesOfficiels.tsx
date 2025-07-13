@@ -56,7 +56,7 @@ const TextesOfficiels = () => {
           <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
               <img 
-                src="/lovable-uploads/4a30ba3d-842d-4c38-a7d8-1c559a4da49f.png" 
+                src="/lovable-uploads/text_off_bg.webp" 
                 alt="Background textes officiels" 
                 className="w-full h-full object-cover" 
               />
@@ -65,10 +65,10 @@ const TextesOfficiels = () => {
             
             <div className="relative z-10 text-center px-[25px]">
               <h1 className="text-2xl font-bold mb-2 animate-fade-in">
-                {t('official_documents_title') || 'Textes Officiels'}
+                {t('official_documents_title') || 'Textes officiels'}
               </h1>
               <p className="text-sm italic mb-4 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
+                {t('official_documents_subtitle') || 'Documents relatifs à la P49 et à l\'Administration ivoirienne'}
               </p>
             </div>
           </section>
@@ -170,7 +170,7 @@ const TextesOfficiels = () => {
           <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
               <img 
-                src="/lovable-uploads/4a30ba3d-842d-4c38-a7d8-1c559a4da49f.png" 
+                src="/lovable-uploads/text_off_bg.webp" 
                 alt="Background textes officiels" 
                 className="w-full h-full object-cover" 
               />
@@ -178,11 +178,11 @@ const TextesOfficiels = () => {
             </div>
             
             <div className="relative z-10 text-center px-[50px]">
-              <h1 className="text-3xl md:text-4xl font-bold mb-3 animate-fade-in">
-                {t('official_documents_title') || 'Textes Officiels'}
+              <h1 className="text-4xl md:text-4xl font-bold mb-3 animate-fade-in">
+                {t('official_documents_title') || 'Textes officiels'}
               </h1>
               <p className="text-base md:text-lg italic mb-5 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
+                {t('official_documents_subtitle') || 'Documents relatifs à la P49 et à l\'Administration ivoirienne'}
               </p>
             </div>
           </section>
@@ -283,7 +283,7 @@ const TextesOfficiels = () => {
         <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
           <div className="absolute inset-0">
             <img 
-              src="/lovable-uploads/4a30ba3d-842d-4c38-a7d8-1c559a4da49f.png" 
+              src="/lovable-uploads/text_off_bg.webp" 
               alt="Background textes officiels" 
               className="w-full h-full object-cover" 
             />
@@ -291,11 +291,11 @@ const TextesOfficiels = () => {
           </div>
           
           <div className="relative z-10 text-center px-8 lg:px-[100px]">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-4 animate-fade-in">
-              {t('official_documents_title') || 'Textes Officiels'}
+            <h1 className="text-6xl md:text-6xl lg:text-6xl font-bold mb-2 md:mb-4 animate-fade-in">
+              {t('official_documents_title') || 'Textes officiels'}
             </h1>
             <p className="text-lg md:text-xl italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-              {t('official_documents_subtitle') || 'Documents de création et de fonctionnement de la P49'}
+              {t('official_documents_subtitle') || 'Documents relatifs à la P49 et à l\'Administration ivoirienne'}
             </p>
           </div>
         </section>
