@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const CommissionsSection = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   
   // Organiser les commissions en colonnes basées sur leur contenu
   const leftColumnCommissions = [
@@ -78,21 +79,21 @@ const CommissionsSection = () => {
 
   const CommissionCard = ({ commission, index }: { commission: any, index: number }) => (
     <Card key={index} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary h-fit">
-      <CardHeader className={isMobile ? 'pb-3' : ''}>
-        <CardTitle className={`${isMobile ? 'text-lg' : 'text-xl'} text-primary mb-2`}>
+      <CardHeader className={isMobile ? 'pb-3' : isTablet ? 'pb-4' : 'pb-5'}>
+        <CardTitle className={`${isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-2xl'} text-primary mb-2`}>
           {commission.title}
         </CardTitle>
-        <div className={`bg-primary/10 rounded-lg p-3 ${isMobile ? 'mb-2' : 'mb-3'}`}>
-          <p className={`${isMobile ? 'text-sm' : 'text-base'} font-semibold text-primary`}>
+        <div className={`bg-primary/10 rounded-lg p-3 ${isMobile ? 'mb-2' : isTablet ? 'mb-3' : 'mb-4'}`}>
+          <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'} font-semibold text-primary`}>
             <span className="text-gray-700">Président : </span>
             {commission.president}
           </p>
         </div>
       </CardHeader>
-      <CardContent className={isMobile ? 'pt-0' : ''}>
+      <CardContent className={isMobile ? 'pt-0' : isTablet ? 'pt-1' : 'pt-2'}>
         <div className="space-y-2">
           {commission.tasks.map((task: string, taskIndex: number) => (
-            <p key={taskIndex} className={`text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : ''}`}>
+            <p key={taskIndex} className={`text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}`}>
               {task}
             </p>
           ))}
@@ -101,32 +102,66 @@ const CommissionsSection = () => {
     </Card>
   );
 
-  return (
-    <div className="space-y-8">
-      <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center ${isMobile ? 'mb-6' : 'mb-8'} text-primary`}>
-        Les Commissions du Réseau P49 ENA
-      </h2>
-      
-      {isMobile ? (
+  // Mobile Version
+  if (isMobile) {
+    return (
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-center mb-6 text-primary">
+          Les Commissions du Réseau P49 ENA
+        </h2>
+        
         <div className="grid gap-6 grid-cols-1">
           {[...leftColumnCommissions, ...rightColumnCommissions].map((commission, index) => (
             <CommissionCard key={index} commission={commission} index={index} />
           ))}
         </div>
-      ) : (
-        <div className="grid gap-6 grid-cols-2">
-          <div className="space-y-6">
+      </div>
+    );
+  }
+
+  // Tablet Version
+  if (isTablet) {
+    return (
+      <div className="space-y-8">
+        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+          Les Commissions du Réseau P49 ENA
+        </h2>
+        
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2">
+          <div className="space-y-8">
             {leftColumnCommissions.map((commission, index) => (
               <CommissionCard key={index} commission={commission} index={index} />
             ))}
           </div>
-          <div className="space-y-6">
+          <div className="space-y-8">
             {rightColumnCommissions.map((commission, index) => (
               <CommissionCard key={index} commission={commission} index={index} />
             ))}
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  // Desktop Version
+  return (
+    <div className="space-y-10">
+      <h2 className="text-4xl font-bold text-center mb-12 text-primary">
+        Les Commissions du Réseau P49 ENA
+      </h2>
+      
+      <div className="grid gap-10 grid-cols-2">
+        <div className="space-y-10">
+          {leftColumnCommissions.map((commission, index) => (
+            <CommissionCard key={index} commission={commission} index={index} />
+          ))}
+        </div>
+        <div className="space-y-10">
+          {rightColumnCommissions.map((commission, index) => (
+            <CommissionCard key={index} commission={commission} index={index} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

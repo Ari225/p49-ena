@@ -9,6 +9,7 @@ interface ConnectionLineProps {
   toIndex?: number;
   organigramLevels: OrganigramMember[][];
   isMobile: boolean;
+  isTablet?: boolean;
 }
 
 const OrganigramConnectionLine: React.FC<ConnectionLineProps> = ({
@@ -17,22 +18,28 @@ const OrganigramConnectionLine: React.FC<ConnectionLineProps> = ({
   fromIndex = 0,
   toIndex = 0,
   organigramLevels,
-  isMobile
+  isMobile,
+  isTablet = false
 }) => {
   if (isMobile) return null;
 
-  const verticalSpacing = 80; // Espacement réduit pour s'adapter au nouveau layout
+  // Ajustement de l'espacement vertical selon la version
+  const verticalSpacing = isTablet ? 120 : 140;
   
   const fromLevelData = organigramLevels[fromLevel];
   const toLevelData = organigramLevels[toLevel];
   
-  // Calcul des positions amélioré
+  // Calcul des positions optimisé pour éviter les débordements
   const getCardXPosition = (levelIndex: number, cardIndex: number, levelSize: number) => {
     if (levelSize === 1) return 0;
-    if (levelSize === 2) return (cardIndex - 0.5) * 350;
-    if (levelSize === 3) return (cardIndex - 1) * 300;
-    if (levelSize === 4) return (cardIndex - 1.5) * 280;
-    return (cardIndex - (levelSize - 1) / 2) * 260;
+    
+    // Ajustement des espacements selon la version
+    const spacing = isTablet ? 280 : 320;
+    
+    if (levelSize === 2) return (cardIndex - 0.5) * spacing;
+    if (levelSize === 3) return (cardIndex - 1) * (spacing * 0.9);
+    if (levelSize === 4) return (cardIndex - 1.5) * (spacing * 0.8);
+    return (cardIndex - (levelSize - 1) / 2) * (spacing * 0.75);
   };
 
   const fromX = getCardXPosition(fromLevel, fromIndex, fromLevelData.length);
@@ -42,10 +49,10 @@ const OrganigramConnectionLine: React.FC<ConnectionLineProps> = ({
   const endY = verticalSpacing;
   const connectionHeight = endY - startY;
 
-  // Connexion simple et élégante
+  // Connexion professionnelle avec largeur adaptative
   const connectionWidth = Math.max(
-    Math.abs(toX - fromX) + 100,
-    400
+    Math.abs(toX - fromX) + (isTablet ? 150 : 200),
+    isTablet ? 500 : 600
   );
 
   return (
@@ -85,18 +92,20 @@ const OrganigramConnectionLine: React.FC<ConnectionLineProps> = ({
         </filter>
       </defs>
       
-      {/* Ligne principale avec gradient et ombre */}
+      {/* Ligne principale avec design professionnel */}
       <path
-        d={`M ${connectionWidth/2 + fromX} ${startY} 
-            L ${connectionWidth/2 + fromX} ${connectionHeight * 0.5} 
-            L ${connectionWidth/2 + toX} ${connectionHeight * 0.5} 
-            L ${connectionWidth/2 + toX} ${connectionHeight}`}
+        d={`M ${connectionWidth/2 + fromX} ${startY + 20} 
+            L ${connectionWidth/2 + fromX} ${connectionHeight * 0.4} 
+            Q ${connectionWidth/2 + fromX} ${connectionHeight * 0.5} ${connectionWidth/2 + (fromX + toX) / 2} ${connectionHeight * 0.5}
+            Q ${connectionWidth/2 + toX} ${connectionHeight * 0.5} ${connectionWidth/2 + toX} ${connectionHeight * 0.6}
+            L ${connectionWidth/2 + toX} ${connectionHeight - 20}`}
         stroke="url(#lineGradient)"
-        strokeWidth="2.5"
+        strokeWidth={isTablet ? "2.5" : "3"}
         fill="none"
         markerEnd={`url(#arrow-${fromLevel}-${toLevel}-${toIndex})`}
         filter="url(#connectionShadow)"
-        className="transition-all duration-300"
+        className="transition-all duration-300 hover:stroke-primary"
+        strokeDasharray="none"
       />
     </svg>
   );
