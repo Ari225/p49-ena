@@ -88,18 +88,18 @@ const InstancesDirigeantes = () => {
         {isMobile && (
           <div className="container mx-auto px-[25px] py-8">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-auto justify-center items-center">
+              <TabsList className="flex w-full mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-auto gap-1">
                 <TabsTrigger 
                   value="bureau" 
-                  className="text-xs py-1.5 px-1.5 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 flex-1 min-w-0"
+                  className="flex-1 text-xs py-2 px-1 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 min-w-0 text-center"
                 >
-                  <span className="truncate">Bureau Exécutif</span>
+                  Bureau
                 </TabsTrigger>
                 <TabsTrigger 
                   value="commissions" 
-                  className="text-xs py-1.5 px-1.5 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 flex-1 min-w-0"
+                  className="flex-1 text-xs py-2 px-1 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 min-w-0 text-center"
                 >
-                  <span className="truncate">Commissions</span>
+                  Commissions
                 </TabsTrigger>
               </TabsList>
               
