@@ -12,8 +12,8 @@ const ObjectifsSection = () => {
     return (
       <section className="py-16 px-[25px] bg-white">
         <div className="container mx-auto px-0">
-          <div className="text-center mb-12">
-            <h2 className="text-xl font-bold text-primary mb-6">
+          <div className="text-center mb-[25px] md:mb-[25px]">
+            <h2 className="text-xl font-bold text-primary mb-[50px] md:mb-[50px]">
               Objets de l'association P49-ENA
             </h2>
             <p className="text-xs text-gray-700 max-w-4xl mx-auto">
@@ -23,7 +23,7 @@ const ObjectifsSection = () => {
 
           <div className="max-w-6xl mx-auto">
             <div className="mb-12">
-              <p className="text-xs text-center text-gray-700 mb-8">
+              <p className="text-xs text-center text-gray-700 mb-[10px] md:mb-[10px]">
                 De manière particulière, elle a pour <strong>objets :</strong>
               </p>
               
@@ -33,23 +33,23 @@ const ObjectifsSection = () => {
                     <div className="space-y-4 text-gray-700 text-xs">
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>développer</strong> entre ses membres des relations amicales, d'entraide, de solidarité et de convivialité ;</span>
+                        <span><strong>développer</strong> entre ses membres des relations amicales, d'entraide, de solidarité et de convivialité.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>d'établir</strong> une cartographie professionnelle actualisée de ses membres ;</span>
+                        <span><strong>d'établir</strong> une cartographie professionnelle actualisée de ses membres.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>d'œuvrer</strong> au renforcement des capacités de ses membres ;</span>
+                        <span><strong>d'œuvrer</strong> au renforcement des capacités de ses membres.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>d'œuvrer</strong> à la promotion de ses membres à tous les niveaux de l'Administration ;</span>
+                        <span><strong>d'œuvrer</strong> à la promotion de ses membres à tous les niveaux de l'Administration.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>de créer</strong> des cadres de partage d'expériences professionnelles ;</span>
+                        <span><strong>de créer</strong> des cadres de partage d'expériences professionnelles.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
@@ -62,17 +62,17 @@ const ObjectifsSection = () => {
                 <div className="space-y-8">
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-4">
-                      <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary text-primary font-bold text-sm px-4 py-2 rounded-lg mb-4">
                         Au titre des actions sociales
                       </div>
                       <div className="space-y-3 text-gray-700 text-xs">
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Renouer et renforcer</strong> le contact avec les condisciples de la P49;</span>
+                          <span><strong>Renouer et renforcer</strong> le contact avec les condisciples de la P49.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Organiser</strong> des activités récréatives;</span>
+                          <span><strong>Organiser</strong> des activités récréatives.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
@@ -84,25 +84,25 @@ const ObjectifsSection = () => {
 
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-4">
-                      <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary text-primary font-bold text-sm px-4 py-2 rounded-lg mb-4">
                         Au titre des activités relatives au domaine professionnel
                       </div>
                       <div className="space-y-3 text-gray-700 text-xs">
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Établir</strong> une cartographie professionnelle des condisciples de la P49 dans l'Administration;</span>
+                          <span><strong>Établir</strong> une cartographie professionnelle des condisciples de la P49 dans l'Administration.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Élaborer</strong> un compendium des compétences des condisciples de la P49;</span>
+                          <span><strong>Élaborer</strong> un compendium des compétences des condisciples de la P49.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Œuvrer</strong> au renforcement des capacités des condisciples de la P49;</span>
+                          <span><strong>Œuvrer</strong> au renforcement des capacités des condisciples de la P49.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Créer</strong> un cadre de Partage des expériences professionnelles;</span>
+                          <span><strong>Créer</strong> un cadre de Partage des expériences professionnelles.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
@@ -125,44 +125,44 @@ const ObjectifsSection = () => {
     return (
       <section className="py-20 px-[50px] bg-white">
         <div className="container mx-auto px-0">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-6">
-              Objet de l'association P49 ENA
+          <div className="text-center mb-[25px] md:mb-[25px]">
+            <h2 className="text-2xl font-bold text-primary mb-[50px] md:mb-[50px]">
+              Objets de l'association P49-ENA
             </h2>
-            <p className="text-base text-gray-700 max-w-4xl mx-auto">
-              De manière globale, la P49ENA a pour objectif de fédérer les forces et les énergies de chacun de ses membres dans un réseau fort.
+            <p className="text-sm text-gray-700 max-w-4xl mx-auto">
+              De manière globale, la P49-ENA a pour objectif de fédérer les forces et les énergies de chacun de ses membres dans un réseau fort.
             </p>
           </div>
 
           <div className="max-w-6xl mx-auto">
             <div className="mb-12">
-              <p className="text-base text-gray-700 mb-8">
+              <p className="text-sm text-gray-700 mb-[10px] md:mb-[10px]">
                 De manière particulière, elle a pour <strong>objets :</strong>
               </p>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="space-y-4 text-gray-700 text-base">
+                    <div className="space-y-4 text-gray-700 text-sm">
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>développer</strong> entre ses membres des relations amicales, d'entraide, de solidarité et de convivialité ;</span>
+                        <span><strong>développer</strong> entre ses membres des relations amicales, d'entraide, de solidarité et de convivialité.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>d'établir</strong> une cartographie professionnelle actualisée de ses membres ;</span>
+                        <span><strong>d'établir</strong> une cartographie professionnelle actualisée de ses membres.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>d'œuvrer</strong> au renforcement des capacités de ses membres ;</span>
+                        <span><strong>d'œuvrer</strong> au renforcement des capacités de ses membres.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>d'œuvrer</strong> à la promotion de ses membres à tous les niveaux de l'Administration ;</span>
+                        <span><strong>d'œuvrer</strong> à la promotion de ses membres à tous les niveaux de l'Administration.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
-                        <span><strong>de créer</strong> des cadres de partage d'expériences professionnelles ;</span>
+                        <span><strong>de créer</strong> des cadres de partage d'expériences professionnelles.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-secondary mr-3 text-xl">•</span>
@@ -175,17 +175,17 @@ const ObjectifsSection = () => {
                 <div className="space-y-8">
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-6">
-                      <div className="bg-secondary text-primary font-bold text-lg px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                         Au titre des actions sociales
                       </div>
-                      <div className="space-y-3 text-gray-700 text-base">
+                      <div className="space-y-3 text-gray-700 text-sm">
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Renouer et renforcer</strong> le contact avec les condisciples de la P49;</span>
+                          <span><strong>Renouer et renforcer</strong> le contact avec les condisciples de la P49.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Organiser</strong> des activités récréatives;</span>
+                          <span><strong>Organiser</strong> des activités récréatives.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
@@ -197,25 +197,25 @@ const ObjectifsSection = () => {
 
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-6">
-                      <div className="bg-secondary text-primary font-bold text-lg px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                         Au titre des activités relatives au domaine professionnel
                       </div>
-                      <div className="space-y-3 text-gray-700 text-base">
+                      <div className="space-y-3 text-gray-700 text-sm">
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Établir</strong> une cartographie professionnelle des condisciples de la P49 dans l'Administration;</span>
+                          <span><strong>Établir</strong> une cartographie professionnelle des condisciples de la P49 dans l'Administration.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Élaborer</strong> un compendium des compétences des condisciples de la P49;</span>
+                          <span><strong>Élaborer</strong> un compendium des compétences des condisciples de la P49.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Œuvrer</strong> au renforcement des capacités des condisciples de la P49;</span>
+                          <span><strong>Œuvrer</strong> au renforcement des capacités des condisciples de la P49.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
-                          <span><strong>Créer</strong> un cadre de Partage des expériences professionnelles;</span>
+                          <span><strong>Créer</strong> un cadre de Partage des expériences professionnelles.</span>
                         </div>
                         <div className="flex items-start">
                           <span className="text-primary mr-2">☐</span>
@@ -237,18 +237,18 @@ const ObjectifsSection = () => {
   return (
     <section className="py-[100px] px-8 md:px-[100px] bg-white">
       <div className="container mx-auto px-0">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-primary mb-6">
-            Objet de l'association P49 ENA
+        <div className="text-center mb-[25px] md:mb-[25px]">
+          <h2 className="text-3xl font-bold text-primary mb-[50px] md:mb-[50px]">
+            Objet de l'association P49-ENA
           </h2>
-          <p className="text-lg text-gray-700 max-w-4xl mx-auto">
-            De manière globale, la P49ENA a pour objectif de fédérer les forces et les énergies de chacun de ses membres dans un réseau fort.
+          <p className="text-base text-gray-700 max-w-4xl mx-auto">
+            De manière globale, la P49-ENA a pour objectif de fédérer les forces et les énergies de chacun de ses membres dans un réseau fort.
           </p>
         </div>
 
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <p className="text-lg text-gray-700 mb-8">
+            <p className="text-base text-gray-700 mb-[10px] md:mb-[10px]">
               De manière particulière, elle a pour <strong>objets :</strong>
             </p>
             
@@ -258,23 +258,23 @@ const ObjectifsSection = () => {
                   <div className="space-y-4 text-gray-700 text-base">
                     <div className="flex items-start">
                       <span className="text-secondary mr-3 text-xl">•</span>
-                      <span><strong>développer</strong> entre ses membres des relations amicales, d'entraide, de solidarité et de convivialité ;</span>
+                      <span><strong>développer</strong> entre ses membres des relations amicales, d'entraide, de solidarité et de convivialité.</span>
                     </div>
                     <div className="flex items-start">
                       <span className="text-secondary mr-3 text-xl">•</span>
-                      <span><strong>d'établir</strong> une cartographie professionnelle actualisée de ses membres ;</span>
+                      <span><strong>d'établir</strong> une cartographie professionnelle actualisée de ses membres.</span>
                     </div>
                     <div className="flex items-start">
                       <span className="text-secondary mr-3 text-xl">•</span>
-                      <span><strong>d'œuvrer</strong> au renforcement des capacités de ses membres ;</span>
+                      <span><strong>d'œuvrer</strong> au renforcement des capacités de ses membres.</span>
                     </div>
                     <div className="flex items-start">
                       <span className="text-secondary mr-3 text-xl">•</span>
-                      <span><strong>d'œuvrer</strong> à la promotion de ses membres à tous les niveaux de l'Administration ;</span>
+                      <span><strong>d'œuvrer</strong> à la promotion de ses membres à tous les niveaux de l'Administration.</span>
                     </div>
                     <div className="flex items-start">
                       <span className="text-secondary mr-3 text-xl">•</span>
-                      <span><strong>de créer</strong> des cadres de partage d'expériences professionnelles ;</span>
+                      <span><strong>de créer</strong> des cadres de partage d'expériences professionnelles.</span>
                     </div>
                     <div className="flex items-start">
                       <span className="text-secondary mr-3 text-xl">•</span>
@@ -287,17 +287,17 @@ const ObjectifsSection = () => {
               <div className="space-y-8">
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="bg-secondary text-primary font-bold text-lg px-4 py-2 rounded-lg mb-4">
+                    <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                       Au titre des actions sociales
                     </div>
                     <div className="space-y-3 text-gray-700 text-base">
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
-                        <span><strong>Renouer et renforcer</strong> le contact avec les condisciples de la P49;</span>
+                        <span><strong>Renouer et renforcer</strong> le contact avec les condisciples de la P49.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
-                        <span><strong>Organiser</strong> des activités récréatives;</span>
+                        <span><strong>Organiser</strong> des activités récréatives.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
@@ -309,25 +309,25 @@ const ObjectifsSection = () => {
 
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="bg-secondary text-primary font-bold text-lg px-4 py-2 rounded-lg mb-4">
+                    <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                       Au titre des activités relatives au domaine professionnel
                     </div>
                     <div className="space-y-3 text-gray-700 text-base">
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
-                        <span><strong>Établir</strong> une cartographie professionnelle des condisciples de la P49 dans l'Administration;</span>
+                        <span><strong>Établir</strong> une cartographie professionnelle des condisciples de la P49 dans l'Administration.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
-                        <span><strong>Élaborer</strong> un compendium des compétences des condisciples de la P49;</span>
+                        <span><strong>Élaborer</strong> un compendium des compétences des condisciples de la P49.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
-                        <span><strong>Œuvrer</strong> au renforcement des capacités des condisciples de la P49;</span>
+                        <span><strong>Œuvrer</strong> au renforcement des capacités des condisciples de la P49.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
-                        <span><strong>Créer</strong> un cadre de Partage des expériences professionnelles;</span>
+                        <span><strong>Créer</strong> un cadre de Partage des expériences professionnelles.</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-primary mr-2">☐</span>
