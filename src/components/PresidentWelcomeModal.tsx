@@ -80,16 +80,16 @@ const PresidentWelcomeModal = () => {
         <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : isTablet ? 'max-w-[calc(100vw-80px)] max-h-[calc(100vh-80px)]' : 'max-w-[calc(100vw-200px)] max-h-[calc(100vh-100px)]'}`} hideCloseButton>
           <div className={`flex w-full h-full rounded-lg overflow-hidden ${isMobile || isTablet ? 'flex-col' : 'flex-row md:flex-row'}`}>
             {/* President Photo */}
-            <div className={`relative overflow-hidden ${isMobile ? 'h-[200px]' : isTablet ? 'h-[250px]' : 'md:w-1/3'}`}>
+            <div className={`relative overflow-hidden ${isMobile ? 'h-[200px]' : isTablet ? 'h-[300px]' : 'md:w-1/3'}`}>
               <img 
                 src="/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png" 
                 alt="Mme MEL Méléï Marcelle" 
-                className={`w-full object-cover ${isMobile ? 'h-[200px] object-top' : isTablet ? 'h-[250px] object-top' : 'h-full object-center'}`} 
+                className={`w-full object-cover ${isMobile ? 'h-[200px] object-top' : isTablet ? 'h-[300px] object-top' : 'h-full object-center'}`} 
               />
             </div>
 
             {/* Welcome Message */}
-            <div className={`flex flex-col ${isMobile || isTablet ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : isTablet ? 'max-h-[calc(100vh-330px)]' : 'max-h-[calc(100vh-160px)]'}`}>
+            <div className={`flex flex-col ${isMobile || isTablet ? 'flex-1' : 'md:w-2/3'} ${isMobile ? 'max-h-[calc(100vh-300px)]' : isTablet ? 'max-h-[calc(100vh-380px)]' : 'max-h-[calc(100vh-160px)]'}`}>
               <WelcomeMessageContent />
               
               {/* Fixed buttons at bottom */}
