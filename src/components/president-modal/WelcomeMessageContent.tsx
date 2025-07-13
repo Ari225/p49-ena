@@ -13,10 +13,10 @@ const WelcomeMessageContent = () => {
 
   return (
     <div className="flex-1 overflow-y-auto p-4 md:p-8 ">
-      <h2 className={`${textSizes.title} font-bold text-primary ${isMobile ? 'mb-[50px] md:mb-[50px]' : isTablet ? 'mb-[50px] md:mb-[50px]' : 'mb-[50px] md:mb-[50px]'}`}>
+      <h2 className={`${textSizes.title} font-bold text-primary ${isMobile ? 'mb-[20px] md:mb-[20px]' : isTablet ? 'mb-[35px] md:mb-[35px]' : 'mb-[50px] md:mb-[50px]'}`}>
         Message de bienvenue
       </h2>
-      <div className={`${isMobile ? 'mb-[50px] md:mb-[50px]' : isTablet ? 'mb-[50px] md:mb-[50px]' : 'mb-[50px] md:mb-[50px]'} text-gray-700 leading-relaxed ${textSizes.body}`}>
+      <div className={`${isMobile ? 'mb-[20px] md:mb-[20px]' : isTablet ? 'mb-[35px] md:mb-[35px]' : 'mb-[50px] md:mb-[50px]'} text-gray-700 leading-relaxed ${textSizes.body}`}>
         <p className="mb-4">
           Chères visiteuses, chers visiteurs,
         </p>
@@ -40,10 +40,10 @@ const WelcomeMessageContent = () => {
           Avec toute ma considération,
         </p>
       </div>
-      <p className={`font-semibold text-primary mb-5 ${textSizes.signature}`}>
+      <p className={`font-semibold text-primary mb-[10px] md:mb-[10px] ${textSizes.signature}`}>
         Mme MEL Méléï Marcelle
       </p>
-      <p className={`font-medium text-primary`}>
+      <p className={`text-primary`}>
         Présidente du Réseau P49
       </p>
     </div>
