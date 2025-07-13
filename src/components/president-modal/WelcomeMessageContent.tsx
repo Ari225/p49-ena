@@ -43,7 +43,7 @@ const WelcomeMessageContent = () => {
       <p className={`font-semibold text-primary mb-[5px] md:mb-[5px] ${textSizes.signature}`}>
         Mme MEL Méléï Marcelle
       </p>
-      <p className={`text-primary ${isMobile ? 'text-sm' : isTablet ? 'text-sm' : 'text-base'}`}>
+      <p className={`text-primary ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base'}`}>
         Présidente du Réseau P49
       </p>
     </div>
