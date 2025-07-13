@@ -17,7 +17,7 @@ const P49ExcellenceSection = () => {
               <img 
                 alt="Logo P49" 
                 src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
-                className="w-full max-w-xs mx-auto rounded-lg shadow-lg" 
+                className="w-full h-full rounded-lg shadow-lg" 
               />
             </div>
             <div>
