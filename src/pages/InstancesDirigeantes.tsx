@@ -88,8 +88,8 @@ const InstancesDirigeantes = () => {
         {isMobile && (
           <div className="container mx-auto px-[25px] py-8">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-auto">
-                <TabsTrigger 
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-auto justify-center items-center">
+                <TabsTrigger
                   value="bureau" 
                   className="text-base py-3 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
                 >
@@ -122,8 +122,8 @@ const InstancesDirigeantes = () => {
         {isTab && (
           <div className="container mx-auto px-[50px] py-10">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-10 bg-white shadow-lg border-0 p-2 rounded-xl h-16">
-                <TabsTrigger 
+              <TabsList className="grid w-full grid-cols-2 mb-10 bg-white shadow-lg border-0 p-2 rounded-xl h-16 justify-center items-center">
+                <TabsTrigger
                   value="bureau" 
                   className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
                 >
@@ -156,8 +156,8 @@ const InstancesDirigeantes = () => {
         {!isMobile && !isTab && (
           <div className="container mx-auto px-[100px] py-12">
             <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-14">
-                <TabsTrigger 
+              <TabsList className="grid w-full grid-cols-2 mb-8 bg-white shadow-lg border-0 p-2 rounded-xl h-14 justify-center items-center">
+                <TabsTrigger
                   value="bureau" 
                   className="text-lg py-4 font-semibold rounded-lg transition-all duration-300 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow-md hover:bg-primary/10 text-gray-600"
                 >

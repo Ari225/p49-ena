@@ -145,12 +145,6 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
         </div>
       </div>
       
-      {/* Indicateur de niveau pour debug - peut être retiré */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="absolute top-0 left-0 bg-primary/10 text-primary text-xs px-2 py-1 rounded">
-          Niveau {levelIndex + 1} ({level.length} membres)
-        </div>
-      )}
     </div>
   );
 };
