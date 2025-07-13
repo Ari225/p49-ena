@@ -182,9 +182,7 @@ const TextesOfficiels = () => {
           <section className="py-14 px-[50px] bg-accent/10">
             <div className="container mx-auto text-center px-0">
               <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl font-bold text-primary mb-5">
-                  {t('founding_documents') || 'Documents Fondateurs'}
-                </h2>
+                
                 <p className="text-gray-700 mb-6 text-base">
                   {t('founding_documents_description') || 'Découvrez les documents officiels qui ont marqué la création et l\'organisation du Réseau des Énarques de la 49e Promotion. Ces textes fondamentaux définissent notre mission, nos valeurs et notre mode de fonctionnement.'}
                 </p>
