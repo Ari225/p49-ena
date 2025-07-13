@@ -59,10 +59,10 @@ const ConfirmationDialogs = ({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className={isMobile || isTablet ? 'flex-row justify-center gap-3 space-y-0' : ''}>
-            <AlertDialogCancel onClick={onCancelClose} className={isMobile || isTablet ? 'flex-1 m-0' : ''}>
+            <AlertDialogCancel onClick={onCancelClose} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
               Annuler
             </AlertDialogCancel>
-            <AlertDialogAction onClick={onConfirmClose} className={isMobile || isTablet ? 'flex-1 m-0' : ''}>
+            <AlertDialogAction onClick={onConfirmClose} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
               Confirmer
             </AlertDialogAction>
           </AlertDialogFooter>
