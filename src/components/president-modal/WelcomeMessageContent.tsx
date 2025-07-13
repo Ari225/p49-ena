@@ -6,14 +6,14 @@ const WelcomeMessageContent = () => {
   const isTablet = useIsTablet();
   
   const textSizes = {
-    title: isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-5xl',
+    title: isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-4xl',
     body: isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base',
-    signature: isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-lg',
+    signature: isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg',
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 md:p-8">
-      <h2 className={`${textSizes.title} font-bold text-primary`}>
+    <div className="flex-1 overflow-y-auto p-4 md:p-8 ">
+      <h2 className={`${textSizes.title} font-bold text-primary ${isMobile ? 'mb-[50px] md:mb-[50px]' : isTablet ? 'mb-[50px] md:mb-[50px]' : 'mb-[50px] md:mb-[50px]'}`}>
         Message de bienvenue
       </h2>
       <div className={`${isMobile ? 'mb-[50px] md:mb-[50px]' : isTablet ? 'mb-[50px] md:mb-[50px]' : 'mb-[50px] md:mb-[50px]'} text-gray-700 leading-relaxed ${textSizes.body}`}>
