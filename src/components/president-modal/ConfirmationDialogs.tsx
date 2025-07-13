@@ -33,16 +33,16 @@ const ConfirmationDialogs = ({
       <AlertDialog open={showNeverShowConfirm} onOpenChange={setShowNeverShowConfirm}>
         <AlertDialogContent className={`rounded-lg ${isMobile || isTablet ? 'max-w-[calc(100vw-40px)] mx-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
           <AlertDialogHeader>
-            <AlertDialogTitle className={isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}>Confirmation</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className={isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'}>Confirmation</AlertDialogTitle>
+            <AlertDialogDescription className={isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}>
               Vous ne verrez plus jamais ce message. Voulez-vous continuer ?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className={isMobile || isTablet ? 'flex-row justify-center gap-3 space-y-0' : ''}>
-            <AlertDialogCancel onClick={onCancelNeverShow} className={isMobile || isTablet ? 'flex-1 m-0' : ''}>
+            <AlertDialogCancel onClick={onCancelNeverShow} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
               Annuler
             </AlertDialogCancel>
-            <AlertDialogAction onClick={onConfirmNeverShow} className={isMobile || isTablet ? 'flex-1 m-0' : ''}>
+            <AlertDialogAction onClick={onConfirmNeverShow} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
               Confirmer
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -53,8 +53,8 @@ const ConfirmationDialogs = ({
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
         <AlertDialogContent className={`rounded-lg ${isMobile || isTablet ? 'max-w-[calc(100vw-40px)] mx-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Information</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className={isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'}>Information</AlertDialogTitle>
+            <AlertDialogDescription className={isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}>
               Vous pourrez voir ce message à nouveau.
             </AlertDialogDescription>
           </AlertDialogHeader>
