@@ -20,7 +20,7 @@ const InstancesDirigeantes = () => {
           <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
               <img 
-                src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+                src="/lovable-uploads/inst_dir_bg.webp" 
                 alt="Background instances dirigeantes" 
                 className="w-full h-full object-cover" 
               />
@@ -28,11 +28,11 @@ const InstancesDirigeantes = () => {
             </div>
             
             <div className="relative z-10 text-center px-[25px]">
-              <h1 className="text-2xl font-bold mb-2 animate-fade-in">
-                Instances Dirigeantes
+              <h1 className="text-2xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+                Instances dirigeantes
               </h1>
               <p className="text-sm italic mb-4 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
+                Découvrez le bureau exécutif et les commissions du réseau P49-ENA
               </p>
             </div>
           </section>
@@ -43,7 +43,7 @@ const InstancesDirigeantes = () => {
           <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
               <img 
-                src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+                src="/lovable-uploads/inst_dir_bg.webp" 
                 alt="Background instances dirigeantes" 
                 className="w-full h-full object-cover" 
               />
@@ -51,11 +51,11 @@ const InstancesDirigeantes = () => {
             </div>
             
             <div className="relative z-10 text-center px-[50px]">
-              <h1 className="text-3xl font-bold mb-3 animate-fade-in">
-                Instances Dirigeantes
+              <h1 className="text-4xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+                Instances dirigeantes
               </h1>
               <p className="text-base italic mb-5 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
+                Découvrez le bureau exécutif et les commissions du réseau P49-ENA
               </p>
             </div>
           </section>
@@ -66,7 +66,7 @@ const InstancesDirigeantes = () => {
           <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
               <img 
-                src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+                src="/lovable-uploads/inst_dir_bg.webp" 
                 alt="Background instances dirigeantes" 
                 className="w-full h-full object-cover" 
               />
@@ -74,11 +74,11 @@ const InstancesDirigeantes = () => {
             </div>
             
             <div className="relative z-10 text-center px-8 lg:px-[100px]">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-4 animate-fade-in">
-                Instances Dirigeantes
+              <h1 className="text-6xl md:text-6xl lg:text-6xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+                Instances dirigeantes
               </h1>
-              <p className="text-lg md:text-xl italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Découvrez le bureau exécutif et les commissions du Réseau P49 ENA
+              <p className="text-lg md:text-lg italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                Découvrez le bureau exécutif et les commissions du réseau P49-ENA
               </p>
             </div>
           </section>
