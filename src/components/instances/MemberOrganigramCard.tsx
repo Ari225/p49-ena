@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import MemberDetailDialog from '../members/MemberDetailDialog';
 import MatriculeVerificationDialog from '../members/MatriculeVerificationDialog';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface MemberOrganigramCardProps {
   name: string;
@@ -22,6 +22,7 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
   const [isMatriculeDialogOpen, setIsMatriculeDialogOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   const getInitials = () => {
     const names = name.split(' ');
@@ -75,13 +76,13 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
   return (
     <>
       <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm h-full" onClick={handleCardClick}>
-        <CardContent className={`${isMobile ? 'p-4' : 'p-6'} h-full flex flex-col justify-between`}>
+        <CardContent className={`${isMobile ? 'p-4' : isTablet ? 'p-5' : 'p-6'} h-full flex flex-col justify-between`}>
           {/* Photo avec styling professionnel amélioré */}
           <div className="flex justify-center mb-4">
             <div className="relative">
               <div className="absolute -inset-3 rounded-full border border-primary/20 animate-pulse opacity-50"></div>
               <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10"></div>
-              <Avatar className={`${isMobile ? 'h-16 w-16' : 'h-20 w-20'} ring-3 ring-primary/30 group-hover:ring-primary/50 transition-all duration-300 relative z-10 shadow-lg`}>
+              <Avatar className={`${isMobile ? 'h-16 w-16' : isTablet ? 'h-18 w-18' : 'h-20 w-20'} ring-3 ring-primary/30 group-hover:ring-primary/50 transition-all duration-300 relative z-10 shadow-lg`}>
                 <AvatarImage 
                   src="/lovable-uploads/0eb571bc-9634-49ab-9502-ce03a1464da6.png"
                   alt={name}
@@ -100,12 +101,12 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
           {/* Contenu principal */}
           <div className="flex-grow flex flex-col justify-center text-center space-y-3">
             {/* Nom */}
-            <h3 className={`font-bold ${isMobile ? 'text-base' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
+            <h3 className={`font-bold ${isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
               {name}
             </h3>
 
             {/* Position */}
-            <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-2`}>
+            <p className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base'} text-gray-600 font-medium leading-snug px-2`}>
               {position}
             </p>
           </div>
@@ -119,7 +120,7 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
                 title={`Appeler ${name}`}
               >
                 <Phone className="h-3 w-3" />
-                <span className={isMobile ? 'text-xs' : 'text-sm'}>{phone}</span>
+                <span className={isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}>{phone}</span>
               </button>
             ) : (
               <button
@@ -128,7 +129,7 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
                 title="Matricule requis pour voir les coordonnées"
               >
                 <Lock className="h-3 w-3" />
-                <span className={isMobile ? 'text-xs' : 'text-sm'}>Matricule requis</span>
+                <span className={isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}>Matricule requis</span>
               </button>
             )}
           </div>
