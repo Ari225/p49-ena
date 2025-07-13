@@ -1,14 +1,14 @@
-
 import React from 'react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const WelcomeMessageContent = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   
   const textSizes = {
-    title: isMobile ? 'text-xl' : 'text-5xl',
-    body: isMobile ? 'text-xs' : 'text-base',
-    signature: isMobile ? 'text-base' : 'text-lg',
+    title: isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-5xl',
+    body: isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base',
+    signature: isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-lg',
   };
 
   return (
