@@ -1,9 +1,9 @@
-
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Download, Calendar } from 'lucide-react';
+import { FileText, Download, Calendar, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -11,6 +11,7 @@ const TextesOfficiels = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const { t } = useLanguage();
+  const [searchTerm, setSearchTerm] = useState('');
 
   const documents = [
     {
@@ -47,6 +48,13 @@ const TextesOfficiels = () => {
     }
   ];
 
+  const filteredDocuments = useMemo(() => {
+    return documents.filter(doc => 
+      doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doc.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
+
   // Mobile Version
   if (isMobile) {
     return (
@@ -73,7 +81,7 @@ const TextesOfficiels = () => {
             </div>
           </section>
 
-          {/* Mobile Introduction */}
+          {/* Mobile Introduction with Search */}
           <section className="py-12 px-[25px] bg-accent/10">
             <div className="container mx-auto text-center px-0">
               <div className="max-w-3xl mx-auto">
@@ -83,6 +91,17 @@ const TextesOfficiels = () => {
                 <p className="text-gray-700 mb-6 text-sm">
                   {t('founding_documents_description') || 'Découvrez les documents officiels qui ont marqué la création et l\'organisation du Réseau des Énarques de la 49e Promotion. Ces textes fondamentaux définissent notre mission, nos valeurs et notre mode de fonctionnement.'}
                 </p>
+                
+                {/* Mobile Search Bar */}
+                <div className="relative max-w-md mx-auto">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Rechercher par titre..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 w-full"
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -91,7 +110,7 @@ const TextesOfficiels = () => {
           <section className="py-16 px-[25px]">
             <div className="container mx-auto">
               <div className="grid grid-cols-1 gap-8">
-                {documents.map(document => (
+                {filteredDocuments.map(document => (
                   <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
@@ -136,6 +155,11 @@ const TextesOfficiels = () => {
                     </CardContent>
                   </Card>
                 ))}
+                {filteredDocuments.length === 0 && (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">Aucun document trouvé pour "{searchTerm}"</p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -187,7 +211,7 @@ const TextesOfficiels = () => {
             </div>
           </section>
 
-          {/* Tablet Introduction */}
+          {/* Tablet Introduction with Search */}
           <section className="py-14 px-[50px] bg-accent/10">
             <div className="container mx-auto text-center px-0">
               <div className="max-w-4xl mx-auto">
@@ -197,6 +221,17 @@ const TextesOfficiels = () => {
                 <p className="text-gray-700 mb-6 text-base">
                   {t('founding_documents_description') || 'Découvrez les documents officiels qui ont marqué la création et l\'organisation du Réseau des Énarques de la 49e Promotion. Ces textes fondamentaux définissent notre mission, nos valeurs et notre mode de fonctionnement.'}
                 </p>
+                
+                {/* Tablet Search Bar */}
+                <div className="relative max-w-lg mx-auto">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <Input
+                    placeholder="Rechercher par titre..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-12 w-full h-12 text-base"
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -205,7 +240,7 @@ const TextesOfficiels = () => {
           <section className="py-16 px-[50px]">
             <div className="container mx-auto">
               <div className="grid grid-cols-2 gap-6">
-                {documents.map(document => (
+                {filteredDocuments.map(document => (
                   <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
@@ -250,6 +285,11 @@ const TextesOfficiels = () => {
                     </CardContent>
                   </Card>
                 ))}
+                {filteredDocuments.length === 0 && (
+                  <div className="col-span-2 text-center py-8">
+                    <p className="text-gray-500">Aucun document trouvé pour "{searchTerm}"</p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -300,7 +340,7 @@ const TextesOfficiels = () => {
           </div>
         </section>
 
-        {/* Desktop Introduction */}
+        {/* Desktop Introduction with Search */}
         <section className="py-12 px-8 md:px-[100px] bg-accent/10">
           <div className="container mx-auto text-center px-0">
             <div className="max-w-3xl mx-auto">
@@ -310,6 +350,17 @@ const TextesOfficiels = () => {
               <p className="text-gray-700 mb-6 text-base">
                 {t('founding_documents_description') || 'Découvrez les documents officiels qui ont marqué la création et l\'organisation du Réseau des Énarques de la 49e Promotion. Ces textes fondamentaux définissent notre mission, nos valeurs et notre mode de fonctionnement.'}
               </p>
+              
+              {/* Desktop Search Bar */}
+              <div className="relative max-w-xl mx-auto">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                <Input
+                  placeholder="Rechercher par titre..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-12 w-full h-12 text-base"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -318,7 +369,7 @@ const TextesOfficiels = () => {
         <section className="py-16 px-8 md:px-[100px]">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {documents.map(document => (
+              {filteredDocuments.map(document => (
                 <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
@@ -363,6 +414,11 @@ const TextesOfficiels = () => {
                   </CardContent>
                 </Card>
               ))}
+              {filteredDocuments.length === 0 && (
+                <div className="col-span-2 text-center py-8">
+                  <p className="text-gray-500">Aucun document trouvé pour "{searchTerm}"</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
