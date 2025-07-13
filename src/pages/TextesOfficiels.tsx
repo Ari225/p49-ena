@@ -135,7 +135,7 @@ const TextesOfficiels = () => {
 
           {/* Mobile Additional Info */}
           <section className="py-12 px-[25px] bg-white">
-            <div className="container mx-auto">
+            <div className="container mx-auto px-0">
               <div className="text-center">
                 <h3 className="text-base font-bold text-primary mb-4">
                   {t('need_help') || 'Besoin d\'aide ?'}
