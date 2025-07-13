@@ -27,7 +27,7 @@ const HistoriqueHero = () => {
         'px-8 lg:px-[100px]'
       }`}>
         <h1 className={`font-bold mb-4 md:mb-6 animate-fade-in ${
-          isMobile ? 'text-3xl' : 
+          isMobile ? 'text2xl' : 
           isTablet ? 'text-4xl' : 
           'text-6xl md:text-6xl lg:text-6xl'
         }`}>
