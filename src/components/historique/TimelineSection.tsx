@@ -43,7 +43,7 @@ const TimelineSection = () => {
               {timeline.map((event, index) => (
                 <div key={index} className="relative flex items-center justify-center mb-8">
                   <Card className="w-full shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-l-4 border-l-primary">
-                    <CardContent className="p-4 mb-[5px] md:mb-[5px]">
+                    <CardContent className="p-4">
                       <div className="flex items-center mb-[5px] md:mb-[5px]">
                         <div className="bg-primary text-white font-bold text-xs px-4 py-2 rounded-lg shadow-md">
                           {event.year}
@@ -86,15 +86,15 @@ const TimelineSection = () => {
                   
                   <Card className={`w-5/12 ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'} shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-l-4 border-l-primary`}>
                     <CardContent className="p-6">
-                      <div className="flex items-center mb-4">
-                        <div className="bg-primary text-white font-bold text-lg px-4 py-2 rounded-lg shadow-md">
+                      <div className="flex items-center mb-[5px] md:mb-[5px]">
+                        <div className="bg-primary text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md">
                           {event.year}
                         </div>
                       </div>
-                      <h3 className="text-lg font-bold mb-4 text-primary">
+                      <h3 className="text-base font-bold mb-4 text-primary">
                         {event.title}
                       </h3>
-                      <p className="text-gray-700 leading-relaxed text-left text-base">
+                      <p className="text-gray-700 leading-relaxed text-left text-sm">
                         {event.description}
                       </p>
                     </CardContent>
@@ -127,12 +127,12 @@ const TimelineSection = () => {
                 
                 <Card className={`w-5/12 ${index % 2 === 0 ? 'mr-auto' : 'ml-auto'} shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-l-4 border-l-primary`}>
                   <CardContent className="p-8">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-primary text-white font-bold text-lg px-4 py-2 rounded-lg shadow-md">
+                    <div className="flex items-center mb-[5px] md:mb-[5px]">
+                      <div className="bg-primary text-white font-bold text-sm px-4 py-2 rounded-lg shadow-md">
                         {event.year}
                       </div>
                     </div>
-                    <h3 className="text-xl font-bold mb-4 text-primary">
+                    <h3 className="text-base font-bold mb-4 text-primary">
                       {event.title}
                     </h3>
                     <p className="text-gray-700 leading-relaxed text-left text-base">
