@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import Layout from '@/components/Layout';
 import BureauExecutifSection from '@/components/instances/BureauExecutifSection';
 import CommissairesSection from '@/components/instances/CommissairesSection';
@@ -11,6 +11,7 @@ import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 const InstancesDirigeantes = () => {
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
+  const [activeTab, setActiveTab] = useState('bureau');
 
   return (
     <Layout>
@@ -87,102 +88,108 @@ const InstancesDirigeantes = () => {
         {/* Content Section - Mobile */}
         {isMobile && (
           <div className="container mx-auto px-[25px] py-8">
-            <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="flex w-full mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-auto gap-1">
-                <TabsTrigger 
-                  value="bureau" 
-                  className="flex-1 text-xs py-2 px-1 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 min-w-0 text-center"
-                >
-                  Bureau
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="commissions" 
-                  className="flex-1 text-xs py-2 px-1 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 min-w-0 text-center"
-                >
-                  Commissions
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="bureau" className="space-y-0">
-                <div className="space-y-8 pb-8">
-                  <BureauExecutifSection />
-                  <CommissairesSection />
-                  <DeleguesRegionauxSection />
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="commissions" className="pb-8">
+            <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-lg">
+              <Button
+                variant={activeTab === 'bureau' ? 'default' : 'ghost'}
+                onClick={() => setActiveTab('bureau')}
+                className="flex-1 text-xs py-2 px-3"
+              >
+                Bureau
+              </Button>
+              <Button
+                variant={activeTab === 'commissions' ? 'default' : 'ghost'}
+                onClick={() => setActiveTab('commissions')}
+                className="flex-1 text-xs py-2 px-3"
+              >
+                Commissions
+              </Button>
+            </div>
+            
+            {activeTab === 'bureau' && (
+              <div className="space-y-8 pb-8">
+                <BureauExecutifSection />
+                <CommissairesSection />
+                <DeleguesRegionauxSection />
+              </div>
+            )}
+            
+            {activeTab === 'commissions' && (
+              <div className="pb-8">
                 <CommissionsSection />
-              </TabsContent>
-            </Tabs>
+              </div>
+            )}
           </div>
         )}
 
         {/* Content Section - Tablet */}
         {isTab && (
           <div className="container mx-auto px-[50px] py-10">
-            <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-10 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-18 justify-center items-center">
-                <TabsTrigger 
-                  value="bureau" 
-                  className="text-sm py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
-                >
-                  Bureau Exécutif
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="commissions" 
-                  className="text-sm py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
-                >
-                  Commissions
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="bureau" className="space-y-0">
-                <div className="space-y-10 pb-10">
-                  <BureauExecutifSection />
-                  <CommissairesSection />
-                  <DeleguesRegionauxSection />
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="commissions" className="pb-10">
+            <div className="flex gap-2 mb-10 p-1 bg-gray-100 rounded-lg max-w-md mx-auto">
+              <Button
+                variant={activeTab === 'bureau' ? 'default' : 'ghost'}
+                onClick={() => setActiveTab('bureau')}
+                className="flex-1 text-sm py-3 px-4"
+              >
+                Bureau Exécutif
+              </Button>
+              <Button
+                variant={activeTab === 'commissions' ? 'default' : 'ghost'}
+                onClick={() => setActiveTab('commissions')}
+                className="flex-1 text-sm py-3 px-4"
+              >
+                Commissions
+              </Button>
+            </div>
+            
+            {activeTab === 'bureau' && (
+              <div className="space-y-10 pb-10">
+                <BureauExecutifSection />
+                <CommissairesSection />
+                <DeleguesRegionauxSection />
+              </div>
+            )}
+            
+            {activeTab === 'commissions' && (
+              <div className="pb-10">
                 <CommissionsSection />
-              </TabsContent>
-            </Tabs>
+              </div>
+            )}
           </div>
         )}
 
         {/* Content Section - Desktop */}
         {!isMobile && !isTab && (
           <div className="container mx-auto px-[100px] py-12">
-            <Tabs defaultValue="bureau" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-16 justify-center items-center">
-                <TabsTrigger 
-                  value="bureau" 
-                  className="text-sm py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
-                >
-                  Bureau Exécutif
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="commissions" 
-                  className="text-sm py-4 px-6 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
-                >
-                  Commissions
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="bureau" className="space-y-0">
-                <div className="space-y-8 pb-12">
-                  <BureauExecutifSection />
-                  <CommissairesSection />
-                  <DeleguesRegionauxSection />
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="commissions" className="pb-12">
+            <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-lg max-w-lg mx-auto">
+              <Button
+                variant={activeTab === 'bureau' ? 'default' : 'ghost'}
+                onClick={() => setActiveTab('bureau')}
+                className="flex-1 text-sm py-3 px-6"
+              >
+                Bureau Exécutif
+              </Button>
+              <Button
+                variant={activeTab === 'commissions' ? 'default' : 'ghost'}
+                onClick={() => setActiveTab('commissions')}
+                className="flex-1 text-sm py-3 px-6"
+              >
+                Commissions
+              </Button>
+            </div>
+            
+            {activeTab === 'bureau' && (
+              <div className="space-y-8 pb-12">
+                <BureauExecutifSection />
+                <CommissairesSection />
+                <DeleguesRegionauxSection />
+              </div>
+            )}
+            
+            {activeTab === 'commissions' && (
+              <div className="pb-12">
                 <CommissionsSection />
-              </TabsContent>
-            </Tabs>
+              </div>
+            )}
           </div>
         )}
       </div>
