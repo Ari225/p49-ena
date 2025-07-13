@@ -44,7 +44,7 @@ const TimelineSection = () => {
                 <div key={index} className="relative flex items-center justify-center mb-8">
                   <Card className="w-full shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border-l-4 border-l-primary">
                     <CardContent className="p-4">
-                      <div className="flex items-center mb-[10px] md:mb-[10px]">
+                      <div className="flex items-center mb-[5px] md:mb-[5px]">
                         <div className="bg-primary text-white font-bold text-xs px-4 py-2 rounded-lg shadow-md">
                           {event.year}
                         </div>
