@@ -85,7 +85,7 @@ const TextesOfficiels = () => {
 
           {/* Mobile Documents Grid */}
           <section className="py-16 px-[25px]">
-            <div className="container w-full">
+            <div className="container">
               <div className="grid grid-cols-1 gap-8">
                 {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
                     <CardHeader className="pb-3">
