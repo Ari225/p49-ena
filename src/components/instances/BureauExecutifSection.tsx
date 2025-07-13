@@ -10,7 +10,7 @@ const BureauExecutifSection = () => {
   if (isMobile) {
     return <section className="relative">
         <div className="relative z-10">
-          <h2 className="text-2xl font-bold text-center mb-8 text-primary">
+          <h2 className="text-xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
             Bureau Exécutif
           </h2>
           
@@ -27,7 +27,7 @@ const BureauExecutifSection = () => {
   if (isTablet) {
     return <section className="relative">
         <div className="relative z-10">
-          <h2 className="text-3xl font-bold text-center mb-10 text-primary">
+          <h2 className="text-2xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
             Bureau Exécutif
           </h2>
           
@@ -43,7 +43,7 @@ const BureauExecutifSection = () => {
   // Desktop Version
   return <section className="relative">
       <div className="relative z-10">
-        <h2 className="text-4xl font-bold text-center mb-16 text-primary">
+        <h2 className="text-3xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
           Bureau Exécutif
         </h2>
         
