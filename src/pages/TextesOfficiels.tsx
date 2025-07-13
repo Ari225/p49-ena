@@ -192,7 +192,7 @@ const TextesOfficiels = () => {
 
           {/* Tablet Documents Grid */}
           <section className="py-[50px] px-[50px]">
-            <div className="container mx-auto">
+            <div className="container mx-auto px-0">
               <div className="grid grid-cols-2 gap-6">
                 {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
                     <CardHeader className="pb-3">
