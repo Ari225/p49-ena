@@ -134,16 +134,16 @@ const TextesOfficiels = () => {
           </section>
 
           {/* Mobile Additional Info */}
-          <section className="py-12 px-[25px] bg-accent/30">
+          <section className="py-12 px-[25px] bg-white">
             <div className="container mx-auto">
               <div className="text-center">
-                <h3 className="text-lg font-bold text-primary mb-4">
+                <h3 className="text-base font-bold text-primary mb-4">
                   {t('need_help') || 'Besoin d\'aide ?'}
                 </h3>
-                <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-sm">
+                <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-xs">
                   {t('documents_help_text') || 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.'}
                 </p>
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-xs">
                   {t('contact_us') || 'Nous contacter'}
                 </Button>
               </div>
@@ -191,7 +191,7 @@ const TextesOfficiels = () => {
           </section>
 
           {/* Tablet Documents Grid */}
-          <section className="py-16 px-[50px]">
+          <section className="py-[50px] px-[50px]">
             <div className="container mx-auto">
               <div className="grid grid-cols-2 gap-6">
                 {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
@@ -241,16 +241,16 @@ const TextesOfficiels = () => {
           </section>
 
           {/* Tablet Additional Info */}
-          <section className="py-14 px-[50px] bg-accent/30">
+          <section className="py-14 px-[50px] bg-white">
             <div className="container mx-auto">
               <div className="text-center">
-                <h3 className="text-xl font-bold text-primary mb-5">
+                <h3 className="text-lg font-bold text-primary mb-5">
                   {t('need_help') || 'Besoin d\'aide ?'}
                 </h3>
-                <p className="text-gray-600 mb-6 max-w-3xl mx-auto text-base">
+                <p className="text-gray-600 mb-6 max-w-3xl mx-auto text-sm">
                   {t('documents_help_text') || 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.'}
                 </p>
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm">
                   {t('contact_us') || 'Nous contacter'}
                 </Button>
               </div>
@@ -297,7 +297,7 @@ const TextesOfficiels = () => {
         </section>
 
         {/* Desktop Documents Grid */}        
-        <section className="py-16 px-8 md:px-[100px]">
+        <section className="py-[100px] px-[100px] md:px-[100px]">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
@@ -347,7 +347,7 @@ const TextesOfficiels = () => {
         </section>
 
         {/* Desktop Additional Info */}
-        <section className="py-12 px-8 md:px-[100px] bg-accent/30">
+        <section className="py-12 px-8 md:px-[100px] bg-white">
           <div className="container mx-auto">
             <div className="text-center">
               <h3 className="text-xl font-bold text-primary mb-4">
@@ -356,7 +356,7 @@ const TextesOfficiels = () => {
               <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-base">
                 {t('documents_help_text') || 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.'}
               </p>
-              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm">
                 {t('contact_us') || 'Nous contacter'}
               </Button>
             </div>
