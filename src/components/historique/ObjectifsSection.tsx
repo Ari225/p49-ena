@@ -62,7 +62,7 @@ const ObjectifsSection = () => {
                 <div className="space-y-8">
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-4">
-                      <div className="bg-secondary text-primary font-bold text-sm px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary/80 text-primary text-center font-bold text-sm px-4 py-2 rounded-lg mb-4">
                         Au titre des actions sociales
                       </div>
                       <div className="space-y-3 text-gray-700 text-xs">
@@ -84,7 +84,7 @@ const ObjectifsSection = () => {
 
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-4">
-                      <div className="bg-secondary text-primary font-bold text-sm px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary/80 text-primary text-center font-bold text-sm px-4 py-2 rounded-lg mb-4">
                         Au titre des activités relatives au domaine professionnel
                       </div>
                       <div className="space-y-3 text-gray-700 text-xs">
@@ -175,7 +175,7 @@ const ObjectifsSection = () => {
                 <div className="space-y-8">
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-6">
-                      <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                         Au titre des actions sociales
                       </div>
                       <div className="space-y-3 text-gray-700 text-sm">
@@ -197,7 +197,7 @@ const ObjectifsSection = () => {
 
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardContent className="p-6">
-                      <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                      <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                         Au titre des activités relatives au domaine professionnel
                       </div>
                       <div className="space-y-3 text-gray-700 text-sm">
@@ -287,7 +287,7 @@ const ObjectifsSection = () => {
               <div className="space-y-8">
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                    <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                       Au titre des actions sociales
                     </div>
                     <div className="space-y-3 text-gray-700 text-base">
@@ -309,7 +309,7 @@ const ObjectifsSection = () => {
 
                 <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
-                    <div className="bg-secondary text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
+                    <div className="bg-secondary/80 text-primary font-bold text-base px-4 py-2 rounded-lg mb-4">
                       Au titre des activités relatives au domaine professionnel
                     </div>
                     <div className="space-y-3 text-gray-700 text-base">
