@@ -55,7 +55,7 @@ const translations = {
     'official_documents_subtitle': 'Documents relatifs à la P49 et à l\'Administration ivoirienne',
     'founding_documents': 'Documents fondateurs',
     'founding_documents_description': 'Découvrez les documents officiels qui ont marqué la création et l\'organisation du Réseau des Énarques de la 49e Promotion. Ces textes fondamentaux définissent notre mission, nos valeurs et notre mode de fonctionnement.',
-    'download_document': 'Télécharger le document',
+    'download_document': 'Télécharger',
     'need_help': 'Besoin d\'aide ?',
     'documents_help_text': 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.',
     'contact_us': 'Nous contacter'
@@ -105,7 +105,7 @@ const translations = {
     'official_documents_subtitle': 'Documents relating to P49 and the Administration of Ivory Coast',
     'founding_documents': 'Founding documents',
     'founding_documents_description': 'Discover the official documents that marked the creation and organization of the Network of 49th Promotion Graduates. These fundamental texts define our mission, values and operating procedures.',
-    'download_document': 'Download document',
+    'download_document': 'Download',
     'need_help': 'Need help?',
     'documents_help_text': 'For any questions about these documents or to obtain certified copies, please do not hesitate to contact us.',
     'contact_us': 'Contact us'

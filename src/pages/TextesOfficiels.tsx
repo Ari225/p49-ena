@@ -76,8 +76,8 @@ const TextesOfficiels = () => {
                 
                 {/* Mobile Search Bar */}
                 <div className="relative max-w-md mx-auto">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <Input placeholder="Rechercher par titre..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 w-full" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 text-xs" />
+                  <Input placeholder="Rechercher par titre..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 w-full text-xs" />
                 </div>
               </div>
             </div>
@@ -94,11 +94,11 @@ const TextesOfficiels = () => {
                           <CardTitle className="text-base text-primary mb-2 group-hover:text-primary/80 transition-colors">
                             {document.title}
                           </CardTitle>
-                          <div className="flex items-center text-sm text-primary/70 mb-2">
+                          <div className="flex items-center text-xs text-primary/70 mb-2">
                             <Calendar className="h-4 w-4 mr-2" />
                             {document.date}
                           </div>
-                          <p className="text-gray-600 text-xs">
+                          <p className="text-gray-600 text-xs w-full">
                             {document.description}
                           </p>
                         </div>
@@ -119,9 +119,9 @@ const TextesOfficiels = () => {
                           </div>
                         </div>
                         
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                        <Button className="w-full bg-primary hover:bg-primary/90 text-white text-xs">
                           <Download className="h-4 w-4 mr-2" />
-                          {t('download_document') || 'Télécharger le document'}
+                          {t('download_document') || 'Télécharger'}
                         </Button>
                       </div>
                     </CardContent>
@@ -134,7 +134,7 @@ const TextesOfficiels = () => {
           </section>
 
           {/* Mobile Additional Info */}
-          <section className="py-12 px-[25px] bg-primary/5">
+          <section className="py-12 px-[25px] bg-accent/30">
             <div className="container mx-auto">
               <div className="text-center">
                 <h3 className="text-lg font-bold text-primary mb-4">
@@ -183,8 +183,8 @@ const TextesOfficiels = () => {
                 
                 {/* Tablet Search Bar */}
                 <div className="relative max-w-lg mx-auto">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                  <Input placeholder="Rechercher par titre..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-12 w-full h-12 text-base" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 text-sm" />
+                  <Input placeholder="Rechercher par titre..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-12 w-full h-12 text-sm" />
                 </div>
               </div>
             </div>
@@ -205,7 +205,7 @@ const TextesOfficiels = () => {
                             <Calendar className="h-4 w-4 mr-2" />
                             {document.date}
                           </div>
-                          <p className="text-gray-600 text-sm">
+                          <p className="text-gray-600 text-sm w-full">
                             {document.description}
                           </p>
                         </div>
@@ -226,9 +226,9 @@ const TextesOfficiels = () => {
                           </div>
                         </div>
                         
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                        <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm">
                           <Download className="h-4 w-4 mr-2" />
-                          {t('download_document') || 'Télécharger le document'}
+                          {t('download_document') || 'Télécharger'}
                         </Button>
                       </div>
                     </CardContent>
@@ -241,7 +241,7 @@ const TextesOfficiels = () => {
           </section>
 
           {/* Tablet Additional Info */}
-          <section className="py-14 px-[50px] bg-primary/5">
+          <section className="py-14 px-[50px] bg-accent/30">
             <div className="container mx-auto">
               <div className="text-center">
                 <h3 className="text-xl font-bold text-primary mb-5">
@@ -289,8 +289,8 @@ const TextesOfficiels = () => {
               
               {/* Desktop Search Bar */}
               <div className="relative max-w-xl mx-auto">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <Input placeholder="Rechercher par titre..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-12 w-full h-12 text-base" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 text-sm" />
+                <Input placeholder="Rechercher par titre..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-12 w-full h-12 text-sm" />
               </div>
             </div>
           </div>
@@ -304,14 +304,14 @@ const TextesOfficiels = () => {
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <CardTitle className="text-lg text-primary mb-2 group-hover:text-primary/80 transition-colors">
+                        <CardTitle className="text-xl text-primary mb-2 group-hover:text-primary/80 transition-colors">
                           {document.title}
                         </CardTitle>
                         <div className="flex items-center text-sm text-primary/70 mb-2">
                           <Calendar className="h-4 w-4 mr-2" />
                           {document.date}
                         </div>
-                        <p className="text-gray-600 text-sm">
+                        <p className="text-gray-600 text-sm w-full">
                           {document.description}
                         </p>
                       </div>
@@ -332,9 +332,9 @@ const TextesOfficiels = () => {
                         </div>
                       </div>
                       
-                      <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                      <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm">
                         <Download className="h-4 w-4 mr-2" />
-                        {t('download_document') || 'Télécharger le document'}
+                        {t('download_document') || 'Télécharger'}
                       </Button>
                     </div>
                   </CardContent>
@@ -347,7 +347,7 @@ const TextesOfficiels = () => {
         </section>
 
         {/* Desktop Additional Info */}
-        <section className="py-12 px-8 md:px-[100px] bg-primary/5">
+        <section className="py-12 px-8 md:px-[100px] bg-accent/30">
           <div className="container mx-auto">
             <div className="text-center">
               <h3 className="text-xl font-bold text-primary mb-4">
