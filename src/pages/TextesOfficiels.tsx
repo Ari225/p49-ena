@@ -293,9 +293,7 @@ const TextesOfficiels = () => {
           <div className="container mx-auto text-center px-0">
             <div className="max-w-3xl mx-auto">
               
-              <p className="text-gray-700 mb-6 text-base">
-                {t('founding_documents_description') || 'Découvrez les documents officiels qui ont marqué la création et l\'organisation du Réseau des Énarques de la 49e Promotion. Ces textes fondamentaux définissent notre mission, nos valeurs et notre mode de fonctionnement.'}
-              </p>
+              
               
               {/* Desktop Search Bar */}
               <div className="relative max-w-xl mx-auto">
