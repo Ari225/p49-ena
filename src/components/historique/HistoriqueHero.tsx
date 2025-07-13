@@ -33,10 +33,10 @@ const HistoriqueHero = () => {
         }`}>
           Historique du Réseau
         </h1>
-        <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto ${
-          isMobile ? 'text-sm px-2' : 
-          isTablet ? 'text-base px-4' : 
-          'text-lg md:text-lg px-4'
+        <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
+          isMobile ? 'text-sm' : 
+          isTablet ? 'text-base' : 
+          'text-lg md:text-lg'
         }`}>
           Historique, création et situation administrative de l'association
         </p>
