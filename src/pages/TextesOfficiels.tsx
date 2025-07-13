@@ -68,7 +68,7 @@ const TextesOfficiels = () => {
           </section>
 
           {/* Mobile Introduction with Search */}
-          <section className="py-12 px-[25px] bg-accent/10">
+          <section className="py-[25px] px-[25px] bg-accent/10">
             <div className="container mx-auto text-center px-0">
               <div className="max-w-3xl mx-auto">
                 
