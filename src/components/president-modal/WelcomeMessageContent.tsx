@@ -6,8 +6,8 @@ const WelcomeMessageContent = () => {
   const isTablet = useIsTablet();
   
   const textSizes = {
-    title: isMobile ? 'text-xl mb-[50px] md:mb-[50px]' : isTablet ? 'text-2xl mb-[50px] md:mb-[50px]' : 'text-5xl mb-[50px] md:mb-[50px]',
-    body: isMobile ? 'text-xs mb-[50px] md:mb-[50px]' : isTablet ? 'text-sm mb-[50px] md:mb-[50px]' : 'text-base mb-[50px] md:mb-[50px]',
+    title: isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-5xl',
+    body: isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base',
     signature: isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-lg',
   };
 
@@ -16,7 +16,7 @@ const WelcomeMessageContent = () => {
       <h2 className={`${textSizes.title} font-bold text-primary`}>
         Message de bienvenue
       </h2>
-      <div className={`text-gray-700 leading-relaxed mb-15 ${textSizes.body}`}>
+      <div className={`${isMobile ? 'mb-[50px] md:mb-[50px]' : isTablet ? 'mb-[50px] md:mb-[50px]' : 'mb-[50px] md:mb-[50px]'} text-gray-700 leading-relaxed ${textSizes.body}`}>
         <p className="mb-4">
           Chères visiteuses, chers visiteurs,
         </p>
