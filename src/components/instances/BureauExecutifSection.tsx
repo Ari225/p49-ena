@@ -31,7 +31,7 @@ const BureauExecutifSection = () => {
             Bureau Exécutif
           </h2>
           
-          <div className="relative max-w-5xl mx-auto px-6">
+          <div className="relative max-w-5xl mx-auto px-0">
             <div className="space-y-16">
               {organigramLevels.map((level, levelIndex) => <OrganigramLevel key={levelIndex} level={level} levelIndex={levelIndex} organigramLevels={organigramLevels} isMobile={false} isTablet={isTablet} />)}
             </div>
