@@ -91,15 +91,15 @@ const InstancesDirigeantes = () => {
               <TabsList className="grid w-full grid-cols-2 mb-8 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm border border-primary/20 p-1 rounded-2xl h-auto justify-center items-center">
                 <TabsTrigger 
                   value="bureau" 
-                  className="text-sm py-2 px-2 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
+                  className="text-xs py-1.5 px-1.5 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 flex-1 min-w-0"
                 >
-                  Bureau Exécutif
+                  <span className="truncate">Bureau Exécutif</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="commissions" 
-                  className="text-sm py-2 px-2 font-semibold rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:scale-105 hover:bg-primary/15 hover:scale-102 text-gray-700 border-0"
+                  className="text-xs py-1.5 px-1.5 font-medium rounded-xl transition-all duration-500 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-primary/90 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-primary/15 text-gray-700 border-0 flex-1 min-w-0"
                 >
-                  Commissions
+                  <span className="truncate">Commissions</span>
                 </TabsTrigger>
               </TabsList>
               
