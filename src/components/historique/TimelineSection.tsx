@@ -72,7 +72,7 @@ const TimelineSection = () => {
       <section className="py-20 px-[50px] bg-gradient-to-b from-accent/30 to-white">
         <div className="container mx-auto px-0">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-primary mb-16">
+            <h2 className="text-2xl font-bold text-center text-primary mb-16">
               Chronologie
             </h2>
             <div className="relative">
@@ -113,7 +113,7 @@ const TimelineSection = () => {
     <section className="py-[100px] px-8 md:px-[100px] bg-gradient-to-b from-accent/30 to-white">
       <div className="container mx-auto px-0">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-primary mb-16">
+          <h2 className="text-3xl font-bold text-center text-primary mb-16">
             Chronologie
           </h2>
           <div className="relative">
