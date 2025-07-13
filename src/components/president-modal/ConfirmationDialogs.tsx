@@ -33,7 +33,7 @@ const ConfirmationDialogs = ({
       <AlertDialog open={showNeverShowConfirm} onOpenChange={setShowNeverShowConfirm}>
         <AlertDialogContent className={`rounded-lg ${isMobile || isTablet ? 'max-w-[calc(100vw-40px)] mx-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmation</AlertDialogTitle>
+            <AlertDialogTitle className={isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}>Confirmation</AlertDialogTitle>
             <AlertDialogDescription>
               Vous ne verrez plus jamais ce message. Voulez-vous continuer ?
             </AlertDialogDescription>
