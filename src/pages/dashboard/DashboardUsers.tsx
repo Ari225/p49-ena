@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -8,8 +9,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import UsersList from '@/components/users/UsersList';
 import UsersPageHeader from '@/components/users/UsersPageHeader';
 import LoadingState from '@/components/users/LoadingState';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import { isAdmin } from '@/utils/roleUtils';
 
 interface User {
@@ -34,35 +33,37 @@ const DashboardUsers = () => {
   }
 
   useEffect(() => {
-    fetchUsers();
+    // Utiliser les profils codés en dur au lieu de Supabase
+    const hardcodedUsers: User[] = [
+      {
+        id: '1',
+        username: 'ari_dale',
+        first_name: 'Aristide',
+        last_name: 'Dalé',
+        email: 'aristide.dale@p49.com',
+        role: 'admin_principal',
+        created_at: '2024-01-01T00:00:00.000Z',
+        image_url: '/lovable-uploads/2cd61362-ab99-4adc-901a-5bef1c338e97.png'
+      },
+      {
+        id: '2',
+        username: 'kouam_p49',
+        first_name: 'Kouamé',
+        last_name: '',
+        email: 'kouame@p49.com',
+        role: 'redacteur',
+        created_at: '2024-01-01T00:00:00.000Z',
+        image_url: '/lovable-uploads/e479be1a-3b50-400f-ab57-37aecdd654ed.png'
+      }
+    ];
+
+    setUsers(hardcodedUsers);
+    setLoading(false);
   }, []);
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const { data: usersData, error } = await supabase
-        .from('app_users')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        console.error('Error fetching users:', error);
-        toast.error('Erreur lors du chargement des utilisateurs');
-        return;
-      }
-
-      setUsers(usersData || []);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      toast.error('Erreur lors du chargement des utilisateurs');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleUserAdded = () => {
-    // Refresh the users list when a new user is added
-    fetchUsers();
+    // Pour le moment, ne fait rien car on utilise des profils codés en dur
+    console.log('Utilisateur ajouté (fonctionnalité à implémenter)');
   };
 
   if (loading) {
