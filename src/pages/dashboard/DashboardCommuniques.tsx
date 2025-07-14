@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -11,6 +12,7 @@ import CommuniqueFormDialog from '@/components/communiques/CommuniqueFormDialog'
 import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopup';
 import CommuniqueDeleteConfirm from '@/components/communiques/CommuniqueDeleteConfirm';
 import { useToast } from '@/hooks/use-toast';
+import { isAdmin } from '@/utils/roleUtils';
 
 interface CommuniqueItem {
   id: string;
@@ -53,7 +55,7 @@ const DashboardCommuniques = () => {
     }
   ]);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

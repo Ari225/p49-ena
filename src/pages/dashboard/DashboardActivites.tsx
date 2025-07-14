@@ -9,6 +9,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import ActivityForm from '@/components/activities/ActivityForm';
 import ActivityCard from '@/components/activities/ActivityCard';
 import { Activity } from '@/types/activity';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardActivites = () => {
   const { user } = useAuth();
@@ -44,7 +45,7 @@ const DashboardActivites = () => {
     }
   ];
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardAddUser = () => {
   const { user } = useAuth();
@@ -23,7 +24,7 @@ const DashboardAddUser = () => {
   });
   const [creating, setCreating] = useState(false);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Briefcase, Plus, Edit, Trash2, MapPin, Calendar } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardCarrieres = () => {
   const { user } = useAuth();
@@ -47,7 +48,7 @@ const DashboardCarrieres = () => {
     }
   ];
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

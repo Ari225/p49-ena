@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { ArrowLeft, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardAddJournal = () => {
   const { user } = useAuth();
@@ -25,7 +26,7 @@ const DashboardAddJournal = () => {
   });
   const [uploading, setUploading] = useState(false);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 
