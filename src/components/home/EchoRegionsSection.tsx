@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, MapPin, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import NewsCard from './news/NewsCard';
 
 const EchoRegionsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -11,29 +12,33 @@ const EchoRegionsSection = () => {
   const isTablet = useIsTablet();
 
   const regionalNews = [{
-    region: "Abidjan",
+    id: '1',
     title: "Rencontre mensuelle des membres d'Abidjan",
-    date: "25 Mars 2024",
-    excerpt: "Plus de 30 membres se sont retrouvés pour échanger sur les projets en cours.",
-    image: "/lovable-uploads/86d6f303-a616-4f82-9bdc-8e06f6878a5a.png"
+    summary: "Plus de 30 membres se sont retrouvés pour échanger sur les projets en cours.",
+    category: "Abidjan",
+    image_url: "/lovable-uploads/86d6f303-a616-4f82-9bdc-8e06f6878a5a.png",
+    published_date: "2024-03-25"
   }, {
-    region: "Bouaké",
+    id: '2',
     title: "Session de formation en leadership",
-    date: "20 Mars 2024",
-    excerpt: "Formation intensive sur le leadership transformationnel pour 15 membres.",
-    image: "/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png"
+    summary: "Formation intensive sur le leadership transformationnel pour 15 membres.",
+    category: "Bouaké",
+    image_url: "/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png",
+    published_date: "2024-03-20"
   }, {
-    region: "San-Pédro",
+    id: '3',
     title: "Inauguration du bureau régional",
-    date: "15 Mars 2024",
-    excerpt: "Ouverture officielle du nouveau bureau régional en présence du Préfet.",
-    image: "/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png"
+    summary: "Ouverture officielle du nouveau bureau régional en présence du Préfet.",
+    category: "San-Pédro",
+    image_url: "/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png",
+    published_date: "2024-03-15"
   }, {
-    region: "Korhogo",
+    id: '4',
     title: "Atelier sur la gestion publique",
-    date: "10 Mars 2024",
-    excerpt: "Workshop sur les innovations en gestion publique locale.",
-    image: "/lovable-uploads/674fac65-3da0-4339-8260-56ec359feae2.png"
+    summary: "Workshop sur les innovations en gestion publique locale.",
+    category: "Korhogo",
+    image_url: "/lovable-uploads/674fac65-3da0-4339-8260-56ec359feae2.png",
+    published_date: "2024-03-10"
   }];
 
   // Auto-scroll for desktop only
@@ -77,24 +82,7 @@ const EchoRegionsSection = () => {
               }}>
                 {regionalNews.map((news, index) => (
                   <div key={index} className="w-full flex-shrink-0 px-0">
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="relative h-32 md:h-48">
-                        <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
-                        <div className="absolute top-4 left-4 bg-secondary/80 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          {news.region}
-                        </div>
-                      </div>
-                      <CardContent className="p-3 md:p-4">
-                        <h3 className="font-semibold text-primary mb-2 text-base line-clamp-2 md:text-base">
-                          {news.title}
-                        </h3>
-                        <p className="mb-2 md:mb-3 line-clamp-2 text-gray-700 text-sm font-normal">
-                          {news.excerpt}
-                        </p>
-                        <p className="text-xs text-gray-700 font-normal">{news.date}</p>
-                      </CardContent>
-                    </Card>
+                    <NewsCard item={news} variant="mobile" showReadButton={false} />
                   </div>
                 ))}
               </div>
@@ -121,24 +109,7 @@ const EchoRegionsSection = () => {
               }}>
                 {regionalNews.map((news, index) => (
                   <div key={index} className="w-1/2 flex-shrink-0 px-2">
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="relative h-40">
-                        <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
-                        <div className="absolute top-3 left-3 bg-primary text-white px-2 py-1 text-xs flex items-center rounded">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          {news.region}
-                        </div>
-                      </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-semibold text-primary mb-2 text-base line-clamp-2">
-                          {news.title}
-                        </h3>
-                        <p className="mb-3 line-clamp-2 text-gray-700 text-sm font-normal">
-                          {news.excerpt}
-                        </p>
-                        <p className="text-xs text-gray-700 font-normal">{news.date}</p>
-                      </CardContent>
-                    </Card>
+                    <NewsCard item={news} variant="tablet" showReadButton={false} />
                   </div>
                 ))}
               </div>
@@ -160,24 +131,7 @@ const EchoRegionsSection = () => {
         {!isMobile && !isTablet && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {regionalNews.map((news, index) => (
-              <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="relative h-32 md:h-48">
-                  <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
-                  <div className="absolute top-2 md:top-3 left-2 md:left-3 bg-primary text-white px-2 py-1 text-xs flex items-center rounded">
-                    <MapPin className="w-3 h-3 mr-1" />
-                    {news.region}
-                  </div>
-                </div>
-                <CardContent className="p-3 md:p-4">
-                  <h3 className="font-semibold text-primary mb-2 text-base line-clamp-2 md:text-base">
-                    {news.title}
-                  </h3>
-                  <p className="mb-2 md:mb-3 line-clamp-2 text-gray-700 text-sm font-normal">
-                    {news.excerpt}
-                  </p>
-                  <p className="text-xs text-gray-700 font-normal">{news.date}</p>
-                </CardContent>
-              </Card>
+              <NewsCard key={index} item={news} variant="desktop" showReadButton={false} />
             ))}
           </div>
         )}
