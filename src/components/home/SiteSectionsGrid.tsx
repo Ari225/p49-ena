@@ -61,7 +61,7 @@ const SiteSectionsGrid = () => {
     return (
       <section className="bg-white py-[50px] px-[25px]">
         <div className="container mx-auto px-0">
-          <h2 className="text-2xl font-bold text-center text-primary mb-8">Nos rubriques</h2>
+          <h2 className="text-xl font-bold text-center text-primary mb-[50px] md:mb-[50px]">Nos rubriques</h2>
           <Accordion type="single" collapsible className="w-full space-y-4">
             {sections.map((section) => {
               const IconComponent = section.icon;
@@ -95,7 +95,7 @@ const SiteSectionsGrid = () => {
     return (
       <section className="bg-white py-[75px] px-[50px]">
         <div className="container mx-auto px-0">
-          <h2 className="text-3xl font-bold text-center text-primary mb-10">Nos rubriques</h2>
+          <h2 className="text-2xl font-bold text-center text-primary mb-[50px] md:mb-[50px]">Nos rubriques</h2>
           
           {/* Tab Navigation */}
           <div className="flex justify-center mb-8 border-b overflow-x-auto">
@@ -154,7 +154,7 @@ const SiteSectionsGrid = () => {
   return (
     <section className="bg-white py-[100px] px-[50px]">
       <div className="container mx-auto px-0">
-        <h2 className="text-3xl font-bold text-center text-primary mb-12">Nos rubriques</h2>
+        <h2 className="text-3xl font-bold text-center text-primary mb-[50px] md:mb-[50px]">Nos rubriques</h2>
         <div className="grid grid-cols-5 gap-6">
           <Card className="hover:shadow-xl transition-shadow duration-300 group">
             <CardHeader>
