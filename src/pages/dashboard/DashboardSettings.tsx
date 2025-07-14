@@ -6,12 +6,13 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardSettings = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

@@ -7,12 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bell, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardNotifications = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

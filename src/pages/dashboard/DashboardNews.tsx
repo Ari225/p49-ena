@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 interface NewsItem {
   id: string;
@@ -22,7 +23,7 @@ const DashboardNews = () => {
   const isMobile = useIsMobile();
   const [news, setNews] = useState<NewsItem[]>([]);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

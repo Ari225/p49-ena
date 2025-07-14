@@ -6,6 +6,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import TestimonialFormDialog from '@/components/testimonials/TestimonialFormDialog';
 import TestimonialCard from '@/components/testimonials/TestimonialCard';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardTemoignages = () => {
   const { user } = useAuth();
@@ -46,7 +47,7 @@ const DashboardTemoignages = () => {
     }
   ];
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

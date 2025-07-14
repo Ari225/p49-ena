@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye, Download, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 
 interface JournalEdition {
   id: string;
@@ -26,7 +27,7 @@ const DashboardJournal = () => {
   const [editions, setEditions] = useState<JournalEdition[]>([]);
   const [loading, setLoading] = useState(true);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

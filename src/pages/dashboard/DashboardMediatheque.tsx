@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -8,6 +7,7 @@ import MediaCard from '@/components/media/MediaCard';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { isAdmin } from '@/utils/roleUtils';
 
 interface MediaItem {
   id: string;
@@ -53,7 +53,7 @@ const DashboardMediatheque = () => {
     fetchMediaItems();
   }, []);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

@@ -6,6 +6,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, Check, X, Eye } from 'lucide-react';
+import { isAdmin } from '@/utils/roleUtils';
 
 interface PendingArticle {
   id: string;
@@ -21,7 +22,7 @@ const DashboardPendingArticles = () => {
   const [articles, setArticles] = useState<PendingArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

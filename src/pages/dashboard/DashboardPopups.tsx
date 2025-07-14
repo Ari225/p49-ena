@@ -12,6 +12,7 @@ import PopupForm from '@/components/popups/PopupForm';
 import PopupCard from '@/components/popups/PopupCard';
 import { getTypeBadge, getPriorityBadge, getAudienceBadge } from '@/utils/popupUtils';
 import { PopupItem, PopupFormData } from '@/types/popup';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardPopups = () => {
   const { user } = useAuth();
@@ -32,7 +33,7 @@ const DashboardPopups = () => {
     }
   ]);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

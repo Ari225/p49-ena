@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
@@ -7,573 +6,329 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PartyPopper, Plus, Edit, Trash2, Calendar, MapPin, Users, Upload, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Calendar, MapPin, Users, Plus, Edit, Trash2, Heart, PartyPopper, Frown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
+import { isAdmin } from '@/utils/roleUtils';
 
-const formSchema = z.object({
-  eventType: z.string().min(1, 'Le type d\'événement est requis'),
-  category: z.string().min(1, 'La catégorie est requise'),
-  title: z.string().min(1, 'L\'intitulé de l\'événement est requis'),
-  memberName: z.string().min(1, 'Le nom du concerné est requis'),
-  yearsOfService: z.string().optional(),
-  date: z.string().min(1, 'La date est requise'),
-  location: z.string().min(1, 'La localité est requise'),
-  description: z.string().min(1, 'La description est requise'),
-  thought: z.string().min(1, 'La pensée est requise'),
-  keyword: z.string().optional(),
-});
-
-interface Event {
+interface SocialEvent {
   id: string;
   eventType: string;
   category: string;
   title: string;
   memberName: string;
-  yearsOfService?: string;
   date: string;
   location: string;
   description: string;
   thought: string;
   keyword: string;
-  image?: string;
+  image: string;
+  yearsOfService?: string;
 }
 
-const eventTypeCategories = {
-  'Heureux': ['Naissances', 'Promotions', 'Distinctions', 'Autres'],
-  'Retraite': ['Retraite'],
-  'Malheureux': ['Décès', 'Maladies', 'Accidents', 'Autres']
-};
+const mockEvents: SocialEvent[] = [
+  {
+    id: '1',
+    eventType: 'Heureux',
+    category: 'Naissances',
+    title: 'Naissance de bébé Marie',
+    memberName: 'Famille Kouassi',
+    date: '2024-01-15',
+    location: 'Abidjan',
+    description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
+    thought: 'Félicitations aux heureux parents !',
+    keyword: 'Naissances',
+    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+  },
+  {
+    id: '2',
+    eventType: 'Heureux',
+    category: 'Promotions',
+    title: 'Promotion au grade de Directeur',
+    memberName: 'M. Yao Kouadio',
+    date: '2024-02-10',
+    location: 'Yamoussoukro',
+    description: 'M. Yao Kouadio a été promu au grade de Directeur.',
+    thought: 'Félicitations pour cette promotion bien méritée !',
+    keyword: 'Promotions',
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
+  },
+  {
+    id: '3',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de M. Koffi',
+    memberName: 'M. Jean Koffi',
+    date: '2024-02-01',
+    location: 'Bouaké',
+    description: 'Après 35 années de service dévoué, M. Koffi prend sa retraite.',
+    thought: 'Nous lui souhaitons une retraite heureuse et épanouie !',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  },
+  {
+    id: '4',
+    eventType: 'Malheureux',
+    category: 'Décès',
+    title: 'Décès de Mme Adjoua',
+    memberName: 'Famille Adjoua',
+    date: '2024-01-20',
+    location: 'Daloa',
+    description: 'C\'est avec tristesse que nous annonçons le décès de Mme Adjoua.',
+    thought: 'Nos pensées accompagnent la famille en ces moments difficiles.',
+    keyword: 'Décès',
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop"
+  }
+];
 
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { toast } = useToast();
+  const [events, setEvents] = useState<SocialEvent[]>(mockEvents);
   const [showForm, setShowForm] = useState(false);
-  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
-  const [events, setEvents] = useState<Event[]>([
-    {
-      id: '1',
-      eventType: 'Heureux',
-      category: 'Naissances',
-      title: 'Naissance de bébé Marie',
-      memberName: 'Famille Kouassi',
-      date: '2024-01-15',
-      location: 'Abidjan',
-      description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
-      thought: 'Félicitations aux heureux parents !',
-      keyword: 'Naissances',
-      image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop'
-    },
-    {
-      id: '2',
-      eventType: 'Retraite',
-      category: 'Retraite',
-      title: 'Départ en retraite de M. Koffi',
-      memberName: 'M. Jean Koffi',
-      yearsOfService: '35 ans de service',
-      date: '2024-02-01',
-      location: 'Bouaké',
-      description: 'Après 35 années de service dévoué, M. Koffi prend sa retraite.',
-      thought: 'Nous lui souhaitons une retraite heureuse et épanouie !',
-      keyword: 'Retraite',
-      image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop'
-    }
-  ]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      eventType: '',
-      category: '',
-      title: '',
-      memberName: '',
-      yearsOfService: '',
-      date: '',
-      location: '',
-      description: '',
-      thought: '',
-      keyword: '',
-    },
+  const [editingEvent, setEditingEvent] = useState<SocialEvent | null>(null);
+  const [formData, setFormData] = useState({
+    eventType: '',
+    category: '',
+    title: '',
+    memberName: '',
+    date: '',
+    location: '',
+    description: '',
+    thought: '',
+    keyword: '',
+    image: null as File | null,
+    yearsOfService: ''
   });
 
-  const watchedEventType = form.watch('eventType');
-  const watchedCategory = form.watch('category');
-
-  // Auto-set keyword based on category
-  React.useEffect(() => {
-    if (watchedCategory) {
-      form.setValue('keyword', watchedCategory);
-    }
-  }, [watchedCategory, form]);
-
-  // Effect to populate form when editing
-  React.useEffect(() => {
-    if (editingEvent) {
-      form.reset({
-        eventType: editingEvent.eventType,
-        category: editingEvent.category,
-        title: editingEvent.title,
-        memberName: editingEvent.memberName,
-        yearsOfService: editingEvent.yearsOfService || '',
-        date: editingEvent.date,
-        location: editingEvent.location,
-        description: editingEvent.description,
-        thought: editingEvent.thought,
-        keyword: editingEvent.keyword,
-      });
-      if (editingEvent.image) {
-        setImagePreview(editingEvent.image);
-      }
-    }
-  }, [editingEvent, form]);
-
-  console.log('DashboardEvenementsSociaux rendered, user:', user);
-  console.log('Events:', events);
-
-  if (!user) {
-    console.log('No user found');
-    return <div>Chargement...</div>;
+  if (!user || !isAdmin(user)) {
+    return <div>Non autorisé</div>;
   }
 
-  if (user.role !== 'admin') {
-    console.log('User is not admin:', user.role);
-    return <div>Non autorisé - Accès réservé aux administrateurs</div>;
-  }
+  const eventTypes = [
+    { value: 'Heureux', label: 'Heureux' },
+    { value: 'Retraite', label: 'Retraite' },
+    { value: 'Malheureux', label: 'Malheureux' }
+  ];
 
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setImagePreview(result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const eventCategories = {
+    Heureux: ['Naissances', 'Mariages', 'Promotions', 'Distinctions'],
+    Retraite: ['Retraite'],
+    Malheureux: ['Décès', 'Maladie', 'Accidents']
   };
 
-  const removeImage = () => {
-    setSelectedImage(null);
-    setImagePreview('');
-  };
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log('Form submitted with values:', values);
-    
-    // Convert selected image to URL (in a real app, you'd upload to a server)
-    let imageUrl = '';
-    if (selectedImage) {
-      imageUrl = imagePreview;
-    } else if (editingEvent?.image && imagePreview) {
-      imageUrl = imagePreview;
-    }
-    
-    if (editingEvent) {
-      // Update existing event
-      const updatedEvent: Event = {
-        ...editingEvent,
-        eventType: values.eventType,
-        category: values.category,
-        title: values.title,
-        memberName: values.memberName,
-        yearsOfService: values.yearsOfService || '',
-        date: values.date,
-        location: values.location,
-        description: values.description,
-        thought: values.thought,
-        keyword: values.keyword || values.category,
-        image: imageUrl,
-      };
-      setEvents(events.map(event => event.id === editingEvent.id ? updatedEvent : event));
-      toast({
-        title: "Événement modifié",
-        description: "L'événement social a été modifié avec succès.",
-      });
-      setEditingEvent(null);
-    } else {
-      // Create new event
-      const newEvent: Event = {
-        id: Date.now().toString(),
-        eventType: values.eventType,
-        category: values.category,
-        title: values.title,
-        memberName: values.memberName,
-        yearsOfService: values.yearsOfService || '',
-        date: values.date,
-        location: values.location,
-        description: values.description,
-        thought: values.thought,
-        keyword: values.keyword || values.category,
-        image: imageUrl,
-      };
-      setEvents([...events, newEvent]);
-      toast({
-        title: "Événement créé",
-        description: "Le nouvel événement social a été créé avec succès.",
-      });
-    }
-    
-    handleCloseForm();
-    console.log('Événement social traité avec succès');
-  };
-
-  const handleEdit = (event: Event) => {
-    console.log('Editing event:', event);
-    setEditingEvent(event);
-    setShowForm(true);
-  };
-
-  const handleDelete = (id: string) => {
-    console.log('Deleting event with id:', id);
-    setEvents(events.filter(event => event.id !== id));
-    toast({
-      title: "Événement supprimé",
-      description: "L'événement social a été supprimé avec succès.",
-    });
-  };
-
-  const handleCloseForm = () => {
+  const handleFormSuccess = () => {
     setShowForm(false);
-    setEditingEvent(null);
-    setSelectedImage(null);
-    setImagePreview('');
-    form.reset();
   };
 
-  const handleNewEvent = () => {
-    setEditingEvent(null);
-    setSelectedImage(null);
-    setImagePreview('');
-    form.reset();
-    setShowForm(true);
+  const handleFormCancel = () => {
+    setShowForm(false);
   };
 
-  const renderForm = () => (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="eventType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type de l'événement</FormLabel>
-              <Select 
-                onValueChange={(value) => {
-                  field.onChange(value);
-                  form.setValue('category', '');
-                }} 
-                value={field.value}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner le type d'événement" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="Heureux">Heureux</SelectItem>
-                  <SelectItem value="Retraite">Retraite</SelectItem>
-                  <SelectItem value="Malheureux">Malheureux</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+  const handleEditEvent = (event: SocialEvent) => {
+    // TODO: Implement edit functionality
+    console.log('Edit event:', event);
+  };
 
-        {watchedEventType && (
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Catégorie</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner une catégorie" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {eventTypeCategories[watchedEventType as keyof typeof eventTypeCategories]?.map((category) => (
-                      <SelectItem key={category} value={category}>{category}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+  const handleDeleteEvent = (event: SocialEvent) => {
+    // TODO: Implement delete functionality
+    console.log('Delete event:', event);
+  };
 
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Intitulé de l'événement</FormLabel>
-              <FormControl>
-                <Input placeholder="ex: Naissance de bébé Marie" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        <FormField
-          control={form.control}
-          name="memberName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nom du concerné</FormLabel>
-              <FormControl>
-                <Input placeholder="ex: Famille Kouassi" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    // TODO: Implement form submission logic
+    console.log('Form submitted:', formData);
+  };
 
-        {watchedEventType === 'Retraite' && (
-          <FormField
-            control={form.control}
-            name="yearsOfService"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Années de service</FormLabel>
-                <FormControl>
-                  <Input placeholder="ex: 35 ans de service" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date</FormLabel>
-              <FormControl>
-                <Input type="date" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="location"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Localité</FormLabel>
-              <FormControl>
-                <Input placeholder="ex: Abidjan" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea placeholder="ex: Nous avons la joie d'annoncer la naissance de Marie." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="thought"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Pensée</FormLabel>
-              <FormControl>
-                <Textarea placeholder="ex: Félicitations aux heureux parents !" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Image Upload Section */}
-        <div className="space-y-2">
-          <Label>Image de l'événement</Label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            {imagePreview ? (
-              <div className="relative">
-                <img 
-                  src={imagePreview} 
-                  alt="Prévisualisation" 
-                  className="w-full h-40 object-cover rounded"
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  className="absolute top-2 right-2"
-                  onClick={removeImage}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="text-center">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                <div className="mt-2">
-                  <Label htmlFor="image-upload" className="cursor-pointer">
-                    <span className="mt-2 block text-sm font-medium text-gray-900">
-                      Cliquez pour sélectionner une image
-                    </span>
-                    <span className="mt-1 block text-xs text-gray-500">
-                      PNG, JPG, GIF jusqu'à 10MB
-                    </span>
-                  </Label>
-                  <Input
-                    id="image-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageSelect}
-                    className="hidden"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {watchedCategory && (
-          <FormField
-            control={form.control}
-            name="keyword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mot-clé (automatique)</FormLabel>
-                <FormControl>
-                  <Input {...field} readOnly className="bg-gray-100" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-
-        <Button type="submit" className="w-full">
-          {editingEvent ? 'Modifier l\'événement' : 'Publier l\'événement'}
-        </Button>
-      </form>
-    </Form>
-  );
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   if (isMobile) {
     return (
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion Événements<br />Sociaux</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer les événements sociaux</p>
+            <h1 className="text-2xl font-bold text-primary">Gestion des Événements Sociaux</h1>
+            <p className="text-gray-600 mt-1 text-sm">Gérer les événements sociaux des membres</p>
           </div>
 
           <div className="mb-4">
-            <Dialog open={showForm} onOpenChange={(open) => !open && handleCloseForm()}>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 w-full" onClick={handleNewEvent}>
+                <Button className="bg-primary hover:bg-primary/90 w-full">
                   <Plus className="mr-2 h-4 w-4" />
                   Nouvel événement
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle>
-                    {editingEvent ? 'Modifier l\'événement social' : 'Ajouter un événement social'}
-                  </DialogTitle>
+                  <DialogTitle className="text-primary">Ajouter un événement</DialogTitle>
                 </DialogHeader>
-                {renderForm()}
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Type d'événement</label>
+                    <Select onValueChange={(value) => handleSelectChange('eventType', value)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Sélectionner un type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {eventTypes.map((type) => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Catégorie</label>
+                    <Select onValueChange={(value) => handleSelectChange('category', value)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Sélectionner une catégorie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {formData.eventType && eventCategories[formData.eventType].map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Titre</label>
+                    <Input
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      placeholder="Titre de l'événement"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Membre concerné</label>
+                    <Input
+                      name="memberName"
+                      value={formData.memberName}
+                      onChange={handleInputChange}
+                      placeholder="Nom du membre"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Date</label>
+                    <Input
+                      name="date"
+                      type="date"
+                      value={formData.date}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Lieu</label>
+                    <Input
+                      name="location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      placeholder="Lieu de l'événement"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Description</label>
+                    <Textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                      placeholder="Description de l'événement"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Pensée</label>
+                    <Input
+                      name="thought"
+                      value={formData.thought}
+                      onChange={handleInputChange}
+                      placeholder="Pensée pour l'événement"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Mot-clé</label>
+                    <Input
+                      name="keyword"
+                      value={formData.keyword}
+                      onChange={handleInputChange}
+                      placeholder="Mot-clé de l'événement"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Image</label>
+                    <Input
+                      name="image"
+                      type="file"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {formData.eventType === 'Retraite' && (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Années de service</label>
+                      <Input
+                        name="yearsOfService"
+                        value={formData.yearsOfService}
+                        onChange={handleInputChange}
+                        placeholder="Nombre d'années de service"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex justify-end space-x-2">
+                    <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>
+                      Annuler
+                    </Button>
+                    <Button type="submit">
+                      Ajouter
+                    </Button>
+                  </div>
+                </form>
               </DialogContent>
             </Dialog>
           </div>
 
           <div className="space-y-4">
             {events.map((event) => (
-              <Card key={event.id}>
+              <Card key={event.id} className="border-l-4 border-blue-500 bg-blue-50">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center">
-                    <PartyPopper className="w-5 h-5 mr-2" />
-                    {event.title}
-                  </CardTitle>
-                  <div className="space-y-1">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(event.date).toLocaleDateString('fr-FR')}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {event.location}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Users className="w-4 h-4 mr-1" />
-                      {event.memberName}
-                    </div>
-                  </div>
+                  <CardTitle className="text-lg">{event.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {event.image && (
-                    <img src={event.image} alt={event.title} className="w-full h-32 object-cover rounded mb-3" />
-                  )}
-                  <p className="text-gray-600 mb-2">{event.description}</p>
-                  <p className="text-sm mb-1"><strong>Type:</strong> {event.eventType}</p>
-                  <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
-                  {event.yearsOfService && <p className="text-sm mb-1"><strong>Années de service:</strong> {event.yearsOfService}</p>}
-                  <p className="text-sm mb-1"><strong>Pensée:</strong> {event.thought}</p>
-                  <p className="text-sm mb-4"><strong>Mot-clé:</strong> {event.keyword}</p>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline" onClick={() => handleEdit(event)}>
-                      <Edit className="h-4 w-4 mr-1" />
+                  <p className="text-sm text-gray-600">{event.description}</p>
+                  <div className="flex justify-end space-x-2 mt-4">
+                    <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
+                      <Edit className="h-4 w-4 mr-2" />
                       Modifier
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button size="sm" variant="outline" className="text-red-600">
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Supprimer
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Êtes-vous sûr de vouloir supprimer cet événement ? Cette action est irréversible.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(event.id)}>
-                            Supprimer
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Supprimer
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -589,94 +344,186 @@ const DashboardEvenementsSociaux = () => {
     <Layout>
       <div className="flex">
         <AdminSidebar />
-        
+
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion Événements Sociaux</h1>
-            <p className="text-gray-600 mt-2">Gérer les événements sociaux et activités conviviales</p>
+            <h1 className="text-3xl font-bold text-primary">Gestion des Événements Sociaux</h1>
+            <p className="text-gray-600 mt-2">Gérer les événements sociaux des membres</p>
           </div>
 
           <div className="mb-6">
-            <Dialog open={showForm} onOpenChange={(open) => !open && handleCloseForm()}>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90" onClick={handleNewEvent}>
+                <Button className="bg-primary hover:bg-primary/90">
                   <Plus className="mr-2 h-4 w-4" />
-                  Nouvel événement social
+                  Nouvel événement
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle>
-                    {editingEvent ? 'Modifier l\'événement social' : 'Ajouter un événement social'}
-                  </DialogTitle>
+                  <DialogTitle className="text-primary text-xl">Ajouter un événement</DialogTitle>
                 </DialogHeader>
-                <div className="grid grid-cols-1 gap-4">
-                  {renderForm()}
-                </div>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Type d'événement</label>
+                      <Select onValueChange={(value) => handleSelectChange('eventType', value)}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Sélectionner un type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {eventTypes.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Catégorie</label>
+                      <Select onValueChange={(value) => handleSelectChange('category', value)}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Sélectionner une catégorie" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {formData.eventType && eventCategories[formData.eventType].map((category) => (
+                            <SelectItem key={category} value={category}>
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Titre</label>
+                    <Input
+                      name="title"
+                      value={formData.title}
+                      onChange={handleInputChange}
+                      placeholder="Titre de l'événement"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Membre concerné</label>
+                    <Input
+                      name="memberName"
+                      value={formData.memberName}
+                      onChange={handleInputChange}
+                      placeholder="Nom du membre"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Date</label>
+                      <Input
+                        name="date"
+                        type="date"
+                        value={formData.date}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Lieu</label>
+                      <Input
+                        name="location"
+                        value={formData.location}
+                        onChange={handleInputChange}
+                        placeholder="Lieu de l'événement"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Description</label>
+                    <Textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                      placeholder="Description de l'événement"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Pensée</label>
+                      <Input
+                        name="thought"
+                        value={formData.thought}
+                        onChange={handleInputChange}
+                        placeholder="Pensée pour l'événement"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Mot-clé</label>
+                      <Input
+                        name="keyword"
+                        value={formData.keyword}
+                        onChange={handleInputChange}
+                        placeholder="Mot-clé de l'événement"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Image</label>
+                    <Input
+                      name="image"
+                      type="file"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  {formData.eventType === 'Retraite' && (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Années de service</label>
+                      <Input
+                        name="yearsOfService"
+                        value={formData.yearsOfService}
+                        onChange={handleInputChange}
+                        placeholder="Nombre d'années de service"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex justify-end space-x-2">
+                    <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>
+                      Annuler
+                    </Button>
+                    <Button type="submit">
+                      Ajouter
+                    </Button>
+                  </div>
+                </form>
               </DialogContent>
             </Dialog>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {events.map((event) => (
-              <Card key={event.id}>
+              <Card key={event.id} className="border-l-4 border-blue-500 bg-blue-50">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <PartyPopper className="w-5 h-5 mr-2" />
-                    {event.title}
-                  </CardTitle>
-                  <div className="space-y-1">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(event.date).toLocaleDateString('fr-FR')}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {event.location}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Users className="w-4 h-4 mr-1" />
-                      {event.memberName}
-                    </div>
-                  </div>
+                  <CardTitle className="text-lg">{event.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {event.image && (
-                    <img src={event.image} alt={event.title} className="w-full h-40 object-cover rounded mb-3" />
-                  )}
-                  <p className="text-gray-600 mb-2">{event.description}</p>
-                  <p className="text-sm mb-1"><strong>Type:</strong> {event.eventType}</p>
-                  <p className="text-sm mb-1"><strong>Catégorie:</strong> {event.category}</p>
-                  {event.yearsOfService && <p className="text-sm mb-1"><strong>Années de service:</strong> {event.yearsOfService}</p>}
-                  <p className="text-sm mb-1"><strong>Pensée:</strong> {event.thought}</p>
-                  <p className="text-sm mb-4"><strong>Mot-clé:</strong> {event.keyword}</p>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline" onClick={() => handleEdit(event)}>
-                      <Edit className="h-4 w-4 mr-1" />
+                  <p className="text-sm text-gray-600">{event.description}</p>
+                  <div className="flex justify-end space-x-2 mt-4">
+                    <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
+                      <Edit className="h-4 w-4 mr-2" />
                       Modifier
                     </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button size="sm" variant="outline" className="text-red-600">
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Supprimer
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Êtes-vous sûr de vouloir supprimer cet événement ? Cette action est irréversible.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Annuler</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete(event.id)}>
-                            Supprimer
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Supprimer
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
