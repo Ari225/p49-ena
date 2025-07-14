@@ -10,6 +10,7 @@ export interface User {
   lastName: string;
   email?: string;
   role: 'admin_principal' | 'admin_secondaire' | 'redacteur';
+  image_url?: string;
 }
 
 interface AuthContextType {
@@ -94,6 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: userData.id,
         username: userData.username,
         role: userData.role,
+        image_url: userData.image_url || 'PAS D\'IMAGE',
         password_hash: userData.password_hash ? 'EXISTE' : 'MANQUANT'
       });
 
@@ -116,7 +118,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         firstName: userData.first_name || '',
         lastName: userData.last_name || '',
         email: userData.email,
-        role: userData.role
+        role: userData.role,
+        image_url: userData.image_url
       };
 
       console.log('=== CONNEXION RÉUSSIE ===');
