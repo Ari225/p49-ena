@@ -44,6 +44,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     
     try {
+      console.log('Tentative de connexion pour:', username);
+      
       // Récupérer l'utilisateur depuis Supabase
       const { data: userData, error } = await supabase
         .from('app_users')
@@ -52,15 +54,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .single();
 
       if (error || !userData) {
+        console.error('Utilisateur non trouvé:', error);
         toast.error('Nom d\'utilisateur ou mot de passe incorrect');
         setLoading(false);
         return false;
       }
 
-      // Vérifier le mot de passe (simple comparaison pour ce cas d'usage)
-      // En production, il faudrait utiliser un hash sécurisé
-      const expectedHash = '$2b$10$rK8qP0YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1Yv';
-      if (userData.password_hash !== expectedHash && password !== 'Reseau@2025') {
+      console.log('Utilisateur trouvé:', userData);
+
+      // Vérifier le mot de passe (mot de passe de test ou hash)
+      const isValidPassword = password === 'Reseau@2025' || 
+                             userData.password_hash === '$2b$10$rK8qP0YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1Yv';
+      
+      if (!isValidPassword) {
+        console.error('Mot de passe incorrect');
         toast.error('Nom d\'utilisateur ou mot de passe incorrect');
         setLoading(false);
         return false;
@@ -73,9 +80,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastName: userData.last_name || '',
         email: userData.email,
         role: userData.role,
-        image_url: (userData as any).image_url // Cast temporaire pour accéder à image_url
+        image_url: (userData as any).image_url
       };
 
+      console.log('Connexion réussie pour:', authenticatedUser);
       setUser(authenticatedUser);
       localStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
       toast.success(`Connexion réussie ! Bienvenue ${authenticatedUser.firstName}`);
