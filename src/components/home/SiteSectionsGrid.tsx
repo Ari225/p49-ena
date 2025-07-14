@@ -76,8 +76,8 @@ const SiteSectionsGrid = () => {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-4 pb-4">
-                    <p className="mb-4 text-sm text-gray-700">{section.content}</p>
-                    <Link to={section.link} className="text-primary hover:text-secondary/80 font-medium text-sm inline-flex items-center">
+                    <p className="mb-4 text-xs text-gray-700">{section.content}</p>
+                    <Link to={section.link} className="text-primary hover:text-secondary/80 font-medium text-xs inline-flex items-center">
                       {section.linkText}
                     </Link>
                   </AccordionContent>
@@ -129,13 +129,13 @@ const SiteSectionsGrid = () => {
                       <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 mx-auto bg-secondary/80">
                         <IconComponent className="h-6 w-6 text-primary" />
                       </div>
-                      <CardTitle className="text-primary text-xl mb-4">{section.title}</CardTitle>
+                      <CardTitle className="text-primary text-lg mb-4">{section.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center">
-                      <p className="mb-6 text-gray-700 leading-relaxed">{section.content}</p>
+                      <p className="mb-6 text-gray-700 leading-relaxed text-sm">{section.content}</p>
                       <Link 
                         to={section.link} 
-                        className="inline-flex items-center text-primary hover:text-secondary/80 font-medium text-base bg-secondary/20 hover:bg-secondary/30 px-6 py-2 rounded-lg transition-colors"
+                        className="inline-flex items-center text-primary hover:text-secondary/80 font-medium text-sm bg-secondary/20 hover:bg-secondary/30 px-6 py-2 rounded-lg transition-colors"
                       >
                         {section.linkText}
                       </Link>
@@ -161,14 +161,14 @@ const SiteSectionsGrid = () => {
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
                 <Users className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle className="text-primary text-lg">{t('header.presentation')}</CardTitle>
+              <CardTitle className="text-primary text-xl">{t('header.presentation')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">Historique,
+              <p className="mb-4 text-gray-700 text-base">Historique,
 Textes officiels,
 Instances dirigeantes,
 Répertoire des membres.</p>
-              <Link to="/historique" className="text-primary hover:text-secondary/80 font-medium text-base">
+              <Link to="/historique" className="text-primary hover:text-secondary/80 font-medium text-sm">
                 Explorer →
               </Link>
             </CardContent>
@@ -179,11 +179,11 @@ Répertoire des membres.</p>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
                 <Calendar className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle className="text-primary text-lg">{t('header.activities')}</CardTitle>
+              <CardTitle className="text-primary text-xl">{t('header.activities')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">Agenda, Régionales, Assemblées Générales, Réunions de constitution.</p>
-              <Link to="/agenda" className="text-primary hover:text-secondary/80 font-medium">
+              <p className="mb-4 text-gray-700 text-base">Agenda, Régionales, Assemblées Générales, Réunions de constitution.</p>
+              <Link to="/agenda" className="text-primary hover:text-secondary/80 font-medium text-sm">
                 Explorer →
               </Link>
             </CardContent>
@@ -194,11 +194,11 @@ Répertoire des membres.</p>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
                 <Heart className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle className="text-lg text-primary">{t('header.social_events')}</CardTitle>
+              <CardTitle className="text-xl text-primary">{t('header.social_events')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">Événements heureux, Départs à la retraite et Nécrologie relatifs aux membres de la P49.</p>
-              <Link to="/evenements-heureux" className="text-primary hover:text-secondary/80 font-medium">
+              <p className="mb-4 text-gray-700 text-base">Évènements heureux, Départs à la retraite et Nécrologie relatifs aux membres de la P49.</p>
+              <Link to="/evenements-heureux" className="text-primary hover:text-secondary/80 font-medium text-sm">
                 Explorer →
               </Link>
             </CardContent>
@@ -209,11 +209,11 @@ Répertoire des membres.</p>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
                 <Briefcase className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle className="text-primary text-lg">{t('header.careers')}</CardTitle>
+              <CardTitle className="text-primary text-xl">{t('header.careers')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700 font-normal">Formations, Renforcement de capacités Coaching & Mentorat, Actualités des concours.</p>
-              <Link to="/formations" className="text-primary hover:text-secondary/80 font-medium">
+              <p className="mb-4 text-gray-700 font-normal text-base">Formations, Renforcement de capacités Coaching & Mentorat, Actualités des concours.</p>
+              <Link to="/formations" className="text-primary hover:text-secondary/80 font-medium text-sm">
                 Explorer →
               </Link>
             </CardContent>
@@ -224,11 +224,11 @@ Répertoire des membres.</p>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors bg-secondary/80">
                 <BookOpen className="h-5 w-5 text-primary" />
               </div>
-              <CardTitle className="text-primary text-lg">{t('header.perspectives')}</CardTitle>
+              <CardTitle className="text-primary text-xl">{t('header.perspectives')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4 text-gray-700">Dernière édition du journal, Écho des régions, Actualités, Archives.</p>
-              <Link to="/derniere-edition" className="text-primary hover:text-secondary/80 font-medium">
+              <p className="mb-4 text-gray-700 text-base">Dernière édition du journal, Écho des régions, Actualités, Archives.</p>
+              <Link to="/derniere-edition" className="text-primary hover:text-secondary/80 font-medium text-sm">
                 Explorer →
               </Link>
             </CardContent>
