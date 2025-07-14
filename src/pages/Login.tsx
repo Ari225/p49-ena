@@ -57,25 +57,32 @@ const Login = () => {
     return (
       <Layout>
         {/* Hero Section - Mobile */}
-        <div className="relative h-[50vh] flex items-center justify-center" style={{
-          backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div className="absolute inset-0 bg-primary/80"></div>
-          <div className="relative z-10 text-center text-white px-[25px]">
-            <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
-            <h1 className="text-3xl font-bold mb-2">Espace de Connexion</h1>
-            <p className="text-sm opacity-90">Accédez à votre tableau de bord</p>
+        <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png" 
+              alt="Background connexion" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
           </div>
-        </div>
+          
+          <div className="relative z-10 text-center px-[25px]">
+            <h1 className="text-2xl font-bold mb-[10px] animate-fade-in">
+              Espace de Connexion
+            </h1>
+            <p className="text-sm italic mb-6 animate-fade-in text-white font-normal">
+              Accédez à votre tableau de bord
+            </p>
+          </div>
+        </section>
 
         {/* Login Section - Mobile */}
         <div className="py-[50px] px-[25px] bg-background">
           <div className="w-full max-w-md mx-auto">
             <Card>
               <CardHeader className="text-center">
+                <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
                 <CardTitle className="font-bold text-primary text-2xl">
                   {t('login.title')}
                 </CardTitle>
@@ -138,25 +145,32 @@ const Login = () => {
     return (
       <Layout>
         {/* Hero Section - Tablet */}
-        <div className="relative h-[60vh] flex items-center justify-center" style={{
-          backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div className="absolute inset-0 bg-primary/80"></div>
-          <div className="relative z-10 text-center text-white px-[50px]">
-            <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-20 object-contain mx-auto mb-6" />
-            <h1 className="text-4xl font-bold mb-3">Espace de Connexion</h1>
-            <p className="text-lg opacity-90">Accédez à votre tableau de bord administrateur</p>
+        <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png" 
+              alt="Background connexion" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
           </div>
-        </div>
+          
+          <div className="relative z-10 text-center px-[50px]">
+            <h1 className="text-4xl font-bold mb-[10px] animate-fade-in">
+              Espace de Connexion
+            </h1>
+            <p className="text-base italic mb-6 animate-fade-in text-white font-normal">
+              Accédez à votre tableau de bord administrateur
+            </p>
+          </div>
+        </section>
 
         {/* Login Section - Tablet */}
         <div className="py-[75px] px-[50px] bg-background">
           <div className="w-full max-w-lg mx-auto">
             <Card>
               <CardHeader className="text-center">
+                <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-20 object-contain mx-auto mb-6" />
                 <CardTitle className="font-bold text-primary text-3xl">
                   {t('login.title')}
                 </CardTitle>
@@ -218,25 +232,32 @@ const Login = () => {
   return (
     <Layout>
       {/* Hero Section - Desktop */}
-      <div className="relative h-[70vh] flex items-center justify-center" style={{
-        backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}>
-        <div className="absolute inset-0 bg-primary/80"></div>
-        <div className="relative z-10 text-center text-white px-[100px]">
-          <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-24 w-24 object-contain mx-auto mb-8" />
-          <h1 className="text-5xl font-bold mb-4">Espace de Connexion</h1>
-          <p className="text-xl opacity-90">Accédez à votre tableau de bord administrateur</p>
+      <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png" 
+            alt="Background connexion" 
+            className="w-full h-full object-cover" 
+          />
+          <div className="absolute inset-0 bg-primary/80"></div>
         </div>
-      </div>
+        
+        <div className="relative z-10 text-center px-8 lg:px-[100px]">
+          <h1 className="text-6xl md:text-6xl lg:text-6xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+            Espace de Connexion
+          </h1>
+          <p className="text-lg md:text-lg italic mb-6 md:mb-8 animate-fade-in text-white font-normal">
+            Accédez à votre tableau de bord administrateur
+          </p>
+        </div>
+      </section>
 
       {/* Login Section - Desktop */}
-      <div className="py-[100px] px-[100px] bg-background">
+      <div className="py-[100px] px-8 md:px-[100px] bg-background">
         <div className="w-full max-w-md mx-auto">
           <Card>
             <CardHeader className="text-center">
+              <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-24 w-24 object-contain mx-auto mb-8" />
               <CardTitle className="font-bold text-primary text-3xl">
                 {t('login.title')}
               </CardTitle>
