@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -11,6 +10,7 @@ import UsersPageHeader from '@/components/users/UsersPageHeader';
 import LoadingState from '@/components/users/LoadingState';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { isAdmin } from '@/utils/roleUtils';
 
 interface User {
   id: string;
@@ -29,7 +29,7 @@ const DashboardUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  if (!user || (user.role !== 'admin_principal' && user.role !== 'admin_secondaire')) {
+  if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 

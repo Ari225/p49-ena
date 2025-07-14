@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardProfile = () => {
   const { user } = useAuth();
@@ -17,8 +18,8 @@ const DashboardProfile = () => {
     return <div>Non autorisé</div>;
   }
 
-  const isAdmin = user.role === 'admin_principal' || user.role === 'admin_secondaire';
-  const SidebarComponent = isAdmin ? AdminSidebar : EditorSidebar;
+  const userIsAdmin = isAdmin(user);
+  const SidebarComponent = userIsAdmin ? AdminSidebar : EditorSidebar;
 
   const getRoleLabel = (role: string) => {
     switch (role) {
