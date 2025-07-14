@@ -1,6 +1,5 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 export interface User {
@@ -21,6 +20,28 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Profils codés en dur dans le projet
+const hardcodedUsers: User[] = [
+  {
+    id: '1',
+    username: 'ari_dale',
+    firstName: 'Aristide',
+    lastName: 'Dalé',
+    email: 'aristide.dale@p49.com',
+    role: 'admin_principal',
+    image_url: '/lovable-uploads/2cd61362-ab99-4adc-901a-5bef1c338e97.png'
+  },
+  {
+    id: '2',
+    username: 'kouam_p49',
+    firstName: 'Kouamé',
+    lastName: '',
+    email: 'kouame@p49.com',
+    role: 'redacteur',
+    image_url: '/lovable-uploads/e479be1a-3b50-400f-ab57-37aecdd654ed.png'
+  }
+];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -49,58 +70,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Tentative de connexion pour:', username);
       console.log('Mot de passe fourni:', password);
       
-      // Test de connexion à Supabase
-      console.log('Test de connexion à Supabase...');
-      const { data: testData, error: testError } = await supabase
-        .from('app_users')
-        .select('count(*)')
-        .limit(1);
+      // Rechercher l'utilisateur dans les profils codés en dur
+      const foundUser = hardcodedUsers.find(u => u.username === username);
       
-      if (testError) {
-        console.error('Erreur de connexion Supabase:', testError);
-        toast.error('Erreur de connexion à la base de données');
-        setLoading(false);
-        return false;
-      }
-      
-      console.log('Connexion Supabase OK, nombre d\'utilisateurs:', testData);
-      
-      // Récupérer l'utilisateur depuis Supabase
-      console.log('Recherche de l\'utilisateur...');
-      const { data: userData, error } = await supabase
-        .from('app_users')
-        .select('*')
-        .eq('username', username)
-        .single();
-
-      if (error) {
-        console.error('Erreur lors de la recherche utilisateur:', error);
-        if (error.code === 'PGRST116') {
-          toast.error('Nom d\'utilisateur incorrect');
-        } else {
-          toast.error('Erreur lors de la connexion');
-        }
-        setLoading(false);
-        return false;
-      }
-
-      if (!userData) {
+      if (!foundUser) {
         console.error('Aucun utilisateur trouvé pour:', username);
         toast.error('Nom d\'utilisateur incorrect');
         setLoading(false);
         return false;
       }
 
-      console.log('Utilisateur trouvé:', {
-        id: userData.id,
-        username: userData.username,
-        role: userData.role,
-        image_url: userData.image_url || 'PAS D\'IMAGE',
-        password_hash: userData.password_hash ? 'EXISTE' : 'MANQUANT'
-      });
+      console.log('Utilisateur trouvé:', foundUser);
 
-      // Vérifier le mot de passe
-      console.log('Vérification du mot de passe...');
+      // Vérifier le mot de passe (codé en dur pour le moment)
       const isValidPassword = password === 'Reseau@2025';
       
       console.log('Mot de passe valide:', isValidPassword);
@@ -112,22 +94,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return false;
       }
 
-      const authenticatedUser: User = {
-        id: userData.id,
-        username: userData.username,
-        firstName: userData.first_name || '',
-        lastName: userData.last_name || '',
-        email: userData.email,
-        role: userData.role,
-        image_url: userData.image_url
-      };
-
       console.log('=== CONNEXION RÉUSSIE ===');
-      console.log('Utilisateur connecté:', authenticatedUser);
+      console.log('Utilisateur connecté:', foundUser);
       
-      setUser(authenticatedUser);
-      localStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
-      toast.success(`Connexion réussie ! Bienvenue ${authenticatedUser.firstName || authenticatedUser.username}`);
+      setUser(foundUser);
+      localStorage.setItem('currentUser', JSON.stringify(foundUser));
+      toast.success(`Connexion réussie ! Bienvenue ${foundUser.firstName || foundUser.username}`);
       setLoading(false);
       return true;
       
