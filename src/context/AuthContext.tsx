@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import CryptoJS from 'crypto-js';
 
 export interface User {
   id: string;
@@ -32,7 +31,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        console.log('Utilisateur chargé depuis localStorage:', parsedUser);
+        setUser(parsedUser);
       } catch (error) {
         console.error('Error parsing saved user:', error);
         localStorage.removeItem('currentUser');
@@ -44,31 +45,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     
     try {
+      console.log('=== DÉBUT DE LA CONNEXION ===');
       console.log('Tentative de connexion pour:', username);
+      console.log('Mot de passe fourni:', password);
+      
+      // Test de connexion à Supabase
+      console.log('Test de connexion à Supabase...');
+      const { data: testData, error: testError } = await supabase
+        .from('app_users')
+        .select('count(*)')
+        .limit(1);
+      
+      if (testError) {
+        console.error('Erreur de connexion Supabase:', testError);
+        toast.error('Erreur de connexion à la base de données');
+        setLoading(false);
+        return false;
+      }
+      
+      console.log('Connexion Supabase OK, nombre d\'utilisateurs:', testData);
       
       // Récupérer l'utilisateur depuis Supabase
+      console.log('Recherche de l\'utilisateur...');
       const { data: userData, error } = await supabase
         .from('app_users')
         .select('*')
         .eq('username', username)
         .single();
 
-      if (error || !userData) {
-        console.error('Utilisateur non trouvé:', error);
-        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
+      if (error) {
+        console.error('Erreur lors de la recherche utilisateur:', error);
+        if (error.code === 'PGRST116') {
+          toast.error('Nom d\'utilisateur incorrect');
+        } else {
+          toast.error('Erreur lors de la connexion');
+        }
         setLoading(false);
         return false;
       }
 
-      console.log('Utilisateur trouvé:', userData);
+      if (!userData) {
+        console.error('Aucun utilisateur trouvé pour:', username);
+        toast.error('Nom d\'utilisateur incorrect');
+        setLoading(false);
+        return false;
+      }
 
-      // Vérifier le mot de passe (mot de passe de test ou hash)
-      const isValidPassword = password === 'Reseau@2025' || 
-                             userData.password_hash === '$2b$10$rK8qP0YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1YvE1Yv';
+      console.log('Utilisateur trouvé:', {
+        id: userData.id,
+        username: userData.username,
+        role: userData.role,
+        password_hash: userData.password_hash ? 'EXISTE' : 'MANQUANT'
+      });
+
+      // Vérifier le mot de passe
+      console.log('Vérification du mot de passe...');
+      const isValidPassword = password === 'Reseau@2025';
+      
+      console.log('Mot de passe valide:', isValidPassword);
       
       if (!isValidPassword) {
-        console.error('Mot de passe incorrect');
-        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
+        console.error('Mot de passe incorrect pour:', username);
+        toast.error('Mot de passe incorrect');
         setLoading(false);
         return false;
       }
@@ -80,17 +118,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastName: userData.last_name || '',
         email: userData.email,
         role: userData.role,
-        image_url: (userData as any).image_url
+        image_url: userData.image_url
       };
 
-      console.log('Connexion réussie pour:', authenticatedUser);
+      console.log('=== CONNEXION RÉUSSIE ===');
+      console.log('Utilisateur connecté:', authenticatedUser);
+      
       setUser(authenticatedUser);
       localStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
-      toast.success(`Connexion réussie ! Bienvenue ${authenticatedUser.firstName}`);
+      toast.success(`Connexion réussie ! Bienvenue ${authenticatedUser.firstName || authenticatedUser.username}`);
       setLoading(false);
       return true;
+      
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('=== ERREUR DE CONNEXION ===');
+      console.error('Erreur complète:', error);
       toast.error('Erreur lors de la connexion');
       setLoading(false);
       return false;
@@ -98,6 +140,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    console.log('Déconnexion de l\'utilisateur');
     setUser(null);
     localStorage.removeItem('currentUser');
     toast.success('Déconnexion réussie');
