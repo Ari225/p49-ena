@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -14,6 +13,36 @@ const CommuniquesSection = () => {
   const [selectedImage, setSelectedImage] = useState<string>('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg');
   const [selectedId, setSelectedId] = useState<number>(1);
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
+
+  // Touch/swipe handling
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
 
   // Définition des styles de couleurs basés sur l'urgence
   const getColorStyles = (urgency: 'urgent' | 'important' | 'normal') => {
@@ -151,17 +180,28 @@ const CommuniquesSection = () => {
         {isMobile ? (
           // Mobile layout: Image above selected communiqué with carousel
           <div className="space-y-3">
-            {/* Show image above selected communiqué */}
-            <div className="w-full bg-transparent shadow-xl p-4 rounded-lg mb-3 px-0 py-0">
+            {/* Show image above selected communiqué with swipe functionality */}
+            <div 
+              className="w-full bg-transparent shadow-xl p-4 rounded-lg mb-3 px-0 py-0"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-auto object-contain rounded-lg transition-all duration-300" />
             </div>
             
-            {/* Carousel for communiqués */}
+            {/* Carousel for communiqués with swipe functionality */}
             <div className="relative">
               <div className="overflow-hidden">
-                <div className="flex transition-transform duration-300 ease-in-out" style={{
-                  transform: `translateX(-${currentSlideIndex * 100}%)`
-                }}>
+                <div 
+                  className="flex transition-transform duration-300 ease-in-out" 
+                  style={{
+                    transform: `translateX(-${currentSlideIndex * 100}%)`
+                  }}
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                >
                   {communiques.map(communique => {
                     const styles = getColorStyles(communique.urgency);
                     return (
@@ -196,9 +236,14 @@ const CommuniquesSection = () => {
         ) : isTab ? (
           // Tablet layout: Image on top, communiqués carousel below
           <div className="flex flex-col gap-6">
-            {/* Image container */}
+            {/* Image container with swipe functionality */}
             <div className="w-full bg-transparent flex items-center justify-center">
-              <div className="w-full bg-white shadow-xl rounded-lg px-0 py-0">
+              <div 
+                className="w-full bg-white shadow-xl rounded-lg px-0 py-0"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
                 <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
               </div>
             </div>
