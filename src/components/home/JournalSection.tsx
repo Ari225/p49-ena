@@ -15,10 +15,10 @@ const JournalSection = () => {
       'px-8 md:px-12 lg:px-[100px]' // Desktop
     }`}>
       <div className="container mx-auto px-0">
-        <h2 className={`font-bold text-primary mb-8 md:mb-12 ${
+        <h2 className={`font-bold text-primary mb-[50px] md:mb-[50px] ${
           isMobile ? 'text-xl text-center' : 
           isTab ? 'text-2xl text-center' :
-          'text-2xl md:text-3xl text-center lg:text-left' // Desktop
+          'text-3xl md:text-3xl text-center lg:text-left' // Desktop
         }`}>Notre journal</h2>
         <div className={`flex items-center ${
           isMobile ? 'flex-col space-y-6' : 
@@ -30,8 +30,8 @@ const JournalSection = () => {
             isTab ? 'w-full max-w-[350px]' :
             'w-full md:max-w-[400px] lg:w-1/3 lg:max-w-none' // Desktop
           }`}>
-            <div className="bg-white rounded-lg shadow-xl">
-              <div className="bg-white rounded-lg p-0 py-0 px-0 mx-0">
+            <div className="bg-white rounded-lg shadow-xl w-full h-full">
+              <div className="bg-white rounded-lg p-0 py-0 px-0 mx-0 w-full h-full">
                 <img alt="Perspectives 49 Journal" className="w-full rounded-lg h-auto object-contain" src="/lovable-uploads/Pers49.webp" />
               </div>
             </div>
@@ -44,14 +44,14 @@ const JournalSection = () => {
             <h3 className={`font-semibold mb-6 text-center bg-primary text-white py-2 rounded-lg ${
               isMobile ? 'text-base md:mb-10' : 
               isTab ? 'text-lg py-3 mb-8' :
-              'text-lg md:text-xl py-2 md:py-[10px] md:mb-10' // Desktop
+              'text-xl md:text-xl py-2 md:py-[10px] md:mb-10' // Desktop
             }`}>
               Perspectives 49 - Bulletin n°1
             </h3>
             <p className={`leading-relaxed text-justify font-normal text-gray-700 ${
-              isMobile ? 'mb-6 text-sm' : 
-              isTab ? 'mb-8 text-base' :
-              'mb-8 md:mb-10 text-sm md:text-base md:mb-10' // Desktop
+              isMobile ? 'mb-6 text-xs' : 
+              isTab ? 'mb-8 text-sm' :
+              'mb-8 md:mb-10 text-base md:text-base md:mb-10' // Desktop
             }`}>
               Ce premier numéro de Perspectives 49 inaugure un journal d'information engagé, ancré dans les réalités locales et soucieux de valoriser les initiatives citoyennes.
 
@@ -65,20 +65,20 @@ const JournalSection = () => {
               'flex-row gap-3 md:gap-4' // Desktop
             }`}>
               <Button asChild className={`bg-primary text-white hover:bg-primary transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${
-                isMobile ? 'flex-1 py-3' : 
-                isTab ? 'px-6 py-3 text-base' :
-                'px-4 py-2 rounded flex items-center text-sm md:text-base' // Desktop
+                isMobile ? 'flex-1 py-3 text-xs' : 
+                isTab ? 'px-6 py-3 text-sm' :
+                'px-4 py-2 rounded flex items-center text-sm md:text-sm' // Desktop
               }`}>
-                <Link to="/journal" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center text-sm md:text-base transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+                <Link to="/journal" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
                   Dernière édition
                 </Link>
               </Button>
               <Button asChild variant="outline" className={`border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200 ${
-                isMobile ? 'flex-1 py-3' : 
-                isTab ? 'px-6 py-3 text-base' :
-                'text-sm md:text-base px-4 md:px-6 py-2 md:py-3' // Desktop
+                isMobile ? 'flex-1 py-3 text-xs' : 
+                isTab ? 'px-6 py-3 text-sm' :
+                'text-sm md:text-sm px-4 md:px-6 py-2 md:py-3' // Desktop
               }`}>
-                <Link to="/journal" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200 text-base">
+                <Link to="/journal" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200">
                   Archives
                 </Link>
               </Button>
