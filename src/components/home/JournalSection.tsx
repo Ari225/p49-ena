@@ -32,7 +32,7 @@ const JournalSection = () => {
           }`}>
             <div className="bg-white rounded-lg shadow-xl w-full h-full">
               <div className="bg-white rounded-lg p-0 py-0 px-0 mx-0 w-full h-full">
-                <img alt="Perspectives 49 Journal" className="w-full rounded-lg h-auto object-contain" src="/lovable-uploads/Pers49.webp" />
+                <img alt="Perspectives 49 Journal" className="w-full rounded-lg h-full object-cover" src="/lovable-uploads/Pers49.webp" />
               </div>
             </div>
           </div>
