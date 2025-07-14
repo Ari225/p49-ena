@@ -172,7 +172,7 @@ const CommuniquesSection = () => {
             isTab ? 'text-2xl' :
             'text-2xl md:text-3xl' // Desktop
           }`}>{t('home.communiques_title')}</h2>
-          <Link to="/communiques" className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'} bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] text-sm md:text-sm font-semibold`}>
+          <Link to="/communiques" className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'} bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] font-semibold`}>
             Voir tout <ChevronRight className="ml-1 h-4 w-4" />
           </Link>
         </div>

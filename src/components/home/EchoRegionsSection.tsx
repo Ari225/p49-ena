@@ -62,7 +62,7 @@ const EchoRegionsSection = () => {
           <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl md:text-3xl'} font-bold text-primary`}>
             Écho des régions
           </h2>
-          <Button asChild className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} bg-primary text-white font-semibold hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] h-10`}>
+          <Button asChild className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] font-semibold`}>
             <Link to="/echo-regions" className="flex items-center">
               <span className="hidden sm:inline">Actualités régionales</span>
               <span className="sm:hidden">Voir tout</span>
