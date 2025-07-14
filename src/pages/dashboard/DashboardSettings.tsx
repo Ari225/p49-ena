@@ -5,17 +5,19 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardSettings = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 
+  // MOBILE VERSION
   if (isMobile) {
     return (
       <Layout>
@@ -42,6 +44,34 @@ const DashboardSettings = () => {
     );
   }
 
+  // TABLET VERSION
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Paramètres</h1>
+            <p className="text-gray-600 mt-2">Configuration du système</p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center text-xl">
+                <Settings className="mr-3 h-6 w-6" />
+                Paramètres généraux
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">Configuration du système à venir...</p>
+            </CardContent>
+          </Card>
+        </div>
+        <AdminSidebar />
+      </Layout>
+    );
+  }
+
+  // DESKTOP VERSION
   return (
     <Layout>
       <div className="flex">

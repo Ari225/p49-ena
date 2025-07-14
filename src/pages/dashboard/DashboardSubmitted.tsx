@@ -5,16 +5,18 @@ import Layout from '@/components/Layout';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const DashboardSubmitted = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   if (!user) {
     return <div>Non autorisé</div>;
   }
 
+  // MOBILE VERSION
   if (isMobile) {
     return (
       <Layout>
@@ -43,6 +45,34 @@ const DashboardSubmitted = () => {
     );
   }
 
+  // TABLET VERSION
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Articles Soumis</h1>
+            <p className="text-gray-600 mt-2">Mes articles en attente de validation</p>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center text-xl">
+                <Send className="mr-3 h-6 w-6" />
+                Articles en attente de validation
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">Aucun article soumis pour le moment</p>
+            </CardContent>
+          </Card>
+        </div>
+        <EditorSidebar />
+      </Layout>
+    );
+  }
+
+  // DESKTOP VERSION
   return (
     <Layout>
       <div className="flex">

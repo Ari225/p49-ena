@@ -5,9 +5,11 @@ import AdminSidebar from '@/components/AdminSidebar';
 
 interface LoadingStateProps {
   isMobile: boolean;
+  isTablet?: boolean;
 }
 
-const LoadingState = ({ isMobile }: LoadingStateProps) => {
+const LoadingState = ({ isMobile, isTablet }: LoadingStateProps) => {
+  // MOBILE VERSION
   if (isMobile) {
     return (
       <Layout>
@@ -19,6 +21,19 @@ const LoadingState = ({ isMobile }: LoadingStateProps) => {
     );
   }
 
+  // TABLET VERSION
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="text-center text-lg">Chargement...</div>
+        </div>
+        <AdminSidebar />
+      </Layout>
+    );
+  }
+
+  // DESKTOP VERSION
   return (
     <Layout>
       <div className="flex">

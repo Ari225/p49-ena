@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import EditorSidebar from '@/components/EditorSidebar';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import DashboardStats from './DashboardStats';
 import RecentActivity from './RecentActivity';
@@ -12,9 +12,11 @@ import RecentActivity from './RecentActivity';
 const DashboardHome = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   const userIsAdmin = isAdmin(user);
 
+  // MOBILE VERSION
   if (isMobile) {
     return (
       <Layout>
@@ -37,7 +39,30 @@ const DashboardHome = () => {
     );
   }
 
-  // Desktop version
+  // TABLET VERSION
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">
+              Bienvenue, {user?.username}
+            </h1>
+            <p className="text-gray-600 mt-2">
+              {userIsAdmin ? 'Panneau d\'administration' : 'Espace rédacteur'}
+            </p>
+          </div>
+
+          <DashboardStats isMobile={false} />
+          <RecentActivity isMobile={false} />
+          
+          {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
+        </div>
+      </Layout>
+    );
+  }
+
+  // DESKTOP VERSION
   return (
     <Layout>
       <div className="flex">

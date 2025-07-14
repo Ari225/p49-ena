@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import UsersList from '@/components/users/UsersList';
 import UsersPageHeader from '@/components/users/UsersPageHeader';
 import LoadingState from '@/components/users/LoadingState';
@@ -25,6 +25,7 @@ interface User {
 const DashboardUsers = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -77,9 +78,10 @@ const DashboardUsers = () => {
   };
 
   if (loading) {
-    return <LoadingState isMobile={isMobile} />;
+    return <LoadingState isMobile={isMobile} isTablet={isTablet} />;
   }
 
+  // MOBILE VERSION
   if (isMobile) {
     return (
       <Layout>
@@ -103,6 +105,41 @@ const DashboardUsers = () => {
     );
   }
 
+  // TABLET VERSION
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <UsersPageHeader 
+            userCount={users.length}
+            onUserAdded={handleUserAdded}
+            isMobile={false}
+          />
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center text-xl">
+                <Users className="mr-3 h-6 w-6" />
+                Liste des Utilisateurs ({users.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <UsersList 
+                users={users} 
+                currentUserId={user?.id} 
+                isMobile={false}
+                onUpdateUser={handleUpdateUser}
+                onDeleteUser={handleDeleteUser}
+              />
+            </CardContent>
+          </Card>
+        </div>
+        <AdminSidebar />
+      </Layout>
+    );
+  }
+
+  // DESKTOP VERSION
   return (
     <Layout>
       <div className="flex">
