@@ -69,9 +69,9 @@ const AboutSection = () => {
               <Button 
                 asChild 
                 className={`bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg ${
-                  isMobile ? 'w-full justify-center gap-2 text-sm' : 
-                  isTab ? 'gap-2 text-base' :
-                  'gap-2 text-sm md:text-base' // Desktop
+                  isMobile ? 'w-full justify-center gap-2 text-xs' : 
+                  isTab ? 'gap-2 text-sm' :
+                  'gap-2 text-sm md:text-sm' // Desktop
                 }`}
               >
                 <Link to="/historique">

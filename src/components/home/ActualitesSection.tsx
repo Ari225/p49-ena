@@ -103,7 +103,7 @@ const ActualitesSection = () => {
             {/* Mobile button */}
             <div className="text-center mt-[50px] md:mt-[50px]">
               <Button asChild className="bg-primary hover:bg-primary/90 text-white w-full">
-                <Link to="/actualites" className="flex items-center gap-2 text-sm">
+                <Link to="/actualites" className="flex items-center gap-2 text-xs">
                   Voir toutes les actualités
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -124,7 +124,7 @@ const ActualitesSection = () => {
             {/* Desktop and Tablet button below the cards and dots */}
             <div className="text-center mt-[50px] md:mt-[50px]">
               <Button asChild className="bg-primary hover:bg-primary/90 text-white">
-                <Link to="/actualites" className="flex items-center gap-2 text-base">
+                <Link to="/actualites" className="flex items-center gap-2 text-sm">
                   Voir toutes les actualités
                   <ArrowRight className="h-4 w-4" />
                 </Link>
