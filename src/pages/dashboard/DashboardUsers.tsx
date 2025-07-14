@@ -66,6 +66,16 @@ const DashboardUsers = () => {
     console.log('Utilisateur ajouté (fonctionnalité à implémenter)');
   };
 
+  const handleUpdateUser = (updatedUser: User) => {
+    setUsers(prevUsers => 
+      prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u)
+    );
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+  };
+
   if (loading) {
     return <LoadingState isMobile={isMobile} />;
   }
@@ -80,7 +90,13 @@ const DashboardUsers = () => {
             isMobile={true}
           />
           
-          <UsersList users={users} currentUserId={user?.id} isMobile={true} />
+          <UsersList 
+            users={users} 
+            currentUserId={user?.id} 
+            isMobile={true}
+            onUpdateUser={handleUpdateUser}
+            onDeleteUser={handleDeleteUser}
+          />
         </div>
         <AdminSidebar />
       </Layout>
@@ -107,7 +123,13 @@ const DashboardUsers = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <UsersList users={users} currentUserId={user?.id} isMobile={false} />
+              <UsersList 
+                users={users} 
+                currentUserId={user?.id} 
+                isMobile={false}
+                onUpdateUser={handleUpdateUser}
+                onDeleteUser={handleDeleteUser}
+              />
             </CardContent>
           </Card>
         </div>

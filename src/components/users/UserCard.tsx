@@ -1,7 +1,7 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Shield, User, Crown } from 'lucide-react';
-import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -17,9 +17,11 @@ interface User {
 interface UserCardProps {
   userItem: User;
   currentUserId?: string;
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
 }
 
-const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
+const UserCard = ({ userItem, currentUserId, onEdit, onDelete }: UserCardProps) => {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin_principal':
@@ -60,13 +62,11 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
   };
 
   const handleEdit = () => {
-    toast.success(`Modification de ${userItem.first_name} ${userItem.last_name}`);
+    onEdit(userItem);
   };
 
   const handleDelete = () => {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer ${userItem.first_name} ${userItem.last_name} ?`)) {
-      toast.success(`${userItem.first_name} ${userItem.last_name} a été supprimé`);
-    }
+    onDelete(userItem);
   };
 
   return (
@@ -78,6 +78,16 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
               src={userItem.image_url} 
               alt={`${userItem.first_name} ${userItem.last_name}`}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                console.log('Image failed to load:', userItem.image_url);
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement?.appendChild(
+                  Object.assign(document.createElement('div'), {
+                    innerHTML: getRoleIcon(userItem.role).props.children,
+                    className: 'flex items-center justify-center w-full h-full'
+                  })
+                );
+              }}
             />
           ) : (
             getRoleIcon(userItem.role)
