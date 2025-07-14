@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
@@ -99,25 +98,21 @@ const SiteSectionsGrid = () => {
           <h2 className="text-3xl font-bold text-center text-primary mb-10">Nos rubriques</h2>
           
           {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8 border-b">
-            {sections.map((section, index) => {
-              const IconComponent = section.icon;
-              return (
-                <Button
-                  key={section.id}
-                  variant="ghost"
-                  onClick={() => setActiveTab(index)}
-                  className={`flex items-center gap-2 px-4 py-3 rounded-t-lg border-b-2 transition-colors ${
-                    activeTab === index
-                      ? 'border-primary text-primary bg-secondary/20'
-                      : 'border-transparent text-gray-600 hover:text-primary hover:bg-secondary/10'
-                  }`}
-                >
-                  <IconComponent className="h-4 w-4" />
-                  <span className="text-sm font-medium">{section.title}</span>
-                </Button>
-              );
-            })}
+          <div className="flex justify-center mb-8 border-b overflow-x-auto">
+            {sections.map((section, index) => (
+              <Button
+                key={section.id}
+                variant="ghost"
+                onClick={() => setActiveTab(index)}
+                className={`px-6 py-3 rounded-t-lg border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === index
+                    ? 'border-primary text-primary bg-secondary/20'
+                    : 'border-transparent text-gray-600 hover:text-primary hover:bg-secondary/10'
+                }`}
+              >
+                <span className="text-sm font-medium">{section.title}</span>
+              </Button>
+            ))}
           </div>
 
           {/* Tab Content */}
