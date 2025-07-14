@@ -16,11 +16,11 @@ const AchievementsSection = () => {
     description: "d'excellence et d'action"
   }, {
     number: "+50",
-    title: "Événements tenus",
-    description: "Régionales, formations, réunions"
+    title: "Évènements",
+    description: "Régionales et réunions"
   }, {
     number: "12",
-    title: "Sections régionales",
+    title: "Sections",
     description: "sur le territoire ivoirien"
   }];
   
@@ -45,13 +45,13 @@ const AchievementsSection = () => {
               <div className={`font-bold text-secondary/80 mb-2 ${
                 isMobile ? 'text-xl' : 
                 isTab ? 'text-2xl' :
-                'text-2xl md:text-3xl lg:text-3xl' // Desktop
+                'text-3xl md:text-3xl lg:text-3xl' // Desktop
               }`}>
                 {achievement.number}
               </div>
               <h3 className={`font-semibold mb-2 ${
-                isMobile ? 'text-base' : 
-                isTab ? 'text-lg' :
+                isMobile ? 'text-sm' : 
+                isTab ? 'text-base' :
                 'text-lg md:text-xl lg:text-xl' // Desktop
               }`}>
                 {achievement.title}
