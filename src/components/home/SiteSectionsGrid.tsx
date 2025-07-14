@@ -1,16 +1,18 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
 import { Calendar, Users, Heart, Briefcase, BookOpen } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const SiteSectionsGrid = () => {
-  const {
-    t
-  } = useLanguage();
+  const { t } = useLanguage();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const [activeTab, setActiveTab] = useState(0);
 
   const sections = [
     {
@@ -55,6 +57,7 @@ const SiteSectionsGrid = () => {
     }
   ];
 
+  // MOBILE VERSION
   if (isMobile) {
     return (
       <section className="bg-white py-[50px] px-[25px]">
@@ -88,9 +91,73 @@ const SiteSectionsGrid = () => {
     );
   }
 
-  // Desktop version (unchanged)
+  // TABLET VERSION
+  if (isTablet) {
+    return (
+      <section className="bg-white py-[75px] px-[50px]">
+        <div className="container mx-auto px-0">
+          <h2 className="text-3xl font-bold text-center text-primary mb-10">Nos rubriques</h2>
+          
+          {/* Tab Navigation */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8 border-b">
+            {sections.map((section, index) => {
+              const IconComponent = section.icon;
+              return (
+                <Button
+                  key={section.id}
+                  variant="ghost"
+                  onClick={() => setActiveTab(index)}
+                  className={`flex items-center gap-2 px-4 py-3 rounded-t-lg border-b-2 transition-colors ${
+                    activeTab === index
+                      ? 'border-primary text-primary bg-secondary/20'
+                      : 'border-transparent text-gray-600 hover:text-primary hover:bg-secondary/10'
+                  }`}
+                >
+                  <IconComponent className="h-4 w-4" />
+                  <span className="text-sm font-medium">{section.title}</span>
+                </Button>
+              );
+            })}
+          </div>
+
+          {/* Tab Content */}
+          <div className="min-h-[200px]">
+            {sections.map((section, index) => {
+              const IconComponent = section.icon;
+              return (
+                <div
+                  key={section.id}
+                  className={`${activeTab === index ? 'block' : 'hidden'} animate-fade-in`}
+                >
+                  <Card className="hover:shadow-lg transition-shadow duration-300">
+                    <CardHeader className="text-center">
+                      <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-4 mx-auto bg-secondary/80">
+                        <IconComponent className="h-6 w-6 text-primary" />
+                      </div>
+                      <CardTitle className="text-primary text-xl mb-4">{section.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center">
+                      <p className="mb-6 text-gray-700 leading-relaxed">{section.content}</p>
+                      <Link 
+                        to={section.link} 
+                        className="inline-flex items-center text-primary hover:text-secondary/80 font-medium text-base bg-secondary/20 hover:bg-secondary/30 px-6 py-2 rounded-lg transition-colors"
+                      >
+                        {section.linkText}
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // DESKTOP VERSION
   return (
-    <section className="bg-white py-[100px] px-[100px]">
+    <section className="bg-white py-[100px] px-[50px]">
       <div className="container mx-auto px-0">
         <h2 className="text-3xl font-bold text-center text-primary mb-12">Nos rubriques</h2>
         <div className="grid grid-cols-5 gap-6">
