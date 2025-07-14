@@ -40,9 +40,9 @@ const DashboardUsers = () => {
         username: 'ari_dale',
         first_name: 'Aristide',
         last_name: 'Dalé',
-        email: 'aristide.dale@p49.com',
+        email: 'aristideakpaki6@gmail.com',
         role: 'admin_principal',
-        created_at: '2024-01-01T00:00:00.000Z',
+        created_at: new Date().toISOString(),
         image_url: '/lovable-uploads/2cd61362-ab99-4adc-901a-5bef1c338e97.png'
       },
       {
@@ -52,7 +52,7 @@ const DashboardUsers = () => {
         last_name: '',
         email: 'kouame@p49.com',
         role: 'redacteur',
-        created_at: '2024-01-01T00:00:00.000Z',
+        created_at: new Date().toISOString(),
         image_url: '/lovable-uploads/e479be1a-3b50-400f-ab57-37aecdd654ed.png'
       }
     ];

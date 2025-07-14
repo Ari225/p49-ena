@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Shield, User, Crown } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -36,7 +36,7 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
   const getRoleLabel = (role: string) => {
     switch (role) {
       case 'admin_principal':
-        return 'Administrateur Principal';
+        return 'Admin Principal';
       case 'admin_secondaire':
         return 'Administrateur Secondaire';
       case 'redacteur':
@@ -56,6 +56,16 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
         return 'bg-blue-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const handleEdit = () => {
+    toast.success(`Modification de ${userItem.first_name} ${userItem.last_name}`);
+  };
+
+  const handleDelete = () => {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer ${userItem.first_name} ${userItem.last_name} ?`)) {
+      toast.success(`${userItem.first_name} ${userItem.last_name} a été supprimé`);
     }
   };
 
@@ -92,12 +102,17 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
         </div>
       </div>
       <div className="flex space-x-2 pt-2 border-t border-gray-100">
-        <Button variant="outline" size="sm" className="flex-1 text-xs">
+        <Button variant="outline" size="sm" className="flex-1 text-xs" onClick={handleEdit}>
           <Edit className="h-3 w-3 mr-1" />
           Modifier
         </Button>
         {userItem.id !== currentUserId && (
-          <Button variant="outline" size="sm" className="flex-1 text-xs text-red-600 hover:text-red-700 hover:border-red-300">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1 text-xs text-red-600 hover:text-red-700 hover:border-red-300"
+            onClick={handleDelete}
+          >
             <Trash2 className="h-3 w-3 mr-1" />
             Supprimer
           </Button>
