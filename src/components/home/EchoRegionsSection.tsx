@@ -83,7 +83,7 @@ const EchoRegionsSection = () => {
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
                       <div className="relative h-32 md:h-48">
                         <img src={news.image} alt={news.title} className="w-full h-full object-cover" />
-                        <div className="absolute top-2 md:top-3 left-2 md:left-3 bg-secondary/80 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
+                        <div className="absolute top-4 left-4 bg-secondary/80 backdrop-blur-sm text-primary px-3 py-1.5 rounded-full font-medium text-sm border shadow-sm">
                           <MapPin className="w-3 h-3 mr-1" />
                           {news.region}
                         </div>
