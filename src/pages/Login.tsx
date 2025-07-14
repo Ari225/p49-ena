@@ -21,7 +21,7 @@ const Login = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const isTab = useIsTablet();
+  const isTablet = useIsTablet();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,22 +52,30 @@ const Login = () => {
     }
   };
 
-  return (
-    <Layout>
-      {/* Mobile Version */}
-      {isMobile && (
-        <div className="min-h-[80vh] flex items-center justify-center py-[50px] relative" style={{
+  // Mobile Version
+  if (isMobile) {
+    return (
+      <Layout>
+        {/* Hero Section - Mobile */}
+        <div className="relative h-[50vh] flex items-center justify-center" style={{
           backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
           <div className="absolute inset-0 bg-primary/80"></div>
-          
-          <div className="w-full max-w-md relative z-10 px-[25px]">
+          <div className="relative z-10 text-center text-white px-[25px]">
+            <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
+            <h1 className="text-3xl font-bold mb-2">Espace de Connexion</h1>
+            <p className="text-sm opacity-90">Accédez à votre tableau de bord</p>
+          </div>
+        </div>
+
+        {/* Login Section - Mobile */}
+        <div className="py-[50px] px-[25px] bg-background">
+          <div className="w-full max-w-md mx-auto">
             <Card>
               <CardHeader className="text-center">
-                <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-12 w-12 object-contain mx-auto mb-3" />
                 <CardTitle className="font-bold text-primary text-2xl">
                   {t('login.title')}
                 </CardTitle>
@@ -75,19 +83,42 @@ const Login = () => {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2 text-primary">
-                    <Label htmlFor="username">{t('login.username')}</Label>
-                    <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Administrateur ou Rédacteur" required />
+                    <Label htmlFor="username-mobile">{t('login.username')}</Label>
+                    <Input 
+                      id="username-mobile" 
+                      type="text" 
+                      value={username} 
+                      onChange={e => setUsername(e.target.value)} 
+                      placeholder="Administrateur ou Rédacteur" 
+                      required 
+                    />
                   </div>
                   <div className="space-y-2 text-primary">
-                    <Label htmlFor="password">{t('login.password')}</Label>
+                    <Label htmlFor="password-mobile">{t('login.password')}</Label>
                     <div className="relative">
-                      <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" required className="pr-10" />
-                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700">
+                      <Input 
+                        id="password-mobile" 
+                        type={showPassword ? "text" : "password"} 
+                        value={password} 
+                        onChange={e => setPassword(e.target.value)} 
+                        placeholder="Mot de passe" 
+                        required 
+                        className="pr-10" 
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => setShowPassword(!showPassword)} 
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700"
+                      >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
-                  <Button type="submit" className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" 
+                    disabled={isLoading}
+                  >
                     {isLoading ? 'Connexion...' : t('login.submit')}
                   </Button>
                   <div className="text-sm text-gray-700 text-center">
@@ -98,22 +129,34 @@ const Login = () => {
             </Card>
           </div>
         </div>
-      )}
+      </Layout>
+    );
+  }
 
-      {/* Tablet Version */}
-      {isTab && (
-        <div className="min-h-[80vh] flex items-center justify-center py-[75px] relative" style={{
+  // Tablet Version
+  if (isTablet) {
+    return (
+      <Layout>
+        {/* Hero Section - Tablet */}
+        <div className="relative h-[60vh] flex items-center justify-center" style={{
           backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
           <div className="absolute inset-0 bg-primary/80"></div>
-          
-          <div className="w-full max-w-lg relative z-10 px-[50px]">
+          <div className="relative z-10 text-center text-white px-[50px]">
+            <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-20 w-20 object-contain mx-auto mb-6" />
+            <h1 className="text-4xl font-bold mb-3">Espace de Connexion</h1>
+            <p className="text-lg opacity-90">Accédez à votre tableau de bord administrateur</p>
+          </div>
+        </div>
+
+        {/* Login Section - Tablet */}
+        <div className="py-[75px] px-[50px] bg-background">
+          <div className="w-full max-w-lg mx-auto">
             <Card>
               <CardHeader className="text-center">
-                <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-14 w-14 object-contain mx-auto mb-4" />
                 <CardTitle className="font-bold text-primary text-3xl">
                   {t('login.title')}
                 </CardTitle>
@@ -121,19 +164,42 @@ const Login = () => {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="space-y-2 text-primary">
-                    <Label htmlFor="username">{t('login.username')}</Label>
-                    <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Administrateur ou Rédacteur" required />
+                    <Label htmlFor="username-tablet">{t('login.username')}</Label>
+                    <Input 
+                      id="username-tablet" 
+                      type="text" 
+                      value={username} 
+                      onChange={e => setUsername(e.target.value)} 
+                      placeholder="Administrateur ou Rédacteur" 
+                      required 
+                    />
                   </div>
                   <div className="space-y-2 text-primary">
-                    <Label htmlFor="password">{t('login.password')}</Label>
+                    <Label htmlFor="password-tablet">{t('login.password')}</Label>
                     <div className="relative">
-                      <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" required className="pr-10" />
-                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700">
+                      <Input 
+                        id="password-tablet" 
+                        type={showPassword ? "text" : "password"} 
+                        value={password} 
+                        onChange={e => setPassword(e.target.value)} 
+                        placeholder="Mot de passe" 
+                        required 
+                        className="pr-10" 
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => setShowPassword(!showPassword)} 
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700"
+                      >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
-                  <Button type="submit" className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-base font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-base font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" 
+                    disabled={isLoading}
+                  >
                     {isLoading ? 'Connexion...' : t('login.submit')}
                   </Button>
                   <div className="text-sm text-gray-700 text-center">
@@ -144,53 +210,86 @@ const Login = () => {
             </Card>
           </div>
         </div>
-      )}
+      </Layout>
+    );
+  }
 
-      {/* Desktop Version */}
-      {!isMobile && !isTab && (
-        <div className="min-h-[80vh] flex items-center justify-center py-[100px] relative" style={{
-          backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-          <div className="absolute inset-0 bg-primary/80"></div>
-          
-          <div className="w-full max-w-md relative z-10 px-0">
-            <Card>
-              <CardHeader className="text-center">
-                <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-16 w-16 object-contain mx-auto mb-4" />
-                <CardTitle className="font-bold text-primary text-3xl">
-                  {t('login.title')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-2 text-primary">
-                    <Label htmlFor="username">{t('login.username')}</Label>
-                    <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Administrateur ou Rédacteur" required />
-                  </div>
-                  <div className="space-y-2 text-primary">
-                    <Label htmlFor="password">{t('login.password')}</Label>
-                    <div className="relative">
-                      <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" required className="pr-10" />
-                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700">
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" disabled={isLoading}>
-                    {isLoading ? 'Connexion...' : t('login.submit')}
-                  </Button>
-                  <div className="text-sm text-gray-700 text-center">
-                    <p className="text-gray-700 font-normal">Espace réservé aux administrateurs et rédacteurs.</p>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+  // Desktop Version
+  return (
+    <Layout>
+      {/* Hero Section - Desktop */}
+      <div className="relative h-[70vh] flex items-center justify-center" style={{
+        backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}>
+        <div className="absolute inset-0 bg-primary/80"></div>
+        <div className="relative z-10 text-center text-white px-[100px]">
+          <img src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" alt="P49 ENA Logo" className="h-24 w-24 object-contain mx-auto mb-8" />
+          <h1 className="text-5xl font-bold mb-4">Espace de Connexion</h1>
+          <p className="text-xl opacity-90">Accédez à votre tableau de bord administrateur</p>
         </div>
-      )}
+      </div>
+
+      {/* Login Section - Desktop */}
+      <div className="py-[100px] px-[100px] bg-background">
+        <div className="w-full max-w-md mx-auto">
+          <Card>
+            <CardHeader className="text-center">
+              <CardTitle className="font-bold text-primary text-3xl">
+                {t('login.title')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2 text-primary">
+                  <Label htmlFor="username-desktop">{t('login.username')}</Label>
+                  <Input 
+                    id="username-desktop" 
+                    type="text" 
+                    value={username} 
+                    onChange={e => setUsername(e.target.value)} 
+                    placeholder="Administrateur ou Rédacteur" 
+                    required 
+                  />
+                </div>
+                <div className="space-y-2 text-primary">
+                  <Label htmlFor="password-desktop">{t('login.password')}</Label>
+                  <div className="relative">
+                    <Input 
+                      id="password-desktop" 
+                      type={showPassword ? "text" : "password"} 
+                      value={password} 
+                      onChange={e => setPassword(e.target.value)} 
+                      placeholder="Mot de passe" 
+                      required 
+                      className="pr-10" 
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => setShowPassword(!showPassword)} 
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-primary text-white hover:bg-primary px-4 py-2 rounded flex items-center text-sm md:text-sm font-bold transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg" 
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Connexion...' : t('login.submit')}
+                </Button>
+                <div className="text-sm text-gray-700 text-center">
+                  <p className="text-gray-700 font-normal">Espace réservé aux administrateurs et rédacteurs.</p>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </Layout>
   );
 };
