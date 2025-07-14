@@ -9,6 +9,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import UsersList from '@/components/users/UsersList';
 import UsersPageHeader from '@/components/users/UsersPageHeader';
 import LoadingState from '@/components/users/LoadingState';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -27,7 +29,7 @@ const DashboardUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || (user.role !== 'admin_principal' && user.role !== 'admin_secondaire')) {
     return <div>Non autorisé</div>;
   }
 
@@ -38,31 +40,21 @@ const DashboardUsers = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      // Mock data instead of Supabase
-      const mockUsers: User[] = [
-        {
-          id: '1',
-          username: 'admin',
-          first_name: 'Admin',
-          last_name: 'P49',
-          email: 'admin@p49.com',
-          role: 'admin',
-          created_at: '2024-01-01',
-          image_url: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face'
-        },
-        {
-          id: '2',
-          username: 'editor1',
-          first_name: 'Jean',
-          last_name: 'Dupont',
-          email: 'jean.dupont@p49.com',
-          role: 'editor',
-          created_at: '2024-01-10'
-        }
-      ];
-      setUsers(mockUsers);
+      const { data: usersData, error } = await supabase
+        .from('app_users')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching users:', error);
+        toast.error('Erreur lors du chargement des utilisateurs');
+        return;
+      }
+
+      setUsers(usersData || []);
     } catch (error) {
       console.error('Error fetching users:', error);
+      toast.error('Erreur lors du chargement des utilisateurs');
     } finally {
       setLoading(false);
     }

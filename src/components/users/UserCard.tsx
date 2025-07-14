@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, Shield, User } from 'lucide-react';
+import { Edit, Trash2, Shield, User, Crown } from 'lucide-react';
 
 interface User {
   id: string;
@@ -22,9 +22,11 @@ interface UserCardProps {
 const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case 'admin':
+      case 'admin_principal':
+        return <Crown className="h-4 w-4 text-purple-600" />;
+      case 'admin_secondaire':
         return <Shield className="h-4 w-4 text-red-600" />;
-      case 'editor':
+      case 'redacteur':
         return <Edit className="h-4 w-4 text-blue-600" />;
       default:
         return <User className="h-4 w-4 text-gray-600" />;
@@ -33,9 +35,11 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
 
   const getRoleLabel = (role: string) => {
     switch (role) {
-      case 'admin':
-        return 'Administrateur';
-      case 'editor':
+      case 'admin_principal':
+        return 'Administrateur Principal';
+      case 'admin_secondaire':
+        return 'Administrateur Secondaire';
+      case 'redacteur':
         return 'Rédacteur';
       default:
         return 'Membre';
@@ -44,9 +48,11 @@ const UserCard = ({ userItem, currentUserId }: UserCardProps) => {
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'admin':
+      case 'admin_principal':
+        return 'bg-purple-100 text-purple-800';
+      case 'admin_secondaire':
         return 'bg-red-100 text-red-800';
-      case 'editor':
+      case 'redacteur':
         return 'bg-blue-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
