@@ -20,21 +20,21 @@ const CommuniquesSection = () => {
     switch (urgency) {
       case 'urgent':
         return {
-          bg: 'bg-red-50',
+          bg: 'bg-transparent',
           border: 'border-red-200',
           textTitle: 'text-red-800',
           textDesc: 'text-red-600'
         };
       case 'important':
         return {
-          bg: 'bg-orange-50',
+          bg: 'bg-transparent',
           border: 'border-orange-200',
           textTitle: 'text-orange-800',
           textDesc: 'text-orange-600'
         };
       default:
         return {
-          bg: 'bg-green-50',
+          bg: 'bg-transparent',
           border: 'border-green-200',
           textTitle: 'text-green-800',
           textDesc: 'text-green-600'
