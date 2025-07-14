@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -64,6 +65,8 @@ const DashboardHome = () => {
     }
   ];
 
+  const isAdmin = user?.role === 'admin_principal' || user?.role === 'admin_secondaire';
+
   if (isMobile) {
     return (
       <Layout>
@@ -73,7 +76,7 @@ const DashboardHome = () => {
               Bienvenue, {user?.username}
             </h1>
             <p className="text-gray-600 mt-1 text-sm">
-              {user?.role === 'admin' ? 'Panneau d\'administration' : 'Espace rédacteur'}
+              {isAdmin ? 'Panneau d\'administration' : 'Espace rédacteur'}
             </p>
           </div>
 
@@ -129,7 +132,7 @@ const DashboardHome = () => {
             </CardContent>
           </Card>
           
-          {user?.role === 'admin' ? <AdminSidebar /> : <EditorSidebar />}
+          {isAdmin ? <AdminSidebar /> : <EditorSidebar />}
         </div>
       </Layout>
     );
@@ -139,7 +142,7 @@ const DashboardHome = () => {
   return (
     <Layout>
       <div className="flex">
-        {user?.role === 'admin' ? <AdminSidebar /> : <EditorSidebar />}
+        {isAdmin ? <AdminSidebar /> : <EditorSidebar />}
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
@@ -147,7 +150,7 @@ const DashboardHome = () => {
               Bienvenue, {user?.username}
             </h1>
             <p className="text-gray-600 mt-2">
-              {user?.role === 'admin' ? 'Panneau d\'administration' : 'Espace rédacteur'}
+              {isAdmin ? 'Panneau d\'administration' : 'Espace rédacteur'}
             </p>
           </div>
 

@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastName: userData.last_name || '',
         email: userData.email,
         role: userData.role,
-        image_url: userData.image_url
+        image_url: (userData as any).image_url // Cast temporaire pour accéder à image_url
       };
 
       setUser(authenticatedUser);

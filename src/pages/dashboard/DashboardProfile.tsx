@@ -2,10 +2,12 @@
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
+import AdminSidebar from '@/components/AdminSidebar';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 const DashboardProfile = () => {
   const { user } = useAuth();
@@ -14,6 +16,22 @@ const DashboardProfile = () => {
   if (!user) {
     return <div>Non autorisé</div>;
   }
+
+  const isAdmin = user.role === 'admin_principal' || user.role === 'admin_secondaire';
+  const SidebarComponent = isAdmin ? AdminSidebar : EditorSidebar;
+
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'admin_principal':
+        return 'Administrateur Principal';
+      case 'admin_secondaire':
+        return 'Administrateur Secondaire';
+      case 'redacteur':
+        return 'Rédacteur';
+      default:
+        return 'Membre';
+    }
+  };
 
   if (isMobile) {
     return (
@@ -33,19 +51,33 @@ const DashboardProfile = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
+                <div className="flex items-center space-x-4 mb-4">
+                  <Avatar className="h-16 w-16">
+                    {user.image_url ? (
+                      <AvatarImage src={user.image_url} alt={`${user.firstName} ${user.lastName}`} />
+                    ) : null}
+                    <AvatarFallback>
+                      {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className="font-semibold text-lg">{user.firstName} {user.lastName}</h3>
+                    <p className="text-sm text-gray-600">@{user.username}</p>
+                  </div>
+                </div>
                 <div>
-                  <label className="text-sm font-medium">Nom d'utilisateur</label>
-                  <p className="text-gray-600">{user.username}</p>
+                  <label className="text-sm font-medium">Email</label>
+                  <p className="text-gray-600">{user.email}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium">Rôle</label>
-                  <p className="text-gray-600">{user.role === 'admin' ? 'Administrateur' : 'Rédacteur'}</p>
+                  <p className="text-gray-600">{getRoleLabel(user.role)}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
-        <EditorSidebar />
+        <SidebarComponent />
       </Layout>
     );
   }
@@ -53,7 +85,7 @@ const DashboardProfile = () => {
   return (
     <Layout>
       <div className="flex">
-        <EditorSidebar />
+        <SidebarComponent />
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
@@ -69,14 +101,28 @@ const DashboardProfile = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
+                <div className="flex items-center space-x-6 mb-6">
+                  <Avatar className="h-20 w-20">
+                    {user.image_url ? (
+                      <AvatarImage src={user.image_url} alt={`${user.firstName} ${user.lastName}`} />
+                    ) : null}
+                    <AvatarFallback>
+                      {user.firstName.charAt(0)}{user.lastName.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className="font-semibold text-xl">{user.firstName} {user.lastName}</h3>
+                    <p className="text-gray-600">@{user.username}</p>
+                  </div>
+                </div>
                 <div>
-                  <label className="text-sm font-medium">Nom d'utilisateur</label>
-                  <p className="text-gray-600">{user.username}</p>
+                  <label className="text-sm font-medium">Email</label>
+                  <p className="text-gray-600">{user.email}</p>
                 </div>
                 <div>
                   <label className="text-sm font-medium">Rôle</label>
-                  <p className="text-gray-600">{user.role === 'admin' ? 'Administrateur' : 'Rédacteur'}</p>
+                  <p className="text-gray-600">{getRoleLabel(user.role)}</p>
                 </div>
               </div>
             </CardContent>
