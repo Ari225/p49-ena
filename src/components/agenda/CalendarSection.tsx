@@ -20,25 +20,25 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
     if (isMobile) {
       return 'rounded-md border w-full max-w-full'; // Mobile
     } else if (isTablet) {
-      return 'rounded-md border w-full'; // Tablette
+      return 'rounded-md border w-full max-w-full'; // Tablette
     } else {
-      return 'rounded-md border'; // Desktop
+      return 'rounded-md border w-full max-w-full'; // Desktop
     }
   };
 
   // Fonction pour obtenir les classes de container selon la version
   const getContainerClasses = () => {
     if (isMobile) {
-      return 'flex justify-center'; // Mobile - centre le calendrier
+      return 'flex justify-center w-full'; // Mobile - centre le calendrier
     } else if (isTablet) {
-      return 'flex justify-center'; // Tablette - centre le calendrier
+      return 'flex justify-center w-full'; // Tablette - centre le calendrier
     } else {
-      return ''; // Desktop - alignement normal
+      return 'flex justify-center w-full'; // Desktop - centre le calendrier et prend toute la largeur
     }
   };
 
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader>
         <CardTitle className="flex items-center">
           <CalendarIcon className="h-5 w-5 mr-2" />
