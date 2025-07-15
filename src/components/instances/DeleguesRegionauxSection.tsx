@@ -35,7 +35,7 @@ const DeleguesRegionauxSection = () => {
     );
   }
 
-  // Tablet Version
+  // Tablet Version - Uniformisation avec max-w-[280px]
   if (isTablet) {
     return (
       <section className="py-8">
@@ -44,12 +44,13 @@ const DeleguesRegionauxSection = () => {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {delegues.map((member, index) => (
-            <MemberOrganigramCard
-              key={index}
-              name={member.name}
-              position={member.position}
-              phone={member.phone}
-            />
+            <div key={index} className="max-w-[280px] mx-auto w-full">
+              <MemberOrganigramCard
+                name={member.name}
+                position={member.position}
+                phone={member.phone}
+              />
+            </div>
           ))}
         </div>
       </section>
