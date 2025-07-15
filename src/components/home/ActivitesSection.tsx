@@ -256,7 +256,7 @@ const ActivitesSection = () => {
                     </span>
                   </div>
                   
-                  <h4 className={`font-semibold text-gray-600 mb-3 text-lg ${isMobile ? 'text-lg' : isTablet ? 'text-lg' :'text-xl md:text-xl'}`}
+                  <h4 className={`font-semibold text-gray-600 mb-3 text-lg ${isMobile ? 'text-lg' : isTablet ? 'text-lg' :'text-xl md:text-xl'}`}>
                     {activity.title}
                   </h4>
                   
