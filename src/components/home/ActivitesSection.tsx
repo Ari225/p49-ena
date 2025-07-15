@@ -91,7 +91,7 @@ const ActivitesSection = () => {
     if (isMobile) {
       return 'py-12 px-[25px]'; // Mobile
     } else if (isTablet) {
-      return 'py-14 px-8'; // Tablette
+      return 'py-14 px-[50px]'; // Tablette
     } else {
       return 'py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]'; // Desktop
     }
@@ -103,15 +103,15 @@ const ActivitesSection = () => {
     } else if (isTablet) {
       return 'text-2xl'; // Tablette
     } else {
-      return 'text-2xl md:text-3xl'; // Desktop
+      return 'text-3xl md:text-3xl'; // Desktop
     }
   };
 
   const getDescriptionClasses = () => {
     if (isMobile) {
-      return 'text-sm'; // Mobile
+      return 'text-xs'; // Mobile
     } else if (isTablet) {
-      return 'text-base'; // Tablette
+      return 'text-sm'; // Tablette
     } else {
       return 'text-base md:text-base'; // Desktop
     }
@@ -123,7 +123,7 @@ const ActivitesSection = () => {
     } else if (isTablet) {
       return 'text-xl'; // Tablette
     } else {
-      return 'text-xl md:text-2xl'; // Desktop
+      return 'text-xl md:text-xl'; // Desktop
     }
   };
 
@@ -139,7 +139,7 @@ const ActivitesSection = () => {
 
   const getButtonClasses = () => {
     if (isMobile) {
-      return 'w-full text-sm'; // Mobile - pleine largeur
+      return 'w-full text-xs'; // Mobile - pleine largeur
     } else if (isTablet) {
       return 'text-sm'; // Tablette - largeur normale
     } else {
@@ -167,7 +167,7 @@ const ActivitesSection = () => {
           </h3>
           <div className={getGridClasses()}>
             {upcomingActivities.map(activity => (
-              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
+              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
                 {activity.image && (
                   <div className="w-full h-48 overflow-hidden rounded-t-lg">
                     <img src={activity.image} alt={activity.title} className="w-full h-full object-cover" />
