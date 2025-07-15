@@ -73,9 +73,13 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
     }
   };
 
+  // Ajustement spécifique pour MEL Meléï Marcelle en version tablette
+  const isSpecialCard = name === 'MEL Meléï Marcelle';
+  const cardWidthClass = isTablet && isSpecialCard ? 'max-w-[280px] mx-auto' : '';
+
   return (
     <>
-      <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm h-full" onClick={handleCardClick}>
+      <Card className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm h-full ${cardWidthClass}`} onClick={handleCardClick}>
         <CardContent className={`${isMobile ? 'p-3' : isTablet ? 'p-3' : 'p-6'} h-full flex flex-col justify-between`}>
           {/* Photo avec styling professionnel amélioré */}
           <div className="flex justify-center mb-3">
