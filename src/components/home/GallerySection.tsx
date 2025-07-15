@@ -128,13 +128,11 @@ const GallerySection = () => {
               <Camera className="w-6 h-6 mr-2" />
               Médiathèque
             </h2>
-            <Button asChild className="bg-primary text-white font-semibold hover:bg-primary rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] h-10">
-              <Link to="/gallery" className="flex items-center">
-                <span className="hidden sm:inline">Voir la galerie</span>
-                <span className="sm:hidden">Voir plus</span>
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Link>
-            </Button>
+            <Link to="/gallery" className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'} bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] font-semibold`}>
+              <span className="hidden sm:inline">Voir la galerie</span>
+              <span className="sm:hidden">Voir plus</span>
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Link>
           </div>
           
           <div className="flex justify-center items-center py-12">
@@ -167,13 +165,11 @@ const GallerySection = () => {
             <Camera className="w-6 h-6 mr-2" />
             Médiathèque
           </h2>
-          <Button asChild className="bg-primary text-white font-semibold hover:bg-primary rounded flex items-center text-sm md:text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] h-10">
-            <Link to="/gallery" className="flex items-center">
-              <span className="hidden sm:inline">Voir la galerie</span>
-              <span className="sm:hidden">Voir plus</span>
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
-          </Button>
+          <Link to="/gallery" className={`${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'} bg-primary text-white hover:bg-primary rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg py-[5px] px-[15px] font-semibold`}>
+            <span className="hidden sm:inline">Voir la galerie</span>
+            <span className="sm:hidden">Voir plus</span>
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Link>
         </div>
         
         <div className={`grid gap-4 md:gap-6 ${
