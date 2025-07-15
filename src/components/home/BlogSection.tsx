@@ -78,7 +78,7 @@ const BlogSection = () => {
   // ===== RESPONSIVE FUNCTIONS =====
   const getSectionPadding = () => {
     if (isMobile) return 'px-[25px]';
-    if (isTablet) return 'px-8';
+    if (isTablet) return 'px-[50px]';
     return 'px-4 md:px-8 lg:px-[100px]';
   };
 
@@ -89,8 +89,8 @@ const BlogSection = () => {
   };
 
   const getDescriptionSize = () => {
-    if (isMobile) return 'text-sm';
-    if (isTablet) return 'text-base';
+    if (isMobile) return 'text-xs';
+    if (isTablet) return 'text-sm';
     return 'text-base md:text-base';
   };
 
@@ -101,35 +101,35 @@ const BlogSection = () => {
   };
 
   const getCardImageHeight = () => {
-    if (isMobile) return 'h-32 md:h-48';
-    if (isTablet) return 'h-40';
-    return 'h-32 md:h-48';
+    if (isMobile) return 'h-40 md:h-40';
+    if (isTablet) return 'h-50';
+    return 'h-50 md:h-50';
   };
 
   const getCardTitleSize = () => {
-    if (isMobile) return 'text-sm md:text-base';
-    if (isTablet) return 'text-base';
-    return 'text-sm md:text-base';
+    if (isMobile) return 'text-lg md:text-lg';
+    if (isTablet) return 'text-xl';
+    return 'text-xl md:text-xl';
   };
 
   const getCardSummarySize = () => {
-    if (isMobile) return 'text-xs md:text-sm';
+    if (isMobile) return 'text-xs md:text-xs';
     if (isTablet) return 'text-sm';
-    return 'text-xs md:text-sm';
+    return 'text-sm md:text-sm';
   };
 
   const getButtonSize = () => {
-    if (isMobile) return 'w-full text-sm md:text-sm';
+    if (isMobile) return 'w-full text-xs md:text-xs';
     if (isTablet) return 'text-sm';
     return 'text-sm md:text-sm';
   };
 
   return (
-    <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${getSectionPadding()}`}>
+    <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${getSectionPadding()}`}>
       <div className="container mx-auto px-0">
         {/* ===== HEADER SECTION ===== */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${getTitleSize()} font-bold text-primary mb-4`}>Blog</h2>
+        <div className="text-center mb-[50px] md:mb-[50px]">
+          <h2 className={`${getTitleSize()} font-bold text-primary mb-[10px] md:mb-[10px]`}>Blog</h2>
           <p className={`text-gray-700 px-4 ${getDescriptionSize()}`}>
             Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
           </p>
@@ -154,10 +154,10 @@ const BlogSection = () => {
                         <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
                           {article.title}
                         </h3>
-                        <p className={`text-gray-600 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
+                        <p className={`text-gray-700 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
                           {article.summary}
                         </p>
-                        <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div className="flex items-center justify-between text-sm text-gray-700">
                           <div className="flex items-center">
                             <User className="w-3 h-3 mr-1" />
                             <span className="truncate">
@@ -204,7 +204,7 @@ const BlogSection = () => {
                   <p className={`text-gray-600 mb-4 line-clamp-3 ${getCardSummarySize()}`}>
                     {article.summary}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div className="flex items-center justify-between text-sm text-gray-700">
                     <div className="flex items-center">
                       <User className="w-3 h-3 mr-1" />
                       <span className="truncate">
@@ -239,7 +239,7 @@ const BlogSection = () => {
                   <p className={`text-gray-600 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
                     {article.summary}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div className="flex items-center justify-between text-sm text-gray-700">
                     <div className="flex items-center">
                       <User className="w-3 h-3 mr-1" />
                       <span className="truncate">
