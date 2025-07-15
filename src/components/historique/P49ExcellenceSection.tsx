@@ -9,7 +9,7 @@ const P49ExcellenceSection = () => {
   // Mobile Version
   if (isMobile) {
     return (
-      <section className="py-16 px-[25px]">
+      <section className="py-16 px-[25px] bg-white">
         <div className="container mx-auto px-0">
           <h2 className="text-xl font-bold text-primary mb-[50px] md:mb-[50px] text-center">La P49, une promotion d'excellence</h2>
           <div className="grid grid-cols-1 gap-6 items-center">
@@ -34,7 +34,7 @@ const P49ExcellenceSection = () => {
   // Tablet Version
   if (isTablet) {
     return (
-      <section className="py-20 px-[50px]">
+      <section className="py-20 px-[50px] bg-white">
         <div className="container mx-auto px-0">
           <h2 className="text-2xl font-bold text-primary mb-[50px] md:mb-[50px] text-center">La P49, une promotion d'excellence</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -58,7 +58,7 @@ const P49ExcellenceSection = () => {
 
   // Desktop Version
   return (
-    <section className="py-[100px] px-8 md:px-[100px]">
+    <section className="py-[100px] px-8 md:px-[100px] bg-white">
       <div className="container mx-auto px-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
