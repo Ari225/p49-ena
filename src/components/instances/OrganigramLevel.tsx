@@ -91,26 +91,26 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
           };
         case 2:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2',
-            maxWidth: 'max-w-xl',
+            gridCols: 'grid-cols-2',
+            maxWidth: 'max-w-2xl',
             gap: 'gap-6'
           };
         case 3:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+            gridCols: 'grid-cols-3',
             maxWidth: 'max-w-3xl',
             gap: 'gap-6'
           };
         case 4:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
-            maxWidth: 'max-w-4xl',
+            gridCols: 'grid-cols-2',
+            maxWidth: 'max-w-2xl',
             gap: 'gap-6'
           };
         default:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-            maxWidth: 'max-w-4xl',
+            gridCols: 'grid-cols-2',
+            maxWidth: 'max-w-2xl',
             gap: 'gap-6'
           };
       }
