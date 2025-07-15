@@ -131,7 +131,7 @@ const BlogSection = () => {
         <div className="text-center mb-[50px] md:mb-[50px]">
           <h2 className={`${getTitleSize()} font-bold text-primary mb-[10px] md:mb-[10px]`}>Blog</h2>
           <p className={`text-gray-700 px-4 ${getDescriptionSize()}`}>
-            Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
+            Réflexions et analyses de nos membres sur divers domaines
           </p>
         </div>
         
