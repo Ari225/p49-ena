@@ -1,33 +1,57 @@
 
+export const organigramLevels = [
+  // Niveau 1: Président seul
+  [
+    { name: "MEL Meléï Marcelle", position: "Président", phone: "0707188863" }
+  ],
+  // Niveau 2: Vice-président sous le président
+  [
+    { name: "SANGARE Yacouba", position: "Vice-président", phone: "0708892909" }
+  ],
+  // Niveau 3: Secrétaire Général et Adjoint
+  [
+    { name: "DEKOULA Ange", position: "Secrétaire Général", phone: "0707127081" },
+    { name: "EBROTIE Arnaud Angui", position: "Secrétaire Général Adjoint", phone: "0707261572" }
+  ],
+  // Niveau 4: Trésorier Général et Adjoint
+  [
+    { name: "ESSOH Loyou Jeannette", position: "Trésorier Général", phone: "0708037641" },
+    { name: "SOMALA Solange", position: "Trésorier Général Adjoint", phone: "0758278832" }
+  ],
+  // Niveau 5: Secrétaire Coopération Internationale
+  [
+    { name: "IPAUD Michel", position: "Secrétaire chargé de la Coopération Internationale et de la Diaspora", phone: "0748818174" }
+  ],
+  // Niveau 6: Conseillers (4 membres)
+  [
+    { name: "KONE Mingoro Françoise", position: "Conseiller chargé de l'Organisation", phone: "0707094127" },
+    { name: "POKOU Roger", position: "Conseiller chargé de la Communication", phone: "0749209420" },
+    { name: "KOUAME Narcisse", position: "Conseiller chargé des Affaires Culturelles", phone: "0748436198" },
+    { name: "YANSUEH Ignace", position: "Conseiller chargé des Affaires Sociales", phone: "0707247324" }
+  ],
+  // Niveau 7: Conseillers mobilisation et carrières (3 membres)
+  [
+    { name: "TIA Singoh Alexis", position: "Conseiller chargé de la Mobilisation des Ressources Financières", phone: "0709956666" },
+    { name: "BADOUON Monhessio Marius", position: "Conseiller chargé de la Mobilisation des Ressources Humaines", phone: "0708082464" },
+    { name: "FALLE Daya Aymard", position: "Conseiller chargé des Carrières, du Renforcement des Capacités et des Négociations sociales", phone: "0709141060" }
+  ],
+  // Niveau 8: Présidents de commissions (3 membres)
+  [
+    { name: "SORO Thima", position: "Président de la Commission chargée de l'Organisation", phone: "0758730418" },
+    { name: "SILUE Kiyala", position: "Président de la Commission chargée de la Communication", phone: "0708963718" },
+    { name: "AHOURE Noël", position: "Président de la Commission chargée des Affaires Culturelles", phone: "0102269396" }
+  ],
+  // Niveau 9: Présidents de commissions (4 membres)
+  [
+    { name: "KPONE Bérenger", position: "Président de la Commission chargée de la Mobilisation des Ressources Humaines", phone: "0707414607" },
+    { name: "ABOUA Sopie IDA épouse KOUADIO", position: "Président de la Commission chargée de la Mobilisation des Ressources Financières", phone: "0707220179" },
+    { name: "KROU Allou Luc", position: "Président de la Commission Carrières, Renforcement des Capacités et Promotion et Protection des Droits Professionnels", phone: "0748788169" },
+    { name: "ODJE Marie-Clémence", position: "Président de la Commission des Affaires Sociales", phone: "0707616615" }
+  ]
+];
+
 export interface OrganigramMember {
   name: string;
   position: string;
   phone: string;
 }
-
-export const organigramLevels: OrganigramMember[][] = [
-  // Niveau 1 - Président
-  [
-    { name: "KEITA Narcisse", position: "Président du Réseau", phone: "0707879789" }
-  ],
-  
-  // Niveau 2 - Vice-Présidents
-  [
-    { name: "DIABATE Adama", position: "1er Vice-Président", phone: "0758156531" },
-    { name: "KONE Mamadou", position: "2ème Vice-Président", phone: "0707240414" }
-  ],
-  
-  // Niveau 3 - Secrétaire Général et Trésorier Général
-  [
-    { name: "TRAORE Seydou", position: "Secrétaire Général", phone: "0101127191" },
-    { name: "OUATTARA Fatou", position: "Trésorier Général", phone: "0506727271" }
-  ],
-  
-  // Niveau 4 - Secrétaires et Trésoriers Adjoints
-  [
-    { name: "BAMBA Issiaka", position: "Secrétaire Général Adjoint", phone: "0708767676" },
-    { name: "COULIBALY Awa", position: "Trésorier Général Adjoint", phone: "0709876543" },
-    { name: "DOUMBIA Moussa", position: "Secrétaire Administratif", phone: "0701234567" },
-    { name: "YAO Marie", position: "Trésorier Adjoint", phone: "0708901234" }
-  ]
-];
