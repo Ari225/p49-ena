@@ -190,7 +190,7 @@ const TestimonialsSection = () => {
                     <div className="flex flex-col items-center gap-4">
                       <img src={testimonial.image} alt={testimonial.name} className="w-20 h-20 rounded-full object-cover flex-shrink-0" />
                       <div className="flex-1 text-center">
-                        <p className="italic mb-4 text-gray-600 text-lg">"{testimonial.quote}"</p>
+                        <p className="italic mb-4 text-gray-600 text-base">"{testimonial.quote}"</p>
                         <div>
                           <h4 className="font-semibold text-primary text-base">{testimonial.name}</h4>
                           <p className="text-sm text-gray-500">{testimonial.position}</p>
