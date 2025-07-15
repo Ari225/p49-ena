@@ -119,11 +119,11 @@ const ActivitesSection = () => {
 
   const getSectionTitleClasses = () => {
     if (isMobile) {
-      return 'text-lg'; // Mobile
+      return 'text-base'; // Mobile
     } else if (isTablet) {
-      return 'text-xl'; // Tablette
+      return 'text-lg'; // Tablette
     } else {
-      return 'text-xl md:text-xl'; // Desktop
+      return 'text-lg md:text-lg'; // Desktop
     }
   };
 
@@ -150,8 +150,8 @@ const ActivitesSection = () => {
   return (
     <section className={`bg-white ${getSectionPadding()}`}>
       <div className="container mx-auto px-0">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${getTitleClasses()} font-bold text-primary mb-4`}>
+        <div className="text-center mb-[50px] md:mb-[50px]">
+          <h2 className={`${getTitleClasses()} font-bold text-primary mb-[10px] md:mb-[10px]`}>
             Agenda
           </h2>
           <p className={`text-gray-700 max-w-3xl mx-auto ${getDescriptionClasses()}`}>
@@ -161,7 +161,7 @@ const ActivitesSection = () => {
 
         {/* Activités à venir */}
         <div className="mb-8 md:mb-12">
-          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-6 flex items-center`}>
+          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-[10px] md:mb-[10px] flex items-center`}>
             <Calendar className="w-5 h-5 mr-2" />
             Activités à venir
           </h3>
@@ -183,15 +183,15 @@ const ActivitesSection = () => {
                     </span>
                   </div>
                   
-                  <h4 className="font-semibold text-primary mb-3 text-lg">
+                  <h4 className={`font-semibold text-primary mb-3 text-lg ${isMobile ? 'text-lg' : isTab ? 'text-lg' :'text-xl md:text-xl'}`}>
                     {activity.title}
                   </h4>
                   
-                  <p className="text-gray-600 text-sm mb-4">
+                  <p className={`text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
                     {activity.description}
                   </p>
                   
-                  <div className="space-y-2 text-sm text-gray-600 mb-4">
+                  <div className={`space-y-2 text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
                       <span>{activity.date}</span>
@@ -211,7 +211,7 @@ const ActivitesSection = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button asChild size="sm" variant="outline" className="flex-1">
+                    <Button asChild variant="outline" className={`flex-1 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
                       <Link to={`/activites/${activity.id}`}>
                         <Eye className="w-4 h-4 mr-2" />
                         Voir détails
@@ -233,7 +233,7 @@ const ActivitesSection = () => {
 
         {/* Activités passées */}
         <div className="mb-8 md:mb-12">
-          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-6 flex items-center`}>
+          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-[10px] md:mb-[10px] flex items-center`}>
             <Calendar className="w-5 h-5 mr-2" />
             Activités récentes
           </h3>
