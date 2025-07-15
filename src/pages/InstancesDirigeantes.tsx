@@ -87,7 +87,7 @@ const InstancesDirigeantes = () => {
 
         {/* Content Section - Mobile */}
         {isMobile && (
-          <div className="container mx-auto px-[25px] mb-[25px] md:mb-[25px]">
+          <div className="container mx-auto px-[25px] py-16">
             <div className="flex gap-2 mb-4 p-1 bg-gray-100 rounded-lg">
               <Button
                 variant={activeTab === 'bureau' ? 'default' : 'ghost'}
@@ -123,7 +123,7 @@ const InstancesDirigeantes = () => {
 
         {/* Content Section - Tablet */}
         {isTab && (
-          <div className="container mx-auto px-[50px] mb-[30px] md:mb-[30px]">
+          <div className="container mx-auto px-[50px] py-20">
             <div className="flex gap-2 mb-6 p-1 bg-gray-100 rounded-lg max-w-md mx-auto">
               <Button
                 variant={activeTab === 'bureau' ? 'default' : 'ghost'}
@@ -159,7 +159,7 @@ const InstancesDirigeantes = () => {
 
         {/* Content Section - Desktop */}
         {!isMobile && !isTab && (
-          <div className="container mx-auto px-[100px] mb-[35px] md:mb-[35px]">
+          <div className="container mx-auto px-[100px] py-[100px]">
             <div className="flex gap-2 mb-6 p-1 bg-gray-100 rounded-lg max-w-lg mx-auto">
               <Button
                 variant={activeTab === 'bureau' ? 'default' : 'ghost'}
