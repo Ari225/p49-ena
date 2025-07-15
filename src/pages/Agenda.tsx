@@ -93,9 +93,9 @@ const Agenda = () => {
         {/* Contenu principal redesigné */}
         <section className={`py-20 ${getPaddingClasses()}`}>
           <div className="container mx-auto px-0">
-            {/* Section calendrier et événements du jour - Design amélioré */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-              <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-xl transition-all duration-300">
+            {/* Section calendrier et événements du jour - Design épuré */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow duration-300">
                 <CalendarSection 
                   selectedDate={selectedDate} 
                   onSelectDate={setSelectedDate} 
@@ -103,7 +103,7 @@ const Agenda = () => {
                 />
               </div>
 
-              <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-xl transition-all duration-300">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow duration-300">
                 <DayEventsSection 
                   selectedDate={selectedDate} 
                   selectedDateEvents={selectedDateEvents} 
@@ -114,12 +114,12 @@ const Agenda = () => {
               </div>
             </div>
 
-            {/* Activités à venir - Design amélioré */}
-            <div className="mb-16">
-              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl shadow-lg border border-white/30 backdrop-blur-sm overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-primary to-primary/90 text-white">
-                  <CardTitle className="text-2xl font-bold flex items-center">
-                    <span className="w-2 h-8 bg-secondary rounded-full mr-4"></span>
+            {/* Activités à venir - Design épuré */}
+            <div className="mb-20">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <CardHeader className="bg-gray-50/50 border-b border-gray-100">
+                  <CardTitle className="text-xl font-medium text-gray-900 flex items-center">
+                    <span className="w-1 h-6 bg-primary rounded-full mr-3"></span>
                     Activités à venir
                   </CardTitle>
                 </CardHeader>
@@ -139,12 +139,12 @@ const Agenda = () => {
               </div>
             </div>
 
-            {/* Activités récentes - Design amélioré */}
+            {/* Activités récentes - Design épuré */}
             <div>
-              <div className="bg-gradient-to-r from-gray-100/80 to-gray-200/60 rounded-2xl shadow-lg border border-white/30 backdrop-blur-sm overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-gray-600 to-gray-700 text-white">
-                  <CardTitle className="text-2xl font-bold flex items-center">
-                    <span className="w-2 h-8 bg-secondary rounded-full mr-4"></span>
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <CardHeader className="bg-gray-50/50 border-b border-gray-100">
+                  <CardTitle className="text-xl font-medium text-gray-600 flex items-center">
+                    <span className="w-1 h-6 bg-gray-300 rounded-full mr-3"></span>
                     Activités récentes
                   </CardTitle>
                 </CardHeader>
