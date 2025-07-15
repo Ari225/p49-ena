@@ -240,7 +240,7 @@ const ActivitesSection = () => {
           </h3>
           <div className={getGridClasses()}>
             {pastActivities.map(activity => (
-              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400 opacity-80">
+              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 opacity-80">
                 {activity.image && (
                   <div className="w-full h-48 overflow-hidden rounded-t-lg">
                     <img src={activity.image} alt={activity.title} className="w-full h-full object-cover grayscale" />
@@ -256,15 +256,15 @@ const ActivitesSection = () => {
                     </span>
                   </div>
                   
-                  <h4 className="font-semibold text-gray-600 mb-3 text-lg">
+                  <h4 className={`font-semibold text-gray-600 mb-3 text-lg ${isMobile ? 'text-lg' : isTablet ? 'text-lg' :'text-xl md:text-xl'}`}
                     {activity.title}
                   </h4>
                   
-                  <p className="text-gray-500 text-sm mb-4">
+                  <p className={`text-gray-500 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     {activity.description}
                   </p>
                   
-                  <div className="space-y-2 text-sm text-gray-500 mb-4">
+                  <div className={`space-y-2 text-gray-500 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-gray-500" />
                       <span>{activity.date}</span>
@@ -283,7 +283,7 @@ const ActivitesSection = () => {
                     </div>
                   </div>
 
-                  <Button asChild size="sm" variant="outline" className="w-full">
+                  <Button asChild variant="outline" className={`w-full ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     <Link to={`/activites/${activity.id}`}>
                       <Eye className="w-4 h-4 mr-2" />
                       Voir détails
