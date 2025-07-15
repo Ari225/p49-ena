@@ -87,7 +87,6 @@ const Agenda = () => {
         <div className="min-h-screen bg-gray-50">
           <AgendaHeader />
 
-          {/* Contenu principal mobile */}
           <section className="py-8 px-[25px]">
             {/* Calendrier et événements du jour - Mobile */}
             <div className="space-y-6 mb-8">
@@ -157,7 +156,6 @@ const Agenda = () => {
         <div className="min-h-screen bg-gray-50">
           <AgendaHeader />
 
-          {/* Contenu principal tablette */}
           <section className="py-12 px-8">
             {/* Calendrier et événements du jour - Tablette */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
@@ -226,7 +224,6 @@ const Agenda = () => {
       <div className="min-h-screen bg-gray-50">
         <AgendaHeader />
 
-        {/* Contenu principal desktop */}
         <section className="py-16 px-[100px]">
           {/* Calendrier et événements du jour - Desktop */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
