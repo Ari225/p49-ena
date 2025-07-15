@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, MapPin, Users, Clock, ChevronRight, CalendarPlus, Eye } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
+
 const ActivitesSection = () => {
   const isMobile = useIsMobile();
-  const {
-    toast
-  } = useToast();
+  const isTablet = useIsTablet();
+  const { toast } = useToast();
+
   const upcomingActivities = [{
     id: 1,
     title: "Formation en Leadership Public",
@@ -34,6 +35,7 @@ const ActivitesSection = () => {
     status: "À venir",
     image: "lovable-uploads/narcissek.jpeg"
   }];
+
   const pastActivities = [{
     id: 3,
     title: "Assemblée Générale Ordinaire",
@@ -57,6 +59,7 @@ const ActivitesSection = () => {
     status: "Terminé",
     image: "lovable-uploads/narcissek.jpeg"
   }];
+
   const handleAddToCalendar = (activity: any) => {
     try {
       const {
@@ -82,26 +85,94 @@ const ActivitesSection = () => {
       });
     }
   };
-  return <section className={`bg-white py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+
+  // Fonctions pour obtenir les classes selon la version
+  const getSectionPadding = () => {
+    if (isMobile) {
+      return 'py-12 px-[25px]'; // Mobile
+    } else if (isTablet) {
+      return 'py-14 px-8'; // Tablette
+    } else {
+      return 'py-16 lg:py-[100px] px-4 md:px-8 lg:px-[100px]'; // Desktop
+    }
+  };
+
+  const getTitleClasses = () => {
+    if (isMobile) {
+      return 'text-xl'; // Mobile
+    } else if (isTablet) {
+      return 'text-2xl'; // Tablette
+    } else {
+      return 'text-2xl md:text-3xl'; // Desktop
+    }
+  };
+
+  const getDescriptionClasses = () => {
+    if (isMobile) {
+      return 'text-sm'; // Mobile
+    } else if (isTablet) {
+      return 'text-base'; // Tablette
+    } else {
+      return 'text-base md:text-base'; // Desktop
+    }
+  };
+
+  const getSectionTitleClasses = () => {
+    if (isMobile) {
+      return 'text-lg'; // Mobile
+    } else if (isTablet) {
+      return 'text-xl'; // Tablette
+    } else {
+      return 'text-xl md:text-2xl'; // Desktop
+    }
+  };
+
+  const getGridClasses = () => {
+    if (isMobile) {
+      return 'grid grid-cols-1 gap-4'; // Mobile - 1 colonne
+    } else if (isTablet) {
+      return 'grid grid-cols-2 gap-5'; // Tablette - 2 colonnes
+    } else {
+      return 'grid grid-cols-1 md:grid-cols-2 gap-6'; // Desktop - 2 colonnes
+    }
+  };
+
+  const getButtonClasses = () => {
+    if (isMobile) {
+      return 'w-full text-sm'; // Mobile - pleine largeur
+    } else if (isTablet) {
+      return 'text-sm'; // Tablette - largeur normale
+    } else {
+      return 'text-sm md:text-sm'; // Desktop - largeur normale
+    }
+  };
+
+  return (
+    <section className={`bg-white ${getSectionPadding()}`}>
       <div className="container mx-auto px-0">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Agenda</h2>
-          <p className={`text-gray-700 max-w-3xl mx-auto ${isMobile ? 'text-sm' : 'text-base md:text-base'}`}>
+          <h2 className={`${getTitleClasses()} font-bold text-primary mb-4`}>
+            Agenda
+          </h2>
+          <p className={`text-gray-700 max-w-3xl mx-auto ${getDescriptionClasses()}`}>
             Découvrez nos activités à venir et nos événements récents
           </p>
         </div>
 
         {/* Activités à venir */}
         <div className="mb-8 md:mb-12">
-          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-semibold text-primary mb-6 flex items-center`}>
+          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-6 flex items-center`}>
             <Calendar className="w-5 h-5 mr-2" />
             Activités à venir
           </h3>
-          <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
-            {upcomingActivities.map(activity => <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
-                {activity.image && <div className="w-full h-48 overflow-hidden rounded-t-lg">
+          <div className={getGridClasses()}>
+            {upcomingActivities.map(activity => (
+              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
+                {activity.image && (
+                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
                     <img src={activity.image} alt={activity.title} className="w-full h-full object-cover" />
-                  </div>}
+                  </div>
+                )}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
@@ -146,26 +217,34 @@ const ActivitesSection = () => {
                         Voir détails
                       </Link>
                     </Button>
-                    <Button onClick={() => handleAddToCalendar(activity)} className="bg-green-600 hover:bg-green-700 text-white" size="sm">
+                    <Button 
+                      onClick={() => handleAddToCalendar(activity)} 
+                      className="bg-green-600 hover:bg-green-700 text-white" 
+                      size="sm"
+                    >
                       <CalendarPlus className="w-4 h-4" />
                     </Button>
                   </div>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
 
         {/* Activités passées */}
         <div className="mb-8 md:mb-12">
-          <h3 className={`${isMobile ? 'text-lg' : 'text-xl md:text-2xl'} font-semibold text-primary mb-6 flex items-center`}>
+          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-6 flex items-center`}>
             <Calendar className="w-5 h-5 mr-2" />
             Activités récentes
           </h3>
-          <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 gap-6'}`}>
-            {pastActivities.map(activity => <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400 opacity-80">
-                {activity.image && <div className="w-full h-48 overflow-hidden rounded-t-lg">
+          <div className={getGridClasses()}>
+            {pastActivities.map(activity => (
+              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-gray-400 opacity-80">
+                {activity.image && (
+                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
                     <img src={activity.image} alt={activity.title} className="w-full h-full object-cover grayscale" />
-                  </div>}
+                  </div>
+                )}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-gray-500 text-white px-2 py-1 rounded text-xs font-medium">
@@ -210,12 +289,13 @@ const ActivitesSection = () => {
                     </Link>
                   </Button>
                 </CardContent>
-              </Card>)}
+              </Card>
+            ))}
           </div>
         </div>
 
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] h-10 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : 'text-sm md:text-sm'}`}>
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] h-10 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${getButtonClasses()}`}>
             <Link to="/agenda" className="flex items-center justify-center">
               Voir toutes nos activités
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -223,6 +303,8 @@ const ActivitesSection = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default ActivitesSection;

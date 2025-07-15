@@ -44,7 +44,7 @@ const DayEventsSection = ({
     if (isMobile) {
       return 'flex-col gap-2'; // Mobile - boutons empilés
     } else if (isTablet) {
-      return 'flex-row gap-2'; // Tablette - boutons en ligne
+      return 'flex-row gap-2 flex-wrap'; // Tablette - boutons en ligne avec wrapping
     } else {
       return 'flex-row gap-2'; // Desktop - boutons en ligne
     }
@@ -61,16 +61,49 @@ const DayEventsSection = ({
     }
   };
 
+  // Fonction pour obtenir les classes du titre selon la version
+  const getTitleClasses = () => {
+    if (isMobile) {
+      return 'text-base'; // Mobile
+    } else if (isTablet) {
+      return 'text-lg'; // Tablette
+    } else {
+      return 'text-xl'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes de padding selon la version
+  const getCardPadding = () => {
+    if (isMobile) {
+      return 'p-3'; // Mobile
+    } else if (isTablet) {
+      return 'p-4'; // Tablette
+    } else {
+      return 'p-6'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes d'espacement selon la version
+  const getEventSpacing = () => {
+    if (isMobile) {
+      return 'space-y-3'; // Mobile
+    } else if (isTablet) {
+      return 'space-y-4'; // Tablette
+    } else {
+      return 'space-y-4'; // Desktop
+    }
+  };
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>
+      <CardHeader className={getCardPadding()}>
+        <CardTitle className={getTitleClasses()}>
           {selectedDate ? `Activités du ${formatDate(selectedDate)}` : 'Sélectionnez une date'}
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className={getCardPadding()}>
         {selectedDateEvents.length > 0 ? (
-          <div className="space-y-4">
+          <div className={getEventSpacing()}>
             {selectedDateEvents.map((event) => (
               <div key={event.id} className="border rounded-lg p-4">
                 <div className="flex items-start justify-between mb-2">
@@ -95,7 +128,7 @@ const DayEventsSection = ({
                   </div>
                 </div>
                 <div className={`flex ${getButtonClasses()}`}>
-                  <Button asChild size={getButtonSize()} variant="outline">
+                  <Button asChild size={getButtonSize()} variant="outline" className={isMobile ? "w-full" : "flex-1"}>
                     <Link to={`/activites/${event.id}`}>
                       <Eye className="h-4 w-4 mr-1" />
                       Voir détails
@@ -105,10 +138,10 @@ const DayEventsSection = ({
                     <Button
                       size={getButtonSize()}
                       onClick={() => handleAddToCalendar(event)}
-                      className="bg-green-600 hover:bg-green-700"
+                      className={`bg-green-600 hover:bg-green-700 ${isMobile ? "w-full" : "flex-1"}`}
                     >
                       <CalendarPlus className="h-4 w-4 mr-1" />
-                      {isMobile ? 'Calendrier' : 'Calendrier'}
+                      {isMobile ? 'Calendrier' : isTablet ? 'Calendrier' : 'Ajouter'}
                     </Button>
                   )}
                 </div>

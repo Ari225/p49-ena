@@ -18,9 +18,9 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
   // Fonction pour obtenir les classes du calendrier selon la version
   const getCalendarClasses = () => {
     if (isMobile) {
-      return 'rounded-md border scale-90 w-full'; // Mobile - réduit la taille pour éviter le débordement
+      return 'rounded-md border scale-90 w-full'; // Mobile - réduit la taille
     } else if (isTablet) {
-      return 'rounded-md border'; // Tablette - taille normale
+      return 'rounded-md border scale-95 w-full'; // Tablette - légèrement réduit
     } else {
       return 'rounded-md border'; // Desktop - taille normale
     }
@@ -29,23 +29,45 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
   // Fonction pour obtenir les classes de container selon la version
   const getContainerClasses = () => {
     if (isMobile) {
-      return 'flex justify-center items-center w-full overflow-hidden'; // Mobile - centre avec gestion du débordement
+      return 'flex justify-center items-center w-full overflow-hidden'; // Mobile
     } else if (isTablet) {
-      return 'flex justify-center items-center w-full min-h-[400px] px-4'; // Tablette - centre le calendrier avec plus d'espace
+      return 'flex justify-center items-center w-full min-h-[350px] px-2'; // Tablette
     } else {
-      return 'flex justify-center items-center w-full min-h-[450px] px-8'; // Desktop - centre le calendrier avec plus d'espace
+      return 'flex justify-center items-center w-full min-h-[450px] px-8'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes du titre selon la version
+  const getTitleClasses = () => {
+    if (isMobile) {
+      return 'text-base'; // Mobile
+    } else if (isTablet) {
+      return 'text-lg'; // Tablette
+    } else {
+      return 'text-xl'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes de padding selon la version
+  const getCardPadding = () => {
+    if (isMobile) {
+      return 'p-3'; // Mobile
+    } else if (isTablet) {
+      return 'p-4'; // Tablette
+    } else {
+      return 'p-6'; // Desktop
     }
   };
 
   return (
     <Card className="h-fit">
-      <CardHeader>
-        <CardTitle className="flex items-center">
+      <CardHeader className={getCardPadding()}>
+        <CardTitle className={`flex items-center ${getTitleClasses()}`}>
           <CalendarIcon className="h-5 w-5 mr-2" />
           Calendrier des Activités
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className={getCardPadding()}>
         <div className={getContainerClasses()}>
           <Calendar
             mode="single"

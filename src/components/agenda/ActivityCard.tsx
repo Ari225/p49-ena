@@ -66,7 +66,7 @@ const ActivityCard = ({ activity, getEventTypeColor, handleAddToCalendar, isPast
     if (isMobile) {
       return isPast ? 'w-full' : 'flex-col gap-2 w-full'; // Mobile - boutons pleine largeur
     } else if (isTablet) {
-      return isPast ? 'w-full' : 'flex-1 gap-2'; // Tablette - boutons flexibles
+      return isPast ? 'w-full' : 'flex-row gap-2'; // Tablette - boutons en ligne
     } else {
       return isPast ? 'w-full' : 'flex-1 gap-2'; // Desktop - boutons flexibles
     }
@@ -77,9 +77,31 @@ const ActivityCard = ({ activity, getEventTypeColor, handleAddToCalendar, isPast
     if (isMobile) {
       return 'flex-col'; // Mobile - boutons empilés
     } else if (isTablet) {
-      return 'flex-row'; // Tablette - boutons en ligne
+      return 'flex-row flex-wrap'; // Tablette - boutons en ligne avec wrapping
     } else {
       return 'flex-row'; // Desktop - boutons en ligne
+    }
+  };
+
+  // Fonction pour obtenir les classes de padding selon la version
+  const getCardPadding = () => {
+    if (isMobile) {
+      return 'p-3'; // Mobile
+    } else if (isTablet) {
+      return 'p-4'; // Tablette
+    } else {
+      return 'p-4'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes de titre selon la version
+  const getTitleClasses = () => {
+    if (isMobile) {
+      return 'text-base'; // Mobile
+    } else if (isTablet) {
+      return 'text-lg'; // Tablette
+    } else {
+      return 'text-lg'; // Desktop
     }
   };
 
@@ -92,7 +114,7 @@ const ActivityCard = ({ activity, getEventTypeColor, handleAddToCalendar, isPast
           className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`}
         />
       </div>
-      <CardContent className="p-4">
+      <CardContent className={getCardPadding()}>
         <div className="flex items-center justify-between mb-2">
           <Badge className={isPast ? "bg-gray-100 text-gray-700" : getEventTypeColor(activity.type)}>
             {activity.type}
@@ -101,7 +123,7 @@ const ActivityCard = ({ activity, getEventTypeColor, handleAddToCalendar, isPast
             {activity.date}
           </span>
         </div>
-        <h3 className={`font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+        <h3 className={`font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'} ${getTitleClasses()}`}>
           {activity.title}
         </h3>
         <div className={`space-y-1 text-sm mb-3 ${isPast ? 'text-gray-500' : 'text-gray-600'}`}>
@@ -115,7 +137,7 @@ const ActivityCard = ({ activity, getEventTypeColor, handleAddToCalendar, isPast
           </div>
         </div>
         <div className={`flex ${getButtonLayout()} ${getButtonClasses()}`}>
-          <Button asChild size="sm" variant="outline" className={isPast ? "w-full" : "flex-1"}>
+          <Button asChild size="sm" variant="outline" className={isPast ? "w-full" : isMobile ? "w-full" : isTablet ? "flex-1" : "flex-1"}>
             <Link to={`/activites/${activity.id}`}>
               <Eye className="h-4 w-4 mr-1" />
               {isPast ? "Voir détails" : "Détails"}
@@ -125,10 +147,10 @@ const ActivityCard = ({ activity, getEventTypeColor, handleAddToCalendar, isPast
             <Button
               size="sm"
               onClick={() => handleAddToCalendar(activity)}
-              className="bg-green-600 hover:bg-green-700 flex-1"
+              className={`bg-green-600 hover:bg-green-700 ${isMobile ? "w-full" : isTablet ? "flex-1" : "flex-1"}`}
             >
               <CalendarPlus className="h-4 w-4" />
-              {!isMobile && <span className="ml-1">Ajouter</span>}
+              {!isMobile && <span className="ml-1">{isTablet ? 'Ajouter' : 'Ajouter'}</span>}
             </Button>
           )}
         </div>

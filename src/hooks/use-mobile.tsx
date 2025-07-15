@@ -20,6 +20,7 @@ export function useIsMobile() {
   return !!isMobile
 }
 
+// Version Tablette : entre 768px et 1023px
 export function useIsTablet() {
   const [isTablet, setIsTablet] = React.useState<boolean | undefined>(undefined)
 
@@ -34,4 +35,21 @@ export function useIsTablet() {
   }, [])
 
   return !!isTablet
+}
+
+// Fonction utilitaire pour Desktop (1024px et plus)
+export function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = React.useState<boolean | undefined>(undefined)
+
+  React.useEffect(() => {
+    const mql = window.matchMedia(`(min-width: ${TABLET_BREAKPOINT}px)`)
+    const onChange = () => {
+      setIsDesktop(window.innerWidth >= TABLET_BREAKPOINT)
+    }
+    mql.addEventListener("change", onChange)
+    setIsDesktop(window.innerWidth >= TABLET_BREAKPOINT)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
+
+  return !!isDesktop
 }
