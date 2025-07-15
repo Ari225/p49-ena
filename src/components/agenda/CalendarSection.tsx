@@ -3,6 +3,7 @@ import React from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CalendarIcon } from 'lucide-react';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface CalendarSectionProps {
   selectedDate: Date | undefined;
@@ -11,6 +12,31 @@ interface CalendarSectionProps {
 }
 
 const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSectionProps) => {
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+
+  // Fonction pour obtenir les classes du calendrier selon la version
+  const getCalendarClasses = () => {
+    if (isMobile) {
+      return 'rounded-md border w-full max-w-full'; // Mobile
+    } else if (isTablet) {
+      return 'rounded-md border w-full'; // Tablette
+    } else {
+      return 'rounded-md border'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes de container selon la version
+  const getContainerClasses = () => {
+    if (isMobile) {
+      return 'flex justify-center'; // Mobile - centre le calendrier
+    } else if (isTablet) {
+      return 'flex justify-center'; // Tablette - centre le calendrier
+    } else {
+      return ''; // Desktop - alignement normal
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -20,22 +46,24 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Calendar
-          mode="single"
-          selected={selectedDate}
-          onSelect={onSelectDate}
-          className="rounded-md border"
-          modifiers={{
-            hasEvents: (date) => hasEvents(date)
-          }}
-          modifiersStyles={{
-            hasEvents: { 
-              backgroundColor: '#3b82f6', 
-              color: 'white',
-              fontWeight: 'bold'
-            }
-          }}
-        />
+        <div className={getContainerClasses()}>
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={onSelectDate}
+            className={getCalendarClasses()}
+            modifiers={{
+              hasEvents: (date) => hasEvents(date)
+            }}
+            modifiersStyles={{
+              hasEvents: { 
+                backgroundColor: '#3b82f6', 
+                color: 'white',
+                fontWeight: 'bold'
+              }
+            }}
+          />
+        </div>
         <div className="mt-4 text-sm text-gray-600">
           <p>Les dates en bleu indiquent des activités planifiées</p>
         </div>

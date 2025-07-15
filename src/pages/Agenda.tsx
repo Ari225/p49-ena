@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
 import AgendaHeader from '@/components/agenda/AgendaHeader';
@@ -13,6 +13,7 @@ import { allActivities, getEventTypeColor } from '@/components/agenda/agendaData
 
 const Agenda = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
@@ -65,13 +66,35 @@ const Agenda = () => {
   const upcomingActivities = allActivities.filter(activity => activity.status === 'À venir');
   const pastActivities = allActivities.filter(activity => activity.status === 'Terminé');
 
+  // Fonction pour obtenir les classes de padding selon la version
+  const getPaddingClasses = () => {
+    if (isMobile) {
+      return 'px-[25px]'; // Mobile
+    } else if (isTablet) {
+      return 'px-8'; // Tablette
+    } else {
+      return 'px-[100px]'; // Desktop
+    }
+  };
+
+  // Fonction pour obtenir les classes de grid selon la version
+  const getGridClasses = () => {
+    if (isMobile) {
+      return 'grid-cols-1 gap-4'; // Mobile
+    } else if (isTablet) {
+      return 'grid-cols-2 gap-6'; // Tablette
+    } else {
+      return 'md:grid-cols-2 lg:grid-cols-3 gap-6'; // Desktop
+    }
+  };
+
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
         <AgendaHeader />
 
         {/* Contenu principal */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-16 ${getPaddingClasses()}`}>
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
               <CalendarSection
@@ -95,7 +118,7 @@ const Agenda = () => {
                 <CardTitle>Activités à venir</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+                <div className={`grid ${getGridClasses()}`}>
                   {upcomingActivities.map((activity) => (
                     <ActivityCard
                       key={activity.id}
@@ -114,7 +137,7 @@ const Agenda = () => {
                 <CardTitle>Activités récentes</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+                <div className={`grid ${getGridClasses()}`}>
                   {pastActivities.map((activity) => (
                     <ActivityCard
                       key={activity.id}

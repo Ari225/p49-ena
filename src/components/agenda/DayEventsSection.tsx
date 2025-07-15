@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Clock, MapPin, Users, CalendarPlus, Eye } from 'lucide-react';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface Activity {
   id: number;
@@ -35,6 +36,31 @@ const DayEventsSection = ({
   getEventTypeColor, 
   handleAddToCalendar 
 }: DayEventsSectionProps) => {
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+
+  // Fonction pour obtenir les classes de boutons selon la version
+  const getButtonClasses = () => {
+    if (isMobile) {
+      return 'flex-col gap-2'; // Mobile - boutons empilés
+    } else if (isTablet) {
+      return 'flex-row gap-2'; // Tablette - boutons en ligne
+    } else {
+      return 'flex-row gap-2'; // Desktop - boutons en ligne
+    }
+  };
+
+  // Fonction pour obtenir les classes de taille de bouton selon la version
+  const getButtonSize = () => {
+    if (isMobile) {
+      return 'sm'; // Mobile - petits boutons
+    } else if (isTablet) {
+      return 'sm'; // Tablette - petits boutons
+    } else {
+      return 'sm'; // Desktop - petits boutons
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -68,8 +94,8 @@ const DayEventsSection = ({
                     {event.participants}
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button asChild size="sm" variant="outline">
+                <div className={`flex ${getButtonClasses()}`}>
+                  <Button asChild size={getButtonSize()} variant="outline">
                     <Link to={`/activites/${event.id}`}>
                       <Eye className="h-4 w-4 mr-1" />
                       Voir détails
@@ -77,12 +103,12 @@ const DayEventsSection = ({
                   </Button>
                   {event.status === 'À venir' && (
                     <Button
-                      size="sm"
+                      size={getButtonSize()}
                       onClick={() => handleAddToCalendar(event)}
                       className="bg-green-600 hover:bg-green-700"
                     >
                       <CalendarPlus className="h-4 w-4 mr-1" />
-                      Calendrier
+                      {isMobile ? 'Calendrier' : 'Calendrier'}
                     </Button>
                   )}
                 </div>
