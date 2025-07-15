@@ -22,7 +22,7 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
     } else if (isTablet) {
       return 'rounded-md border w-full'; // Tablette
     } else {
-      return 'rounded-md border w-full scale-150 transform origin-center'; // Desktop - fortement élargi
+      return 'rounded-md border'; // Desktop
     }
   };
 
@@ -33,7 +33,7 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
     } else if (isTablet) {
       return 'flex justify-center'; // Tablette - centre le calendrier
     } else {
-      return 'flex justify-center items-center p-6 overflow-hidden'; // Desktop - centre avec overflow caché
+      return ''; // Desktop - alignement normal
     }
   };
 
