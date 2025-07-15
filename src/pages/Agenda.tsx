@@ -91,31 +91,30 @@ const Agenda = () => {
         <AgendaHeader />
 
         {/* Contenu principal redesigné */}
-        <section className={`py-20 ${getPaddingClasses()}`}>
+        <section className={`py-16 ${getPaddingClasses()}`}>
           <div className="container mx-auto px-0">
-            {/* Section calendrier et événements du jour - Design épuré */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow duration-300">
-                <CalendarSection 
-                  selectedDate={selectedDate} 
-                  onSelectDate={setSelectedDate} 
-                  hasEvents={hasEvents} 
-                />
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow duration-300">
-                <DayEventsSection 
-                  selectedDate={selectedDate} 
-                  selectedDateEvents={selectedDateEvents} 
-                  formatDate={formatDate} 
-                  getEventTypeColor={getEventTypeColor} 
-                  handleAddToCalendar={handleAddToCalendar} 
-                />
+            {/* Section calendrier et événements du jour fusionnée - Design épuré */}
+            <div className="mb-16">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-300">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <CalendarSection 
+                    selectedDate={selectedDate} 
+                    onSelectDate={setSelectedDate} 
+                    hasEvents={hasEvents} 
+                  />
+                  <DayEventsSection 
+                    selectedDate={selectedDate} 
+                    selectedDateEvents={selectedDateEvents} 
+                    formatDate={formatDate} 
+                    getEventTypeColor={getEventTypeColor} 
+                    handleAddToCalendar={handleAddToCalendar} 
+                  />
+                </div>
               </div>
             </div>
 
             {/* Activités à venir - Design épuré */}
-            <div className="mb-20">
+            <div className="mb-16">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <CardHeader className="bg-gray-50/50 border-b border-gray-100">
                   <CardTitle className="text-xl font-medium text-gray-900 flex items-center">
@@ -123,7 +122,7 @@ const Agenda = () => {
                     Activités à venir
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-8">
+                <CardContent className="p-6">
                   <div className={`grid ${getGridClasses()}`}>
                     {upcomingActivities.map(activity => (
                       <div key={activity.id} className="transform hover:scale-[1.02] transition-all duration-300">
@@ -148,7 +147,7 @@ const Agenda = () => {
                     Activités récentes
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-8">
+                <CardContent className="p-6">
                   <div className={`grid ${getGridClasses()}`}>
                     {pastActivities.map(activity => (
                       <div key={activity.id} className="transform hover:scale-[1.02] transition-all duration-300">
