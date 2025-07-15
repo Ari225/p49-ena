@@ -80,76 +80,99 @@ const Agenda = () => {
   // Fonction pour obtenir les classes de grid selon la version
   const getGridClasses = () => {
     if (isMobile) {
-      return 'grid-cols-1 gap-4'; // Mobile
+      return 'grid-cols-1 gap-6'; // Mobile
     } else if (isTablet) {
-      return 'grid-cols-2 gap-6'; // Tablette
+      return 'grid-cols-2 gap-8'; // Tablette
     } else {
-      return 'md:grid-cols-2 lg:grid-cols-3 gap-6'; // Desktop
+      return 'md:grid-cols-2 lg:grid-cols-3 gap-8'; // Desktop
     }
   };
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-100">
         <AgendaHeader />
 
-        {/* Contenu principal */}
-        <section className={`py-16 ${getPaddingClasses()}`}>
+        {/* Contenu principal avec nouveau design */}
+        <section className={`py-20 ${getPaddingClasses()}`}>
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              <CalendarSection
-                selectedDate={selectedDate}
-                onSelectDate={setSelectedDate}
-                hasEvents={hasEvents}
-              />
+            {/* Section calendrier et événements du jour avec design amélioré */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-white to-blue-50/50 rounded-2xl shadow-lg border border-blue-100/50 overflow-hidden">
+                  <CalendarSection
+                    selectedDate={selectedDate}
+                    onSelectDate={setSelectedDate}
+                    hasEvents={hasEvents}
+                  />
+                </div>
+              </div>
 
-              <DayEventsSection
-                selectedDate={selectedDate}
-                selectedDateEvents={selectedDateEvents}
-                formatDate={formatDate}
-                getEventTypeColor={getEventTypeColor}
-                handleAddToCalendar={handleAddToCalendar}
-              />
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-white to-indigo-50/50 rounded-2xl shadow-lg border border-indigo-100/50 overflow-hidden">
+                  <DayEventsSection
+                    selectedDate={selectedDate}
+                    selectedDateEvents={selectedDateEvents}
+                    formatDate={formatDate}
+                    getEventTypeColor={getEventTypeColor}
+                    handleAddToCalendar={handleAddToCalendar}
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Activités à venir */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Activités à venir</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className={`grid ${getGridClasses()}`}>
-                  {upcomingActivities.map((activity) => (
-                    <ActivityCard
-                      key={activity.id}
-                      activity={activity}
-                      getEventTypeColor={getEventTypeColor}
-                      handleAddToCalendar={handleAddToCalendar}
-                    />
-                  ))}
+            {/* Activités à venir avec design moderne */}
+            <div className="mb-16">
+              <div className="bg-gradient-to-br from-white via-green-50/30 to-emerald-50/50 rounded-3xl shadow-xl border border-green-100/50 overflow-hidden">
+                <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-8 py-6">
+                  <h2 className="text-2xl font-bold text-white flex items-center">
+                    <div className="w-2 h-8 bg-white rounded-full mr-4"></div>
+                    Activités à venir
+                  </h2>
+                  <p className="text-green-100 mt-2">Découvrez nos prochains événements</p>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="p-8">
+                  <div className={`grid ${getGridClasses()}`}>
+                    {upcomingActivities.map((activity) => (
+                      <div key={activity.id} className="transform hover:scale-105 transition-all duration-300">
+                        <ActivityCard
+                          activity={activity}
+                          getEventTypeColor={getEventTypeColor}
+                          handleAddToCalendar={handleAddToCalendar}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-            {/* Activités récentes */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Activités récentes</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className={`grid ${getGridClasses()}`}>
-                  {pastActivities.map((activity) => (
-                    <ActivityCard
-                      key={activity.id}
-                      activity={activity}
-                      getEventTypeColor={getEventTypeColor}
-                      handleAddToCalendar={handleAddToCalendar}
-                      isPast={true}
-                    />
-                  ))}
+            {/* Activités récentes avec design élégant */}
+            <div>
+              <div className="bg-gradient-to-br from-white via-slate-50/30 to-gray-50/50 rounded-3xl shadow-xl border border-gray-200/50 overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-600 to-gray-700 px-8 py-6">
+                  <h2 className="text-2xl font-bold text-white flex items-center">
+                    <div className="w-2 h-8 bg-white rounded-full mr-4"></div>
+                    Activités récentes
+                  </h2>
+                  <p className="text-slate-200 mt-2">Retour sur nos événements passés</p>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="p-8">
+                  <div className={`grid ${getGridClasses()}`}>
+                    {pastActivities.map((activity) => (
+                      <div key={activity.id} className="transform hover:scale-105 transition-all duration-300">
+                        <ActivityCard
+                          activity={activity}
+                          getEventTypeColor={getEventTypeColor}
+                          handleAddToCalendar={handleAddToCalendar}
+                          isPast={true}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>
