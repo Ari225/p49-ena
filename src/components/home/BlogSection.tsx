@@ -101,9 +101,9 @@ const BlogSection = () => {
   };
 
   const getCardImageHeight = () => {
-    if (isMobile) return 'h-40 md:h-40';
-    if (isTablet) return 'h-50';
-    return 'h-50 md:h-50';
+    if (isMobile) return 'h-32 md:h-32';
+    if (isTablet) return 'h-38';
+    return 'h-32 md:h-48';
   };
 
   const getCardTitleSize = () => {
