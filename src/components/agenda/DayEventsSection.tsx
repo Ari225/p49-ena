@@ -50,8 +50,8 @@ const DayEventsSection = ({
     }
   };
 
-  // Fonction pour obtenir les classes de taille de bouton selon la version
-  const getButtonSize = () => {
+  // Fonction pour obtenir la taille de bouton selon la version
+  const getButtonSize = (): "default" | "sm" | "lg" | "icon" => {
     if (isMobile) {
       return 'sm'; // Mobile - petits boutons
     } else if (isTablet) {
