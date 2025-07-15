@@ -111,6 +111,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
   };
 
   const gridConfig = getGridConfig();
+  const isSingleCard = level.length === 1;
   
   return (
     <div className="relative w-full">
@@ -133,13 +134,14 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
       )}
       
       <div className="flex justify-center relative z-10">
-        <div className={`grid ${gridConfig.gridCols} ${gridConfig.maxWidth} ${gridConfig.gap} mx-auto w-full`}>
+        <div className={`grid ${gridConfig.gridCols} ${gridConfig.maxWidth} ${gridConfig.gap} mx-auto w-full ${isSingleCard ? 'place-items-center' : ''}`}>
           {level.map((member, index) => (
             <div 
               key={index} 
               className={`
                 relative transform transition-all duration-300 hover:scale-105 hover:z-20
                 ${isMobile ? 'mx-auto max-w-xs w-full' : isTablet ? 'w-full h-full' : ''}
+                ${isSingleCard ? 'justify-self-center' : ''}
               `}
             >
               <MemberOrganigramCard
