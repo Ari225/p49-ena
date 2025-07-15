@@ -68,7 +68,7 @@ const AgendaHeader = () => {
         <div className="absolute inset-0 bg-primary/80"></div>
       </div>
       
-      <div className="relative z-10 text-center px-8 lg:px-[100px]">
+      <div className="relative z-10 text-center px-[100px]">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in">
           Agenda P49
         </h1>
