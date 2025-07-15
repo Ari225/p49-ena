@@ -20,16 +20,16 @@ const FooterLogo: React.FC<FooterLogoProps> = ({ variant = 'desktop' }) => {
         />
       </div>
       <p className={`text-gray-300 leading-relaxed mb-2 text-center lg:text-left max-w-[240px] mx-auto lg:mx-0 ${
-        variant === 'mobile' ? 'text-xs' :
+        variant === 'mobile' ? 'text-xs w-full' :
         variant === 'tablet' ? 'text-sm' :
-        'text-xs lg:text-base'
+        'text-base lg:text-base'
       }`}>
         La P49, des Leaders d'excellence au service de la Nation.
       </p>
       <p className={`text-gray-300 leading-relaxed mb-4 lg:mb-5 text-center lg:text-left max-w-[230px] mx-auto lg:mx-0 ${
-        variant === 'mobile' ? 'text-xs' :
+        variant === 'mobile' ? 'text-xs w-full' :
         variant === 'tablet' ? 'text-sm' :
-        'text-xs lg:text-base'
+        'text-base lg:text-base'
       }`}>
         Plus qu'une promo, une famille unie et solidaire.
       </p>
