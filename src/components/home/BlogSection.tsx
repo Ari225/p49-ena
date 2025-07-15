@@ -102,7 +102,7 @@ const BlogSection = () => {
 
   const getCardImageHeight = () => {
     if (isMobile) return 'h-32 md:h-32';
-    if (isTablet) return 'h-38';
+    if (isTablet) return 'h-25';
     return 'h-32 md:h-48';
   };
 
