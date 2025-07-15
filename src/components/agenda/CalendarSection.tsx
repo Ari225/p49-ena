@@ -12,33 +12,31 @@ interface CalendarSectionProps {
 
 const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSectionProps) => {
   return (
-    <Card className="h-fit">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center text-lg">
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center">
           <CalendarIcon className="h-5 w-5 mr-2" />
           Calendrier des Activités
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4">
-        <div className="flex justify-center">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={onSelectDate}
-            className="rounded-md border w-full max-w-md mx-auto"
-            modifiers={{
-              hasEvents: (date) => hasEvents(date)
-            }}
-            modifiersStyles={{
-              hasEvents: { 
-                backgroundColor: '#3b82f6', 
-                color: 'white',
-                fontWeight: 'bold'
-              }
-            }}
-          />
-        </div>
-        <div className="mt-4 text-sm text-gray-600 text-center">
+      <CardContent>
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={onSelectDate}
+          className="rounded-md border"
+          modifiers={{
+            hasEvents: (date) => hasEvents(date)
+          }}
+          modifiersStyles={{
+            hasEvents: { 
+              backgroundColor: '#3b82f6', 
+              color: 'white',
+              fontWeight: 'bold'
+            }
+          }}
+        />
+        <div className="mt-4 text-sm text-gray-600">
           <p>Les dates en bleu indiquent des activités planifiées</p>
         </div>
       </CardContent>
