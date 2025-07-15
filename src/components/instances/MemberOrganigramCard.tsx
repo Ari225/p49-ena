@@ -73,8 +73,8 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
     }
   };
 
-  // Ajustement spécifique pour MEL Meléï Marcelle en version tablette
-  const isSpecialCard = name === 'MEL Meléï Marcelle';
+  // Ajustement spécifique pour certaines cartes en version tablette
+  const isSpecialCard = name === 'MEL Meléï Marcelle' || name === 'SANGARE Yacouba' || name === 'IPAUD Michel';
   const cardWidthClass = isTablet && isSpecialCard ? 'max-w-[280px] mx-auto' : '';
 
   return (
