@@ -33,43 +33,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
     }
     
     if (isTablet) {
-      // Configuration tablette - disposition spéciale basée sur les noms
-      const memberNames = level.map(member => member.name);
-      
-      // Vérifier les groupes spécifiques pour la disposition personnalisée
-      const hasThimaAndKiyala = memberNames.includes('SORO Thima') && memberNames.includes('SILUE Kiyala');
-      const hasNoelPair = memberNames.filter(name => name === 'AHOURE Noël').length === 2;
-      const hasSophieAndLuc = memberNames.includes('ABOUA Sopie IDA épouse KOUADIO') && memberNames.includes('KROU Allou Luc');
-      const hasMarieClémence = memberNames.includes('ODJE Marie-Clémence');
-      const hasFalleDaya = memberNames.includes('FALLE Daya Aymard');
-      const hasTrioIPAUD = memberNames.includes('IPAUD Michel') && memberNames.includes('SANGARE Yacouba') && memberNames.includes('MEL Meléï Marcelle');
-      
-      // Configuration personnalisée pour les groupes spécifiques
-      if (hasThimaAndKiyala || hasNoelPair || hasSophieAndLuc) {
-        return {
-          gridCols: 'grid-cols-2',
-          maxWidth: 'max-w-2xl',
-          gap: 'gap-6'
-        };
-      }
-      
-      if (hasMarieClémence || hasFalleDaya) {
-        return {
-          gridCols: 'grid-cols-1',
-          maxWidth: 'max-w-md',
-          gap: 'gap-6'
-        };
-      }
-      
-      if (hasTrioIPAUD) {
-        return {
-          gridCols: 'grid-cols-3',
-          maxWidth: 'max-w-3xl',
-          gap: 'gap-6'
-        };
-      }
-      
-      // Configuration générale pour les Conseillers et Présidents de Commission
+      // Configuration tablette - disposition spéciale pour certains niveaux
       const isConseillerLevel = level.some(member => member.position.toLowerCase().includes('conseiller'));
       const isPresidentCommissionLevel = level.some(member => member.position.toLowerCase().includes('président de commission'));
       
@@ -91,26 +55,26 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
           };
         case 2:
           return {
-            gridCols: 'grid-cols-2',
-            maxWidth: 'max-w-2xl',
+            gridCols: 'grid-cols-1 sm:grid-cols-2',
+            maxWidth: 'max-w-xl',
             gap: 'gap-6'
           };
         case 3:
           return {
-            gridCols: 'grid-cols-3',
+            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
             maxWidth: 'max-w-3xl',
             gap: 'gap-6'
           };
         case 4:
           return {
-            gridCols: 'grid-cols-2',
-            maxWidth: 'max-w-2xl',
+            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
+            maxWidth: 'max-w-4xl',
             gap: 'gap-6'
           };
         default:
           return {
-            gridCols: 'grid-cols-2',
-            maxWidth: 'max-w-2xl',
+            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+            maxWidth: 'max-w-4xl',
             gap: 'gap-6'
           };
       }
@@ -181,7 +145,6 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
               className={`
                 relative transform transition-all duration-300 hover:scale-105 hover:z-20
                 ${isMobile ? 'mx-auto max-w-xs w-full' : ''}
-                ${isTablet ? 'mx-auto w-full' : ''}
               `}
             >
               <MemberOrganigramCard
