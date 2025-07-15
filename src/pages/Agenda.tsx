@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
 import AgendaHeader from '@/components/agenda/AgendaHeader';
@@ -13,6 +13,7 @@ import { allActivities, getEventTypeColor } from '@/components/agenda/agendaData
 
 const Agenda = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
@@ -61,19 +62,35 @@ const Agenda = () => {
     }
   };
 
-  // Séparer les activités à venir et récentes
-  const upcomingActivities = allActivities.filter(activity => activity.status === 'À venir');
-  const pastActivities = allActivities.filter(activity => activity.status === 'Terminé');
+  // Séparer les activités à venir et récentes avec images de galerie
+  const upcomingActivities = allActivities.filter(activity => activity.status === 'À venir').map(activity => ({
+    ...activity,
+    image: activity.id === 1 ? "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg" :
+           activity.id === 2 ? "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg" :
+           activity.id === 5 ? "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" :
+           activity.id === 6 ? "/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg" :
+           "/lovable-uploads/Equipe.jpg"
+  }));
 
-  return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50">
-        <AgendaHeader />
+  const pastActivities = allActivities.filter(activity => activity.status === 'Terminé').map(activity => ({
+    ...activity,
+    image: activity.id === 3 ? "/lovable-uploads/Equipe1.jpg" :
+           activity.id === 4 ? "/lovable-uploads/P49Grid.webp" :
+           activity.id === 7 ? "/lovable-uploads/Pers49.webp" :
+           "/lovable-uploads/bonheur.jpg"
+  }));
 
-        {/* Contenu principal */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+  // ========== VERSION MOBILE ==========
+  if (isMobile) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50">
+          <AgendaHeader />
+
+          {/* Contenu principal mobile */}
+          <section className="py-8 px-[25px]">
+            {/* Calendrier et événements du jour - Mobile */}
+            <div className="space-y-6 mb-8">
               <CalendarSection
                 selectedDate={selectedDate}
                 onSelectDate={setSelectedDate}
@@ -89,13 +106,13 @@ const Agenda = () => {
               />
             </div>
 
-            {/* Activités à venir */}
-            <Card className="mb-8">
+            {/* Activités à venir - Mobile */}
+            <Card className="mb-6">
               <CardHeader>
-                <CardTitle>Activités à venir</CardTitle>
+                <CardTitle className="text-lg">Activités à venir</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+                <div className="space-y-4">
                   {upcomingActivities.map((activity) => (
                     <ActivityCard
                       key={activity.id}
@@ -108,13 +125,13 @@ const Agenda = () => {
               </CardContent>
             </Card>
 
-            {/* Activités récentes */}
+            {/* Activités récentes - Mobile */}
             <Card>
               <CardHeader>
-                <CardTitle>Activités récentes</CardTitle>
+                <CardTitle className="text-lg">Activités récentes</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'md:grid-cols-2 lg:grid-cols-3 gap-6'}`}>
+                <div className="space-y-4">
                   {pastActivities.map((activity) => (
                     <ActivityCard
                       key={activity.id}
@@ -127,7 +144,145 @@ const Agenda = () => {
                 </div>
               </CardContent>
             </Card>
+          </section>
+        </div>
+      </Layout>
+    );
+  }
+
+  // ========== VERSION TABLETTE ==========
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50">
+          <AgendaHeader />
+
+          {/* Contenu principal tablette */}
+          <section className="py-12 px-8">
+            {/* Calendrier et événements du jour - Tablette */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+              <CalendarSection
+                selectedDate={selectedDate}
+                onSelectDate={setSelectedDate}
+                hasEvents={hasEvents}
+              />
+
+              <DayEventsSection
+                selectedDate={selectedDate}
+                selectedDateEvents={selectedDateEvents}
+                formatDate={formatDate}
+                getEventTypeColor={getEventTypeColor}
+                handleAddToCalendar={handleAddToCalendar}
+              />
+            </div>
+
+            {/* Activités à venir - Tablette */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle className="text-xl">Activités à venir</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {upcomingActivities.map((activity) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                      getEventTypeColor={getEventTypeColor}
+                      handleAddToCalendar={handleAddToCalendar}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Activités récentes - Tablette */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl">Activités récentes</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {pastActivities.map((activity) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                      getEventTypeColor={getEventTypeColor}
+                      handleAddToCalendar={handleAddToCalendar}
+                      isPast={true}
+                    />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        </div>
+      </Layout>
+    );
+  }
+
+  // ========== VERSION DESKTOP ==========
+  return (
+    <Layout>
+      <div className="min-h-screen bg-gray-50">
+        <AgendaHeader />
+
+        {/* Contenu principal desktop */}
+        <section className="py-16 px-[100px]">
+          {/* Calendrier et événements du jour - Desktop */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <CalendarSection
+              selectedDate={selectedDate}
+              onSelectDate={setSelectedDate}
+              hasEvents={hasEvents}
+            />
+
+            <DayEventsSection
+              selectedDate={selectedDate}
+              selectedDateEvents={selectedDateEvents}
+              formatDate={formatDate}
+              getEventTypeColor={getEventTypeColor}
+              handleAddToCalendar={handleAddToCalendar}
+            />
           </div>
+
+          {/* Activités à venir - Desktop */}
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="text-2xl">Activités à venir</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {upcomingActivities.map((activity) => (
+                  <ActivityCard
+                    key={activity.id}
+                    activity={activity}
+                    getEventTypeColor={getEventTypeColor}
+                    handleAddToCalendar={handleAddToCalendar}
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Activités récentes - Desktop */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Activités récentes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pastActivities.map((activity) => (
+                  <ActivityCard
+                    key={activity.id}
+                    activity={activity}
+                    getEventTypeColor={getEventTypeColor}
+                    handleAddToCalendar={handleAddToCalendar}
+                    isPast={true}
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </section>
       </div>
     </Layout>
