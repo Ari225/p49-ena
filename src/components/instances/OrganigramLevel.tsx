@@ -33,37 +33,49 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
     }
     
     if (isTablet) {
-      // Configuration tablette
+      // Configuration tablette - disposition spéciale pour certains niveaux
+      const isConseillerLevel = level.some(member => member.position.toLowerCase().includes('conseiller'));
+      const isPresidentCommissionLevel = level.some(member => member.position.toLowerCase().includes('président de commission'));
+      
+      if (isConseillerLevel || isPresidentCommissionLevel) {
+        // Disposition 2 par ligne pour les Conseillers et Présidents de Commission
+        return {
+          gridCols: 'grid-cols-2',
+          maxWidth: 'max-w-2xl',
+          gap: 'gap-6'
+        };
+      }
+      
       switch (memberCount) {
         case 1:
           return {
             gridCols: 'grid-cols-1',
             maxWidth: 'max-w-md',
-            gap: 'gap-8'
+            gap: 'gap-6'
           };
         case 2:
           return {
             gridCols: 'grid-cols-1 sm:grid-cols-2',
-            maxWidth: 'max-w-2xl',
-            gap: 'gap-10'
+            maxWidth: 'max-w-xl',
+            gap: 'gap-6'
           };
         case 3:
           return {
             gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-            maxWidth: 'max-w-4xl',
-            gap: 'gap-8'
+            maxWidth: 'max-w-3xl',
+            gap: 'gap-6'
           };
         case 4:
           return {
             gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
-            maxWidth: 'max-w-5xl',
-            gap: 'gap-8'
+            maxWidth: 'max-w-4xl',
+            gap: 'gap-6'
           };
         default:
           return {
             gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-            maxWidth: 'max-w-5xl',
-            gap: 'gap-8'
+            maxWidth: 'max-w-4xl',
+            gap: 'gap-6'
           };
       }
     }
