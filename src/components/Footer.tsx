@@ -45,10 +45,14 @@ const Footer = () => {
               <FooterLogo variant="tablet" />
             </div>
 
-            <div className="grid grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <FooterLinks variant="tablet" />
-                <FooterContact variant="tablet" />
+            <div className="flex flex-col gap-6">
+              <div className="flex gap-8">
+                <div className="flex-1">
+                  <FooterLinks variant="tablet" />
+                </div>
+                <div className="flex-1">
+                  <FooterContact variant="tablet" />
+                </div>
               </div>
               <div>
                 <FooterNewsletter variant="tablet" />
