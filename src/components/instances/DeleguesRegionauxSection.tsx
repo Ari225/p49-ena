@@ -18,7 +18,7 @@ const DeleguesRegionauxSection = () => {
   if (isMobile) {
     return (
       <section className="py-6">
-        <h2 className="text-2xl font-bold text-center mb-6 text-primary">
+        <h2 className="text-xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
           Délégués Régionaux
         </h2>
         <div className="grid grid-cols-1 gap-6 max-w-sm mx-auto">
@@ -39,7 +39,7 @@ const DeleguesRegionauxSection = () => {
   if (isTablet) {
     return (
       <section className="py-8">
-        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+        <h2 className="text-2xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
           Délégués Régionaux
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -59,7 +59,7 @@ const DeleguesRegionauxSection = () => {
   // Desktop Version
   return (
     <section className="py-10">
-      <h2 className="text-4xl font-bold text-center mb-12 text-primary">
+      <h2 className="text-3xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
         Délégués Régionaux
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

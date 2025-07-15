@@ -80,7 +80,7 @@ const CommissionsSection = () => {
   const CommissionCard = ({ commission, index }: { commission: any, index: number }) => (
     <Card key={index} className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary h-fit">
       <CardHeader className={isMobile ? 'pb-3' : isTablet ? 'pb-4' : 'pb-5'}>
-        <CardTitle className={`${isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-2xl'} text-primary mb-2`}>
+        <CardTitle className={`${isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'} text-primary mb-2`}>
           {commission.title}
         </CardTitle>
         <div className={`bg-primary/10 rounded-lg p-3 ${isMobile ? 'mb-2' : isTablet ? 'mb-3' : 'mb-4'}`}>
@@ -93,7 +93,7 @@ const CommissionsSection = () => {
       <CardContent className={isMobile ? 'pt-0' : isTablet ? 'pt-1' : 'pt-2'}>
         <div className="space-y-2">
           {commission.tasks.map((task: string, taskIndex: number) => (
-            <p key={taskIndex} className={`text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}`}>
+            <p key={taskIndex} className={`text-gray-700 leading-relaxed ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-base'}`}>
               {task}
             </p>
           ))}
@@ -106,7 +106,7 @@ const CommissionsSection = () => {
   if (isMobile) {
     return (
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-center mb-6 text-primary">
+        <h2 className="text-xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
           Les Commissions du Réseau P49 ENA
         </h2>
         
@@ -123,7 +123,7 @@ const CommissionsSection = () => {
   if (isTablet) {
     return (
       <div className="space-y-8">
-        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+        <h2 className="text-2xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
           Les Commissions du Réseau P49 ENA
         </h2>
         
@@ -146,7 +146,7 @@ const CommissionsSection = () => {
   // Desktop Version
   return (
     <div className="space-y-10">
-      <h2 className="text-4xl font-bold text-center mb-12 text-primary">
+      <h2 className="text-3xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
         Les Commissions du Réseau P49 ENA
       </h2>
       

@@ -84,7 +84,7 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
               <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-primary/10 to-secondary/10"></div>
               <Avatar className={`${isMobile ? 'h-16 w-16' : isTablet ? 'h-18 w-18' : 'h-20 w-20'} ring-3 ring-primary/30 group-hover:ring-primary/50 transition-all duration-300 relative z-10 shadow-lg`}>
                 <AvatarImage 
-                  src="/lovable-uploads/0eb571bc-9634-49ab-9502-ce03a1464da6.png"
+                  src="/lovable-uploads/narcissek.jpeg"
                   alt={name}
                   className="object-cover"
                 />
