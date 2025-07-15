@@ -138,9 +138,8 @@ const GallerySection = () => {
           </div>
           
           <div className="flex justify-center items-center py-12">
-            <div className="text-gray-500 text-center">
-              <p className="text-lg mb-4">Aucun média disponible pour le moment.</p>
-              <p className="text-sm">Ajoutez des médias via le tableau de bord administrateur.</p>
+            <div className="text-gray-700 text-center">
+              <p className="text-sm mb-4">Aucun média disponible pour le moment.</p>
             </div>
           </div>
         </div>
@@ -155,7 +154,7 @@ const GallerySection = () => {
       'px-8 md:px-12 lg:px-[100px]' // Desktop
     }`}>
       <div className="container mx-auto px-0">
-        <div className={`flex items-center justify-between mb-8 md:mb-12 gap-4 ${
+        <div className={`flex items-center justify-between mb-[50px] md:mb-[50px] gap-4 ${
           isMobile ? 'flex-row' : 
           isTab ? 'flex-row' :
           'flex-col sm:flex-row' // Desktop
