@@ -14,33 +14,33 @@ const TestimonialsSection = () => {
   const testimonials = [{
     name: "Dr. Kouassi Marie",
     position: "Directrice Générale, Ministère de l'Économie",
-    quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables.",
-    image: "https://images.unsplash.com/photo-1494790108755-2616b612b047?w=100&h=100&fit=crop&crop=face"
+    quote: "Le réseau P49 m'a permis de développer mes compétences et de créer des liens durables. Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
+    image: "/lovable-uploads/narcissek.jpeg"
   }, {
     name: "M. Yao Jean-Baptiste",
     position: "Préfet de Région",
     quote: "Une communauté exceptionnelle qui favorise l'excellence dans le service public.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+    image: "/lovable-uploads/narcissek.jpeg"
   }, {
     name: "Mme. Touré Fatou",
     position: "Directrice des Ressources Humaines",
     quote: "L'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien.",
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=100&h=100&fit=crop&crop=face"
+    image: "/lovable-uploads/narcissek.jpeg"
   }, {
     name: "Dr. Diallo Mamadou",
     position: "Conseiller du Président",
     quote: "La formation continue proposée par le réseau est de très haute qualité.",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&h=100&fit=crop&crop=face"
+    image: "/lovable-uploads/narcissek.jpeg"
   }, {
     name: "Mme. Kone Awa",
     position: "Secrétaire Générale de Ministère",
     quote: "Les échanges d'expériences enrichissent notre pratique professionnelle quotidienne.",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=100&h=100&fit=crop&crop=face"
+    image: "/lovable-uploads/narcissek.jpeg"
   }, {
     name: "M. Bamba Seydou",
     position: "Sous-Préfet",
-    quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
-    image: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=100&h=100&fit=crop&crop=face"
+    quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle. Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
+    image: "/lovable-uploads/narcissek.jpeg"
   }];
 
   // Autoslide effect
