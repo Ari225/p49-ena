@@ -19,7 +19,7 @@ const DeleguesRegionauxSection = () => {
         <h2 className="text-xl font-bold text-center mb-[25px] md:mb-[25px] text-primary">
           Délégués Régionaux
         </h2>
-        <div className="grid grid-cols-1 gap-3 max-w-sm mx-auto">
+        <div className="grid grid-cols-1 gap-5 max-w-sm mx-auto">
           {delegues.map((member, index) => (
             <MemberOrganigramCard
               key={index}
@@ -40,7 +40,7 @@ const DeleguesRegionauxSection = () => {
         <h2 className="text-2xl font-bold text-center mb-[30px] md:mb-[30px] text-primary">
           Délégués Régionaux
         </h2>
-        <div className="grid grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div className="grid grid-cols-2 gap-5 max-w-2xl mx-auto">
           {delegues.map((member, index) => (
             <div key={index} className="max-w-[280px] mx-auto w-full">
               <MemberOrganigramCard
@@ -61,7 +61,7 @@ const DeleguesRegionauxSection = () => {
       <h2 className="text-3xl font-bold text-center mb-[35px] md:mb-[35px] text-primary">
         Délégués Régionaux
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
         {delegues.map((member, index) => (
           <MemberOrganigramCard
             key={index}
