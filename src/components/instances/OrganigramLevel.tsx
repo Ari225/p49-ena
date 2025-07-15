@@ -113,6 +113,21 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
   const gridConfig = getGridConfig();
   const isSingleCard = level.length === 1;
   
+  // Fonction pour vérifier si une carte doit être centrée (cas spéciaux)
+  const shouldCenterCard = (member: OrganigramMember, index: number) => {
+    // Centrer AHOURE Noël qui est seul sur sa ligne dans le niveau 9
+    if (member.name === "AHOURE Noël" && level.length === 5) {
+      return index === 4; // Dernier élément du niveau 9
+    }
+    
+    // Centrer FALLE Daya Aymard qui est seul sur sa ligne dans le niveau 7
+    if (member.name === "FALLE Daya Aymard" && level.length === 3) {
+      return index === 2; // Dernier élément du niveau 7
+    }
+    
+    return false;
+  };
+  
   return (
     <div className="relative w-full">
       {/* Render connection lines to next level */}
@@ -135,22 +150,27 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
       
       <div className="flex justify-center relative z-10">
         <div className={`grid ${gridConfig.gridCols} ${gridConfig.maxWidth} ${gridConfig.gap} mx-auto w-full ${isSingleCard ? 'place-items-center' : ''}`}>
-          {level.map((member, index) => (
-            <div 
-              key={index} 
-              className={`
-                relative transform transition-all duration-300 hover:scale-105 hover:z-20
-                ${isMobile ? 'mx-auto max-w-xs w-full' : isTablet ? 'w-full h-full' : ''}
-                ${isSingleCard ? 'justify-self-center' : ''}
-              `}
-            >
-              <MemberOrganigramCard
-                name={member.name}
-                position={member.position}
-                phone={member.phone}
-              />
-            </div>
-          ))}
+          {level.map((member, index) => {
+            const shouldCenter = shouldCenterCard(member, index);
+            
+            return (
+              <div 
+                key={index} 
+                className={`
+                  relative transform transition-all duration-300 hover:scale-105 hover:z-20
+                  ${isMobile ? 'mx-auto max-w-xs w-full' : isTablet ? 'w-full h-full' : ''}
+                  ${isSingleCard ? 'justify-self-center' : ''}
+                  ${shouldCenter ? 'col-span-full flex justify-center' : ''}
+                `}
+              >
+                <MemberOrganigramCard
+                  name={member.name}
+                  position={member.position}
+                  phone={member.phone}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
       
