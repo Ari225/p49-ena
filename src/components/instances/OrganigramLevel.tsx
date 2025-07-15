@@ -33,7 +33,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
     }
     
     if (isTablet) {
-      // Configuration tablette - disposition spéciale pour certains niveaux
+      // Configuration tablette - toutes les cartes ont la même taille
       const isConseillerLevel = level.some(member => member.position.toLowerCase().includes('conseiller'));
       const isPresidentCommissionLevel = level.some(member => member.position.toLowerCase().includes('président de commission'));
       
@@ -42,10 +42,11 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
         return {
           gridCols: 'grid-cols-2',
           maxWidth: 'max-w-2xl',
-          gap: 'gap-6'
+          gap: 'gap-4'
         };
       }
       
+      // Pour tous les autres niveaux en tablette
       switch (memberCount) {
         case 1:
           return {
@@ -55,27 +56,21 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
           };
         case 2:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2',
-            maxWidth: 'max-w-xl',
-            gap: 'gap-6'
+            gridCols: 'grid-cols-2',
+            maxWidth: 'max-w-2xl',
+            gap: 'gap-4'
           };
         case 3:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
+            gridCols: 'grid-cols-3',
             maxWidth: 'max-w-3xl',
-            gap: 'gap-6'
-          };
-        case 4:
-          return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-4',
-            maxWidth: 'max-w-4xl',
-            gap: 'gap-6'
+            gap: 'gap-4'
           };
         default:
           return {
-            gridCols: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3',
-            maxWidth: 'max-w-4xl',
-            gap: 'gap-6'
+            gridCols: 'grid-cols-2',
+            maxWidth: 'max-w-2xl',
+            gap: 'gap-4'
           };
       }
     }
@@ -144,7 +139,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
               key={index} 
               className={`
                 relative transform transition-all duration-300 hover:scale-105 hover:z-20
-                ${isMobile ? 'mx-auto max-w-xs w-full' : ''}
+                ${isMobile ? 'mx-auto max-w-xs w-full' : isTablet ? 'w-full h-full' : ''}
               `}
             >
               <MemberOrganigramCard
