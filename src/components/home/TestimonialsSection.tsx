@@ -71,7 +71,7 @@ const TestimonialsSection = () => {
     return (
       <section className="py-[50px] px-[25px] bg-white">
         <div className="container mx-auto px-0">
-          <h2 className="text-2xl font-bold text-center text-primary mb-8">Témoignages</h2>
+          <h2 className="text-xl font-bold text-center text-primary mb-[50px] md:mb-[50px]">Témoignages</h2>
           
           <div className="relative overflow-hidden">
             <div className="flex transition-transform duration-[1500ms] ease-in-out" style={{
@@ -82,7 +82,7 @@ const TestimonialsSection = () => {
                   <Card className="h-full transition-all duration-300 ease-in-out shadow-sm">
                     <CardContent className="p-4">
                       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
-                        <img src={testimonial.image} alt={testimonial.name} className="w-14 h-14 rounded-full object-cover flex-shrink-0" />
+                        <img src={testimonial.image} alt={testimonial.name} className="w-20 h-20 rounded-full object-cover flex-shrink-0" />
                         <div className="flex-1 text-center sm:text-left">
                           <p className="italic mb-3 text-gray-600 text-sm line-clamp-3">"{testimonial.quote}"</p>
                           <div>
@@ -108,7 +108,7 @@ const TestimonialsSection = () => {
           </div>
           
           <div className="text-center mt-6">
-            <Button asChild className="bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold w-full text-sm">
+            <Button asChild className="bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold w-full text-xs">
               <Link to="/temoignages" className="flex items-center justify-center">
                 Voir tous les témoignages
                 <ChevronRight className="h-4 w-4 ml-2" />
@@ -125,7 +125,7 @@ const TestimonialsSection = () => {
     return (
       <section className="py-[75px] px-[50px] bg-white">
         <div className="container mx-auto px-0">
-          <h2 className="text-2xl font-bold text-center text-primary mb-12">Témoignages</h2>
+          <h2 className="text-2xl font-bold text-center text-primary mb-[50px] md:mb-[50px]">Témoignages</h2>
           
           <div className="relative overflow-hidden">
             <div className="flex transition-transform duration-[1500ms] ease-in-out" style={{
@@ -136,12 +136,12 @@ const TestimonialsSection = () => {
                   <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4">
-                        <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
+                        <img src={testimonial.image} alt={testimonial.name} className="w-25 h-25 rounded-full object-cover flex-shrink-0" />
                         <div className="flex-1">
-                          <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
+                          <p className="italic mb-4 text-gray-600 text-base">"{testimonial.quote}"</p>
                           <div>
-                            <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
-                            <p className="text-xs text-gray-500">{testimonial.position}</p>
+                            <h4 className="font-semibold text-primary text-base">{testimonial.name}</h4>
+                            <p className="text-sm text-gray-500">{testimonial.position}</p>
                           </div>
                         </div>
                       </div>
@@ -161,7 +161,7 @@ const TestimonialsSection = () => {
           </div>
           
           <div className="text-center mt-8">
-            <Button asChild className="bg-primary hover:bg-primary text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+            <Button asChild className="bg-primary hover:bg-primary text-sm text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
               <Link to="/temoignages" className="flex items-center">
                 Voir tous les témoignages
                 <ChevronRight className="h-4 w-4 ml-2" />
@@ -177,7 +177,7 @@ const TestimonialsSection = () => {
   return (
     <section className="py-[75px] px-8 md:px-12 lg:py-[100px] lg:px-[100px] bg-white">
       <div className="container mx-auto px-0">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
+        <h2 className="text-3xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
         
         <div className="relative overflow-hidden">
           <div className="flex transition-transform duration-[1500ms] ease-in-out" style={{
@@ -188,12 +188,12 @@ const TestimonialsSection = () => {
                 <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
-                      <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover flex-shrink-0" />
+                      <img src={testimonial.image} alt={testimonial.name} className="w-25 h-25 rounded-full object-cover flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="italic mb-4 text-gray-600 text-sm">"{testimonial.quote}"</p>
+                        <p className="italic mb-4 text-gray-600 text-lg">"{testimonial.quote}"</p>
                         <div>
-                          <h4 className="font-semibold text-primary text-sm">{testimonial.name}</h4>
-                          <p className="text-xs text-gray-500">{testimonial.position}</p>
+                          <h4 className="font-semibold text-primary text-base">{testimonial.name}</h4>
+                          <p className="text-sm text-gray-500">{testimonial.position}</p>
                         </div>
                       </div>
                     </div>
@@ -213,7 +213,7 @@ const TestimonialsSection = () => {
         </div>
         
         <div className="text-center mt-8">
-          <Button asChild className="bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+          <Button asChild className="bg-primary hover:bg-primary text-base md:text-sm text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
             <Link to="/temoignages" className="flex items-center">
               Voir tous les témoignages
               <ChevronRight className="h-4 w-4 ml-2" />
