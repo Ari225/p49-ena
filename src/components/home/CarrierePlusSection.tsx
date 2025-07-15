@@ -45,8 +45,8 @@ const CarrierePlusSection = () => {
                   <GraduationCap className="w-5 h-5 text-white" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-semibold text-primary">Formation en cours</h3>
-                  <p className="text-sm text-gray-700 font-normal">Jusqu'au 30 avril 2024</p>
+                  <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>Formation en cours</h3>
+                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Jusqu'au 30 avril 2024</p>
                 </div>
               </div>
               <h4 className="font-bold mb-3 text-primary text-lg">Programme de Leadership Avancé</h4>
@@ -71,8 +71,8 @@ const CarrierePlusSection = () => {
                 Chaque jour est une opportunité d'apprendre et de grandir."
               </blockquote>
               <div className="border-t border-white/20 pt-4">
-                <p className="font-semibold">Dr. Kouakou Marie-Claire</p>
-                <p className="text-sm opacity-80">Directrice Générale, Promotion 49</p>
+                <p className={`font-semibold ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>Dr. Kouakou Marie-Claire</p>
+                <p className={`opacity-80 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Directrice Générale, Promotion 49</p>
               </div>
             </CardContent>
           </Card>
@@ -88,15 +88,15 @@ const CarrierePlusSection = () => {
                   <TrendingUp className="w-5 h-5 text-primary" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="font-semibold text-primary">Nos réussites</h3>
-                  <p className="text-sm text-gray-700 font-normal">Année 2024</p>
+                  <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>Nos réussites</h3>
+                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Année 2024</p>
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-normal text-gray-700">Formations dispensées</span>
-                    <span className="font-bold text-primary">12</span>
+                    <span className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Formations dispensées</span>
+                    <span className={`font-bold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>12</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                     <div className="bg-primary h-2 rounded-full" style={{width: '80%'}}></div>
@@ -104,8 +104,8 @@ const CarrierePlusSection = () => {
                 </div>
                 <div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 font-normal">Membres formés</span>
-                    <span className="font-bold text-primary">150+</span>
+                    <span className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Membres formés</span>
+                    <span className={`font-bold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>150+</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
                     <div className="bg-secondary h-2 rounded-full" style={{width: '90%'}}></div>
@@ -117,10 +117,10 @@ const CarrierePlusSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-base md:text-base text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${
-            isMobile ? 'w-full' : 
-            isTab ? 'px-8 py-3' :
-            '' // Desktop
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${
+            isMobile ? 'w-full text-xs' : 
+            isTab ? 'px-8 py-3 text-sm' :
+            'text-sm md:text-sm' // Desktop
           }`}>
             <Link to="/formations" className="flex items-center justify-center">
               Découvrir nos opportunités
