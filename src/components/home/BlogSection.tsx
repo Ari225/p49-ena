@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PenTool, Calendar, User, ChevronRight, ChevronLeft } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet, useIsDesktop } from '@/hooks/use-mobile';
+
 interface BlogArticle {
   id: string;
   title: string;
@@ -15,13 +17,20 @@ interface BlogArticle {
     last_name: string;
   };
 }
+
 const BlogSection = () => {
   const [articles, setArticles] = useState<BlogArticle[]>([]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  
+  // ===== RESPONSIVE HOOKS =====
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const isDesktop = useIsDesktop();
+
   useEffect(() => {
     fetchBlogArticles();
   }, []);
+
   const fetchBlogArticles = async () => {
     // Mock data instead of Supabase
     const mockArticles: BlogArticle[] = [{
@@ -57,36 +66,95 @@ const BlogSection = () => {
     }];
     setArticles(mockArticles);
   };
+
   const nextSlide = () => {
     setCurrentSlideIndex(prevIndex => (prevIndex + 1) % articles.length);
   };
+
   const prevSlide = () => {
     setCurrentSlideIndex(prevIndex => prevIndex === 0 ? articles.length - 1 : prevIndex - 1);
   };
-  return <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${isMobile ? 'px-[25px]' : 'px-4 md:px-8 lg:px-[100px]'}`}>
+
+  // ===== RESPONSIVE FUNCTIONS =====
+  const getSectionPadding = () => {
+    if (isMobile) return 'px-[25px]';
+    if (isTablet) return 'px-8';
+    return 'px-4 md:px-8 lg:px-[100px]';
+  };
+
+  const getTitleSize = () => {
+    if (isMobile) return 'text-xl';
+    if (isTablet) return 'text-2xl';
+    return 'text-2xl md:text-3xl';
+  };
+
+  const getDescriptionSize = () => {
+    if (isMobile) return 'text-sm';
+    if (isTablet) return 'text-base';
+    return 'text-base md:text-base';
+  };
+
+  const getGridCols = () => {
+    if (isMobile) return 'grid-cols-1';
+    if (isTablet) return 'grid-cols-2';
+    return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+  };
+
+  const getCardImageHeight = () => {
+    if (isMobile) return 'h-32 md:h-48';
+    if (isTablet) return 'h-40';
+    return 'h-32 md:h-48';
+  };
+
+  const getCardTitleSize = () => {
+    if (isMobile) return 'text-sm md:text-base';
+    if (isTablet) return 'text-base';
+    return 'text-sm md:text-base';
+  };
+
+  const getCardSummarySize = () => {
+    if (isMobile) return 'text-xs md:text-sm';
+    if (isTablet) return 'text-sm';
+    return 'text-xs md:text-sm';
+  };
+
+  const getButtonSize = () => {
+    if (isMobile) return 'w-full text-sm md:text-sm';
+    if (isTablet) return 'text-sm';
+    return 'text-sm md:text-sm';
+  };
+
+  return (
+    <section className={`bg-gray-50 py-12 md:py-16 lg:py-[100px] ${getSectionPadding()}`}>
       <div className="container mx-auto px-0">
+        {/* ===== HEADER SECTION ===== */}
         <div className="text-center mb-8 md:mb-12">
-          <h2 className={`${isMobile ? 'text-xl' : 'text-2xl md:text-3xl'} font-bold text-primary mb-4`}>Blog</h2>
-          <p className={`text-gray-700 px-4 ${isMobile ? 'text-sm' : 'text-base md:text-base'}`}>
+          <h2 className={`${getTitleSize()} font-bold text-primary mb-4`}>Blog</h2>
+          <p className={`text-gray-700 px-4 ${getDescriptionSize()}`}>
             Découvrez les réflexions et analyses de nos membres sur les enjeux de l'administration publique
           </p>
         </div>
         
-        {isMobile ? <div className="relative">
+        {/* ===== MOBILE VERSION ===== */}
+        {isMobile && (
+          <div className="relative">
             <div className="overflow-hidden">
               <div className="flex transition-transform duration-300 ease-in-out" style={{
-            transform: `translateX(-${currentSlideIndex * 100}%)`
-          }}>
-                {articles.map(article => <div key={article.id} className="w-full flex-shrink-0 px-0">
+                transform: `translateX(-${currentSlideIndex * 100}%)`
+              }}>
+                {articles.map(article => (
+                  <div key={article.id} className="w-full flex-shrink-0 px-0">
                     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                      {article.image_url && <div className="h-32 md:h-48">
+                      {article.image_url && (
+                        <div className={getCardImageHeight()}>
                           <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
-                        </div>}
+                        </div>
+                      )}
                       <CardContent className="p-4 md:p-6">
-                        <h3 className="font-semibold text-primary mb-2 md:mb-3 line-clamp-2 text-sm md:text-base">
+                        <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
                           {article.title}
                         </h3>
-                        <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-3">
+                        <p className={`text-gray-600 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
                           {article.summary}
                         </p>
                         <div className="flex items-center justify-between text-xs text-gray-500">
@@ -103,7 +171,8 @@ const BlogSection = () => {
                         </div>
                       </CardContent>
                     </Card>
-                  </div>)}
+                  </div>
+                ))}
               </div>
             </div>
             
@@ -115,16 +184,24 @@ const BlogSection = () => {
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
-          </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-            {articles.map(article => <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                {article.image_url && <div className="h-32 md:h-48">
+          </div>
+        )}
+
+        {/* ===== TABLET VERSION ===== */}
+        {isTablet && (
+          <div className={`grid ${getGridCols()} gap-6 mb-8`}>
+            {articles.map(article => (
+              <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                {article.image_url && (
+                  <div className={getCardImageHeight()}>
                     <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
-                  </div>}
-                <CardContent className="p-4 md:p-6">
-                  <h3 className="font-semibold text-primary mb-2 md:mb-3 line-clamp-2 text-sm md:text-base">
+                  </div>
+                )}
+                <CardContent className="p-5">
+                  <h3 className={`font-semibold text-primary mb-3 line-clamp-2 ${getCardTitleSize()}`}>
                     {article.title}
                   </h3>
-                  <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-3">
+                  <p className={`text-gray-600 mb-4 line-clamp-3 ${getCardSummarySize()}`}>
                     {article.summary}
                   </p>
                   <div className="flex items-center justify-between text-xs text-gray-500">
@@ -140,11 +217,49 @@ const BlogSection = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>)}
-          </div>}
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* ===== DESKTOP VERSION ===== */}
+        {isDesktop && (
+          <div className={`grid ${getGridCols()} gap-6 md:gap-8 mb-8 md:mb-12`}>
+            {articles.map(article => (
+              <Card key={article.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                {article.image_url && (
+                  <div className={getCardImageHeight()}>
+                    <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
+                  </div>
+                )}
+                <CardContent className="p-4 md:p-6">
+                  <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
+                    {article.title}
+                  </h3>
+                  <p className={`text-gray-600 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
+                    {article.summary}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <div className="flex items-center">
+                      <User className="w-3 h-3 mr-1" />
+                      <span className="truncate">
+                        {article.author?.first_name} {article.author?.last_name}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {new Date(article.published_date).toLocaleDateString('fr-FR')}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
         
+        {/* ===== CALL TO ACTION BUTTON ===== */}
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full' : 'text-sm md:text-sm'}`}>
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${getButtonSize()}`}>
             <Link to="/blog" className="flex items-center justify-center">
               Voir tous les articles
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -152,6 +267,8 @@ const BlogSection = () => {
           </Button>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default BlogSection;
