@@ -71,7 +71,7 @@ const Agenda = () => {
     if (isMobile) {
       return 'px-[25px]'; // Mobile
     } else if (isTablet) {
-      return 'px-8'; // Tablette
+      return 'px-[50px]'; // Tablette
     } else {
       return 'px-[100px]'; // Desktop
     }
