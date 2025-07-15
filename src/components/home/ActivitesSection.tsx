@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -183,15 +184,15 @@ const ActivitesSection = () => {
                     </span>
                   </div>
                   
-                  <h4 className={`font-semibold text-primary mb-3 text-lg ${isMobile ? 'text-lg' : isTab ? 'text-lg' :'text-xl md:text-xl'}`}>
+                  <h4 className={`font-semibold text-primary mb-3 text-lg ${isMobile ? 'text-lg' : isTablet ? 'text-lg' :'text-xl md:text-xl'}`}>
                     {activity.title}
                   </h4>
                   
-                  <p className={`text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
+                  <p className={`text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     {activity.description}
                   </p>
                   
-                  <div className={`space-y-2 text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
+                  <div className={`space-y-2 text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
                       <span>{activity.date}</span>
@@ -211,7 +212,7 @@ const ActivitesSection = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <Button asChild variant="outline" className={`flex-1 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
+                    <Button asChild variant="outline" className={`flex-1 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                       <Link to={`/activites/${activity.id}`}>
                         <Eye className="w-4 h-4 mr-2" />
                         Voir détails
