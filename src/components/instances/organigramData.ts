@@ -35,18 +35,18 @@ export const organigramLevels = [
     { name: "BADOUON Monhessio Marius", position: "Conseiller chargé de la Mobilisation des Ressources Humaines", phone: "0708082464" },
     { name: "FALLE Daya Aymard", position: "Conseiller chargé des Carrières, du Renforcement des Capacités et des Négociations sociales", phone: "0709141060" }
   ],
-  // Niveau 8: Présidents de commissions (3 membres)
+  // Niveau 8: Présidents de commissions (2 membres)
   [
     { name: "SORO Thima", position: "Président de la Commission chargée de l'Organisation", phone: "0758730418" },
-    { name: "SILUE Kiyala", position: "Président de la Commission chargée de la Communication", phone: "0708963718" },
-    { name: "AHOURE Noël", position: "Président de la Commission chargée des Affaires Culturelles", phone: "0102269396" }
+    { name: "SILUE Kiyala", position: "Président de la Commission chargée de la Communication", phone: "0708963718" }
   ],
-  // Niveau 9: Présidents de commissions (4 membres)
+  // Niveau 9: Présidents de commissions (5 membres)
   [
     { name: "KPONE Bérenger", position: "Président de la Commission chargée de la Mobilisation des Ressources Humaines", phone: "0707414607" },
     { name: "ABOUA Sopie IDA épouse KOUADIO", position: "Président de la Commission chargée de la Mobilisation des Ressources Financières", phone: "0707220179" },
     { name: "KROU Allou Luc", position: "Président de la Commission Carrières, Renforcement des Capacités et Promotion et Protection des Droits Professionnels", phone: "0748788169" },
-    { name: "ODJE Marie-Clémence", position: "Président de la Commission des Affaires Sociales", phone: "0707616615" }
+    { name: "ODJE Marie-Clémence", position: "Président de la Commission des Affaires Sociales", phone: "0707616615" },
+    { name: "AHOURE Noël", position: "Président de la Commission chargée des Affaires Culturelles", phone: "0102269396" }
   ]
 ];
 
