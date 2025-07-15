@@ -21,7 +21,7 @@ const ActivitesSection = () => {
     description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
     type: "Formation",
     status: "À venir",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop"
+    image: "lovable-uploads/narcissek.jpeg"
   }, {
     id: 2,
     title: "Conférence sur la Digitalisation",
@@ -32,7 +32,7 @@ const ActivitesSection = () => {
     description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
     type: "Conférence",
     status: "À venir",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop"
+    image: "lovable-uploads/narcissek.jpeg"
   }];
   const pastActivities = [{
     id: 3,
@@ -44,7 +44,7 @@ const ActivitesSection = () => {
     description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
     type: "Assemblée",
     status: "Terminé",
-    image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&h=250&fit=crop"
+    image: "lovable-uploads/narcissek.jpeg"
   }, {
     id: 4,
     title: "Atelier Gestion de Projet",
@@ -55,7 +55,7 @@ const ActivitesSection = () => {
     description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
     type: "Atelier",
     status: "Terminé",
-    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=250&fit=crop"
+    image: "lovable-uploads/narcissek.jpeg"
   }];
   const handleAddToCalendar = (activity: any) => {
     try {
