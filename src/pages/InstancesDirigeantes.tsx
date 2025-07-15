@@ -87,8 +87,8 @@ const InstancesDirigeantes = () => {
 
         {/* Content Section - Mobile */}
         {isMobile && (
-          <div className="container mx-auto px-[25px] mb-[50px] md:mb-[50px]">
-            <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-lg">
+          <div className="container mx-auto px-[25px] mb-[25px] md:mb-[25px]">
+            <div className="flex gap-2 mb-4 p-1 bg-gray-100 rounded-lg">
               <Button
                 variant={activeTab === 'bureau' ? 'default' : 'ghost'}
                 onClick={() => setActiveTab('bureau')}
@@ -106,7 +106,7 @@ const InstancesDirigeantes = () => {
             </div>
             
             {activeTab === 'bureau' && (
-              <div className="space-y-8 pb-8">
+              <div className="space-y-4 pb-4">
                 <BureauExecutifSection />
                 <CommissairesSection />
                 <DeleguesRegionauxSection />
@@ -114,7 +114,7 @@ const InstancesDirigeantes = () => {
             )}
             
             {activeTab === 'commissions' && (
-              <div className="pb-8">
+              <div className="pb-4">
                 <CommissionsSection />
               </div>
             )}
@@ -123,8 +123,8 @@ const InstancesDirigeantes = () => {
 
         {/* Content Section - Tablet */}
         {isTab && (
-          <div className="container mx-auto px-[50px] mb-[50px] md:mb-[50px]">
-            <div className="flex gap-2 mb-10 p-1 bg-gray-100 rounded-lg max-w-md mx-auto">
+          <div className="container mx-auto px-[50px] mb-[30px] md:mb-[30px]">
+            <div className="flex gap-2 mb-6 p-1 bg-gray-100 rounded-lg max-w-md mx-auto">
               <Button
                 variant={activeTab === 'bureau' ? 'default' : 'ghost'}
                 onClick={() => setActiveTab('bureau')}
@@ -142,7 +142,7 @@ const InstancesDirigeantes = () => {
             </div>
             
             {activeTab === 'bureau' && (
-              <div className="space-y-10 pb-10">
+              <div className="space-y-6 pb-6">
                 <BureauExecutifSection />
                 <CommissairesSection />
                 <DeleguesRegionauxSection />
@@ -150,7 +150,7 @@ const InstancesDirigeantes = () => {
             )}
             
             {activeTab === 'commissions' && (
-              <div className="pb-10">
+              <div className="pb-6">
                 <CommissionsSection />
               </div>
             )}
@@ -159,8 +159,8 @@ const InstancesDirigeantes = () => {
 
         {/* Content Section - Desktop */}
         {!isMobile && !isTab && (
-          <div className="container mx-auto px-[100px] mb-[50px] md:mb-[50px]">
-            <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-lg max-w-lg mx-auto">
+          <div className="container mx-auto px-[100px] mb-[35px] md:mb-[35px]">
+            <div className="flex gap-2 mb-6 p-1 bg-gray-100 rounded-lg max-w-lg mx-auto">
               <Button
                 variant={activeTab === 'bureau' ? 'default' : 'ghost'}
                 onClick={() => setActiveTab('bureau')}
@@ -178,7 +178,7 @@ const InstancesDirigeantes = () => {
             </div>
             
             {activeTab === 'bureau' && (
-              <div className="space-y-8 pb-12">
+              <div className="space-y-6 pb-8">
                 <BureauExecutifSection />
                 <CommissairesSection />
                 <DeleguesRegionauxSection />
@@ -186,7 +186,7 @@ const InstancesDirigeantes = () => {
             )}
             
             {activeTab === 'commissions' && (
-              <div className="pb-12">
+              <div className="pb-8">
                 <CommissionsSection />
               </div>
             )}

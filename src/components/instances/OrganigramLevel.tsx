@@ -28,7 +28,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
       return {
         gridCols: 'grid-cols-1',
         maxWidth: 'max-w-sm',
-        gap: 'gap-6'
+        gap: 'gap-3'
       };
     }
     
@@ -42,7 +42,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
         return {
           gridCols: 'grid-cols-2',
           maxWidth: 'max-w-2xl',
-          gap: 'gap-4'
+          gap: 'gap-2'
         };
       }
       
@@ -52,25 +52,25 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
           return {
             gridCols: 'grid-cols-1',
             maxWidth: 'max-w-md',
-            gap: 'gap-6'
+            gap: 'gap-3'
           };
         case 2:
           return {
             gridCols: 'grid-cols-2',
             maxWidth: 'max-w-2xl',
-            gap: 'gap-4'
+            gap: 'gap-2'
           };
         case 3:
           return {
             gridCols: 'grid-cols-3',
             maxWidth: 'max-w-3xl',
-            gap: 'gap-4'
+            gap: 'gap-2'
           };
         default:
           return {
             gridCols: 'grid-cols-2',
             maxWidth: 'max-w-2xl',
-            gap: 'gap-4'
+            gap: 'gap-2'
           };
       }
     }
@@ -81,31 +81,31 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
         return {
           gridCols: 'grid-cols-1',
           maxWidth: 'max-w-md',
-          gap: 'gap-12'
+          gap: 'gap-6'
         };
       case 2:
         return {
           gridCols: 'grid-cols-1 sm:grid-cols-2',
           maxWidth: 'max-w-3xl',
-          gap: 'gap-16'
+          gap: 'gap-8'
         };
       case 3:
         return {
           gridCols: 'grid-cols-1 md:grid-cols-3',
           maxWidth: 'max-w-5xl',
-          gap: 'gap-12'
+          gap: 'gap-6'
         };
       case 4:
         return {
           gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
           maxWidth: 'max-w-6xl',
-          gap: 'gap-10'
+          gap: 'gap-4'
         };
       default:
         return {
           gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
           maxWidth: 'max-w-7xl',
-          gap: 'gap-10'
+          gap: 'gap-4'
         };
     }
   };
