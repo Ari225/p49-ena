@@ -25,22 +25,22 @@ const TestimonialsSection = () => {
     name: "Mme. Touré Fatou",
     position: "Directrice des Ressources Humaines",
     quote: "L'entraide et la solidarité de la P49 sont remarquables. Un vrai réseau de soutien.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=100&h=100&fit=crop&crop=face"
   }, {
     name: "Dr. Diallo Mamadou",
     position: "Conseiller du Président",
     quote: "La formation continue proposée par le réseau est de très haute qualité.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&h=100&fit=crop&crop=face"
   }, {
     name: "Mme. Kone Awa",
     position: "Secrétaire Générale de Ministère",
     quote: "Les échanges d'expériences enrichissent notre pratique professionnelle quotidienne.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=100&h=100&fit=crop&crop=face"
   }, {
     name: "M. Bamba Seydou",
     position: "Sous-Préfet",
     quote: "Un réseau qui nous unit au-delà des fonctions, une vraie famille professionnelle.",
-    image: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=100&h=100&fit=crop&crop=face"
+    image: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=100&h=100&fit=crop&crop=face"
   }];
 
   // Autoslide effect
@@ -121,7 +121,7 @@ const TestimonialsSection = () => {
   }
 
   if (isTab) {
-    // Tablet version
+    // Tablet version - uniformisée comme mobile
     return (
       <section className="py-[75px] px-[50px] bg-white">
         <div className="container mx-auto px-0">
@@ -135,9 +135,9 @@ const TestimonialsSection = () => {
                 <div key={index} className="w-1/2 flex-shrink-0 px-3">
                   <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
                     <CardContent className="p-6">
-                      <div className="flex items-start space-x-4">
-                        <img src={testimonial.image} alt={testimonial.name} className="w-25 h-25 rounded-full object-cover flex-shrink-0" />
-                        <div className="flex-1">
+                      <div className="flex flex-col items-center gap-4">
+                        <img src={testimonial.image} alt={testimonial.name} className="w-20 h-20 rounded-full object-cover flex-shrink-0" />
+                        <div className="flex-1 text-center">
                           <p className="italic mb-4 text-gray-600 text-base">"{testimonial.quote}"</p>
                           <div>
                             <h4 className="font-semibold text-primary text-base">{testimonial.name}</h4>
@@ -173,7 +173,7 @@ const TestimonialsSection = () => {
     );
   }
 
-  // Desktop version
+  // Desktop version - uniformisée comme mobile
   return (
     <section className="py-[75px] px-8 md:px-12 lg:py-[100px] lg:px-[100px] bg-white">
       <div className="container mx-auto px-0">
@@ -187,10 +187,10 @@ const TestimonialsSection = () => {
               <div key={index} className="w-1/3 flex-shrink-0 px-3">
                 <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105">
                   <CardContent className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <img src={testimonial.image} alt={testimonial.name} className="w-25 h-25 rounded-full object-cover flex-shrink-0" />
-                      <div className="flex-1">
-                        <p className="italic mb-4 text-gray-600 text-base">"{testimonial.quote}"</p>
+                    <div className="flex flex-col items-center gap-4">
+                      <img src={testimonial.image} alt={testimonial.name} className="w-20 h-20 rounded-full object-cover flex-shrink-0" />
+                      <div className="flex-1 text-center">
+                        <p className="italic mb-4 text-gray-600 text-lg">"{testimonial.quote}"</p>
                         <div>
                           <h4 className="font-semibold text-primary text-base">{testimonial.name}</h4>
                           <p className="text-sm text-gray-500">{testimonial.position}</p>
