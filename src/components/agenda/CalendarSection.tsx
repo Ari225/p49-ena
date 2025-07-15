@@ -18,22 +18,22 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
   // Fonction pour obtenir les classes du calendrier selon la version
   const getCalendarClasses = () => {
     if (isMobile) {
-      return 'rounded-md border w-full max-w-full'; // Mobile
+      return 'rounded-md border scale-90 w-full'; // Mobile - réduit la taille pour éviter le débordement
     } else if (isTablet) {
-      return 'rounded-md border w-full max-w-full'; // Tablette
+      return 'rounded-md border'; // Tablette - taille normale
     } else {
-      return 'rounded-md border w-full max-w-full'; // Desktop
+      return 'rounded-md border'; // Desktop - taille normale
     }
   };
 
   // Fonction pour obtenir les classes de container selon la version
   const getContainerClasses = () => {
     if (isMobile) {
-      return 'flex justify-center w-full'; // Mobile - centre le calendrier
+      return 'flex justify-center items-center w-full overflow-hidden'; // Mobile - centre avec gestion du débordement
     } else if (isTablet) {
-      return 'flex justify-center w-full'; // Tablette - centre le calendrier
+      return 'flex justify-center items-center w-full'; // Tablette - centre le calendrier
     } else {
-      return 'flex justify-center w-full'; // Desktop - centre le calendrier et prend toute la largeur
+      return 'flex justify-center items-center w-full'; // Desktop - centre le calendrier
     }
   };
 
