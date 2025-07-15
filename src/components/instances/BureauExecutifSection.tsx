@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { organigramLevels } from './organigramData';
 import OrganigramLevel from './OrganigramLevel';
+
 const BureauExecutifSection = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -15,7 +17,7 @@ const BureauExecutifSection = () => {
           </h2>
           
           <div className="relative max-w-sm mx-auto px-0">
-            <div className="space-y-12">
+            <div className="space-y-8">
               {organigramLevels.map((level, levelIndex) => <OrganigramLevel key={levelIndex} level={level} levelIndex={levelIndex} organigramLevels={organigramLevels} isMobile={isMobile} />)}
             </div>
           </div>
@@ -32,7 +34,7 @@ const BureauExecutifSection = () => {
           </h2>
           
           <div className="relative max-w-5xl mx-auto px-0">
-            <div className="space-y-16">
+            <div className="space-y-12">
               {organigramLevels.map((level, levelIndex) => <OrganigramLevel key={levelIndex} level={level} levelIndex={levelIndex} organigramLevels={organigramLevels} isMobile={false} isTablet={isTablet} />)}
             </div>
           </div>
@@ -48,11 +50,12 @@ const BureauExecutifSection = () => {
         </h2>
         
         <div className="relative max-w-7xl mx-auto px-8">
-          <div className="space-y-24">
+          <div className="space-y-16">
             {organigramLevels.map((level, levelIndex) => <OrganigramLevel key={levelIndex} level={level} levelIndex={levelIndex} organigramLevels={organigramLevels} isMobile={false} isTablet={false} />)}
           </div>
         </div>
       </div>
     </section>;
 };
+
 export default BureauExecutifSection;
