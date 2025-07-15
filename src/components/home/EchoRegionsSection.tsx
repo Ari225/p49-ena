@@ -17,28 +17,28 @@ const EchoRegionsSection = () => {
     title: "Rencontre mensuelle des membres d'Abidjan",
     summary: "Plus de 30 membres se sont retrouvés pour échanger sur les projets en cours.",
     category: "Abidjan",
-    image_url: "/lovable-uploads/86d6f303-a616-4f82-9bdc-8e06f6878a5a.png",
+    image_url: "/lovable-uploads/narcissek.jpeg",
     published_date: "2024-03-25"
   }, {
     id: '2',
     title: "Session de formation en leadership",
     summary: "Formation intensive sur le leadership transformationnel pour 15 membres.",
     category: "Bouaké",
-    image_url: "/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png",
+    image_url: "/lovable-uploads/narcissek.jpeg",
     published_date: "2024-03-20"
   }, {
     id: '3',
     title: "Inauguration du bureau régional",
     summary: "Ouverture officielle du nouveau bureau régional en présence du Préfet.",
     category: "San-Pédro",
-    image_url: "/lovable-uploads/8d7f1d5e-9bec-4321-88cd-0115cd5572e9.png",
+    image_url: "/lovable-uploads/narcissek.jpeg",
     published_date: "2024-03-15"
   }, {
     id: '4',
     title: "Atelier sur la gestion publique",
     summary: "Workshop sur les innovations en gestion publique locale.",
     category: "Korhogo",
-    image_url: "/lovable-uploads/674fac65-3da0-4339-8260-56ec359feae2.png",
+    image_url: "/lovable-uploads/narcissek.jpeg",
     published_date: "2024-03-10"
   }];
 

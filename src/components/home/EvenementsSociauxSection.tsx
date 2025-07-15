@@ -12,7 +12,7 @@ const EvenementsSociauxSection = () => {
   
   const events = [
     {
-      title: "Événements Heureux",
+      title: "Évènements heureux",
       description: "Mariages, anniversaires, promotions, baptêmes et autres moments de joie",
       icon: Heart,
       link: "/evenements-heureux",
@@ -20,7 +20,7 @@ const EvenementsSociauxSection = () => {
       backgroundImage: "/lovable-uploads/bonheur.jpg"
     },
     {
-      title: "Départs à la Retraite", 
+      title: "Départs à la retraite", 
       description: "Honorer nos membres qui partent à la retraite après des années de service",
       icon: Users,
       link: "/departs-retraite",
@@ -28,7 +28,7 @@ const EvenementsSociauxSection = () => {
       backgroundImage: "/lovable-uploads/retraite.avif"
     },
     {
-      title: "Évènements Malheureux",
+      title: "Évènements malheureux",
       description: "Soutien et solidarité dans les moments difficiles",
       icon: Frown,
       link: "/evenements-malheureux",
@@ -52,13 +52,13 @@ const EvenementsSociauxSection = () => {
           <h2 className={`font-bold text-primary ${
             isMobile ? 'text-xl mb-3' : 
             isTab ? 'text-2xl mb-4' :
-            'text-2xl md:text-3xl mb-4' // Desktop
+            'text-3xl md:text-3xl mb-4' // Desktop
           }`}>
             Évènements sociaux
           </h2>
           <p className={`text-gray-700 max-w-3xl mx-auto ${
-            isMobile ? 'text-sm' : 
-            isTab ? 'text-base' :
+            isMobile ? 'text-xs' : 
+            isTab ? 'text-sm' :
             'text-base' // Desktop
           }`}>
             La P49 accompagne ses membres dans tous les moments importants de leur vie, 
@@ -120,7 +120,7 @@ const EvenementsSociauxSection = () => {
                   }`}>
                     {event.description}
                   </p>
-                  <Button asChild className="w-full bg-white text-primary hover:bg-white/90">
+                  <Button asChild className={`w-full bg-white text-primary hover:bg-white/90 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm'}`}>
                     <Link to={event.link} className="flex items-center justify-center">
                       Découvrir
                       <ChevronRight className="h-4 w-4 ml-2" />
@@ -134,16 +134,16 @@ const EvenementsSociauxSection = () => {
 
         <div className="text-center">
           <p className={`text-gray-600 mb-4 ${
-            isMobile ? 'text-sm' : 
-            isTab ? 'text-base' :
+            isMobile ? 'text-xs' : 
+            isTab ? 'text-sm' :
             'text-base' // Desktop
           }`}>
             Vous souhaitez partager un événement ou avez besoin de soutien ?
           </p>
           <Button asChild variant="outline" className={
-            isMobile ? 'w-full' : 
-            isTab ? 'px-8 py-3' :
-            '' // Desktop
+            isMobile ? 'w-full text-xs' : 
+            isTab ? 'px-8 py-3 text-sm' :
+            'text-sm' // Desktop
           }>
             <Link to="/contact">Nous contacter</Link>
           </Button>
