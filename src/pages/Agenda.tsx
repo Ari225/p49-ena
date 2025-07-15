@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,21 +10,23 @@ import CalendarSection from '@/components/agenda/CalendarSection';
 import DayEventsSection from '@/components/agenda/DayEventsSection';
 import ActivityCard from '@/components/agenda/ActivityCard';
 import { allActivities, getEventTypeColor } from '@/components/agenda/agendaData';
+
 const Agenda = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
   // Filtrer les événements par date sélectionnée
-  const selectedDateEvents = allActivities.filter(event => selectedDate && event.calendarDate.toDateString() === selectedDate.toDateString());
+  const selectedDateEvents = allActivities.filter(event => 
+    selectedDate && event.calendarDate.toDateString() === selectedDate.toDateString()
+  );
 
   // Fonction pour déterminer si une date a des événements
   const hasEvents = (date: Date) => {
     return allActivities.some(event => event.calendarDate.toDateString() === date.toDateString());
   };
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('fr-FR', {
       weekday: 'long',
@@ -32,12 +35,10 @@ const Agenda = () => {
       day: 'numeric'
     });
   };
+
   const handleAddToCalendar = (activity: any) => {
     try {
-      const {
-        startDate,
-        endDate
-      } = parseEventDate(activity.date, activity.time);
+      const { startDate, endDate } = parseEventDate(activity.date, activity.time);
       addToCalendar({
         title: activity.title,
         description: `${activity.description}\n\nType: ${activity.type}\nParticipants: ${activity.participants}`,
@@ -83,7 +84,9 @@ const Agenda = () => {
       return 'md:grid-cols-2 lg:grid-cols-3 gap-6'; // Desktop
     }
   };
-  return <Layout>
+
+  return (
+    <Layout>
       <div className="min-h-screen bg-gray-50">
         <AgendaHeader />
 
@@ -91,9 +94,19 @@ const Agenda = () => {
         <section className={`py-16 ${getPaddingClasses()}`}>
           <div className="container mx-auto px-0">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-              <CalendarSection selectedDate={selectedDate} onSelectDate={setSelectedDate} hasEvents={hasEvents} />
+              <CalendarSection 
+                selectedDate={selectedDate} 
+                onSelectDate={setSelectedDate} 
+                hasEvents={hasEvents} 
+              />
 
-              <DayEventsSection selectedDate={selectedDate} selectedDateEvents={selectedDateEvents} formatDate={formatDate} getEventTypeColor={getEventTypeColor} handleAddToCalendar={handleAddToCalendar} />
+              <DayEventsSection 
+                selectedDate={selectedDate} 
+                selectedDateEvents={selectedDateEvents} 
+                formatDate={formatDate} 
+                getEventTypeColor={getEventTypeColor} 
+                handleAddToCalendar={handleAddToCalendar} 
+              />
             </div>
 
             {/* Activités à venir */}
@@ -103,7 +116,14 @@ const Agenda = () => {
               </CardHeader>
               <CardContent>
                 <div className={`grid ${getGridClasses()}`}>
-                  {upcomingActivities.map(activity => <ActivityCard key={activity.id} activity={activity} getEventTypeColor={getEventTypeColor} handleAddToCalendar={handleAddToCalendar} />)}
+                  {upcomingActivities.map(activity => (
+                    <ActivityCard 
+                      key={activity.id} 
+                      activity={activity} 
+                      getEventTypeColor={getEventTypeColor} 
+                      handleAddToCalendar={handleAddToCalendar} 
+                    />
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -115,13 +135,23 @@ const Agenda = () => {
               </CardHeader>
               <CardContent>
                 <div className={`grid ${getGridClasses()}`}>
-                  {pastActivities.map(activity => <ActivityCard key={activity.id} activity={activity} getEventTypeColor={getEventTypeColor} handleAddToCalendar={handleAddToCalendar} isPast={true} />)}
+                  {pastActivities.map(activity => (
+                    <ActivityCard 
+                      key={activity.id} 
+                      activity={activity} 
+                      getEventTypeColor={getEventTypeColor} 
+                      handleAddToCalendar={handleAddToCalendar} 
+                      isPast={true} 
+                    />
+                  ))}
                 </div>
               </CardContent>
             </Card>
           </div>
         </section>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default Agenda;
