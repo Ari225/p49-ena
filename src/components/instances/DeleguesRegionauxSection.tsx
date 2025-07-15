@@ -8,10 +8,8 @@ const DeleguesRegionauxSection = () => {
   const isTablet = useIsTablet();
   
   const delegues = [
-    { name: "GNEPA Samuel", position: "Délégué Régional Est", phone: "0707879789" },
-    { name: "NENE Salimatou", position: "Déléguée Régionale Centre", phone: "0758156531" },
-    { name: "TAPE Alain", position: "Délégué Régional Nord", phone: "0707240414" },
-    { name: "KOFFI Konan Ernest", position: "Délégué Zone Sud Ouest", phone: "0101127191" }
+    { name: "SORO Thima", position: "Délégué Régional Sud-Ouest", phone: "0506727271" },
+    { name: "SILUE Kiyala", position: "Délégué Régional Nord-Est", phone: "0708767676" }
   ];
 
   // Mobile Version
@@ -35,14 +33,14 @@ const DeleguesRegionauxSection = () => {
     );
   }
 
-  // Tablet Version - Uniformisation avec max-w-[280px]
+  // Tablet Version - Uniformisation avec max-w-[280px] sur une seule ligne
   if (isTablet) {
     return (
       <section className="py-8">
         <h2 className="text-2xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
           Délégués Régionaux
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
           {delegues.map((member, index) => (
             <div key={index} className="max-w-[280px] mx-auto w-full">
               <MemberOrganigramCard
@@ -63,7 +61,7 @@ const DeleguesRegionauxSection = () => {
       <h2 className="text-3xl font-bold text-center mb-[50px] md:mb-[50px] text-primary">
         Délégués Régionaux
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-4xl mx-auto">
         {delegues.map((member, index) => (
           <MemberOrganigramCard
             key={index}
