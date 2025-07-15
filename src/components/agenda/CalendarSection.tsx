@@ -31,9 +31,9 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
     if (isMobile) {
       return 'flex justify-center items-center w-full overflow-hidden'; // Mobile - centre avec gestion du débordement
     } else if (isTablet) {
-      return 'flex justify-center items-center w-full'; // Tablette - centre le calendrier
+      return 'flex justify-center items-center w-full min-h-[400px] px-4'; // Tablette - centre le calendrier avec plus d'espace
     } else {
-      return 'flex justify-center items-center w-full'; // Desktop - centre le calendrier
+      return 'flex justify-center items-center w-full min-h-[450px] px-8'; // Desktop - centre le calendrier avec plus d'espace
     }
   };
 
