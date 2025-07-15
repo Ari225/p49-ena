@@ -73,7 +73,7 @@ const EchoRegionsSection = () => {
               }`} 
             />
             <div className="absolute top-4 left-4">
-              <span className="bg-primary text-primary px-2 py-1 rounded text-xs font-medium">
+              <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
                 {item.category}
               </span>
             </div>
