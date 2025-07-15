@@ -38,7 +38,7 @@ const EvenementsSociauxSection = () => {
   ];
 
   return (
-    <section className={`py-16 bg-accent/10 ${
+    <section className={`py-16 bg-accent/30 ${
       isMobile ? 'px-[25px]' : 
       isTab ? 'px-[50px]' :
       'px-8 md:px-12 lg:px-[100px]' // Desktop
@@ -49,20 +49,20 @@ const EvenementsSociauxSection = () => {
           isTab ? 'mb-10' :
           'mb-8 md:mb-12' // Desktop
         }`}>
-          <h2 className={`font-bold text-primary ${
-            isMobile ? 'text-xl mb-3' : 
-            isTab ? 'text-2xl mb-4' :
-            'text-3xl md:text-3xl mb-4' // Desktop
+          <h2 className={`font-bold text-primary mb-[10px] md:mb-[10px] ${
+            isMobile ? 'text-xl' : 
+            isTab ? 'text-2xl' :
+            'text-3xl md:text-3xl' // Desktop
           }`}>
             Évènements sociaux
           </h2>
-          <p className={`text-gray-700 max-w-3xl mx-auto ${
+          <p className={`text-gray-700 max-w-3xl mx-auto mb-[50px] md:mb-[50px] ${
             isMobile ? 'text-xs' : 
             isTab ? 'text-sm' :
             'text-base' // Desktop
           }`}>
             La P49 accompagne ses membres dans tous les moments importants de leur vie, 
-            qu'ils soient heureux ou difficiles. Découvrez nos événements sociaux.
+            qu'ils soient heureux ou difficiles.
           </p>
         </div>
 
