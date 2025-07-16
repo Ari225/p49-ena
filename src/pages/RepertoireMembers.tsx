@@ -160,7 +160,7 @@ const RepertoireMembers = () => {
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
-              <Search className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5`}>
+              <Search className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5`} />
               <Input 
                 type="text" 
                 placeholder="Rechercher par nom ou prénom..." 
