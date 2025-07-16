@@ -71,30 +71,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
     console.log('Uploading file:', fileName, 'Type:', file.type, 'Size:', file.size);
 
     try {
-      // First, try to create the bucket if it doesn't exist
-      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
-      
-      if (bucketsError) {
-        console.error('Error listing buckets:', bucketsError);
-      } else {
-        const mediaFilesBucket = buckets.find(bucket => bucket.id === 'media-files');
-        if (!mediaFilesBucket) {
-          console.log('Creating media-files bucket...');
-          const { data: newBucket, error: createError } = await supabase.storage.createBucket('media-files', {
-            public: true,
-            allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/x-msvideo'],
-            fileSizeLimit: 52428800 // 50MB
-          });
-          
-          if (createError) {
-            console.error('Error creating bucket:', createError);
-          } else {
-            console.log('Bucket created successfully:', newBucket);
-          }
-        }
-      }
-
-      // Upload the file
+      // Upload directement vers le bucket media-files (qui existe déjà)
       const { data, error } = await supabase.storage
         .from('media-files')
         .upload(filePath, file, {
@@ -115,17 +92,6 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
         .getPublicUrl(filePath);
 
       console.log('Public URL generated:', publicUrl);
-      
-      // Verify the file was uploaded by trying to fetch it
-      try {
-        const response = await fetch(publicUrl, { method: 'HEAD' });
-        if (!response.ok) {
-          throw new Error(`Fichier non accessible: ${response.status}`);
-        }
-      } catch (fetchError) {
-        console.warn('Could not verify file accessibility:', fetchError);
-      }
-
       return publicUrl;
     } catch (error) {
       console.error('Error in uploadFile:', error);
