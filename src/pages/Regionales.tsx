@@ -576,7 +576,7 @@ const Regionales = () => {
         {isMobile && <section className="py-12 bg-accent/10 px-[25px]">
             <div className="container mx-auto px-0">
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
+                <h2 className="text-lg font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
                 <p className="text-gray-700 text-xs">
                   Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
@@ -591,7 +591,7 @@ const Regionales = () => {
         {isTablet && <section className="py-14 bg-accent/10 px-[50px]">
             <div className="container mx-auto px-4">
               <div className="text-center mb-7">
-                <h2 className="text-2xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
+                <h2 className="text-xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
                 <p className="text-gray-700 max-w-3xl mx-auto text-sm">
                  Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
@@ -606,7 +606,7 @@ const Regionales = () => {
         {!isMobile && !isTablet && <section className="py-16 bg-accent/10 px-[100px]">
             <div className="container mx-auto px-4">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
+                <h2 className="text-xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
                 <p className="text-gray-700 max-w-3xl mx-auto text-base">
                  Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
