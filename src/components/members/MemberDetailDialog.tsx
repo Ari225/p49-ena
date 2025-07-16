@@ -53,8 +53,8 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   // ===========================================
   if (isMobile) {
     return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="w-[calc(100%-50px)] max-w-sm mx-auto">
+      <Dialog open={isOpen} onOpenChange={onClose} className="rounded-lg">
+        <DialogContent className="w-[calc(100%-50px)] max-w-sm mx-auto rounded-lg">
           <div className="p-4">
             {/* Photo Mobile */}
             <div className="flex justify-center mb-4">
@@ -72,7 +72,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
             {/* Name Mobile */}
             <div className="text-center mb-3">
-              <h2 className="text-lg font-bold text-gray-900 text-primary">
+              <h2 className="text-base font-bold text-gray-900 text-primary">
                 {firstName} {lastName}
               </h2>
             </div>
@@ -159,7 +159,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
             {/* Name Tablette */}
             <div className="text-center mb-4">
-              <h2 className="text-xl font-bold text-gray-900 text-primary">
+              <h2 className="text-lg font-bold text-gray-900 text-primary">
                 {firstName} {lastName}
               </h2>
             </div>
@@ -167,13 +167,13 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             {/* Position Tablette */}
             <div className="flex items-center justify-center mb-3 text-gray-600">
               <Briefcase className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
-              <span className="text-base font-medium text-center">{position}</span>
+              <span className="text-sm font-medium text-center">{position}</span>
             </div>
 
             {/* Location Tablette */}
             <div className="flex items-center justify-center mb-5 text-gray-600">
               <MapPin className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
-              <span className="text-base">{locality}</span>
+              <span className="text-sm">{locality}</span>
             </div>
 
             {/* Contact Icons Tablette */}
@@ -245,7 +245,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
           {/* Name Desktop */}
           <div className="text-center mb-4">
-            <h2 className="text-2xl font-bold text-gray-900 text-primary">
+            <h2 className="text-lg font-bold text-gray-900 text-primary">
               {firstName} {lastName}
             </h2>
           </div>
@@ -253,13 +253,13 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
           {/* Position Desktop */}
           <div className="flex items-center justify-center mb-3 text-gray-600">
             <Briefcase className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
-            <span className="text-base font-medium text-center">{position}</span>
+            <span className="text-sm font-medium text-center">{position}</span>
           </div>
 
           {/* Location Desktop */}
           <div className="flex items-center justify-center mb-6 text-gray-600">
             <MapPin className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
-            <span className="text-base">{locality}</span>
+            <span className="text-sm">{locality}</span>
           </div>
 
           {/* Contact Icons Desktop */}
