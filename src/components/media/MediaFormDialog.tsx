@@ -63,6 +63,33 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
     }));
   };
 
+  const uploadFile = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const filePath = `media/${fileName}`;
+
+    console.log('Uploading file:', fileName, 'Size:', file.size);
+
+    const { data, error } = await supabase.storage
+      .from('media-files')
+      .upload(filePath, file);
+
+    if (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+
+    console.log('Upload successful:', data);
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('media-files')
+      .getPublicUrl(filePath);
+
+    console.log('Public URL:', publicUrl);
+    return publicUrl;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.title || !formData.category || !formData.date || !formData.description) {
@@ -76,17 +103,27 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
 
     setLoading(true);
     try {
+      console.log('Starting media upload process...');
+      
       // Upload media files and get URLs
       const mediaUrls: string[] = [];
       
       for (const file of formData.mediaFiles) {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-        
-        // For now, we'll use placeholder URLs since we don't have storage configured
-        // TODO: Implement actual file upload to Supabase Storage
-        mediaUrls.push(`https://placeholder.com/${fileName}`);
+        try {
+          const url = await uploadFile(file);
+          mediaUrls.push(url);
+        } catch (uploadError) {
+          console.error('Error uploading file:', file.name, uploadError);
+          toast({
+            title: "Erreur d'upload",
+            description: `Impossible d'uploader le fichier ${file.name}`,
+            variant: "destructive"
+          });
+          return;
+        }
       }
+
+      console.log('All files uploaded successfully. URLs:', mediaUrls);
 
       // Insert media item into database
       const { error } = await supabase
@@ -99,7 +136,12 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           media_urls: mediaUrls
         });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database insert error:', error);
+        throw error;
+      }
+
+      console.log('Media item saved to database successfully');
 
       toast({
         title: "Média ajouté !",
