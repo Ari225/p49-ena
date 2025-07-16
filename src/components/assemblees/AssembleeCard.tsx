@@ -46,7 +46,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({
       </div>
     </CardHeader>
     <CardContent>
-      <p className="text-gray-600 mb-4">{assemblee.resume}</p>
+      <p className="text-gray-600 mb-4 text-sm">{assemblee.resume}</p>
       
       <div className="space-y-2 mb-4">
         <div className="flex items-center text-sm text-gray-600">
