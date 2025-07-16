@@ -267,15 +267,11 @@ const Regionales = () => {
           <div className="space-y-0.5 text-xs text-gray-600">
             <div className="flex justify-between">
               <span>Individuel</span>
-              <span className="font-medium">{regionale.tarifs.membre}</span>
+              <span className="font-medium">{regionale.tarifs.individuel}</span>
             </div>
             <div className="flex justify-between">
               <span>Couple</span>
-              <span className="font-medium">{regionale.tarifs.nonMembre}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Étudiants :</span>
-              <span className="font-medium">{regionale.tarifs.etudiant}</span>
+              <span className="font-medium">{regionale.tarifs.couple}</span>
             </div>
           </div>
         </div>
@@ -319,21 +315,16 @@ const Regionales = () => {
 
         <div className="mb-3">
           <p className="text-sm font-medium text-gray-700 mb-1.5 flex items-center">
-            <Euro className="h-3.5 w-3.5 mr-1.5" />
             Tarifs de participation :
           </p>
           <div className="space-y-1 text-sm text-gray-600">
             <div className="flex justify-between">
               <span>Individuel</span>
-              <span className="font-medium">{regionale.tarifs.membre}</span>
+              <span className="font-medium">{regionale.tarifs.individuel}</span>
             </div>
             <div className="flex justify-between">
               <span>couple</span>
-              <span className="font-medium">{regionale.tarifs.nonMembre}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Étudiants :</span>
-              <span className="font-medium">{regionale.tarifs.etudiant}</span>
+              <span className="font-medium">{regionale.tarifs.couple}</span>
             </div>
           </div>
         </div>
@@ -377,21 +368,16 @@ const Regionales = () => {
 
         <div className="mb-4">
           <p className="text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <Euro className="h-4 w-4 mr-2" />
             Tarifs de participation :
           </p>
           <div className="space-y-1 text-sm text-gray-600">
             <div className="flex justify-between">
               <span>Individuel</span>
-              <span className="font-medium">{regionale.tarifs.membre}</span>
+              <span className="font-medium">{regionale.tarifs.individuel}</span>
             </div>
             <div className="flex justify-between">
               <span>Couple</span>
-              <span className="font-medium">{regionale.tarifs.nonMembre}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Étudiants :</span>
-              <span className="font-medium">{regionale.tarifs.etudiant}</span>
+              <span className="font-medium">{regionale.tarifs.couple}</span>
             </div>
           </div>
         </div>
