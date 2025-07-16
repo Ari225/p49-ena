@@ -76,7 +76,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({
         </div>}
 
       {assemblee.ordreJour && <div className="mb-4">
-          <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
+          <h4 className="font-medium text-gray-700 mb-2 text-xl">Ordre du jour :</h4>
           <ul className="text-sm text-gray-600 space-y-1">
             {assemblee.ordreJour.map((point: string, index: number) => <li key={index} className="flex items-start">
                 <span className="text-primary mr-2">•</span>
