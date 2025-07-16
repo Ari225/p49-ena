@@ -115,7 +115,7 @@ const AssembleesGenerales = () => {
               </div>}
 
             {selectedTab === 'passees' && <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px]">Assemblées Passées</h2>
+                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {assembleesPassees.map(assemblee => <AssembleeCard key={assemblee.id} assemblee={assemblee} />)}
                 </div>
