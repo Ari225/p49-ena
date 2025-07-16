@@ -596,50 +596,7 @@ const Regionales = () => {
                  Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Users className="h-5 w-5 mr-2" />
-                      Networking
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Opportunité unique de rencontrer des collègues de votre région 
-                      et d'échanger sur vos expériences professionnelles.
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Camera className="h-5 w-5 mr-2" />
-                      Formation
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Sessions de formation et ateliers pratiques sur des thèmes 
-                      d'actualité et de développement professionnel.
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <MapPin className="h-5 w-5 mr-2" />
-                      Découverte
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">
-                      Découverte des richesses culturelles et économiques 
-                      de chaque région de notre beau pays.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              
             </div>
           </section>}
 
