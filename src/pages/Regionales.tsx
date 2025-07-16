@@ -455,7 +455,7 @@ const Regionales = () => {
         {/* ======================
             MOBILE VERSION - Contenu principal
             ====================== */}
-        {isMobile && <section className="py-[50px] px-[25px]">
+        {isMobile && <section className="py-[50px] px-[25px] bg-white">
             <div className="container mx-auto px-0">
               {/* Onglets centrés */}
               <div className="flex justify-center mb-[50px] md:mb-[50px]">
@@ -489,7 +489,7 @@ const Regionales = () => {
         {/* ======================
             TABLET VERSION - Contenu principal
             ====================== */}
-        {isTablet && <section className="py-[50px] px-[50px]">
+        {isTablet && <section className="py-[50px] px-[50px] bg-white">
             <div className="container mx-auto px-4">
               {/* Onglets centrés */}
               <div className="flex justify-center mb-[50px] md:mb-[50px]">
@@ -523,7 +523,7 @@ const Regionales = () => {
         {/* ======================
             DESKTOP VERSION - Contenu principal
             ====================== */}
-        {!isMobile && !isTablet && <section className="py-[50px] px-[100px]">
+        {!isMobile && !isTablet && <section className="py-[50px] px-[100px] bg-white">
             <div className="container mx-auto px-4">
               {/* Onglets centrés */}
               <div className="flex justify-center mb-[50px] md:mb-[50px]">
