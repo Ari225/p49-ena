@@ -71,13 +71,13 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
               Vérification d'accès
             </DialogTitle>
             <DialogDescription className="text-xs">
-              Pour accéder aux informations complètes du membre, veuillez saisir votre matricule de membre P49.
+              Pour accéder aux informations complètes du membre, veuillez saisir votre matricule.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <Label htmlFor="matricule" className="text-xs">Matricule de membre</Label>
+              <Label htmlFor="matricule" className="text-sm">Matricule de membre</Label>
               <Input
                 id="matricule"
                 type="text"
@@ -115,9 +115,8 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
           <div className="text-xs text-gray-500 mt-3 p-2 bg-gray-50 rounded">
             <strong>Note:</strong> Cette fonctionnalité protège la confidentialité des membres. 
-            Seuls les membres authentifiés peuvent accéder aux informations complètes.
+            Seuls ceux appartenant au réseau peuvent accéder aux informations complètes.
             <br />
-            <strong>Pour les tests:</strong> Utilisez le matricule <code className="bg-gray-200 px-1 rounded">P49DEMO</code>
           </div>
         </DialogContent>
       </Dialog>
@@ -137,13 +136,13 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
               Vérification d'accès
             </DialogTitle>
             <DialogDescription className="text-sm">
-              Pour accéder aux informations complètes du membre, veuillez saisir votre matricule de membre P49.
+              Pour accéder aux informations complètes du membre, veuillez saisir votre matricule.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="matricule" className="text-sm">Matricule de membre</Label>
+              <Label htmlFor="matricule" className="text-base">Matricule de membre</Label>
               <Input
                 id="matricule"
                 type="text"
@@ -181,9 +180,8 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
           <div className="text-xs text-gray-500 mt-4 p-3 bg-gray-50 rounded">
             <strong>Note:</strong> Cette fonctionnalité protège la confidentialité des membres. 
-            Seuls les membres authentifiés peuvent accéder aux informations complètes.
+            Seuls ceux appartenant au réseau peuvent accéder aux informations complètes.
             <br />
-            <strong>Pour les tests:</strong> Utilisez le matricule <code className="bg-gray-200 px-1 rounded">P49DEMO</code>
           </div>
         </DialogContent>
       </Dialog>
@@ -201,21 +199,21 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
             <Shield className="h-5 w-5 text-primary" />
             Vérification d'accès
           </DialogTitle>
-          <DialogDescription>
-            Pour accéder aux informations complètes du membre, veuillez saisir votre matricule de membre P49.
+          <DialogDescription className="text-sm">
+            Pour accéder aux informations complètes du membre, veuillez saisir votre matricule.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="matricule">Matricule de membre</Label>
+            <Label htmlFor="matricule" className="text-base">Matricule de membre</Label>
             <Input
               id="matricule"
               type="text"
               value={matricule}
               onChange={(e) => setMatricule(e.target.value)}
               placeholder="Saisissez votre matricule"
-              className="mt-1"
+              className="mt-1 text-sm"
             />
           </div>
 
@@ -230,14 +228,14 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
               type="button"
               variant="outline"
               onClick={handleClose}
-              className="flex-1"
+              className="flex-1 text-sm"
             >
               Annuler
             </Button>
             <Button
               type="submit"
               disabled={isLoading}
-              className="flex-1"
+              className="flex-1 text-sm"
             >
               {isLoading ? 'Vérification...' : 'Vérifier'}
             </Button>
@@ -246,9 +244,8 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
         <div className="text-xs text-gray-500 mt-4 p-3 bg-gray-50 rounded">
           <strong>Note:</strong> Cette fonctionnalité protège la confidentialité des membres. 
-          Seuls les membres authentifiés peuvent accéder aux informations complètes.
+            Seuls ceux appartenant au réseau peuvent accéder aux informations complètes.
           <br />
-          <strong>Pour les tests:</strong> Utilisez le matricule <code className="bg-gray-200 px-1 rounded">P49DEMO</code>
         </div>
       </DialogContent>
     </Dialog>
