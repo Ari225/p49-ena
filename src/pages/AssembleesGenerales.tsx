@@ -18,8 +18,6 @@ const AssembleesGenerales = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50">
         <AssembleesHeader />
-        
-        <AssembleesInfoSection />
 
         {/* Contenu principal */}
         <section className={`py-16 ${
@@ -70,8 +68,6 @@ const AssembleesGenerales = () => {
             )}
           </div>
         </section>
-
-        <ProcessusDemocratiqueSection />
       </div>
     </Layout>
   );
