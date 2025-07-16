@@ -54,9 +54,8 @@ const Regionales = () => {
     status: "À venir",
     inscriptions: "Ouvertes",
     tarifs: {
-      membre: "50 000 FCFA",
-      nonMembre: "75 000 FCFA",
-      etudiant: "25 000 FCFA"
+      individuel: "50 000 FCFA",
+      couple: "75 000 FCFA"
     }
   }];
   const getStatusColor = (status: string) => {
@@ -80,7 +79,7 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-32 object-cover" />
-        <Badge className={`top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
@@ -134,12 +133,12 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-40 object-cover" />
-        <Badge className={`absolute top-2 right-2 ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
       <CardContent className="p-4">
-        <h3 className="text-lg font-semibold text-primary mb-2">{regionale.titre}</h3>
+        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
         <p className="text-gray-600 text-sm mb-3">{regionale.resume}</p>
         
         <div className="space-y-1.5 mb-3">
@@ -188,7 +187,7 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-48 object-cover" />
-        <Badge className={`absolute top-2 right-2 ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
@@ -242,7 +241,7 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-xs mx-auto">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-32 object-cover" />
-        <Badge className={`absolute top-2 right-2 text-xs ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
@@ -263,16 +262,15 @@ const Regionales = () => {
 
         <div className="mb-3">
           <p className="text-xs font-medium text-gray-700 mb-1 flex items-center">
-            <Euro className="h-3 w-3 mr-1" />
             Tarifs de participation :
           </p>
           <div className="space-y-0.5 text-xs text-gray-600">
             <div className="flex justify-between">
-              <span>Membres P49 :</span>
+              <span>Individuel</span>
               <span className="font-medium">{regionale.tarifs.membre}</span>
             </div>
             <div className="flex justify-between">
-              <span>Non-membres :</span>
+              <span>Couple</span>
               <span className="font-medium">{regionale.tarifs.nonMembre}</span>
             </div>
             <div className="flex justify-between">
@@ -300,12 +298,12 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-sm mx-auto">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-40 object-cover" />
-        <Badge className={`absolute top-2 right-2 ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
       <CardContent className="p-4">
-        <h3 className="text-lg font-semibold text-primary mb-2">{regionale.titre}</h3>
+        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
         <p className="text-gray-600 text-sm mb-3">{regionale.resume}</p>
         
         <div className="space-y-1.5 mb-3">
@@ -326,11 +324,11 @@ const Regionales = () => {
           </p>
           <div className="space-y-1 text-sm text-gray-600">
             <div className="flex justify-between">
-              <span>Membres P49 :</span>
+              <span>Individuel</span>
               <span className="font-medium">{regionale.tarifs.membre}</span>
             </div>
             <div className="flex justify-between">
-              <span>Non-membres :</span>
+              <span>couple</span>
               <span className="font-medium">{regionale.tarifs.nonMembre}</span>
             </div>
             <div className="flex justify-between">
@@ -358,7 +356,7 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-md">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-48 object-cover" />
-        <Badge className={`absolute top-2 right-2 ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
@@ -384,11 +382,11 @@ const Regionales = () => {
           </p>
           <div className="space-y-1 text-sm text-gray-600">
             <div className="flex justify-between">
-              <span>Membres P49 :</span>
+              <span>Individuel</span>
               <span className="font-medium">{regionale.tarifs.membre}</span>
             </div>
             <div className="flex justify-between">
-              <span>Non-membres :</span>
+              <span>Couple</span>
               <span className="font-medium">{regionale.tarifs.nonMembre}</span>
             </div>
             <div className="flex justify-between">
