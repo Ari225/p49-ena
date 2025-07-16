@@ -151,7 +151,7 @@ const RepertoireMembers = () => {
               Répertoire des membres
             </h1>
             <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg md:text-lg'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
-              Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
+              Notre réseau compte plus de 800 membres 
             </p>
           </div>
         </section>
