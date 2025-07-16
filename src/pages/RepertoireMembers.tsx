@@ -1,10 +1,11 @@
+
 import React, { useState, useMemo } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 // Mock data for 800+ members with Ivorian names and cities
 const generateMockMembers = () => {
@@ -37,6 +38,7 @@ const generateMockMembers = () => {
 
 const RepertoireMembers = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 24;
@@ -104,6 +106,31 @@ const RepertoireMembers = () => {
     }
     return items;
   };
+
+  // Fonction pour obtenir la configuration responsive du grid
+  const getGridConfig = () => {
+    if (isMobile) {
+      return {
+        gridCols: 'grid-cols-2',
+        gap: 'gap-3',
+        padding: 'px-[25px]'
+      };
+    } else if (isTablet) {
+      return {
+        gridCols: 'grid-cols-3',
+        gap: 'gap-4',
+        padding: 'px-[50px]'
+      };
+    } else {
+      return {
+        gridCols: 'grid-cols-4',
+        gap: 'gap-6',
+        padding: 'px-[100px]'
+      };
+    }
+  };
+
+  const gridConfig = getGridConfig();
   
   return (
     <Layout>
@@ -119,17 +146,17 @@ const RepertoireMembers = () => {
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
+          <div className={`relative z-10 text-center ${gridConfig.padding}`}>
+            <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
               Répertoire des Membres
             </h1>
-            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
             </p>
           </div>
         </section>
 
-        <div className="container mx-auto px-[25px] md:px-[100px] py-8 md:py-[100px]">
+        <div className={`container mx-auto ${gridConfig.padding} py-8 md:py-[100px]`}>
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
@@ -149,14 +176,35 @@ const RepertoireMembers = () => {
             )}
           </div>
 
-          {/* Members Grid */}
+          {/* Members Grid - Version spécifique selon l'appareil */}
           {currentMembers.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 mb-8">
-                {currentMembers.map(member => (
-                  <MemberCard key={member.id} member={member} />
-                ))}
-              </div>
+              {/* MOBILE VERSION */}
+              {isMobile && (
+                <div className={`grid ${gridConfig.gridCols} ${gridConfig.gap} mb-8`}>
+                  {currentMembers.map(member => (
+                    <MemberCard key={member.id} member={member} />
+                  ))}
+                </div>
+              )}
+
+              {/* TABLET VERSION */}
+              {isTablet && (
+                <div className={`grid ${gridConfig.gridCols} ${gridConfig.gap} mb-8`}>
+                  {currentMembers.map(member => (
+                    <MemberCard key={member.id} member={member} />
+                  ))}
+                </div>
+              )}
+
+              {/* DESKTOP VERSION */}
+              {!isMobile && !isTablet && (
+                <div className={`grid ${gridConfig.gridCols} ${gridConfig.gap} mb-8`}>
+                  {currentMembers.map(member => (
+                    <MemberCard key={member.id} member={member} />
+                  ))}
+                </div>
+              )}
 
               {/* Pagination */}
               {totalPages > 1 && (
