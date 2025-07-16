@@ -11,22 +11,139 @@ import { assembleesPassees, assembleesFutures } from '@/components/assemblees/as
 
 const AssembleesGenerales = () => {
   const isMobile = useIsMobile();
-  const isTab = useIsTablet();
+  const isTablet = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('prochaines');
 
+  // Mobile Version
+  if (isMobile) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50">
+          <AssembleesHeader />
+
+          {/* Contenu principal Mobile */}
+          <section className="py-16 px-[25px]">
+            <div className="container mx-auto px-4">
+              {/* Onglets Mobile */}
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
+                <Button
+                  variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
+                  onClick={() => setSelectedTab('prochaines')}
+                  className="flex-1"
+                >
+                  Prochaines
+                </Button>
+                <Button
+                  variant={selectedTab === 'passees' ? 'default' : 'ghost'}
+                  onClick={() => setSelectedTab('passees')}
+                  className="flex-1"
+                >
+                  Passées
+                </Button>
+              </div>
+
+              {/* Contenu des onglets Mobile */}
+              {selectedTab === 'prochaines' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Assemblées</h2>
+                  <div className="grid grid-cols-1 gap-6">
+                    {assembleesFutures.map((assemblee) => (
+                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedTab === 'passees' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-primary mb-6">Assemblées Passées</h2>
+                  <div className="grid grid-cols-1 gap-6">
+                    {assembleesPassees.map((assemblee) => (
+                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <AssembleesInfoSection />
+          <ProcessusDemocratiqueSection />
+        </div>
+      </Layout>
+    );
+  }
+
+  // Tablet Version
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50">
+          <AssembleesHeader />
+
+          {/* Contenu principal Tablette */}
+          <section className="py-16 px-[50px]">
+            <div className="container mx-auto px-4">
+              {/* Onglets Tablette */}
+              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
+                <Button
+                  variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
+                  onClick={() => setSelectedTab('prochaines')}
+                  className="flex-1"
+                >
+                  Prochaines
+                </Button>
+                <Button
+                  variant={selectedTab === 'passees' ? 'default' : 'ghost'}
+                  onClick={() => setSelectedTab('passees')}
+                  className="flex-1"
+                >
+                  Passées
+                </Button>
+              </div>
+
+              {/* Contenu des onglets Tablette */}
+              {selectedTab === 'prochaines' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Assemblées</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {assembleesFutures.map((assemblee) => (
+                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedTab === 'passees' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-primary mb-6">Assemblées Passées</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {assembleesPassees.map((assemblee) => (
+                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <AssembleesInfoSection />
+          <ProcessusDemocratiqueSection />
+        </div>
+      </Layout>
+    );
+  }
+
+  // Desktop Version
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
         <AssembleesHeader />
 
-        {/* Contenu principal */}
-        <section className={`py-16 ${
-          isMobile ? 'px-[25px]' : 
-          isTab ? 'px-[50px]' :
-          'px-[100px]' // Desktop
-        }`}>
+        {/* Contenu principal Desktop */}
+        <section className="py-16 px-[100px]">
           <div className="container mx-auto px-4">
-            {/* Onglets */}
+            {/* Onglets Desktop */}
             <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
               <Button
                 variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
@@ -44,7 +161,7 @@ const AssembleesGenerales = () => {
               </Button>
             </div>
 
-            {/* Contenu des onglets */}
+            {/* Contenu des onglets Desktop */}
             {selectedTab === 'prochaines' && (
               <div>
                 <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Assemblées</h2>
@@ -68,6 +185,9 @@ const AssembleesGenerales = () => {
             )}
           </div>
         </section>
+
+        <AssembleesInfoSection />
+        <ProcessusDemocratiqueSection />
       </div>
     </Layout>
   );
