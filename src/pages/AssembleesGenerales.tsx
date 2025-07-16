@@ -134,9 +134,9 @@ const AssembleesGenerales = () => {
 
         {/* Contenu principal Desktop */}
         <section className="py-[50px] px-[100px]">
-          <div className="container mx-auto px-4 justify-center mb-[50px] md:mb-[50px]">
+          <div className="container mx-auto px-4">
             {/* Onglets Desktop */}
-            <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg items-center mb-[50px] md:mb-[50px] max-w-md">
+            <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg justify-center mb-[50px] md:mb-[50px] max-w-md">
               <Button
                 variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
                 onClick={() => setSelectedTab('prochaines')}
