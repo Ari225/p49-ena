@@ -195,7 +195,7 @@ const AssembleesGenerales = () => {
                     <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                   ))}
                 </div>
-              )}
+              </div>
             )}
           </div>
         </section>
