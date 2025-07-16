@@ -68,26 +68,69 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = `media/${fileName}`;
 
-    console.log('Uploading file:', fileName, 'Size:', file.size);
+    console.log('Uploading file:', fileName, 'Type:', file.type, 'Size:', file.size);
 
-    const { data, error } = await supabase.storage
-      .from('media-files')
-      .upload(filePath, file);
+    try {
+      // First, try to create the bucket if it doesn't exist
+      const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+      
+      if (bucketsError) {
+        console.error('Error listing buckets:', bucketsError);
+      } else {
+        const mediaFilesBucket = buckets.find(bucket => bucket.id === 'media-files');
+        if (!mediaFilesBucket) {
+          console.log('Creating media-files bucket...');
+          const { data: newBucket, error: createError } = await supabase.storage.createBucket('media-files', {
+            public: true,
+            allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/quicktime', 'video/x-msvideo'],
+            fileSizeLimit: 52428800 // 50MB
+          });
+          
+          if (createError) {
+            console.error('Error creating bucket:', createError);
+          } else {
+            console.log('Bucket created successfully:', newBucket);
+          }
+        }
+      }
 
-    if (error) {
-      console.error('Upload error:', error);
+      // Upload the file
+      const { data, error } = await supabase.storage
+        .from('media-files')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (error) {
+        console.error('Upload error:', error);
+        throw new Error(`Erreur d'upload: ${error.message}`);
+      }
+
+      console.log('Upload successful:', data);
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('media-files')
+        .getPublicUrl(filePath);
+
+      console.log('Public URL generated:', publicUrl);
+      
+      // Verify the file was uploaded by trying to fetch it
+      try {
+        const response = await fetch(publicUrl, { method: 'HEAD' });
+        if (!response.ok) {
+          throw new Error(`Fichier non accessible: ${response.status}`);
+        }
+      } catch (fetchError) {
+        console.warn('Could not verify file accessibility:', fetchError);
+      }
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Error in uploadFile:', error);
       throw error;
     }
-
-    console.log('Upload successful:', data);
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('media-files')
-      .getPublicUrl(filePath);
-
-    console.log('Public URL:', publicUrl);
-    return publicUrl;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -108,18 +151,24 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
       // Upload media files and get URLs
       const mediaUrls: string[] = [];
       
-      for (const file of formData.mediaFiles) {
-        try {
-          const url = await uploadFile(file);
-          mediaUrls.push(url);
-        } catch (uploadError) {
-          console.error('Error uploading file:', file.name, uploadError);
-          toast({
-            title: "Erreur d'upload",
-            description: `Impossible d'uploader le fichier ${file.name}`,
-            variant: "destructive"
-          });
-          return;
+      if (formData.mediaFiles.length > 0) {
+        for (let i = 0; i < formData.mediaFiles.length; i++) {
+          const file = formData.mediaFiles[i];
+          try {
+            console.log(`Uploading file ${i + 1}/${formData.mediaFiles.length}:`, file.name);
+            const url = await uploadFile(file);
+            mediaUrls.push(url);
+            console.log(`File ${i + 1} uploaded successfully`);
+          } catch (uploadError) {
+            console.error('Error uploading file:', file.name, uploadError);
+            toast({
+              title: "Erreur d'upload",
+              description: `Impossible d'uploader le fichier ${file.name}: ${uploadError instanceof Error ? uploadError.message : 'Erreur inconnue'}`,
+              variant: "destructive"
+            });
+            setLoading(false);
+            return;
+          }
         }
       }
 
@@ -138,7 +187,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
 
       if (error) {
         console.error('Database insert error:', error);
-        throw error;
+        throw new Error(`Erreur de base de données: ${error.message}`);
       }
 
       console.log('Media item saved to database successfully');
@@ -155,7 +204,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
       console.error('Error creating media:', error);
       toast({
         title: "Erreur",
-        description: "Impossible d'ajouter le média.",
+        description: error instanceof Error ? error.message : "Impossible d'ajouter le média.",
         variant: "destructive"
       });
     } finally {
