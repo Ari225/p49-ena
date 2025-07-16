@@ -158,15 +158,15 @@ const RepertoireMembers = () => {
 
         <div className={`container mx-auto ${gridConfig.padding} py-[50px] md:py-[50px]`}>
           {/* Search Bar */}
-          <div className="max-w-md mx-auto mb-8">
+          <div className="max-w-md mx-auto mb-[50px] md:mb-[50px]">
             <div className="relative">
-              <Search className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5`} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input 
                 type="text" 
                 placeholder="Rechercher par nom ou prénom..." 
                 value={searchTerm} 
                 onChange={e => setSearchTerm(e.target.value)} 
-                className="pl-10 py-3 text-lg" 
+                className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} pl-10 py-3`} 
               />
             </div>
             {searchTerm && (
