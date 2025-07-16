@@ -75,37 +75,37 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
       }
     }
     
-    // Configuration desktop basée sur le nombre de membres
+    // Configuration desktop avec dimensions uniformes
     switch (memberCount) {
       case 1:
         return {
           gridCols: 'grid-cols-1',
           maxWidth: 'max-w-md',
-          gap: 'gap-5'
+          gap: 'gap-6'
         };
       case 2:
         return {
-          gridCols: 'grid-cols-1 sm:grid-cols-2',
+          gridCols: 'grid-cols-2',
           maxWidth: 'max-w-3xl',
-          gap: 'gap-5'
+          gap: 'gap-6'
         };
       case 3:
         return {
-          gridCols: 'grid-cols-1 md:grid-cols-3',
+          gridCols: 'grid-cols-3',
           maxWidth: 'max-w-5xl',
-          gap: 'gap-5'
+          gap: 'gap-6'
         };
       case 4:
         return {
-          gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4',
+          gridCols: 'grid-cols-4',
           maxWidth: 'max-w-6xl',
-          gap: 'gap-5'
+          gap: 'gap-6'
         };
       default:
         return {
-          gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+          gridCols: 'grid-cols-4',
           maxWidth: 'max-w-7xl',
-          gap: 'gap-5'
+          gap: 'gap-6'
         };
     }
   };
@@ -149,7 +149,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
       )}
       
       <div className="flex justify-center relative z-10">
-        <div className={`grid ${gridConfig.gridCols} ${gridConfig.maxWidth} ${gridConfig.gap} mx-auto w-full ${isSingleCard ? 'place-items-center' : ''}`}>
+        <div className={`grid ${gridConfig.gridCols} ${gridConfig.maxWidth} ${gridConfig.gap} mx-auto w-full ${isSingleCard ? 'place-items-center' : 'place-items-center'}`}>
           {level.map((member, index) => {
             const shouldCenter = shouldCenterCard(member, index);
             
@@ -158,8 +158,7 @@ const OrganigramLevel: React.FC<OrganigramLevelProps> = ({
                 key={index} 
                 className={`
                   relative transform transition-all duration-300 hover:scale-105 hover:z-20
-                  ${isMobile ? 'mx-auto max-w-xs w-full' : isTablet ? 'w-full h-full' : ''}
-                  ${isSingleCard ? 'justify-self-center' : ''}
+                  ${isMobile ? 'mx-auto max-w-xs w-full' : isTablet ? 'w-full h-full' : 'flex justify-center'}
                   ${shouldCenter ? 'col-span-full flex justify-center' : ''}
                 `}
               >

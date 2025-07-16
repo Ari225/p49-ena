@@ -73,9 +73,9 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
     }
   };
 
-  // Ajustement pour uniformiser toutes les cartes
-  const cardHeightClass = isMobile ? '' : isTablet ? 'h-[200px]' : 'h-[240px]';
-  const cardWidthClass = isTablet ? 'max-w-[280px] mx-auto' : '';
+  // Dimensions uniformes pour toutes les versions
+  const cardHeightClass = isMobile ? '' : isTablet ? 'h-[200px]' : 'h-[280px]';
+  const cardWidthClass = isMobile ? '' : isTablet ? 'max-w-[280px] mx-auto' : 'w-[300px] max-w-[300px]';
 
   return (
     <>
@@ -97,20 +97,20 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
                 </AvatarFallback>
               </Avatar>
               {/* Éléments décoratifs améliorés */}
-              <div className={`absolute -top-1 -right-1 ${isTablet ? 'w-2 h-2' : 'w-3 h-3'} bg-primary rounded-full shadow-sm`}></div>
-              <div className={`absolute -bottom-1 -left-1 ${isTablet ? 'w-1.5 h-1.5' : 'w-2 h-2'} bg-secondary rounded-full shadow-sm`}></div>
+              <div className={`absolute -top-1 -right-1 ${isMobile || isTablet ? 'w-2 h-2' : 'w-3 h-3'} bg-primary rounded-full shadow-sm`}></div>
+              <div className={`absolute -bottom-1 -left-1 ${isMobile || isTablet ? 'w-1.5 h-1.5' : 'w-2 h-2'} bg-secondary rounded-full shadow-sm`}></div>
             </div>
           </div>
 
           {/* Contenu principal */}
           <div className="flex-grow flex flex-col justify-center text-center space-y-2">
             {/* Nom */}
-            <h3 className={`font-bold ${isMobile ? 'text-sm' : isTablet ? 'text-sm' : 'text-xl'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
+            <h3 className={`font-bold ${isMobile ? 'text-sm' : isTablet ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
               {name}
             </h3>
 
             {/* Position */}
-            <p className={`${isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-base'} text-gray-600 font-medium leading-snug px-1`}>
+            <p className={`${isMobile ? 'text-xs' : isTablet ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-1`}>
               {position}
             </p>
           </div>
