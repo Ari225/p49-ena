@@ -134,7 +134,7 @@ const RepertoireMembers = () => {
   
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
@@ -147,20 +147,20 @@ const RepertoireMembers = () => {
           </div>
           
           <div className={`relative z-10 text-center ${gridConfig.padding}`}>
-            <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
-              Répertoire des Membres
+            <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-4xl' : 'text-6xl md:text-6xl lg:text-6xl'} font-bold mb-[10px] md:mb-[10px] animate-fade-in`}>
+              Répertoire des membres
             </h1>
-            <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg md:text-lg'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               Découvrez notre réseau de plus de 800 membres à travers la Côte d'Ivoire
             </p>
           </div>
         </section>
 
-        <div className={`container mx-auto ${gridConfig.padding} py-8 md:py-[100px]`}>
+        <div className={`container mx-auto ${gridConfig.padding} py-[50px] md:py-[50px]`}>
           {/* Search Bar */}
           <div className="max-w-md mx-auto mb-8">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Search className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5`}>
               <Input 
                 type="text" 
                 placeholder="Rechercher par nom ou prénom..." 
@@ -231,12 +231,12 @@ const RepertoireMembers = () => {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-xl text-gray-600">
+              <p className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} text-xl text-gray-600`}>
                 Aucun membre trouvé pour "{searchTerm}"
               </p>
               <button 
                 onClick={() => setSearchTerm('')} 
-                className="mt-4 text-primary hover:underline"
+                className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'} mt-4 text-primary hover:underline`}
               >
                 Afficher tous les membres
               </button>
