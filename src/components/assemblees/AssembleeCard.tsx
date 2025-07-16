@@ -39,7 +39,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({
 }) => <Card className="hover:shadow-lg transition-shadow">
     <CardHeader>
       <div className="flex items-center justify-between">
-        <CardTitle className="text-primary">{assemblee.type}</CardTitle>
+        <CardTitle className="text-primary text-xl">{assemblee.type}</CardTitle>
         <Badge className={getStatusColor(assemblee.status)}>
           {assemblee.status}
         </Badge>
