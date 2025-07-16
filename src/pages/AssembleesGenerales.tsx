@@ -7,7 +7,6 @@ import AssembleesInfoSection from '@/components/assemblees/AssembleesInfoSection
 import ProcessusDemocratiqueSection from '@/components/assemblees/ProcessusDemocratiqueSection';
 import AssembleesHeader from '@/components/assemblees/AssembleesHeader';
 import { assembleesPassees, assembleesFutures } from '@/components/assemblees/assembleesData';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const AssembleesGenerales = () => {
   const isMobile = useIsMobile();
@@ -25,30 +24,50 @@ const AssembleesGenerales = () => {
           <section className="py-16 px-[25px]">
             <div className="container mx-auto px-4">
               {/* Onglets Mobile */}
-              <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-8">
-                  <TabsTrigger value="prochaines" className="text-sm">Prochaines</TabsTrigger>
-                  <TabsTrigger value="passees" className="text-sm">Passées</TabsTrigger>
-                </TabsList>
+              <div className="flex border-b border-gray-200 mb-8">
+                <button
+                  onClick={() => setSelectedTab('prochaines')}
+                  className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    selectedTab === 'prochaines'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Prochaines
+                </button>
+                <button
+                  onClick={() => setSelectedTab('passees')}
+                  className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    selectedTab === 'passees'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Passées
+                </button>
+              </div>
 
-                <TabsContent value="prochaines">
+              {selectedTab === 'prochaines' && (
+                <div>
                   <h2 className="text-xl font-bold text-primary mb-6">Prochaines Assemblées</h2>
                   <div className="grid grid-cols-1 gap-4">
                     {assembleesFutures.map((assemblee) => (
                       <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                     ))}
                   </div>
-                </TabsContent>
+                </div>
+              )}
 
-                <TabsContent value="passees">
+              {selectedTab === 'passees' && (
+                <div>
                   <h2 className="text-xl font-bold text-primary mb-6">Assemblées Passées</h2>
                   <div className="grid grid-cols-1 gap-4">
                     {assembleesPassees.map((assemblee) => (
                       <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                     ))}
                   </div>
-                </TabsContent>
-              </Tabs>
+                </div>
+              )}
             </div>
           </section>
 
@@ -70,30 +89,50 @@ const AssembleesGenerales = () => {
           <section className="py-16 px-[50px]">
             <div className="container mx-auto px-4">
               {/* Onglets Tablet */}
-              <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-                <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
-                  <TabsTrigger value="prochaines" className="text-base">Prochaines</TabsTrigger>
-                  <TabsTrigger value="passees" className="text-base">Passées</TabsTrigger>
-                </TabsList>
+              <div className="flex border-b border-gray-200 mb-8">
+                <button
+                  onClick={() => setSelectedTab('prochaines')}
+                  className={`px-8 py-3 text-base font-medium border-b-2 transition-colors ${
+                    selectedTab === 'prochaines'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Prochaines
+                </button>
+                <button
+                  onClick={() => setSelectedTab('passees')}
+                  className={`px-8 py-3 text-base font-medium border-b-2 transition-colors ${
+                    selectedTab === 'passees'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Passées
+                </button>
+              </div>
 
-                <TabsContent value="prochaines">
+              {selectedTab === 'prochaines' && (
+                <div>
                   <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Assemblées</h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {assembleesFutures.map((assemblee) => (
                       <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                     ))}
                   </div>
-                </TabsContent>
+                </div>
+              )}
 
-                <TabsContent value="passees">
+              {selectedTab === 'passees' && (
+                <div>
                   <h2 className="text-2xl font-bold text-primary mb-6">Assemblées Passées</h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {assembleesPassees.map((assemblee) => (
                       <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                     ))}
                   </div>
-                </TabsContent>
-              </Tabs>
+                </div>
+              )}
             </div>
           </section>
 
@@ -114,30 +153,50 @@ const AssembleesGenerales = () => {
         <section className="py-16 px-[100px]">
           <div className="container mx-auto px-4">
             {/* Onglets Desktop */}
-            <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
-              <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
-                <TabsTrigger value="prochaines" className="text-base">Prochaines</TabsTrigger>
-                <TabsTrigger value="passees" className="text-base">Passées</TabsTrigger>
-              </TabsList>
+            <div className="flex border-b border-gray-200 mb-8">
+              <button
+                onClick={() => setSelectedTab('prochaines')}
+                className={`px-8 py-3 text-base font-medium border-b-2 transition-colors ${
+                  selectedTab === 'prochaines'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Prochaines
+              </button>
+              <button
+                onClick={() => setSelectedTab('passees')}
+                className={`px-8 py-3 text-base font-medium border-b-2 transition-colors ${
+                  selectedTab === 'passees'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Passées
+              </button>
+            </div>
 
-              <TabsContent value="prochaines">
+            {selectedTab === 'prochaines' && (
+              <div>
                 <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Assemblées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {assembleesFutures.map((assemblee) => (
                     <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                   ))}
                 </div>
-              </TabsContent>
+              </div>
+            )}
 
-              <TabsContent value="passees">
+            {selectedTab === 'passees' && (
+              <div>
                 <h2 className="text-2xl font-bold text-primary mb-6">Assemblées Passées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {assembleesPassees.map((assemblee) => (
                     <AssembleeCard key={assemblee.id} assemblee={assemblee} />
                   ))}
                 </div>
-              </TabsContent>
-            </Tabs>
+              )}
+            )}
           </div>
         </section>
 
