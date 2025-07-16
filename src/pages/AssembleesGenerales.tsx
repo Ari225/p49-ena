@@ -31,7 +31,7 @@ const AssembleesGenerales = () => {
 
               {/* Contenu des onglets Mobile */}
               {selectedTab === 'prochaines' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-[10px]">Prochaines Assemblées</h2>
+                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="grid grid-cols-1 gap-6">
                     {assembleesFutures.map(assemblee => <AssembleeCard key={assemblee.id} assemblee={assemblee} />)}
                   </div>
