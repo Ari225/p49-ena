@@ -39,14 +39,14 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({
 }) => <Card className="hover:shadow-lg transition-shadow">
     <CardHeader>
       <div className="flex items-center justify-between">
-        <CardTitle className="text-primary text-xl">{assemblee.type}</CardTitle>
+        <CardTitle className="text-primary text-lg">{assemblee.type}</CardTitle>
         <Badge className={getStatusColor(assemblee.status)}>
           {assemblee.status}
         </Badge>
       </div>
     </CardHeader>
     <CardContent>
-      <p className="text-gray-600 mb-4 text-sm">{assemblee.resume}</p>
+      <p className="text-gray-600 mb-4">{assemblee.resume}</p>
       
       <div className="space-y-2 mb-4">
         <div className="flex items-center text-sm text-gray-600">
@@ -76,7 +76,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({
         </div>}
 
       {assemblee.ordreJour && <div className="mb-4">
-          <h4 className="font-medium text-gray-700 mb-2 text-xl">Ordre du jour</h4>
+          <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
           <ul className="text-sm text-gray-600 space-y-1">
             {assemblee.ordreJour.map((point: string, index: number) => <li key={index} className="flex items-start">
                 <span className="text-primary mr-2">•</span>
