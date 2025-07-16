@@ -44,10 +44,12 @@ const AssembleesGenerales = () => {
               {selectedTab === 'prochaines' && (
                 <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
-                  <div className="grid grid-cols-1 gap-6">
-                    {assembleesFutures.map((assemblee) => (
-                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                    ))}
+                  <div className="flex justify-center">
+                    <div className="w-full max-w-md">
+                      {assembleesFutures.map((assemblee) => (
+                        <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -101,10 +103,12 @@ const AssembleesGenerales = () => {
               {selectedTab === 'prochaines' && (
                 <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                    {assembleesFutures.map((assemblee) => (
-                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                    ))}
+                  <div className="flex justify-center">
+                    <div className="w-full max-w-2xl">
+                      {assembleesFutures.map((assemblee) => (
+                        <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -157,10 +161,12 @@ const AssembleesGenerales = () => {
             {selectedTab === 'prochaines' && (
               <div>
                 <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                  {assembleesFutures.map((assemblee) => (
-                    <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                  ))}
+                <div className="flex justify-center">
+                  <div className="w-full max-w-2xl">
+                    {assembleesFutures.map((assemblee) => (
+                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
