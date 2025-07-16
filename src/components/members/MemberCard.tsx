@@ -69,41 +69,41 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
             {/* Name Mobile */}
             <div className="text-center mb-2">
-              <h3 className="font-bold text-sm text-gray-900 group-hover:text-primary transition-colors leading-tight">
+              <h3 className="font-bold text-sm text-primary group-hover:text-primary transition-colors leading-tight">
                 {firstName} {lastName}
               </h3>
             </div>
 
             {/* Position Mobile */}
-            <div className="flex items-center justify-center mb-1 text-gray-600 flex-1">
-              <Briefcase className="h-3 w-3 mr-1 flex-shrink-0" />
+            <div className="flex items-center justify-center mb-1 text-gray-700 flex-1">
+              <Briefcase className="h-4 w-4 mr-1 flex-shrink-0" />
               <span className="text-xs text-center line-clamp-2">{position}</span>
             </div>
 
             {/* Location Mobile */}
-            <div className="flex items-center justify-center mb-3 text-gray-600">
-              <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
+            <div className="flex items-center justify-center mb-3 text-gray-700">
+              <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
               <span className="text-xs truncate">{locality}</span>
             </div>
 
             {/* Contact Icons Mobile */}
             <div className="flex justify-center space-x-2 mt-auto">
-              <div className="p-1 text-gray-600 cursor-default" title="Téléphone">
-                <Phone className="h-3 w-3" />
+              <div className="p-1 text-gray-700 cursor-default" title="Téléphone">
+                <Phone className="h-4 w-4" />
               </div>
               {socialMedia.facebook && (
-                <div className="p-1 text-gray-600 cursor-default" title="Facebook">
-                  <Facebook className="h-3 w-3" />
+                <div className="p-1 text-gray-700 cursor-default" title="Facebook">
+                  <Facebook className="h-4 w-4" />
                 </div>
               )}
               {socialMedia.instagram && (
-                <div className="p-1 text-gray-600 cursor-default" title="Instagram">
-                  <Instagram className="h-3 w-3" />
+                <div className="p-1 text-gray-700 cursor-default" title="Instagram">
+                  <Instagram className="h-4 w-4" />
                 </div>
               )}
               {socialMedia.linkedin && (
-                <div className="p-1 text-gray-600 cursor-default" title="LinkedIn">
-                  <Linkedin className="h-3 w-3" />
+                <div className="p-1 text-gray-700 cursor-default" title="LinkedIn">
+                  <Linkedin className="h-4 w-4" />
                 </div>
               )}
             </div>
@@ -149,40 +149,40 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
             {/* Name Tablette */}
             <div className="text-center mb-4">
-              <h3 className="font-bold text-base text-gray-900 group-hover:text-primary transition-colors leading-tight">
+              <h3 className="font-bold text-base text-primary group-hover:text-primary transition-colors leading-tight">
                 {firstName} {lastName}
               </h3>
             </div>
 
             {/* Position Tablette */}
-            <div className="flex items-center justify-center mb-2 text-gray-600 flex-1">
+            <div className="flex items-center justify-center mb-2 text-gray-700 flex-1">
               <Briefcase className="h-4 w-4 mr-2 flex-shrink-0" />
               <span className="text-sm text-center line-clamp-2">{position}</span>
             </div>
 
             {/* Location Tablette */}
-            <div className="flex items-center justify-center mb-4 text-gray-600">
+            <div className="flex items-center justify-center mb-4 text-gray-700">
               <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
               <span className="text-sm truncate">{locality}</span>
             </div>
 
             {/* Contact Icons Tablette */}
             <div className="flex justify-center space-x-2 mt-auto">
-              <div className="p-2 text-gray-600 cursor-default" title="Téléphone">
+              <div className="p-2 text-gray-700 cursor-default" title="Téléphone">
                 <Phone className="h-4 w-4" />
               </div>
               {socialMedia.facebook && (
-                <div className="p-2 text-gray-600 cursor-default" title="Facebook">
+                <div className="p-2 text-gray-700 cursor-default" title="Facebook">
                   <Facebook className="h-4 w-4" />
                 </div>
               )}
               {socialMedia.instagram && (
-                <div className="p-2 text-gray-600 cursor-default" title="Instagram">
+                <div className="p-2 text-gray-700 cursor-default" title="Instagram">
                   <Instagram className="h-4 w-4" />
                 </div>
               )}
               {socialMedia.linkedin && (
-                <div className="p-2 text-gray-600 cursor-default" title="LinkedIn">
+                <div className="p-2 text-gray-700 cursor-default" title="LinkedIn">
                   <Linkedin className="h-4 w-4" />
                 </div>
               )}
@@ -228,40 +228,40 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
           {/* Name Desktop */}
           <div className="text-center mb-4">
-            <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors leading-tight">
+            <h3 className="font-bold text-lg text-primary group-hover:text-primary transition-colors leading-tight">
               {firstName} {lastName}
             </h3>
           </div>
 
           {/* Position Desktop */}
-          <div className="flex items-center justify-center mb-2 text-gray-600 flex-1">
+          <div className="flex items-center justify-center mb-2 text-gray-700 flex-1">
             <Briefcase className="h-4 w-4 mr-2 flex-shrink-0" />
             <span className="text-sm text-center line-clamp-2">{position}</span>
           </div>
 
           {/* Location Desktop */}
-          <div className="flex items-center justify-center mb-4 text-gray-600">
+          <div className="flex items-center justify-center mb-4 text-gray-700">
             <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
             <span className="text-sm truncate">{locality}</span>
           </div>
 
           {/* Contact Icons Desktop */}
           <div className="flex justify-center space-x-3 mt-auto">
-            <div className="p-2 text-gray-600 cursor-default" title="Téléphone">
+            <div className="p-2 text-gray-700 cursor-default" title="Téléphone">
               <Phone className="h-4 w-4" />
             </div>
             {socialMedia.facebook && (
-              <div className="p-2 text-gray-600 cursor-default" title="Facebook">
+              <div className="p-2 text-gray-700 cursor-default" title="Facebook">
                 <Facebook className="h-4 w-4" />
               </div>
             )}
             {socialMedia.instagram && (
-              <div className="p-2 text-gray-600 cursor-default" title="Instagram">
+              <div className="p-2 text-gray-700 cursor-default" title="Instagram">
                 <Instagram className="h-4 w-4" />
               </div>
             )}
             {socialMedia.linkedin && (
-              <div className="p-2 text-gray-600 cursor-default" title="LinkedIn">
+              <div className="p-2 text-gray-700 cursor-default" title="LinkedIn">
                 <Linkedin className="h-4 w-4" />
               </div>
             )}
