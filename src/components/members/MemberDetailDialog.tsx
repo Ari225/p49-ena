@@ -53,7 +53,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   // ===========================================
   if (isMobile) {
     return (
-      <Dialog open={isOpen} onOpenChange={onClose} className="rounded-lg">
+      <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="w-[calc(100%-50px)] max-w-sm mx-auto rounded-lg">
           <div className="p-4">
             {/* Photo Mobile */}
