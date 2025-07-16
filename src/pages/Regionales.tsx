@@ -80,7 +80,7 @@ const Regionales = () => {
   }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img src={regionale.image} alt={regionale.titre} className="w-full h-32 object-cover" />
-        <Badge className={`absolute top-2 right-2 text-xs ${getStatusColor(regionale.status)}`}>
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
           {regionale.status}
         </Badge>
       </div>
