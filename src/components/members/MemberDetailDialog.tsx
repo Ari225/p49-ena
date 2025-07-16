@@ -64,7 +64,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   alt={`${firstName} ${lastName}`}
                   className="object-cover"
                 />
-                <AvatarFallback className="bg-primary text-white text-sm font-semibold">
+                <AvatarFallback className="bg-primary text-white text-xs font-semibold">
                   {getInitials()}
                 </AvatarFallback>
               </Avatar>
@@ -80,13 +80,13 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             {/* Position Mobile */}
             <div className="flex items-center justify-center mb-2 text-gray-600">
               <Briefcase className="h-4 w-4 mr-2 flex-shrink-0 text-gray-600" />
-              <span className="text-sm font-medium text-center">{position}</span>
+              <span className="text-xs font-medium text-center">{position}</span>
             </div>
 
             {/* Location Mobile */}
             <div className="flex items-center justify-center mb-4 text-gray-600">
               <MapPin className="h-4 w-4 mr-2 flex-shrink-0 text-gray-600" />
-              <span className="text-sm">{locality}</span>
+              <span className="text-xs">{locality}</span>
             </div>
 
             {/* Contact Icons Mobile */}
@@ -151,7 +151,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   alt={`${firstName} ${lastName}`}
                   className="object-cover"
                 />
-                <AvatarFallback className="bg-primary text-white text-lg font-semibold">
+                <AvatarFallback className="bg-primary text-white text-sm font-semibold">
                   {getInitials()}
                 </AvatarFallback>
               </Avatar>
@@ -237,7 +237,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                 alt={`${firstName} ${lastName}`}
                 className="object-cover"
               />
-              <AvatarFallback className="bg-primary text-white text-xl font-semibold">
+              <AvatarFallback className="bg-primary text-white text-sm font-semibold">
                 {getInitials()}
               </AvatarFallback>
             </Avatar>
