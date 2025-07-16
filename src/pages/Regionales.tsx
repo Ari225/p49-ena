@@ -195,7 +195,7 @@ const Regionales = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         {/* Header with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
@@ -214,30 +214,6 @@ const Regionales = () => {
             <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
               L'activité principale de la P49 : rencontres régionales pour échanger et partager
             </p>
-          </div>
-        </section>
-
-        {/* Statistiques */}
-        <section className={`py-8 bg-white ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">12</div>
-                <div className="text-gray-600">Régionales organisées</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">8</div>
-                <div className="text-gray-600">Régions couvertes</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">450+</div>
-                <div className="text-gray-600">Participants totaux</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary">3</div>
-                <div className="text-gray-600">À venir en 2024</div>
-              </div>
-            </div>
           </div>
         </section>
 
