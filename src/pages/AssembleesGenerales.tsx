@@ -185,9 +185,6 @@ const AssembleesGenerales = () => {
             )}
           </div>
         </section>
-
-        <AssembleesInfoSection />
-        <ProcessusDemocratiqueSection />
       </div>
     </Layout>
   );
