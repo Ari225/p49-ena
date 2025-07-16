@@ -421,11 +421,11 @@ const Regionales = () => {
             </div>
             
             <div className="relative z-10 text-center px-[25px]">
-              <h1 className="text-3xl font-bold mb-4 animate-fade-in">
-                Régionales P49
+              <h1 className="text-2xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+                Les Régionales de la P49
               </h1>
-              <p className="text-base italic mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                L'activité principale de la P49 : rencontres régionales pour échanger et partager
+              <p className="text-sm italic mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                L'activité principale qui permet d'étendre le réseau au plan national
               </p>
             </div>
           </section>}
@@ -440,11 +440,11 @@ const Regionales = () => {
             </div>
             
             <div className="relative z-10 text-center px-[50px]">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
-                Régionales P49
+              <h1 className="text-4xl md:text-4xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+                Les Régionales de la P49
               </h1>
-              <p className="text-lg italic mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                L'activité principale de la P49 : rencontres régionales pour échanger et partager
+              <p className="text-base italic mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                L'activité principale qui permet d'étendre le réseau au plan national
               </p>
             </div>
           </section>}
@@ -459,11 +459,11 @@ const Regionales = () => {
             </div>
             
             <div className="relative z-10 text-center px-8 lg:px-[100px]">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in">
-                Régionales P49
+              <h1 className="text-6xl md:text-6xl lg:text-6xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
+                Les Régionales de la P49
               </h1>
-              <p className="text-lg md:text-xl italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                L'activité principale de la P49 : rencontres régionales pour échanger et partager
+              <p className="text-lg md:text-lg italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+                L'activité principale qui permet d'étendre le réseau au plan national
               </p>
             </div>
           </section>}
@@ -471,10 +471,44 @@ const Regionales = () => {
         {/* ======================
             MOBILE VERSION - Contenu principal
             ====================== */}
-        {isMobile && <section className="py-12 px-[25px]">
+        {isMobile && <section className="py-[50px] px-[25px]">
             <div className="container mx-auto px-0">
               {/* Onglets centrés */}
-              <div className="flex justify-center mb-6">
+              <div className="flex justify-center mb-[50px] md:mb-[50px]">
+                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
+                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-xs">
+                    À venir
+                  </Button>
+                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-xs">
+                    Passées
+                  </Button>
+                </div>
+              </div>
+
+              {/* Contenu des onglets */}
+              {selectedTab === 'futures' && <div>
+                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
+                  <div className="flex justify-center">
+                    {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
+                  </div>
+                </div>}
+
+              {selectedTab === 'passees' && <div>
+                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
+                  <div className="grid grid-cols-1 gap-4">
+                    {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
+                  </div>
+                </div>}
+            </div>
+          </section>}
+
+        {/* ======================
+            TABLET VERSION - Contenu principal
+            ====================== */}
+        {isTablet && <section className="py-[50px] px-[50px]">
+            <div className="container mx-auto px-4">
+              {/* Onglets centrés */}
+              <div className="flex justify-center mb-[50px] md:mb-[50px]">
                 <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
                   <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-sm">
                     À venir
@@ -487,48 +521,14 @@ const Regionales = () => {
 
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-4 text-center">Prochaines Régionales</h2>
+                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
                   <div className="flex justify-center">
                     {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
                   </div>
                 </div>}
 
               {selectedTab === 'passees' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-4 text-center">Régionales Passées</h2>
-                  <div className="grid grid-cols-1 gap-4">
-                    {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
-                  </div>
-                </div>}
-            </div>
-          </section>}
-
-        {/* ======================
-            TABLET VERSION - Contenu principal
-            ====================== */}
-        {isTablet && <section className="py-14 px-[50px]">
-            <div className="container mx-auto px-4">
-              {/* Onglets centrés */}
-              <div className="flex justify-center mb-7">
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
-                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1">
-                    À venir
-                  </Button>
-                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1">
-                    Passées
-                  </Button>
-                </div>
-              </div>
-
-              {/* Contenu des onglets */}
-              {selectedTab === 'futures' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-5 text-center">Prochaines Régionales</h2>
-                  <div className="flex justify-center">
-                    {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
-                  </div>
-                </div>}
-
-              {selectedTab === 'passees' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-5 text-center">Régionales Passées</h2>
+                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
                   </div>
@@ -539,15 +539,15 @@ const Regionales = () => {
         {/* ======================
             DESKTOP VERSION - Contenu principal
             ====================== */}
-        {!isMobile && !isTablet && <section className="py-16 px-[100px]">
+        {!isMobile && !isTablet && <section className="py-[50px] px-[100px]">
             <div className="container mx-auto px-4">
               {/* Onglets centrés */}
-              <div className="flex justify-center mb-8">
+              <div className="flex justify-center mb-[50px] md:mb-[50px]">
                 <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
-                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1">
+                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-sm">
                     À venir
                   </Button>
-                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1">
+                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
                     Passées
                   </Button>
                 </div>
@@ -555,14 +555,14 @@ const Regionales = () => {
 
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines Régionales</h2>
+                  <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
                   <div className="flex justify-center">
                     {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
                   </div>
                 </div>}
 
               {selectedTab === 'passees' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-6 text-center">Régionales Passées</h2>
+                  <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
                   </div>
@@ -576,11 +576,9 @@ const Regionales = () => {
         {isMobile && <section className="py-12 bg-accent/10 px-[25px]">
             <div className="container mx-auto px-0">
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-primary mb-3">Qu'est-ce qu'une Régionale ?</h2>
-                <p className="text-gray-700 text-sm">
-                  Les Régionales sont des rencontres organisées dans différentes régions de Côte d'Ivoire 
-                  pour permettre aux membres de la P49 de se retrouver, échanger sur les problématiques 
-                  locales et nationales, et renforcer les liens de fraternité.
+                <h2 className="text-xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
+                <p className="text-gray-700 text-xs">
+                  Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-4">
@@ -636,11 +634,9 @@ const Regionales = () => {
         {isTablet && <section className="py-14 bg-accent/10 px-[50px]">
             <div className="container mx-auto px-4">
               <div className="text-center mb-7">
-                <h2 className="text-2xl font-bold text-primary mb-4">Qu'est-ce qu'une Régionale ?</h2>
-                <p className="text-gray-700 max-w-3xl mx-auto">
-                  Les Régionales sont des rencontres organisées dans différentes régions de Côte d'Ivoire 
-                  pour permettre aux membres de la P49 de se retrouver, échanger sur les problématiques 
-                  locales et nationales, et renforcer les liens de fraternité.
+                <h2 className="text-2xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
+                <p className="text-gray-700 max-w-3xl mx-auto text-sm">
+                 Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -696,11 +692,9 @@ const Regionales = () => {
         {!isMobile && !isTablet && <section className="py-16 bg-accent/10 px-[100px]">
             <div className="container mx-auto px-4">
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-primary mb-4">Qu'est-ce qu'une Régionale ?</h2>
-                <p className="text-gray-700 max-w-3xl mx-auto">
-                  Les Régionales sont des rencontres organisées dans différentes régions de Côte d'Ivoire 
-                  pour permettre aux membres de la P49 de se retrouver, échanger sur les problématiques 
-                  locales et nationales, et renforcer les liens de fraternité.
+                <h2 className="text-3xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
+                <p className="text-gray-700 max-w-3xl mx-auto text-base">
+                 Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA. Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
