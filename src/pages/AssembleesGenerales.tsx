@@ -57,7 +57,7 @@ const AssembleesGenerales = () => {
 
           {/* Contenu principal Tablette */}
           <section className="py-[50px] px-[50px]">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-0">
               {/* Onglets Tablette */}
               <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg justify-center mb-[50px] md:mb-[50px] max-w-md">
                 <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-sm">
@@ -70,7 +70,7 @@ const AssembleesGenerales = () => {
 
               {/* Contenu des onglets Tablette */}
               {selectedTab === 'prochaines' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
+                  <h2 className="text-2xl font-bold text-primary mb-[10px]">Prochaines Assemblées</h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {assembleesFutures.map(assemblee => <AssembleeCard key={assemblee.id} assemblee={assemblee} />)}
                   </div>
@@ -108,14 +108,14 @@ const AssembleesGenerales = () => {
 
             {/* Contenu des onglets Desktop */}
             {selectedTab === 'prochaines' && <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
+                <h2 className="text-3xl font-bold text-primary mb-[10px]">Prochaines Assemblées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {assembleesFutures.map(assemblee => <AssembleeCard key={assemblee.id} assemblee={assemblee} />)}
                 </div>
               </div>}
 
             {selectedTab === 'passees' && <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
+                <h2 className="text-3xl font-bold text-primary mb-[10px]">Assemblées Passées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {assembleesPassees.map(assemblee => <AssembleeCard key={assemblee.id} assemblee={assemblee} />)}
                 </div>
