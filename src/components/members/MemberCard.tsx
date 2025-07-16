@@ -76,34 +76,34 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
             {/* Position Mobile */}
             <div className="flex items-center justify-center mb-1 text-gray-700 flex-1">
-              <Briefcase className="h-4 w-4 mr-1 flex-shrink-0" />
+              <Briefcase className="h-3 w-3 mr-1 flex-shrink-0" />
               <span className="text-xs text-center line-clamp-2">{position}</span>
             </div>
 
             {/* Location Mobile */}
             <div className="flex items-center justify-center mb-3 text-gray-700">
-              <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+              <MapPin className="h-3 w-3 mr-1 flex-shrink-0" />
               <span className="text-xs truncate">{locality}</span>
             </div>
 
             {/* Contact Icons Mobile */}
             <div className="flex justify-center space-x-2 mt-auto">
               <div className="p-1 text-gray-700 cursor-default" title="Téléphone">
-                <Phone className="h-4 w-4" />
+                <Phone className="h-3 w-3" />
               </div>
               {socialMedia.facebook && (
                 <div className="p-1 text-gray-700 cursor-default" title="Facebook">
-                  <Facebook className="h-4 w-4" />
+                  <Facebook className="h-3 w-3" />
                 </div>
               )}
               {socialMedia.instagram && (
                 <div className="p-1 text-gray-700 cursor-default" title="Instagram">
-                  <Instagram className="h-4 w-4" />
+                  <Instagram className="h-3 w-3" />
                 </div>
               )}
               {socialMedia.linkedin && (
                 <div className="p-1 text-gray-700 cursor-default" title="LinkedIn">
-                  <Linkedin className="h-4 w-4" />
+                  <Linkedin className="h-3 w-3" />
                 </div>
               )}
             </div>
