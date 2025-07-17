@@ -70,29 +70,19 @@ const LoginForm = () => {
     }
   };
 
-  // Fonction pour pré-remplir les champs de test
-  const fillTestCredentials = (type: 'admin' | 'redacteur') => {
-    if (type === 'admin') {
-      setUsername('ari_dale');
-      setPassword('Reseau@2025');
-    } else {
-      setUsername('kouam_p49');
-      setPassword('Reseau@2025');
-    }
-  };
   const renderForm = () => <form onSubmit={handleSubmit} className="space-y-6">
       {/* Boutons de test pour le développement */}
       
 
       <div className="space-y-2 text-primary">
         <Label htmlFor="username">{t('login.username')}</Label>
-        <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="ari_dale ou kouam_p49" required />
+        <Input id="username" type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Nom d'utilisateur" required />
       </div>
       
       <div className="space-y-2 text-primary">
         <Label htmlFor="password">{t('login.password')}</Label>
         <div className="relative">
-          <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Reseau@2025" required className="pr-10" />
+          <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" required className="pr-10" />
           <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-700">
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -105,9 +95,6 @@ const LoginForm = () => {
       
       <div className="text-sm text-gray-700 text-center">
         <p className="text-gray-700 font-normal">Espace réservé aux administrateurs et rédacteurs.</p>
-        <p className="text-xs text-gray-500 mt-2">
-          Comptes de test : ari_dale / kouam_p49 - Mot de passe : Reseau@2025
-        </p>
       </div>
     </form>;
   if (isMobile) {
