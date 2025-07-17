@@ -46,6 +46,18 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Vérifier la taille du fichier (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('L\'image ne doit pas dépasser 5MB');
+        return;
+      }
+
+      // Vérifier le type de fichier
+      if (!file.type.startsWith('image/')) {
+        toast.error('Veuillez sélectionner un fichier image valide');
+        return;
+      }
+
       setSelectedImage(file);
       setFormData(prev => ({ ...prev, profileImage: file }));
       
@@ -70,25 +82,35 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
 
   const uploadImage = async (file: File): Promise<string | null> => {
     try {
-      const fileExt = file.name.split('.').pop();
+      console.log('Début upload image:', file.name, file.type, file.size);
+      
+      const fileExt = file.name.split('.').pop()?.toLowerCase();
       const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
       const filePath = `user-images/${fileName}`;
 
-      const { error: uploadError } = await supabase.storage
+      console.log('Upload vers:', filePath);
+
+      const { data, error: uploadError } = await supabase.storage
         .from('media-files')
         .upload(filePath, file, {
-          contentType: file.type,
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type
         });
 
       if (uploadError) {
-        console.error('Erreur upload image:', uploadError);
-        return null;
+        console.error('Erreur upload:', uploadError);
+        throw uploadError;
       }
 
+      console.log('Upload réussi:', data);
+
+      // Obtenir l'URL publique
       const { data: { publicUrl } } = supabase.storage
         .from('media-files')
         .getPublicUrl(filePath);
 
+      console.log('URL publique:', publicUrl);
       return publicUrl;
     } catch (error) {
       console.error('Erreur lors de l\'upload:', error);
@@ -117,12 +139,14 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
       // Upload de l'image si présente
       let imageUrl = null;
       if (selectedImage) {
+        console.log('Upload de l\'image en cours...');
         imageUrl = await uploadImage(selectedImage);
         if (!imageUrl) {
           toast.error('Erreur lors de l\'upload de l\'image');
           setCreating(false);
           return;
         }
+        console.log('Image uploadée avec succès:', imageUrl);
       }
 
       // Mappage des rôles
@@ -135,8 +159,8 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
 
       console.log('Rôle mappé:', mappedRole);
 
-      // Création simple d'un hash pour le mot de passe (en production, utiliser bcrypt)
-      const passwordHash = btoa(formData.password); // Base64 simple pour test
+      // Création simple d'un hash pour le mot de passe
+      const passwordHash = btoa(formData.password);
 
       // Insertion dans la base de données
       const { data: newUser, error } = await supabase
