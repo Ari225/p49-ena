@@ -17,10 +17,11 @@ import EvenementsSociauxSection from '@/components/home/EvenementsSociauxSection
 import ActivitesSection from '@/components/home/ActivitesSection';
 import BlogSection from '@/components/home/BlogSection';
 import GallerySection from '@/components/home/GallerySection';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const Index = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const backgroundImages = [
     '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
     '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
@@ -28,20 +29,20 @@ const Index = () => {
     '/lovable-uploads/Equipe.jpg'
   ];
 
-  // Effet pour ajuster le scroll pour les appareils mobiles
+  // Effet pour ajuster le scroll pour les appareils mobiles et tablettes
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile || isTablet) {
       // Réinitialiser le scroll quand on revient sur la page d'accueil
       window.scrollTo(0, 0);
       
-      // Améliorer le comportement de défilement sur mobile
+      // Améliorer le comportement de défilement sur mobile et tablette
       document.body.style.scrollBehavior = 'smooth';
       
       return () => {
         document.body.style.scrollBehavior = '';
       };
     }
-  }, [isMobile]);
+  }, [isMobile, isTablet]);
 
   return (
     <Layout>
