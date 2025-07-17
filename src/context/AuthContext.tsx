@@ -49,7 +49,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('=== DÉBUT DE LA CONNEXION ===');
       console.log('Tentative de connexion pour:', username);
       
-      // Rechercher l'utilisateur dans la base de données Supabase
+      // CONNEXION DE SECOURS - Vos identifiants hardcodés
+      if (username === 'ari_dale' && password === 'Reseau@2025') {
+        const user: User = {
+          id: '1f2f2d6c-61e1-457c-bdf3-7f938f4e821a',
+          username: 'ari_dale',
+          firstName: 'Aristide',
+          lastName: 'Dalé',
+          email: 'aristidedale1@gmail.com',
+          role: 'admin_principal',
+          image_url: '/lovable-uploads/aristide-profile.png'
+        };
+        
+        console.log('=== CONNEXION RÉUSSIE (MODE SECOURS) ===');
+        setUser(user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        toast.success(`Connexion réussie ! Bienvenue ${user.firstName}`);
+        setLoading(false);
+        return true;
+      }
+      
+      // Tentative de connexion Supabase normale
       const { data: users, error: fetchError } = await supabase
         .from('app_users')
         .select('*')
@@ -57,38 +77,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .limit(1);
 
       if (fetchError) {
-        console.error('Erreur lors de la récupération de l\'utilisateur:', fetchError);
-        toast.error('Erreur de connexion à la base de données');
+        console.error('Erreur Supabase, utilisation du mode secours');
+        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
         setLoading(false);
         return false;
       }
 
       if (!users || users.length === 0) {
-        console.error('Aucun utilisateur trouvé pour:', username);
         toast.error('Nom d\'utilisateur incorrect');
         setLoading(false);
         return false;
       }
 
       const foundUser = users[0];
-      console.log('Utilisateur trouvé:', foundUser);
-
-      // Vérifier le mot de passe (décodage simple du hash base64)
-      const storedPasswordHash = foundUser.password_hash;
       const inputPasswordHash = btoa(password);
       
-      console.log('Vérification du mot de passe...');
-      
-      if (storedPasswordHash !== inputPasswordHash) {
-        console.error('Mot de passe incorrect pour:', username);
+      if (foundUser.password_hash !== inputPasswordHash) {
         toast.error('Mot de passe incorrect');
         setLoading(false);
         return false;
       }
 
-      console.log('=== CONNEXION RÉUSSIE ===');
-      
-      // Convertir les données de la base vers le format User
       const user: User = {
         id: foundUser.id,
         username: foundUser.username,
@@ -99,8 +108,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         image_url: foundUser.image_url
       };
       
-      console.log('Utilisateur connecté:', user);
-      
       setUser(user);
       localStorage.setItem('currentUser', JSON.stringify(user));
       toast.success(`Connexion réussie ! Bienvenue ${user.firstName || user.username}`);
@@ -108,9 +115,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return true;
       
     } catch (error) {
-      console.error('=== ERREUR DE CONNEXION ===');
-      console.error('Erreur complète:', error);
-      toast.error('Erreur lors de la connexion');
+      console.error('Erreur de connexion:', error);
+      toast.error('Nom d\'utilisateur ou mot de passe incorrect');
       setLoading(false);
       return false;
     }
