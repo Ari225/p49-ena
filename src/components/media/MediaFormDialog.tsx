@@ -66,17 +66,16 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   const uploadFile = async (file: File): Promise<string> => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = `media/${fileName}`;
+    const filePath = `uploads/${fileName}`;
 
     console.log('Uploading file:', fileName, 'Type:', file.type, 'Size:', file.size);
 
     try {
-      // Upload directement vers le bucket media-files (qui existe déjà)
       const { data, error } = await supabase.storage
         .from('media-files')
         .upload(filePath, file, {
           cacheControl: '3600',
-          upsert: false
+          upsert: true
         });
 
       if (error) {
@@ -86,7 +85,6 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
 
       console.log('Upload successful:', data);
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
         .from('media-files')
         .getPublicUrl(filePath);
@@ -148,7 +146,8 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           category: formData.category,
           date: formData.date,
           description: formData.description,
-          media_urls: mediaUrls
+          media_urls: mediaUrls,
+          created_by: null
         });
 
       if (error) {

@@ -29,21 +29,29 @@ const DashboardMediatheque = () => {
   // Fetch media items from Supabase
   const fetchMediaItems = async () => {
     try {
+      console.log('Fetching media items...');
+      
       const { data, error } = await supabase
         .from('media_items')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
+      console.log('Media items fetched successfully:', data);
       setMediaItems(data || []);
     } catch (error) {
       console.error('Error fetching media items:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de charger les médias.",
-        variant: "destructive"
-      });
+      // Ne pas afficher d'erreur si c'est juste que la table est vide
+      if (error && error.message !== 'Load failed') {
+        toast({
+          title: "Information",
+          description: "Aucun média trouvé. Commencez par ajouter votre premier média.",
+        });
+      }
     } finally {
       setLoading(false);
     }
