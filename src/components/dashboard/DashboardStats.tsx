@@ -1,39 +1,104 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, FileText, Calendar, Eye } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface DashboardStatsProps {
   isMobile?: boolean;
 }
 
 const DashboardStats: React.FC<DashboardStatsProps> = ({ isMobile = false }) => {
-  const stats = [
+  const [stats, setStats] = useState([
     {
       title: 'Articles Publiés',
-      value: '24',
+      value: '0',
       icon: FileText,
       color: 'text-blue-600'
     },
     {
-      title: 'Membres Actifs',
-      value: '156',
+      title: 'Activités',
+      value: '0',
       icon: Users,
       color: 'text-green-600'
     },
     {
       title: 'Événements',
-      value: '8',
+      value: '0',
       icon: Calendar,
       color: 'text-purple-600'
     },
     {
       title: 'Visiteurs Mensuels',
-      value: '2,341',
+      value: '0',
       icon: Eye,
       color: 'text-orange-600'
     }
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        // Comptage des articles publiés
+        const { count: articlesCount } = await supabase
+          .from('blog_articles')
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'valide');
+
+        // Comptage des activités
+        const { count: activitiesCount } = await supabase
+          .from('activities')
+          .select('*', { count: 'exact', head: true });
+
+        // Comptage des événements (sociaux + difficiles)
+        const { count: socialEventsCount } = await supabase
+          .from('social_events')
+          .select('*', { count: 'exact', head: true });
+
+        const { count: difficultEventsCount } = await supabase
+          .from('difficult_events')
+          .select('*', { count: 'exact', head: true });
+
+        const totalEvents = (socialEventsCount || 0) + (difficultEventsCount || 0);
+
+        // Visiteurs mensuels - pour l'instant simulation, à remplacer par une vraie solution analytics
+        const currentMonth = new Date().getMonth();
+        const visitorsCount = Math.floor(Math.random() * 1000) + 500; // Simulation temporaire
+
+        setStats([
+          {
+            title: 'Articles Publiés',
+            value: (articlesCount || 0).toString(),
+            icon: FileText,
+            color: 'text-blue-600'
+          },
+          {
+            title: 'Activités',
+            value: (activitiesCount || 0).toString(),
+            icon: Users,
+            color: 'text-green-600'
+          },
+          {
+            title: 'Événements',
+            value: totalEvents.toString(),
+            icon: Calendar,
+            color: 'text-purple-600'
+          },
+          {
+            title: 'Visiteurs Mensuels',
+            value: visitorsCount.toLocaleString(),
+            icon: Eye,
+            color: 'text-orange-600'
+          }
+        ]);
+
+      } catch (error) {
+        console.error('Erreur lors de la récupération des statistiques:', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   if (isMobile) {
     return (
