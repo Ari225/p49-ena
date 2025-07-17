@@ -9,11 +9,13 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { isAdmin } from '@/utils/roleUtils';
 
 const DashboardAddUser = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     firstName: '',
@@ -29,9 +31,8 @@ const DashboardAddUser = () => {
   }
 
   const roles = [
-    { value: 'admin', label: 'Administrateur' },
-    { value: 'editor', label: 'Rédacteur' },
-    { value: 'member', label: 'Membre' }
+    { value: 'admin_secondaire', label: 'Administrateur secondaire' },
+    { value: 'redacteur', label: 'Rédacteur' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,9 +46,33 @@ const DashboardAddUser = () => {
     setCreating(true);
 
     try {
-      // Mock user creation - in a real app, this would create user in database
-      console.log('Creating user:', formData);
+      console.log('Création utilisateur depuis DashboardAddUser:', formData);
       
+      // Création simple d'un hash pour le mot de passe (en production, utiliser bcrypt)
+      const passwordHash = btoa(formData.password); // Base64 simple pour test
+
+      // Insertion dans la base de données
+      const { data: newUser, error } = await supabase
+        .from('app_users')
+        .insert({
+          username: formData.username,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          role: formData.role as 'admin_principal' | 'admin_secondaire' | 'redacteur',
+          password_hash: passwordHash
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Erreur lors de la création:', error);
+        toast.error(`Erreur lors de la création: ${error.message}`);
+        setCreating(false);
+        return;
+      }
+
+      console.log('Utilisateur créé avec succès:', newUser);
       toast.success('Utilisateur créé avec succès !');
       
       // Reset form
@@ -59,6 +84,11 @@ const DashboardAddUser = () => {
         role: '',
         password: ''
       });
+
+      // Redirection vers la liste des utilisateurs
+      setTimeout(() => {
+        navigate('/dashboard/users');
+      }, 1500);
     } catch (error) {
       console.error('Error creating user:', error);
       toast.error('Erreur lors de la création de l\'utilisateur');

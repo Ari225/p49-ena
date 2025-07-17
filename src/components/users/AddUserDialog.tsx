@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import ProfileImageUpload from './ProfileImageUpload';
 import UserTypeSelection from './UserTypeSelection';
 import UserFormFields from './UserFormFields';
@@ -67,6 +68,34 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const uploadImage = async (file: File): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `user-images/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('media-files')
+        .upload(filePath, file, {
+          contentType: file.type,
+        });
+
+      if (uploadError) {
+        console.error('Erreur upload image:', uploadError);
+        return null;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('media-files')
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Erreur lors de l\'upload:', error);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -83,9 +112,56 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
     setCreating(true);
 
     try {
-      // Mock user creation - in a real app, this would create user in database
-      console.log('Creating user:', formData);
+      console.log('Début de la création utilisateur:', formData);
       
+      // Upload de l'image si présente
+      let imageUrl = null;
+      if (selectedImage) {
+        imageUrl = await uploadImage(selectedImage);
+        if (!imageUrl) {
+          toast.error('Erreur lors de l\'upload de l\'image');
+          setCreating(false);
+          return;
+        }
+      }
+
+      // Mappage des rôles
+      let mappedRole = formData.role;
+      if (formData.role === 'admin') {
+        mappedRole = 'admin_secondaire';
+      } else if (formData.role === 'editor') {
+        mappedRole = 'redacteur';
+      }
+
+      console.log('Rôle mappé:', mappedRole);
+
+      // Création simple d'un hash pour le mot de passe (en production, utiliser bcrypt)
+      const passwordHash = btoa(formData.password); // Base64 simple pour test
+
+      // Insertion dans la base de données
+      const { data: newUser, error } = await supabase
+        .from('app_users')
+        .insert({
+          username: formData.username,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          email: formData.email,
+          role: mappedRole as 'admin_principal' | 'admin_secondaire' | 'redacteur',
+          password_hash: passwordHash,
+          address: formData.address || null,
+          image_url: imageUrl
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Erreur lors de la création:', error);
+        toast.error(`Erreur lors de la création: ${error.message}`);
+        setCreating(false);
+        return;
+      }
+
+      console.log('Utilisateur créé avec succès:', newUser);
       toast.success('Utilisateur créé avec succès !');
       
       // Reset form

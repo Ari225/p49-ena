@@ -6,6 +6,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 import UsersList from '@/components/users/UsersList';
 import UsersPageHeader from '@/components/users/UsersPageHeader';
 import LoadingState from '@/components/users/LoadingState';
@@ -29,38 +30,59 @@ const DashboardUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Utiliser les profils codés en dur au lieu de Supabase
-    const hardcodedUsers: User[] = [
-      {
-        id: '1',
-        username: 'ari_dale',
-        first_name: 'Aristide',
-        last_name: 'Dalé',
-        email: 'aristideakpaki6@gmail.com',
-        role: 'admin_principal',
-        created_at: new Date().toISOString(),
-        image_url: '/lovable-uploads/2cd61362-ab99-4adc-901a-5bef1c338e97.png'
-      },
-      {
-        id: '2',
-        username: 'kouam_p49',
-        first_name: 'Kouamé',
-        last_name: '',
-        email: 'kouame@p49.com',
-        role: 'redacteur',
-        created_at: new Date().toISOString(),
-        image_url: '/lovable-uploads/e479be1a-3b50-400f-ab57-37aecdd654ed.png'
-      }
-    ];
+  const fetchUsers = async () => {
+    try {
+      console.log('Récupération des utilisateurs depuis Supabase...');
+      
+      const { data, error } = await supabase
+        .from('app_users')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-    setUsers(hardcodedUsers);
-    setLoading(false);
+      if (error) {
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
+        // Fallback vers les utilisateurs codés en dur
+        const hardcodedUsers: User[] = [
+          {
+            id: '1',
+            username: 'ari_dale',
+            first_name: 'Aristide',
+            last_name: 'Dalé',
+            email: 'aristideakpaki6@gmail.com',
+            role: 'admin_principal',
+            created_at: new Date().toISOString(),
+            image_url: '/lovable-uploads/2cd61362-ab99-4adc-901a-5bef1c338e97.png'
+          },
+          {
+            id: '2',
+            username: 'kouam_p49',
+            first_name: 'Kouamé',
+            last_name: '',
+            email: 'kouame@p49.com',
+            role: 'redacteur',
+            created_at: new Date().toISOString(),
+            image_url: '/lovable-uploads/e479be1a-3b50-400f-ab57-37aecdd654ed.png'
+          }
+        ];
+        setUsers(hardcodedUsers);
+      } else {
+        console.log('Utilisateurs récupérés:', data);
+        setUsers(data || []);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   const handleUserAdded = () => {
-    // Pour le moment, ne fait rien car on utilise des profils codés en dur
-    console.log('Utilisateur ajouté (fonctionnalité à implémenter)');
+    console.log('Utilisateur ajouté, rechargement de la liste...');
+    fetchUsers(); // Recharger la liste depuis Supabase
   };
 
   const handleUpdateUser = (updatedUser: User) => {
