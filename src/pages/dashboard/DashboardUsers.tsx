@@ -29,10 +29,6 @@ const DashboardUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  if (!user || !isAdmin(user)) {
-    return <div>Non autorisé</div>;
-  }
-
   useEffect(() => {
     // Utiliser les profils codés en dur au lieu de Supabase
     const hardcodedUsers: User[] = [
@@ -76,6 +72,11 @@ const DashboardUsers = () => {
   const handleDeleteUser = (userId: string) => {
     setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
   };
+
+  // Move authorization check AFTER all hooks
+  if (!user || !isAdmin(user)) {
+    return <div>Non autorisé</div>;
+  }
 
   if (loading) {
     return <LoadingState isMobile={isMobile} isTablet={isTablet} />;
