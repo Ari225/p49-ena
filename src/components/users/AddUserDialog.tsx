@@ -126,6 +126,11 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
       return;
     }
 
+    if (!selectedImage) {
+      toast.error('Veuillez sélectionner une photo de profil');
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       toast.error('Les mots de passe ne correspondent pas');
       return;

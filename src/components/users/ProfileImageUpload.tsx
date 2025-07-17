@@ -18,7 +18,9 @@ const ProfileImageUpload = ({
 }: ProfileImageUploadProps) => {
   return (
     <div className="space-y-3">
-      <Label className="text-sm font-medium">Photo de profil (optionnel)</Label>
+      <Label className="text-sm font-medium">
+        Photo de profil <span className="text-red-500">*</span>
+      </Label>
       <div className="flex items-center space-x-4">
         {imagePreview ? (
           <div className="relative">
