@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -31,6 +32,10 @@ const DashboardMediatheque = () => {
     try {
       console.log('Fetching media items...');
       
+      // Vérifier la session avant de faire la requête
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Session status:', !!session);
+      
       const { data, error } = await supabase
         .from('media_items')
         .select('*')
@@ -38,28 +43,40 @@ const DashboardMediatheque = () => {
 
       if (error) {
         console.error('Supabase error:', error);
-        throw error;
+        // Si c'est une erreur de réseau ou de connectivité
+        if (error.message === 'Load failed' || error.message.includes('network')) {
+          toast({
+            title: "Problème de connexion",
+            description: "Vérifiez votre connexion internet et réessayez.",
+            variant: "destructive"
+          });
+        } else {
+          throw error;
+        }
+        setMediaItems([]);
+        return;
       }
 
       console.log('Media items fetched successfully:', data);
       setMediaItems(data || []);
     } catch (error) {
       console.error('Error fetching media items:', error);
-      // Ne pas afficher d'erreur si c'est juste que la table est vide
-      if (error && error.message !== 'Load failed') {
-        toast({
-          title: "Information",
-          description: "Aucun média trouvé. Commencez par ajouter votre premier média.",
-        });
-      }
+      toast({
+        title: "Erreur de chargement",
+        description: "Impossible de charger les médias. Réessayez plus tard.",
+        variant: "destructive"
+      });
+      setMediaItems([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMediaItems();
-  }, []);
+    if (user && isAdmin(user)) {
+      fetchMediaItems();
+    }
+  }, [user]);
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;

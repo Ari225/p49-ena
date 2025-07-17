@@ -10,6 +10,7 @@ import { Plus, Upload, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/context/AuthContext';
 
 interface MediaFormData {
   title: string;
@@ -35,6 +36,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   });
   const isMobile = useIsMobile();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -64,22 +66,31 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   };
 
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const filePath = `uploads/${fileName}`;
-
-    console.log('Uploading file:', fileName, 'Type:', file.type, 'Size:', file.size);
-
     try {
+      console.log('Starting file upload for:', file.name);
+      
+      // Vérifier que l'utilisateur est connecté
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Utilisateur non connecté');
+      }
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `uploads/${fileName}`;
+
+      console.log('Uploading to path:', filePath, 'Session exists:', !!session);
+
       const { data, error } = await supabase.storage
         .from('media-files')
         .upload(filePath, file, {
           cacheControl: '3600',
-          upsert: true
+          upsert: true,
+          contentType: file.type
         });
 
       if (error) {
-        console.error('Upload error:', error);
+        console.error('Storage upload error:', error);
         throw new Error(`Erreur d'upload: ${error.message}`);
       }
 
@@ -99,6 +110,16 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!user) {
+      toast({
+        title: "Erreur d'authentification",
+        description: "Vous devez être connecté pour ajouter des médias.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (!formData.title || !formData.category || !formData.date || !formData.description) {
       toast({
         title: "Champs requis",
@@ -147,7 +168,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           date: formData.date,
           description: formData.description,
           media_urls: mediaUrls,
-          created_by: null
+          created_by: user.id
         });
 
       if (error) {
