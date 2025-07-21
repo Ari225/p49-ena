@@ -65,71 +65,65 @@ const ActualiteDetail = () => {
 
   const actualite = actualiteData[id as keyof typeof actualiteData] || actualiteData['1'];
 
-  const getHorizontalPadding = () => {
-    if (isMobile) return 'px-4';
-    if (isTablet) return 'px-8';
-    return 'px-16';
-  };
-
-  const getMaxWidth = () => {
-    if (isMobile) return 'max-w-none';
-    if (isTablet) return 'max-w-4xl';
-    return 'max-w-5xl';
-  };
-
   return (
     <Layout>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-gray-50">
         {/* Navigation Header */}
-        <div className={`${getHorizontalPadding()} py-6 bg-white border-b border-gray-100`}>
-          <div className={`${getMaxWidth()} mx-auto`}>
+        <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
+          <div className={`${isMobile ? 'px-4 py-4' : isTablet ? 'px-8 py-6' : 'px-16 py-6'} max-w-7xl mx-auto`}>
             <Link to="/actualites">
-              <Button variant="ghost" className="text-gray-600 hover:text-primary hover:bg-gray-50 p-0 h-auto font-normal">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+              <Button variant="ghost" className="text-gray-600 hover:text-primary hover:bg-primary/5 p-0 h-auto font-normal group">
+                <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
                 Retour aux actualités
               </Button>
             </Link>
           </div>
         </div>
 
-        {/* Hero Image */}
-        <div className="relative mb-8">
-          <div className={`${isMobile ? 'h-64' : isTablet ? 'h-80' : 'h-96'} overflow-hidden bg-gray-50`}>
-            <img 
-              src={actualite.image} 
-              alt={actualite.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-
-        {/* Article Content */}
-        <div className={`${getHorizontalPadding()} pb-16`}>
-          <div className={`${getMaxWidth()} mx-auto`}>
-            {/* Article Header */}
-            <div className="mb-12">
+        <div className={`${isMobile ? 'px-4 py-6' : isTablet ? 'px-8 py-8' : 'px-16 py-12'} max-w-4xl mx-auto`}>
+          {/* Article Container */}
+          <article className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            {/* Hero Image */}
+            <div className="relative">
+              <div className={`${isMobile ? 'h-48' : isTablet ? 'h-64' : 'h-80'} overflow-hidden`}>
+                <img 
+                  src={actualite.image} 
+                  alt={actualite.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               {/* Category Badge */}
-              <div className="flex items-center mb-6">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+              <div className="absolute top-4 left-4">
+                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-white/90 backdrop-blur text-primary shadow-sm">
                   <Tag className="h-3 w-3 mr-1.5" />
                   {actualite.category}
                 </span>
               </div>
+              {/* Share Button */}
+              <div className="absolute top-4 right-4">
+                <Button size="sm" variant="secondary" className="bg-white/90 backdrop-blur text-gray-700 hover:bg-white shadow-sm">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Partager
+                </Button>
+              </div>
+            </div>
 
+            {/* Content */}
+            <div className={`${isMobile ? 'p-6' : isTablet ? 'p-8' : 'p-10'}`}>
               {/* Title */}
               <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold text-gray-900 mb-6 leading-tight`}>
                 {actualite.title}
               </h1>
 
               {/* Meta Information */}
-              <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8">
-                <div className="flex items-center">
-                  <User className="h-4 w-4 mr-2" />
-                  <span className="font-medium">{actualite.author}</span>
+              <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-6 border-b border-gray-100">
+                <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
+                  <User className="h-4 w-4 mr-2 text-primary" />
+                  <span className="font-medium text-sm">{actualite.author}</span>
                 </div>
-                <div className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>
+                <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
+                  <Calendar className="h-4 w-4 mr-2 text-primary" />
+                  <span className="text-sm">
                     {new Date(actualite.date).toLocaleDateString('fr-FR', {
                       year: 'numeric',
                       month: 'long',
@@ -137,79 +131,66 @@ const ActualiteDetail = () => {
                     })}
                   </span>
                 </div>
-                <div className="flex items-center">
-                  <Clock className="h-4 w-4 mr-2" />
-                  <span>{actualite.readTime} de lecture</span>
+                <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
+                  <Clock className="h-4 w-4 mr-2 text-primary" />
+                  <span className="text-sm">{actualite.readTime} de lecture</span>
                 </div>
               </div>
 
-              {/* Share Button */}
-              <div className="flex justify-end">
-                <Button variant="outline" className="text-gray-600 border-gray-200 hover:bg-gray-50">
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Partager
-                </Button>
+              {/* Article Body */}
+              <div className="prose prose-lg max-w-none">
+                <div 
+                  className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-semibold [&>h3]:text-xl [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-4 [&>ul>li]:mb-2"
+                  dangerouslySetInnerHTML={{ __html: actualite.content }}
+                />
               </div>
-            </div>
 
-            {/* Divider */}
-            <div className="w-full h-px bg-gray-200 mb-12"></div>
-
-            {/* Article Body */}
-            <div className="prose prose-lg max-w-none mb-12">
-              <div 
-                className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-semibold [&>ul]:text-gray-700 [&>p]:text-gray-700"
-                dangerouslySetInnerHTML={{ __html: actualite.content }}
-              />
-            </div>
-
-            {/* Author Section */}
-            <div className="bg-gray-50 rounded-2xl p-8 mb-12">
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                  <User className="h-8 w-8 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {actualite.author}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    Article publié le {new Date(actualite.date).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                  <Button variant="outline" size="sm" className="text-gray-600 border-gray-300 hover:bg-white">
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Partager cet article
-                  </Button>
+              {/* Author Section */}
+              <div className="mt-12 pt-8 border-t border-gray-100">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <User className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                      {actualite.author}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-3">
+                      Publié le {new Date(actualite.date).toLocaleDateString('fr-FR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                    <Button variant="outline" size="sm" className="text-gray-600 border-gray-200 hover:bg-gray-50">
+                      <Share2 className="h-4 w-4 mr-2" />
+                      Partager cet article
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gray-900 text-white">
-          <div className={`${getHorizontalPadding()} py-16`}>
-            <div className={`${getMaxWidth()} mx-auto text-center`}>
-              <h2 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold mb-4`}>
-                Découvrez plus d'actualités
-              </h2>
-              <p className={`${isMobile ? 'text-base' : 'text-lg'} mb-8 opacity-90 max-w-2xl mx-auto`}>
-                Restez informé des dernières nouvelles de la P49 et de l'administration publique ivoirienne
-              </p>
-              <Link to="/actualites">
-                <Button 
-                  size="lg" 
-                  className="bg-secondary text-primary hover:bg-secondary/90 font-semibold"
-                >
-                  Voir toutes les actualités
-                  <ChevronRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
-            </div>
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-white">
+          <div className={`${isMobile ? 'px-4 py-16' : isTablet ? 'px-8 py-20' : 'px-16 py-24'} max-w-4xl mx-auto text-center`}>
+            <h2 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold mb-4`}>
+              Découvrez plus d'actualités
+            </h2>
+            <p className={`${isMobile ? 'text-base' : 'text-lg'} mb-8 opacity-90 max-w-2xl mx-auto`}>
+              Restez informé des dernières nouvelles de la P49 et de l'administration publique ivoirienne
+            </p>
+            <Link to="/actualites">
+              <Button 
+                size="lg" 
+                className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Voir toutes les actualités
+                <ChevronRight className="h-5 w-5 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
