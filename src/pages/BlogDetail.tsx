@@ -49,66 +49,54 @@ const BlogDetail = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
-        {/* Navigation Header */}
-        <div className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-10 shadow-sm">
-          <div className={`${isMobile ? 'px-4 py-3' : isTablet ? 'px-6 py-4' : 'px-8 py-5'} max-w-6xl mx-auto`}>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        {/* Hero Section with Image */}
+        <div className="relative h-96 overflow-hidden">
+          <img 
+            src={blog.image} 
+            alt={blog.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+          
+          {/* Navigation Overlay */}
+          <div className="absolute top-6 left-6">
             <Link to="/blog">
-              <Button variant="ghost" className="text-gray-600 hover:text-primary hover:bg-primary/5 p-0 h-auto font-normal group transition-all duration-200">
-                <ArrowLeft className="h-4 w-4 mr-2 transition-transform group-hover:-translate-x-1" />
+              <Button variant="ghost" className="text-white hover:bg-white/20 backdrop-blur-sm border border-white/30">
+                <ArrowLeft className="h-4 w-4 mr-2" />
                 Retour au blog
               </Button>
             </Link>
           </div>
-        </div>
 
-        {/* Article Container */}
-        <div className={`${isMobile ? 'px-4 py-8' : isTablet ? 'px-6 py-10' : 'px-8 py-12'} max-w-4xl mx-auto`}>
-          <article className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-            {/* Hero Image */}
-            <div className="relative">
-              <div className={`${isMobile ? 'h-64' : isTablet ? 'h-80' : 'h-96'} overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200`}>
-                <img 
-                  src={blog.image} 
-                  alt={blog.title}
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              </div>
-              
-              {/* Floating Category Badge */}
-              <div className="absolute top-6 left-6">
-                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white/95 backdrop-blur text-primary shadow-xl border border-white/30">
-                  <Tag className="h-4 w-4 mr-2" />
+          {/* Share Button */}
+          <div className="absolute top-6 right-6">
+            <Button size="sm" className="bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/30">
+              <Share2 className="h-4 w-4 mr-2" />
+              Partager
+            </Button>
+          </div>
+
+          {/* Title Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="mb-4">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/90 text-white backdrop-blur-sm">
+                  <Tag className="h-3 w-3 mr-2" />
                   {blog.category}
                 </span>
               </div>
-              
-              {/* Share Button */}
-              <div className="absolute top-6 right-6">
-                <Button size="sm" className="bg-white/95 backdrop-blur text-gray-700 hover:bg-white shadow-xl border border-white/30 hover:scale-105 transition-all duration-200">
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Partager
-                </Button>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className={`${isMobile ? 'p-6' : isTablet ? 'p-8' : 'p-12'}`}>
-              {/* Title */}
-              <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold text-gray-900 mb-6 leading-tight`}>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                 {blog.title}
               </h1>
-
-              {/* Meta Information */}
-              <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-8 pb-6 border-b border-gray-100">
-                <div className="flex items-center bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
-                  <User className="h-4 w-4 mr-2 text-primary" />
-                  <span className="font-medium text-sm">{blog.author}</span>
+              <div className="flex flex-wrap items-center gap-4 text-white/90">
+                <div className="flex items-center">
+                  <User className="h-4 w-4 mr-2" />
+                  <span className="font-medium">{blog.author}</span>
                 </div>
-                <div className="flex items-center bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
-                  <Calendar className="h-4 w-4 mr-2 text-primary" />
-                  <span className="text-sm">
+                <div className="flex items-center">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span>
                     {new Date(blog.date).toLocaleDateString('fr-FR', {
                       year: 'numeric',
                       month: 'long',
@@ -116,82 +104,79 @@ const BlogDetail = () => {
                     })}
                   </span>
                 </div>
-                <div className="flex items-center bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
-                  <Clock className="h-4 w-4 mr-2 text-primary" />
-                  <span className="text-sm">{blog.readTime} de lecture</span>
+                <div className="flex items-center">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span>{blog.readTime} de lecture</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Tags */}
-              {blog.tags && (
-                <div className="flex flex-wrap gap-3 mb-10">
-                  {blog.tags.map((tag, index) => (
-                    <span 
-                      key={index}
-                      className="px-4 py-2 bg-primary/5 text-primary text-sm rounded-xl font-medium border border-primary/10 hover:bg-primary/10 transition-colors"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* Article Body */}
-              <div className="prose prose-lg max-w-none">
-                <div 
-                  className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-bold [&>h3]:text-2xl [&>h3]:mb-4 [&>h3]:mt-8 [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-6 [&>p]:leading-relaxed [&>ul>li]:mb-2 [&>blockquote]:my-8 [&>blockquote]:p-6 [&>blockquote]:bg-gray-50 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-gray-700"
-                  dangerouslySetInnerHTML={{ __html: blog.content }}
-                />
+        {/* Content Section */}
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <article className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
+            {/* Tags */}
+            {blog.tags && (
+              <div className="flex flex-wrap gap-2 mb-8">
+                {blog.tags.map((tag, index) => (
+                  <span 
+                    key={index}
+                    className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full font-medium border border-primary/20"
+                  >
+                    #{tag}
+                  </span>
+                ))}
               </div>
+            )}
 
-              {/* Author Section */}
-              <div className="mt-12 pt-8 border-t border-gray-100">
-                <div className="flex items-start space-x-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <User className="h-8 w-8 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">
-                      {blog.author}
-                    </h3>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.
-                    </p>
-                    <p className="text-gray-500 text-sm mb-5">
-                      Publié le {new Date(blog.date).toLocaleDateString('fr-FR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </p>
-                    <Button variant="outline" size="sm" className="text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-primary hover:text-primary transition-all duration-200">
-                      <Share2 className="h-4 w-4 mr-2" />
-                      Partager cet article
-                    </Button>
-                  </div>
+            {/* Article Content */}
+            <div className="prose prose-lg max-w-none">
+              <div 
+                className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-bold [&>h3]:text-2xl [&>h3]:mb-4 [&>h3]:mt-8 [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-6 [&>p]:leading-relaxed [&>ul>li]:mb-2 [&>blockquote]:my-8 [&>blockquote]:p-6 [&>blockquote]:bg-gray-50 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-gray-700 [&>blockquote]:rounded-r-lg"
+                dangerouslySetInnerHTML={{ __html: blog.content }}
+              />
+            </div>
+
+            {/* Author Section */}
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <div className="flex items-start space-x-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <User className="h-8 w-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {blog.author}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.
+                  </p>
+                  <Button variant="outline" size="sm" className="text-gray-600 border-gray-300 hover:bg-gray-50">
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Partager cet article
+                  </Button>
                 </div>
               </div>
             </div>
           </article>
         </div>
 
-        {/* Related Articles Section */}
-        <div className="bg-white border-t border-gray-100">
-          <div className={`${isMobile ? 'px-4 py-12' : isTablet ? 'px-6 py-16' : 'px-8 py-20'} max-w-6xl mx-auto`}>
+        {/* Related Articles */}
+        <div className="bg-gray-50 py-16">
+          <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold text-gray-900 mb-4`}>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
                 Articles connexes
               </h2>
-              <p className={`${isMobile ? 'text-base' : 'text-lg'} text-gray-600 max-w-2xl mx-auto`}>
-                Découvrez d'autres réflexions et analyses de nos membres
+              <p className="text-lg text-gray-600">
+                Découvrez d'autres réflexions de nos membres
               </p>
             </div>
 
-            {/* Related Articles Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3].map((item) => (
-                <div key={item} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <div className="w-full h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl mb-4"></div>
+                <div key={item} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="w-full h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg mb-4"></div>
                   <h3 className="font-semibold text-gray-900 mb-2">Article similaire {item}</h3>
                   <p className="text-gray-600 text-sm mb-4">Résumé de l'article...</p>
                   <div className="flex items-center text-xs text-gray-500">
@@ -208,19 +193,18 @@ const BlogDetail = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-br from-primary via-primary to-primary/90 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-10"></div>
-          <div className={`${isMobile ? 'px-4 py-12' : isTablet ? 'px-6 py-16' : 'px-8 py-20'} max-w-4xl mx-auto text-center relative z-10`}>
-            <h2 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold mb-6`}>
+        <div className="bg-gradient-to-r from-primary to-primary/90 text-white py-16">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-3xl font-bold mb-6">
               Explorez plus d'articles du blog
             </h2>
-            <p className={`${isMobile ? 'text-base' : 'text-lg'} mb-8 opacity-90 max-w-2xl mx-auto leading-relaxed`}>
-              Rejoignez la conversation et découvrez les réflexions de la communauté P49 sur l'avenir de l'administration publique
+            <p className="text-lg mb-8 opacity-90">
+              Rejoignez la conversation et découvrez les réflexions de la communauté P49
             </p>
             <Link to="/blog">
               <Button 
                 size="lg" 
-                className="bg-secondary text-primary hover:bg-secondary/90 font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-white text-primary hover:bg-gray-100 font-semibold px-8 py-4 rounded-lg shadow-lg"
               >
                 Voir tous les articles
                 <ChevronRight className="h-5 w-5 ml-2" />
