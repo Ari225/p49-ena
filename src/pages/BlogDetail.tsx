@@ -64,49 +64,49 @@ const BlogDetail = () => {
 
         {/* Article Container */}
         <div className={`${isMobile ? 'px-4 py-8' : isTablet ? 'px-6 py-10' : 'px-8 py-12'} max-w-4xl mx-auto`}>
-          <article className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+          <article className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
             {/* Hero Image */}
             <div className="relative">
-              <div className={`${isMobile ? 'h-64' : isTablet ? 'h-80' : 'h-96'} overflow-hidden bg-gray-100`}>
+              <div className={`${isMobile ? 'h-64' : isTablet ? 'h-80' : 'h-96'} overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200`}>
                 <img 
                   src={blog.image} 
                   alt={blog.title}
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
               
               {/* Floating Category Badge */}
-              <div className="absolute top-4 left-4">
-                <span className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-white/95 backdrop-blur text-primary shadow-lg border border-white/20">
-                  <Tag className="h-3.5 w-3.5 mr-1.5" />
+              <div className="absolute top-6 left-6">
+                <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white/95 backdrop-blur text-primary shadow-xl border border-white/30">
+                  <Tag className="h-4 w-4 mr-2" />
                   {blog.category}
                 </span>
               </div>
               
               {/* Share Button */}
-              <div className="absolute top-4 right-4">
-                <Button size="sm" className="bg-white/95 backdrop-blur text-gray-700 hover:bg-white shadow-lg border border-white/20 hover:scale-105 transition-all duration-200">
-                  <Share2 className="h-4 w-4 mr-1.5" />
+              <div className="absolute top-6 right-6">
+                <Button size="sm" className="bg-white/95 backdrop-blur text-gray-700 hover:bg-white shadow-xl border border-white/30 hover:scale-105 transition-all duration-200">
+                  <Share2 className="h-4 w-4 mr-2" />
                   Partager
                 </Button>
               </div>
             </div>
 
             {/* Content */}
-            <div className={`${isMobile ? 'p-6' : isTablet ? 'p-8' : 'p-10'}`}>
+            <div className={`${isMobile ? 'p-6' : isTablet ? 'p-8' : 'p-12'}`}>
               {/* Title */}
               <h1 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold text-gray-900 mb-6 leading-tight`}>
                 {blog.title}
               </h1>
 
               {/* Meta Information */}
-              <div className="flex flex-wrap items-center gap-3 text-gray-600 mb-8 pb-6 border-b border-gray-100">
-                <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
+              <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-8 pb-6 border-b border-gray-100">
+                <div className="flex items-center bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
                   <User className="h-4 w-4 mr-2 text-primary" />
                   <span className="font-medium text-sm">{blog.author}</span>
                 </div>
-                <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
+                <div className="flex items-center bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
                   <Calendar className="h-4 w-4 mr-2 text-primary" />
                   <span className="text-sm">
                     {new Date(blog.date).toLocaleDateString('fr-FR', {
@@ -116,7 +116,7 @@ const BlogDetail = () => {
                     })}
                   </span>
                 </div>
-                <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
+                <div className="flex items-center bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
                   <Clock className="h-4 w-4 mr-2 text-primary" />
                   <span className="text-sm">{blog.readTime} de lecture</span>
                 </div>
@@ -124,11 +124,11 @@ const BlogDetail = () => {
 
               {/* Tags */}
               {blog.tags && (
-                <div className="flex flex-wrap gap-2 mb-8">
+                <div className="flex flex-wrap gap-3 mb-10">
                   {blog.tags.map((tag, index) => (
                     <span 
                       key={index}
-                      className="px-3 py-1 bg-primary/5 text-primary text-sm rounded-lg font-medium border border-primary/10"
+                      className="px-4 py-2 bg-primary/5 text-primary text-sm rounded-xl font-medium border border-primary/10 hover:bg-primary/10 transition-colors"
                     >
                       #{tag}
                     </span>
@@ -146,18 +146,18 @@ const BlogDetail = () => {
 
               {/* Author Section */}
               <div className="mt-12 pt-8 border-t border-gray-100">
-                <div className="flex items-start space-x-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <User className="h-7 w-7 text-white" />
+                <div className="flex items-start space-x-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <User className="h-8 w-8 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
                       {blog.author}
                     </h3>
-                    <p className="text-gray-600 mb-3 leading-relaxed text-sm">
+                    <p className="text-gray-600 mb-4 leading-relaxed">
                       Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.
                     </p>
-                    <p className="text-gray-500 text-xs mb-4">
+                    <p className="text-gray-500 text-sm mb-5">
                       Publié le {new Date(blog.date).toLocaleDateString('fr-FR', {
                         year: 'numeric',
                         month: 'long',
@@ -177,8 +177,8 @@ const BlogDetail = () => {
 
         {/* Related Articles Section */}
         <div className="bg-white border-t border-gray-100">
-          <div className={`${isMobile ? 'px-4 py-10' : isTablet ? 'px-6 py-12' : 'px-8 py-16'} max-w-6xl mx-auto`}>
-            <div className="text-center mb-10">
+          <div className={`${isMobile ? 'px-4 py-12' : isTablet ? 'px-6 py-16' : 'px-8 py-20'} max-w-6xl mx-auto`}>
+            <div className="text-center mb-12">
               <h2 className={`${isMobile ? 'text-2xl' : isTablet ? 'text-3xl' : 'text-4xl'} font-bold text-gray-900 mb-4`}>
                 Articles connexes
               </h2>
@@ -188,10 +188,10 @@ const BlogDetail = () => {
             </div>
 
             {/* Related Articles Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3].map((item) => (
-                <div key={item} className="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:shadow-md transition-all duration-200">
-                  <div className="w-full h-32 bg-gray-200 rounded-lg mb-4"></div>
+                <div key={item} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className="w-full h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl mb-4"></div>
                   <h3 className="font-semibold text-gray-900 mb-2">Article similaire {item}</h3>
                   <p className="text-gray-600 text-sm mb-4">Résumé de l'article...</p>
                   <div className="flex items-center text-xs text-gray-500">
