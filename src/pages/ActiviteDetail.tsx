@@ -14,7 +14,7 @@ const ActiviteDetail = () => {
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
-  // Données simulées des activités (en réalité, cela viendrait d'une API)
+  // Données simulées des activités
   const allActivities = [
     {
       id: 1,
@@ -23,7 +23,7 @@ const ActiviteDetail = () => {
       time: "09:00 - 17:00",
       location: "ENA Abidjan",
       participants: "25 places disponibles",
-      description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
+      description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne. Cette formation couvre les aspects essentiels du leadership, la gestion d'équipe, et les stratégies de communication efficace dans un contexte administratif.",
       type: "Formation",
       status: "À venir",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop"
@@ -35,7 +35,7 @@ const ActiviteDetail = () => {
       time: "14:00 - 18:00",
       location: "Hôtel Ivoire",
       participants: "100 participants",
-      description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
+      description: "Conférence sur les enjeux de la transformation numérique dans les services publics. Découvrez les dernières innovations technologiques et leur impact sur l'efficacité administrative.",
       type: "Conférence",
       status: "À venir",
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop"
@@ -47,7 +47,7 @@ const ActiviteDetail = () => {
       time: "09:00 - 16:00", 
       location: "ENA Abidjan",
       participants: "80 membres présents",
-      description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
+      description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024. Participation active de tous les membres pour définir les orientations futures de l'association.",
       type: "Assemblée",
       status: "Terminé",
       image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=400&fit=crop"
@@ -59,7 +59,7 @@ const ActiviteDetail = () => {
       time: "08:30 - 12:30",
       location: "Centre de formation",
       participants: "15 participants",
-      description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
+      description: "Atelier pratique sur la gestion de projet dans l'administration publique. Méthodologies agiles, outils de planification et techniques de suivi de projet.",
       type: "Atelier",
       status: "Terminé",
       image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&h=400&fit=crop"
@@ -71,11 +71,18 @@ const ActiviteDetail = () => {
   if (!activity) {
     return (
       <Layout>
-        <div className={`min-h-screen bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'} py-16`}>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">Activité non trouvée</h1>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className={`text-center max-w-md mx-auto ${isMobile ? 'px-6' : 'px-8'}`}>
+            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Calendar className="w-8 h-8 text-gray-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Activité non trouvée</h1>
+            <p className="text-gray-600 mb-8">L'activité que vous recherchez n'existe pas ou a été supprimée.</p>
             <Link to="/agenda">
-              <Button>Retour à l'agenda</Button>
+              <Button className="bg-primary hover:bg-primary/90">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Retour à l'agenda
+              </Button>
             </Link>
           </div>
         </div>
@@ -110,91 +117,117 @@ const ActiviteDetail = () => {
 
   return (
     <Layout>
-      <div className={`min-h-screen bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'} py-16`}>
-        <div className="container mx-auto px-0">
-          {/* Bouton retour */}
-          <Link to="/agenda" className="inline-flex items-center mb-6 text-primary hover:text-primary/80">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Retour à l'agenda
-          </Link>
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section avec Image */}
+        <div className="relative">
+          <div className="h-80 md:h-96 overflow-hidden">
+            <img 
+              src={activity.image} 
+              alt={activity.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          </div>
+          
+          {/* Bouton retour en overlay */}
+          <div className="absolute top-6 left-6">
+            <Link to="/agenda">
+              <Button 
+                variant="ghost" 
+                className="text-white bg-black/20 hover:bg-black/30 backdrop-blur-sm border border-white/20"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Retour
+              </Button>
+            </Link>
+          </div>
 
-          <Card className="max-w-4xl mx-auto">
-            {activity.image && (
-              <div className="w-full h-64 md:h-80 overflow-hidden rounded-t-lg">
-                <img 
-                  src={activity.image} 
-                  alt={activity.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-            
-            <CardHeader>
-              <div className="flex justify-between items-start mb-3">
-                <span className={`px-3 py-1 rounded text-sm font-medium ${
+          {/* Contenu en overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${
                   activity.status === 'À venir' 
-                    ? 'bg-primary text-white' 
-                    : 'bg-gray-500 text-white'
+                    ? 'bg-primary/90 text-white' 
+                    : 'bg-gray-500/90 text-white'
                 }`}>
                   {activity.type}
                 </span>
-                <span className={`px-3 py-1 rounded text-sm font-medium ${
+                <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${
                   activity.status === 'À venir'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-gray-100 text-gray-700'
+                    ? 'bg-green-500/90 text-white'
+                    : 'bg-gray-400/90 text-white'
                 }`}>
                   {activity.status}
                 </span>
               </div>
               
-              <CardTitle className="text-2xl md:text-3xl text-primary mb-4">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 leading-tight">
                 {activity.title}
+              </h1>
+              
+              <div className="flex flex-wrap items-center gap-4 text-sm text-white/90">
+                <div className="flex items-center">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  {activity.date}
+                </div>
+                <div className="flex items-center">
+                  <Clock className="w-4 h-4 mr-2" />
+                  {activity.time}
+                </div>
+                <div className="flex items-center">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  {activity.location}
+                </div>
+                <div className="flex items-center">
+                  <Users className="w-4 h-4 mr-2" />
+                  {activity.participants}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contenu principal */}
+        <div className={`max-w-4xl mx-auto py-12 ${isMobile ? 'px-6' : 'px-8'}`}>
+          {/* Description */}
+          <Card className="shadow-sm border-0 bg-white">
+            <CardHeader>
+              <CardTitle className="text-xl text-primary flex items-center">
+                <Calendar className="w-5 h-5 mr-2" />
+                Description de l'activité
               </CardTitle>
             </CardHeader>
-
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-4">
-                  <div className="flex items-center text-gray-600">
-                    <Calendar className="w-5 h-5 mr-3 text-primary" />
-                    <span className="font-medium">{activity.date}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Clock className="w-5 h-5 mr-3 text-primary" />
-                    <span>{activity.time}</span>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center text-gray-600">
-                    <MapPin className="w-5 h-5 mr-3 text-primary" />
-                    <span>{activity.location}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Users className="w-5 h-5 mr-3 text-primary" />
-                    <span>{activity.participants}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold text-primary mb-3">Description</h3>
-                <p className="text-gray-700 leading-relaxed">{activity.description}</p>
-              </div>
-
-              {activity.status === 'À venir' && (
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button
-                    onClick={handleAddToCalendar}
-                    className="bg-green-600 hover:bg-green-700 text-white flex-1"
-                  >
-                    <CalendarPlus className="w-4 h-4 mr-2" />
-                    Ajouter au calendrier
-                  </Button>
-                </div>
-              )}
+              <p className="text-gray-700 leading-relaxed text-base">
+                {activity.description}
+              </p>
             </CardContent>
           </Card>
+
+          {/* Bouton d'action */}
+          {activity.status === 'À venir' && (
+            <div className="mt-8 text-center">
+              <Button
+                onClick={handleAddToCalendar}
+                size="lg"
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
+              >
+                <CalendarPlus className="w-5 h-5 mr-2" />
+                Ajouter au calendrier
+              </Button>
+            </div>
+          )}
+
+          {/* Bouton retour en bas */}
+          <div className="mt-12 text-center">
+            <Link to="/agenda">
+              <Button variant="outline" size="lg" className="bg-white hover:bg-gray-50">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Voir toutes les activités
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </Layout>
