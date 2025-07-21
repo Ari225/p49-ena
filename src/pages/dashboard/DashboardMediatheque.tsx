@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -121,12 +120,12 @@ const DashboardMediatheque = () => {
   if (isMobile) {
     return (
       <Layout>
-        <div className="px-4 py-6 pb-20 min-h-screen">
+        <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary leading-tight">
-              Gestion de la<br />Médiathèque
+            <h1 className="text-2xl font-bold text-primary">
+              Gestion de la Médiathèque
             </h1>
-            <p className="text-gray-600 mt-2 text-sm">Gérer les contenus multimédias</p>
+            <p className="text-gray-600 mt-2 text-sm">Gérer les photos et vidéos</p>
           </div>
 
           <div className="mb-6">

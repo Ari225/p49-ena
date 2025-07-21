@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -149,8 +148,10 @@ const DashboardCommuniques = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion des<br />Communiqués</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer les communiqués du site</p>
+            <h1 className="text-2xl font-bold text-primary">
+              Gestion des Communiqués
+            </h1>
+            <p className="text-gray-600 mt-2 text-sm">Créer et gérer les communiqués</p>
           </div>
 
           <div className="mb-4">

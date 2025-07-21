@@ -5,10 +5,11 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { FileText, Plus, Edit, Eye, Calendar, Clock, User } from 'lucide-react';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
+import NewsFormDialog from '@/components/news/NewsFormDialog';
+import NewsCardDashboard from '@/components/news/NewsCardDashboard';
 
 interface NewsItem {
   id: string;
@@ -16,12 +17,19 @@ interface NewsItem {
   summary: string;
   category: string;
   published_date: string;
+  image_url?: string;
+  reading_time?: number;
+  published_by?: string;
+  details?: string;
 }
 
 const DashboardNews = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
@@ -39,17 +47,43 @@ const DashboardNews = () => {
         title: 'Nouvelle formation en leadership',
         summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
         category: 'Formation',
-        published_date: '2024-01-15'
+        published_date: '2024-01-15',
+        image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
+        reading_time: 3,
+        published_by: 'Admin P49',
+        details: 'Détails complets de la formation en leadership...'
       },
       {
         id: '2',
         title: 'Assemblée générale annuelle',
         summary: 'L\'assemblée générale de la P49 se tiendra le mois prochain.',
         category: 'Événement',
-        published_date: '2024-01-10'
+        published_date: '2024-01-10',
+        image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
+        reading_time: 5,
+        published_by: 'Secrétaire Général',
+        details: 'Détails complets de l\'assemblée générale...'
       }
     ];
     setNews(mockNews);
+  };
+
+  const handleAddNews = () => {
+    setEditingNews(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditNews = (newsItem: NewsItem) => {
+    setEditingNews(newsItem);
+    setIsFormOpen(true);
+  };
+
+  const handleFormSubmit = (data: any) => {
+    console.log('News data submitted:', data);
+    setIsFormOpen(false);
+    setEditingNews(null);
+    // Refresh news list here
+    fetchNews();
   };
 
   if (isMobile) {
@@ -57,18 +91,16 @@ const DashboardNews = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary leading-tight">
-              Gestion des<br />Actualités
+            <h1 className="text-2xl font-bold text-primary">
+              Gestion des Actualités
             </h1>
             <p className="text-gray-600 mt-2 text-sm">Créer et gérer les actualités du site</p>
           </div>
 
           <div className="mb-6">
-            <Button asChild className="bg-primary hover:bg-primary/90 w-full">
-              <Link to="/dashboard/add-news">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvelle actualité
-              </Link>
+            <Button onClick={handleAddNews} className="bg-primary hover:bg-primary/90 w-full">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvelle actualité
             </Button>
           </div>
 
@@ -87,32 +119,12 @@ const DashboardNews = () => {
                   </p>
                 ) : (
                   news.map((item) => (
-                    <div key={item.id} className="p-4 bg-gray-50 rounded-lg">
-                      <div className="mb-3">
-                        <h3 className="font-medium text-sm">{item.title}</h3>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {item.category} - Publié le {new Date(item.published_date).toLocaleDateString('fr-FR')}
-                        </p>
-                        {item.summary && (
-                          <p className="text-xs text-gray-700 mt-2">{item.summary}</p>
-                        )}
-                      </div>
-                      <div className="flex flex-col space-y-2">
-                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs self-start">
-                          Publié
-                        </span>
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm" className="flex-1">
-                            <Eye className="h-4 w-4 mr-1" />
-                            Voir
-                          </Button>
-                          <Button variant="outline" size="sm" className="flex-1">
-                            <Edit className="h-4 w-4 mr-1" />
-                            Modifier
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
+                    <NewsCardDashboard 
+                      key={item.id} 
+                      item={item} 
+                      variant="mobile"
+                      onEdit={() => handleEditNews(item)}
+                    />
                   ))
                 )}
               </div>
@@ -120,6 +132,66 @@ const DashboardNews = () => {
           </Card>
         </div>
         <AdminSidebar />
+        <NewsFormDialog
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          onSubmit={handleFormSubmit}
+          editingNews={editingNews}
+        />
+      </Layout>
+    );
+  }
+
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Gestion des Actualités</h1>
+            <p className="text-gray-600 mt-2">Créer et gérer les actualités du site</p>
+          </div>
+
+          <div className="mb-6">
+            <Button onClick={handleAddNews} className="bg-primary hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvelle actualité
+            </Button>
+          </div>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <FileText className="mr-2 h-5 w-5" />
+                Liste des Actualités
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {news.length === 0 ? (
+                  <p className="text-center text-gray-500 py-8 col-span-full">
+                    Aucune actualité créée
+                  </p>
+                ) : (
+                  news.map((item) => (
+                    <NewsCardDashboard 
+                      key={item.id} 
+                      item={item} 
+                      variant="tablet"
+                      onEdit={() => handleEditNews(item)}
+                    />
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <AdminSidebar />
+        <NewsFormDialog
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          onSubmit={handleFormSubmit}
+          editingNews={editingNews}
+        />
       </Layout>
     );
   }
@@ -136,11 +208,9 @@ const DashboardNews = () => {
           </div>
 
           <div className="mb-6">
-            <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link to="/dashboard/add-news">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvelle actualité
-              </Link>
+            <Button onClick={handleAddNews} className="bg-primary hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvelle actualité
             </Button>
           </div>
 
@@ -152,33 +222,19 @@ const DashboardNews = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8">
+                  <p className="text-center text-gray-500 py-8 col-span-full">
                     Aucune actualité créée
                   </p>
                 ) : (
                   news.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <h3 className="font-medium">{item.title}</h3>
-                        <p className="text-sm text-gray-600">
-                          {item.category} - Publié le {new Date(item.published_date).toLocaleDateString('fr-FR')}
-                        </p>
-                        {item.summary && (
-                          <p className="text-sm text-gray-700 mt-1">{item.summary}</p>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">Publié</span>
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
+                    <NewsCardDashboard 
+                      key={item.id} 
+                      item={item} 
+                      variant="desktop"
+                      onEdit={() => handleEditNews(item)}
+                    />
                   ))
                 )}
               </div>
@@ -186,6 +242,12 @@ const DashboardNews = () => {
           </Card>
         </div>
       </div>
+      <NewsFormDialog
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={handleFormSubmit}
+        editingNews={editingNews}
+      />
     </Layout>
   );
 };
