@@ -7,7 +7,7 @@ import { Calendar, Search, User, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface BlogPost {
   id: string;
@@ -22,6 +22,7 @@ interface BlogPost {
 
 const Blog = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -87,11 +88,38 @@ const Blog = () => {
   return (
     <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section */}
-        <section className={`bg-primary text-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Blog</h1>
-            <p className="text-xl opacity-90">
+        {/* Hero Section */}
+        <section className={`relative ${
+          isMobile ? 'h-[30vh]' : 
+          isTablet ? 'h-[45vh]' : 
+          'h-[60vh]'
+        } flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+              alt="Background blog" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${
+            isMobile ? 'px-[25px]' : 
+            isTablet ? 'px-[50px]' : 
+            'px-8 lg:px-[100px]'
+          }`}>
+            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
+              isMobile ? 'text-2xl' : 
+              isTablet ? 'text-4xl' : 
+              'text-6xl md:text-6xl lg:text-6xl'
+            }`}>
+              Blog
+            </h1>
+            <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
+              isMobile ? 'text-sm' : 
+              isTablet ? 'text-base' : 
+              'text-lg md:text-lg'
+            }`}>
               Analyses, réflexions et témoignages de notre communauté
             </p>
           </div>
