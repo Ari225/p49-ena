@@ -16,66 +16,6 @@ const DifficultEventsSection = () => {
     thought: 'Nos pensées et nos prières accompagnent la famille en ces moments difficiles. Que son âme repose en paix éternelle.',
     keyword: 'Décès',
     image: "/lovable-uploads/e7c5020a-c86a-46e3-b52e-533af9783600.png"
-  }, {
-    id: '2',
-    eventType: 'Malheureux',
-    category: 'Décès',
-    title: 'Décès de Mme Adjoua Kone',
-    memberName: 'Famille Kone',
-    date: '2024-01-20',
-    location: 'Daloa',
-    description: 'C\'est avec une profonde tristesse que nous annonçons le décès de Mme Adjoua Kone, une femme remarquable qui nous a quittés trop tôt.',
-    thought: 'Nos pensées et nos prières accompagnent la famille en ces moments difficiles. Que son âme repose en paix éternelle.',
-    keyword: 'Décès',
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop"
-  }, {
-    id: '2',
-    eventType: 'Malheureux',
-    category: 'Maladies',
-    title: 'Hospitalisation de M. Kouakou Assi',
-    memberName: 'M. Kouakou Assi',
-    date: '2024-02-15',
-    location: 'Abidjan',
-    description: 'M. Kouakou Assi est actuellement hospitalisé suite à des complications de santé. Il fait preuve d\'un courage exemplaire.',
-    thought: 'Nous lui souhaitons un prompt rétablissement et envoyons toute notre force à sa famille.',
-    keyword: 'Maladies',
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop"
-  }, {
-    id: '3',
-    eventType: 'Malheureux',
-    category: 'Accidents',
-    title: 'Accident de circulation de M. Seydou Bamba',
-    memberName: 'M. Seydou Bamba',
-    date: '2024-01-30',
-    location: 'Bouaké',
-    description: 'M. Seydou Bamba a été victime d\'un grave accident de la circulation. Il est heureusement hors de danger.',
-    thought: 'Nous sommes soulagés qu\'il soit en voie de guérison et lui souhaitons un prompt rétablissement.',
-    keyword: 'Accidents',
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=250&fit=crop"
-  }, {
-    id: '4',
-    eventType: 'Malheureux',
-    category: 'Décès',
-    title: 'Décès du père de Mme Sarah Yao',
-    memberName: 'Famille Yao',
-    date: '2024-02-10',
-    location: 'Yamoussoukro',
-    description: 'Nous partageons la douleur de Mme Sarah Yao suite au décès de son père bien-aimé.',
-    thought: 'Nos condoléances les plus sincères à Mme Yao et à toute sa famille. Que Dieu accorde le repos éternel au défunt.',
-    keyword: 'Décès',
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop"
-  }, {
-    id: '5',
-    eventType: 'Malheureux',
-    category: 'Autres',
-    title: 'Incendie chez M. Diabaté',
-    memberName: 'M. Ibrahim Diabaté',
-    date: '2024-02-20',
-    location: 'Korhogo',
-    description: 'La maison de M. Ibrahim Diabaté a été ravagée par un incendie. Heureusement, aucune vie humaine n\'est à déplorer.',
-    thought: 'Nous exprimons notre solidarité et notre soutien dans cette épreuve. La communauté est là pour vous aider.',
-    keyword: 'Autres',
-    image: "https://images.unsplash.com/photo-1525909002-1b05e0c869d8?w=400&h=250&fit=crop"
   }];
   const getCategoryIcon = (category: string) => {
     switch (category) {
