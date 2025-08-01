@@ -11,7 +11,7 @@ const DifficultEventsHeader = () => {
       
       <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
         
-        <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>Événements malheureux</h1>
+        <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>Évènements malheureux</h1>
         <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
           Unis dans l'épreuve, nous apportons notre soutien et notre compassion à ceux qui traversent des moments difficiles
         </p>
