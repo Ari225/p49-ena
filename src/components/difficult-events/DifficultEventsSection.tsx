@@ -8,6 +8,18 @@ const DifficultEventsSection = () => {
     id: '1',
     eventType: 'Malheureux',
     category: 'Décès',
+    title: 'Décès de AMANI Kouakou Paul',
+    memberName: 'Famille Amani',
+    date: '2025-07-07',
+    location: 'Abidjan',
+    description: 'C\'est avec une profonde tristesse le Bureau Exécutif a été informé du rappel à Dieu du condisciple AMANI Kouakou Paul.',
+    thought: 'Nos pensées et nos prières accompagnent la famille en ces moments difficiles. Que son âme repose en paix éternelle.',
+    keyword: 'Décès',
+    image: "/lovable-uploads/e7c5020a-c86a-46e3-b52e-533af9783600.png"
+  }, {
+    id: '2',
+    eventType: 'Malheureux',
+    category: 'Décès',
     title: 'Décès de Mme Adjoua Kone',
     memberName: 'Famille Kone',
     date: '2024-01-20',
