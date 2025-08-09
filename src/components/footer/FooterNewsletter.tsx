@@ -23,10 +23,7 @@ const FooterNewsletter: React.FC<FooterNewsletterProps> = ({ variant = 'desktop'
       console.log('Submitting newsletter subscription for:', email);
       
       const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
-        body: { email },
-        headers: {
-          'Content-Type': 'application/json',
-        }
+        body: { email }
       });
 
       console.log('Newsletter response:', { data, error });
@@ -47,10 +44,12 @@ const FooterNewsletter: React.FC<FooterNewsletterProps> = ({ variant = 'desktop'
       
       let errorMessage = "Une erreur est survenue lors de l'inscription.";
       
-      if (error.message?.includes('Failed to send a request')) {
-        errorMessage = "Problème de connexion. Veuillez réessayer.";
+      if (error.message?.includes('Failed to send a request') || error.message?.includes('FunctionsError')) {
+        errorMessage = "Service temporairement indisponible. Veuillez réessayer plus tard.";
       } else if (error.message?.includes('409')) {
         errorMessage = "Cette adresse email est déjà inscrite.";
+      } else if (error.context?.status === 404) {
+        errorMessage = "Service newsletter non configuré.";
       }
       
       toast({
