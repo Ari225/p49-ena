@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mail } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface FooterNewsletterProps {
   variant?: 'mobile' | 'tablet' | 'desktop';
@@ -10,11 +12,36 @@ interface FooterNewsletterProps {
 
 const FooterNewsletter: React.FC<FooterNewsletterProps> = ({ variant = 'desktop' }) => {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Newsletter subscription for:', email);
-    setEmail('');
+    setIsLoading(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
+        body: { email }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Inscription réussie !",
+        description: "Merci de vous être abonné à notre newsletter.",
+      });
+      
+      setEmail('');
+    } catch (error: any) {
+      console.error('Newsletter subscription error:', error);
+      toast({
+        title: "Erreur",
+        description: error.message || "Une erreur est survenue lors de l'inscription.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -47,7 +74,11 @@ const FooterNewsletter: React.FC<FooterNewsletterProps> = ({ variant = 'desktop'
             }`}
             required
           />
-          <Button type="submit" className="bg-secondary hover:bg-secondary/90 text-primary rounded-l-none">
+          <Button 
+            type="submit" 
+            disabled={isLoading}
+            className="bg-secondary hover:bg-secondary/90 text-primary rounded-l-none disabled:opacity-50"
+          >
             <Mail className="h-4 w-4" />
           </Button>
         </div>
