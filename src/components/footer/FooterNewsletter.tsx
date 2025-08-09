@@ -20,11 +20,21 @@ const FooterNewsletter: React.FC<FooterNewsletterProps> = ({ variant = 'desktop'
     setIsLoading(true);
     
     try {
+      console.log('Submitting newsletter subscription for:', email);
+      
       const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
-        body: { email }
+        body: { email },
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
 
-      if (error) throw error;
+      console.log('Newsletter response:', { data, error });
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
 
       toast({
         title: "Inscription réussie !",
@@ -34,9 +44,18 @@ const FooterNewsletter: React.FC<FooterNewsletterProps> = ({ variant = 'desktop'
       setEmail('');
     } catch (error: any) {
       console.error('Newsletter subscription error:', error);
+      
+      let errorMessage = "Une erreur est survenue lors de l'inscription.";
+      
+      if (error.message?.includes('Failed to send a request')) {
+        errorMessage = "Problème de connexion. Veuillez réessayer.";
+      } else if (error.message?.includes('409')) {
+        errorMessage = "Cette adresse email est déjà inscrite.";
+      }
+      
       toast({
         title: "Erreur",
-        description: error.message || "Une erreur est survenue lors de l'inscription.",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
