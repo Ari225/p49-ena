@@ -8,59 +8,83 @@ const EvenementsHeureux = () => {
   const heureuxEvents = [{
     id: '1',
     eventType: 'Heureux',
-    category: 'Naissances',
-    title: 'Naissance de bébé Marie',
-    memberName: 'Famille Kouassi',
-    date: '2024-01-15',
-    location: 'Abidjan',
-    description: 'Nous avons la joie d\'annoncer la naissance de Marie, un petit ange qui illumine déjà la famille.',
-    thought: 'Félicitations aux heureux parents ! Que cette petite merveille vous apporte joie et bonheur.',
-    keyword: 'Naissances',
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+    category: 'Mariage',
+    title: 'Mariage coutumier du condisciple TAKOUO',
+    memberName: 'TAKOUO Nohon Arsène',
+    date: '2025-08-15',
+    location: 'N\'Zéré (Yamoussoukro)',
+    description: 'Monsieur TAKOUO Nohon Arsène, Délégué Régional Ouest de la P49 invite l\'ensemble de la communauté à son mariage coutumier.',
+    thought: 'Félicitations pour ce pas ! Qu\'il inaugure un chapitre de bonheur.',
+    keyword: 'Mariage',
+    image: "/lovable-uploads/568e67d2-0613-4aa6-8f40-05f6bb749cf3.png"
   }, {
     id: '2',
     eventType: 'Heureux',
-    category: 'Promotions',
-    title: 'Promotion au grade de Directeur',
-    memberName: 'M. Yao Kouadio',
-    date: '2024-02-10',
-    location: 'Yamoussoukro',
-    description: 'M. Yao Kouadio a été promu au grade de Directeur des Ressources Humaines suite à son excellent travail.',
-    thought: 'Félicitations pour cette promotion bien méritée ! Votre dévouement est enfin récompensé.',
-    keyword: 'Promotions',
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
+    category: 'Distinction',
+    title: 'Prix d\'Excellence 2025 - BAGNON GNAGBO CESAR ZOUHO',
+    memberName: 'BAGNON GNAGBO CESAR ZOUHO',
+    date: '2025-08-04',
+    location: '',
+    description: 'Prix d\'Excellence du meilleur Agent de la Direction Générale du Trésor et de la Comptabilité Publique.',
+    thought: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
+    keyword: 'Distinction',
+    image: "/lovable-uploads/10872f0f-53e5-404c-b915-d3aa753e07d6.png"
   }, {
     id: '3',
     eventType: 'Heureux',
-    category: 'Distinctions',
-    title: 'Médaille d\'honneur du travail',
-    memberName: 'Mme Akissi Brou',
-    date: '2024-01-25',
-    location: 'Abidjan',
-    description: 'Mme Akissi Brou a reçu la médaille d\'honneur du travail pour ses 25 années de service exemplaire.',
-    thought: 'Un honneur bien mérité ! Votre engagement inspire toute notre communauté.',
-    keyword: 'Distinctions',
-    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop"
+    category: 'Promotion',
+    title: 'Promotion - ZAGOU SERGES RODRIGUE',
+    memberName: 'ZAGOU SERGES RODRIGUE',
+    date: '2025-01-01',
+    location: '',
+    description: 'Promu Secrétaire Général de la Préfecture de San-Pédro.',
+    thought: 'Le Bureau Exécutif adresse ses félicitations au SG ZAGOU pour cette promotion bien méritée !',
+    keyword: 'Promotion',
+    image: "/lovable-uploads/1338f820-5562-4cf8-88ce-6cfc94e75bf9.png"
   }, {
     id: '4',
     eventType: 'Heureux',
-    category: 'Naissances',
-    title: 'Naissance des jumeaux Paul et Pierre',
-    memberName: 'Famille Diabaté',
-    date: '2024-02-05',
-    location: 'Bouaké',
-    description: 'Double bonheur pour la famille Diabaté avec l\'arrivée des jumeaux Paul et Pierre.',
-    thought: 'Quelle joie immense ! Que ces deux petits anges grandissent en bonne santé.',
-    keyword: 'Naissances',
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
+    category: 'Promotion',
+    title: 'Promotion - OUATTARA MORY',
+    memberName: 'OUATTARA MORY',
+    date: '2025-01-01',
+    location: '',
+    description: 'Promu Secrétaire Général de la Préfecture de Zuénoula.',
+    thought: 'Le Bureau Exécutif adresse ses félicitations au Doyen OUATTARA Mory pour cette promotion bien méritée !',
+    keyword: 'Promotion',
+    image: "/lovable-uploads/bec5d4d9-ad0d-43b2-aefc-6922b0d1485f.png"
+  }, {
+    id: '5',
+    eventType: 'Heureux',
+    category: 'Distinction',
+    title: 'Prix d\'Excellence 2023 - KOFFI RICHARD N\'GORAN',
+    memberName: 'KOFFI RICHARD N\'GORAN',
+    date: '2023-01-01',
+    location: '',
+    description: 'Prix d\'Excellence du meilleur Diplomate.',
+    thought: 'Félicitations pour cette distinction ! Vous faites la fierté de votre pays.',
+    keyword: 'Distinction',
+    image: "/lovable-uploads/2d820a63-2de3-4a9a-960e-3287aee8041a.png"
+  }, {
+    id: '6',
+    eventType: 'Heureux',
+    category: 'Distinction',
+    title: 'Prix d\'Excellence 2016 - SEKONGO KITCHAFOLWORI',
+    memberName: 'SEKONGO KITCHAFOLWORI',
+    date: '2025-08-04',
+    location: '',
+    description: 'Prix d\'Excellence des Armées.',
+    thought: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
+    keyword: 'Distinction',
+    image: "/lovable-uploads/2c2781f0-9336-4c70-bb02-190bf681d909.png"
   }];
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'Naissances':
-        return Gift;
-      case 'Promotions':
+      case 'Mariage':
+        return Heart;
+      case 'Promotion':
         return Star;
-      case 'Distinctions':
+      case 'Distinction':
         return Award;
       default:
         return PartyPopper;
@@ -68,11 +92,11 @@ const EvenementsHeureux = () => {
   };
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'Naissances':
+      case 'Mariage':
         return 'border-l-pink-500 bg-pink-50';
-      case 'Promotions':
+      case 'Promotion':
         return 'border-l-yellow-500 bg-yellow-50';
-      case 'Distinctions':
+      case 'Distinction':
         return 'border-l-purple-500 bg-purple-50';
       default:
         return 'border-l-green-500 bg-green-50';
@@ -129,10 +153,12 @@ const EvenementsHeureux = () => {
                         day: 'numeric'
                       })}
                         </div>
-                        <div className="flex items-center">
-                          <MapPin className="w-4 h-4 mr-2" />
-                          {event.location}
-                        </div>
+                        {event.location && (
+                          <div className="flex items-center">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            {event.location}
+                          </div>
+                        )}
                         <div className="flex items-center">
                           <Users className="w-4 h-4 mr-2" />
                           {event.memberName}
@@ -166,18 +192,18 @@ const EvenementsHeureux = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center p-6 bg-white">
-                <Gift className="w-12 h-12 mx-auto mb-4 text-pink-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>12</h3>
-                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-pink-700`}>Naissances cette année</p>
+                <Heart className="w-12 h-12 mx-auto mb-4 text-pink-600" />
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>1</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-pink-700`}>Mariages célébrés</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Star className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>8</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>2</h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-yellow-700`}>Promotions célébrées</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Award className="w-12 h-12 mx-auto mb-4 text-purple-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>5</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>3</h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-purple-700`}>Distinctions honorées</p>
               </Card>
             </div>
