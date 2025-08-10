@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, MapPin, Users, PartyPopper, Heart, Gift, Star, Award } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Calendar, MapPin, Users, PartyPopper, Heart, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 const EvenementsHeureux = () => {
   const isMobile = useIsMobile();
+  const [previewEvent, setPreviewEvent] = useState<typeof heureuxEvents[number] | null>(null);
   const heureuxEvents = [{
     id: '1',
     eventType: 'Heureux',
@@ -59,7 +62,7 @@ const EvenementsHeureux = () => {
     category: 'Distinction',
     title: 'Prix d\'Excellence 2023 - KOFFI RICHARD N\'GORAN',
     memberName: 'KOFFI RICHARD N\'GORAN',
-    date: '2023-01-01',
+    date: '2023',
     location: '',
     description: 'Prix d\'Excellence du meilleur Diplomate.',
     thought: 'Félicitations pour cette distinction ! Vous faites la fierté de votre pays.',
@@ -71,7 +74,7 @@ const EvenementsHeureux = () => {
     category: 'Distinction',
     title: 'Prix d\'Excellence 2016 - SEKONGO KITCHAFOLWORI',
     memberName: 'SEKONGO KITCHAFOLWORI',
-    date: '2025-08-04',
+    date: '2016',
     location: '',
     description: 'Prix d\'Excellence des Armées.',
     thought: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
@@ -102,6 +105,15 @@ const EvenementsHeureux = () => {
         return 'border-l-green-500 bg-green-50';
     }
   };
+
+  const formatEventDate = (dateStr: string) => {
+    if (/^\d{4}$/.test(dateStr)) return dateStr;
+    const parsed = new Date(dateStr);
+    return isNaN(parsed.getTime())
+      ? dateStr
+      : parsed.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
+
   return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
@@ -147,11 +159,7 @@ const EvenementsHeureux = () => {
                       <div className="space-y-2 text-sm text-gray-600">
                         <div className="flex items-center">
                           <Calendar className="w-4 h-4 mr-2" />
-                          {new Date(event.date).toLocaleDateString('fr-FR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
+                          {formatEventDate(event.date)}
                         </div>
                         {event.location && (
                           <div className="flex items-center">
@@ -176,6 +184,11 @@ const EvenementsHeureux = () => {
                           <Heart className="h-3 w-3 inline mr-1" />
                           {event.thought}
                         </p>
+                      </div>
+                      <div className="mt-4">
+                        <Button onClick={() => setPreviewEvent(event)} variant="outline">
+                          Voir l'aperçu
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>;
@@ -210,6 +223,36 @@ const EvenementsHeureux = () => {
           </div>
         </section>
       </div>
+      <Dialog open={!!previewEvent} onOpenChange={(open) => { if (!open) setPreviewEvent(null); }}>
+        <DialogContent className="max-w-3xl">
+          {previewEvent && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{previewEvent.title}</DialogTitle>
+                <DialogDescription>
+                  {previewEvent.category} • {formatEventDate(previewEvent.date)}{previewEvent.location ? ` • ${previewEvent.location}` : ''}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="aspect-video overflow-hidden rounded-md">
+                  <img src={previewEvent.image} alt={previewEvent.title} className="w-full h-full object-cover" />
+                </div>
+                <div className="text-sm text-gray-700">
+                  <div className="flex items-center mb-2">
+                    <Users className="w-4 h-4 mr-2" /> {previewEvent.memberName}
+                  </div>
+                  <p className="mb-3">{previewEvent.description}</p>
+                  <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
+                    <p className="italic text-green-800">
+                      <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.thought}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </Layout>;
 };
 export default EvenementsHeureux;
