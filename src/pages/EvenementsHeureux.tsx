@@ -24,6 +24,54 @@ const EvenementsHeureux = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Fallback data when Supabase is unavailable
+  const fallbackHappyEvents: HappyEvent[] = [
+    {
+      id: 'fallback-1',
+      title: 'Mariage de A. Houéto & B. Kossi',
+      description: "Félicitations pour cette belle union qui illumine notre communauté.",
+      event_date: '2024-06-15',
+      location: 'Cotonou',
+      category: 'Mariage',
+      member_name: 'A. Houéto & B. Kossi',
+      message: 'Tous nos vœux de bonheur !',
+      image_url: '/lovable-uploads/bonheur.jpg'
+    },
+    {
+      id: 'fallback-2',
+      title: 'Promotion de Clarisse G.',
+      description: "Une étape importante franchie avec brio. Bravo pour cette promotion !",
+      event_date: '2024-04-02',
+      location: 'Porto-Novo',
+      category: 'Promotion',
+      member_name: 'Clarisse G.',
+      message: "Continuez d'inspirer par votre travail.",
+      image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg'
+    },
+    {
+      id: 'fallback-3',
+      title: 'Distinction de K. Sèna',
+      description: "Une reconnaissance méritée pour un parcours exemplaire.",
+      event_date: '2024-03-10',
+      location: 'Parakou',
+      category: 'Distinction',
+      member_name: 'K. Sèna',
+      message: 'Fier de votre réussite !',
+      image_url: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg'
+    },
+    {
+      id: 'fallback-4',
+      title: 'Naissance de la petite Amina',
+      description: "Bienvenue à Amina ! Félicitations aux heureux parents.",
+      event_date: '2024-01-22',
+      location: 'Abomey-Calavi',
+      category: 'Naissance',
+      member_name: 'Famille Dossou',
+      message: 'Que sa vie soit pleine de joie.',
+      image_url: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'
+    }
+  ];
+
   // Fetch happy events from Supabase
   const fetchHappyEvents = async () => {
     console.log('Fetching happy events from Supabase...');
@@ -49,16 +97,21 @@ const EvenementsHeureux = () => {
 
       if (error) {
         console.error('Supabase error:', error);
-        // Fallback data in case of error
-        setHappyEvents([]);
+        // Use fallback data in case of error
+        setHappyEvents(fallbackHappyEvents);
         return;
       }
 
       console.log('Happy events fetched successfully:', data);
-      setHappyEvents(data || []);
+      if (!data || data.length === 0) {
+        console.warn('Aucun événement trouvé, utilisation des données de secours.');
+        setHappyEvents(fallbackHappyEvents);
+      } else {
+        setHappyEvents(data || []);
+      }
     } catch (error) {
       console.error('Network error:', error);
-      setHappyEvents([]);
+      setHappyEvents(fallbackHappyEvents);
     } finally {
       setLoading(false);
     }
@@ -196,8 +249,10 @@ const EvenementsHeureux = () => {
                     >
                       <div className="aspect-video overflow-hidden">
                         <img 
-                          src={event.image_url || ''} 
-                          alt={event.title} 
+                          src={event.image_url || '/lovable-uploads/bonheur.jpg'} 
+                          alt={`${event.title} - événement heureux`} 
+                          loading="lazy"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/lovable-uploads/bonheur.jpg'; }}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
                         />
                       </div>
