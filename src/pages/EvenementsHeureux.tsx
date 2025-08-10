@@ -26,20 +26,24 @@ const EvenementsHeureux = () => {
 
   // Fetch happy events from Supabase
   const fetchHappyEvents = async () => {
+    console.log('Fetching happy events from Supabase...');
     try {
       const { data, error } = await supabase
         .from('happy_events')
         .select('*')
         .order('created_at', { ascending: false });
 
+      console.log('Supabase response:', { data, error });
+
       if (error) {
-        console.error('Error fetching happy events:', error);
+        console.error('Supabase error:', error);
         return;
       }
 
+      console.log('Happy events fetched successfully:', data);
       setHappyEvents(data || []);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Network error:', error);
     } finally {
       setLoading(false);
     }
