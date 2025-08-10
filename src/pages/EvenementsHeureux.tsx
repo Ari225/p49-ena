@@ -49,91 +49,9 @@ const EvenementsHeureux = () => {
     }
   };
 
-  // Insert initial data if table is empty
-  const insertInitialData = async () => {
-    const initialEvents = [
-      {
-        title: 'Mariage coutumier du condisciple TAKOUO',
-        description: 'Monsieur TAKOUO Nohon Arsène, Délégué Régional Ouest de la P49 invite l\'ensemble de la communauté à son mariage coutumier.',
-        event_date: '2025-08-15',
-        location: 'N\'Zéré (Yamoussoukro)',
-        category: 'Mariage',
-        member_name: 'TAKOUO Nohon Arsène',
-        message: 'Félicitations pour ce pas ! Qu\'il inaugure un chapitre de bonheur.',
-        image_url: '/lovable-uploads/568e67d2-0613-4aa6-8f40-05f6bb749cf3.png'
-      },
-      {
-        title: 'Prix d\'Excellence 2025 - BAGNON GNAGBO CESAR ZOUHO',
-        description: 'Prix d\'Excellence du meilleur Agent de la Direction Générale du Trésor et de la Comptabilité Publique.',
-        event_date: '2025-08-04',
-        category: 'Distinction',
-        member_name: 'BAGNON GNAGBO CESAR ZOUHO',
-        message: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
-        image_url: '/lovable-uploads/10872f0f-53e5-404c-b915-d3aa753e07d6.png'
-      },
-      {
-        title: 'Promotion - ZAGOU SERGES RODRIGUE',
-        description: 'Promu Secrétaire Général de la Préfecture de San-Pédro.',
-        event_date: '2025',
-        category: 'Promotion',
-        member_name: 'ZAGOU SERGES RODRIGUE',
-        message: 'Le Bureau Exécutif adresse ses félicitations au SG ZAGOU pour cette promotion bien méritée !',
-        image_url: '/lovable-uploads/1338f820-5562-4cf8-88ce-6cfc94e75bf9.png'
-      },
-      {
-        title: 'Promotion - OUATTARA MORY',
-        description: 'Promu Secrétaire Général de la Préfecture de Zuénoula.',
-        event_date: '2025',
-        category: 'Promotion',
-        member_name: 'OUATTARA MORY',
-        message: 'Le Bureau Exécutif adresse ses félicitations au Doyen OUATTARA Mory pour cette promotion bien méritée !',
-        image_url: '/lovable-uploads/bec5d4d9-ad0d-43b2-aefc-6922b0d1485f.png'
-      },
-      {
-        title: 'Prix d\'Excellence 2023 - KOFFI RICHARD N\'GORAN',
-        description: 'Prix d\'Excellence du meilleur Diplomate.',
-        event_date: '2023',
-        category: 'Distinction',
-        member_name: 'KOFFI RICHARD N\'GORAN',
-        message: 'Félicitations pour cette distinction ! Vous faites la fierté de votre pays.',
-        image_url: '/lovable-uploads/2d820a63-2de3-4a9a-960e-3287aee8041a.png'
-      },
-      {
-        title: 'Prix d\'Excellence 2016 - SEKONGO KITCHAFOLWORI',
-        description: 'Prix d\'Excellence des Armées.',
-        event_date: '2016',
-        category: 'Distinction',
-        member_name: 'SEKONGO KITCHAFOLWORI',
-        message: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
-        image_url: '/lovable-uploads/2c2781f0-9336-4c70-bb02-190bf681d909.png'
-      }
-    ];
-
-    try {
-      const { error } = await supabase
-        .from('happy_events')
-        .insert(initialEvents);
-
-      if (error) {
-        console.error('Error inserting initial data:', error);
-      } else {
-        fetchHappyEvents();
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   useEffect(() => {
     fetchHappyEvents();
   }, []);
-
-  useEffect(() => {
-    // Check if we need to insert initial data
-    if (!loading && happyEvents.length === 0) {
-      insertInitialData();
-    }
-  }, [loading, happyEvents.length]);
 
   // Set up real-time subscription
   useEffect(() => {
