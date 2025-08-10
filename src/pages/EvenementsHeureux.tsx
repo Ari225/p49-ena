@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Calendar, MapPin, Users, PartyPopper, Heart, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -105,15 +104,15 @@ const EvenementsHeureux = () => {
         return 'border-l-green-500 bg-green-50';
     }
   };
-
   const formatEventDate = (dateStr: string) => {
     if (/^\d{4}$/.test(dateStr)) return dateStr;
     const parsed = new Date(dateStr);
-    return isNaN(parsed.getTime())
-      ? dateStr
-      : parsed.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+    return isNaN(parsed.getTime()) ? dateStr : parsed.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
-
   return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
@@ -136,7 +135,7 @@ const EvenementsHeureux = () => {
 
         {/* Events Section */}
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             <div className="text-center mb-12">
               <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos moments de bonheur</h2>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
@@ -161,12 +160,10 @@ const EvenementsHeureux = () => {
                           <Calendar className="w-4 h-4 mr-2" />
                           {formatEventDate(event.date)}
                         </div>
-                        {event.location && (
-                          <div className="flex items-center">
+                        {event.location && <div className="flex items-center">
                             <MapPin className="w-4 h-4 mr-2" />
                             {event.location}
-                          </div>
-                        )}
+                          </div>}
                         <div className="flex items-center">
                           <Users className="w-4 h-4 mr-2" />
                           {event.memberName}
@@ -218,10 +215,11 @@ const EvenementsHeureux = () => {
           </div>
         </section>
       </div>
-      <Dialog open={!!previewEvent} onOpenChange={(open) => { if (!open) setPreviewEvent(null); }}>
-        <DialogContent className="w-full max-w-[94vw] sm:max-w-[88vw] md:max-w-[80vw] lg:max-w-3xl p-4 sm:p-5 md:p-6 mx-auto max-h-[90vh] overflow-y-auto">
-          {previewEvent && (
-            <>
+      <Dialog open={!!previewEvent} onOpenChange={open => {
+      if (!open) setPreviewEvent(null);
+    }}>
+        <DialogContent className="max-w-3xl">
+          {previewEvent && <>
               <DialogHeader>
                 <DialogTitle>{previewEvent.title}</DialogTitle>
                 <DialogDescription>
@@ -244,8 +242,7 @@ const EvenementsHeureux = () => {
                   </div>
                 </div>
               </div>
-            </>
-          )}
+            </>}
         </DialogContent>
       </Dialog>
     </Layout>;
