@@ -222,51 +222,6 @@ export type Database = {
           },
         ]
       }
-      happy_events: {
-        Row: {
-          category: string
-          created_at: string
-          created_by: string | null
-          description: string | null
-          event_date: string
-          id: string
-          image_url: string | null
-          location: string | null
-          member_name: string
-          message: string | null
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          event_date: string
-          id?: string
-          image_url?: string | null
-          location?: string | null
-          member_name: string
-          message?: string | null
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          event_date?: string
-          id?: string
-          image_url?: string | null
-          location?: string | null
-          member_name?: string
-          message?: string | null
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       journal_editions: {
         Row: {
           cover_image_url: string | null
