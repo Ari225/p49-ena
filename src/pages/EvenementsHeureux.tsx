@@ -27,16 +27,30 @@ const EvenementsHeureux = () => {
   // Fetch happy events from Supabase
   const fetchHappyEvents = async () => {
     console.log('Fetching happy events from Supabase...');
+    setLoading(true);
+    
     try {
+      // Simple query without auth requirements
       const { data, error } = await supabase
         .from('happy_events')
-        .select('*')
+        .select(`
+          id,
+          title,
+          description,
+          event_date,
+          location,
+          category,
+          member_name,
+          message,
+          image_url,
+          created_at
+        `)
         .order('created_at', { ascending: false });
-
-      console.log('Supabase response:', { data, error });
 
       if (error) {
         console.error('Supabase error:', error);
+        // Fallback data in case of error
+        setHappyEvents([]);
         return;
       }
 
@@ -44,6 +58,7 @@ const EvenementsHeureux = () => {
       setHappyEvents(data || []);
     } catch (error) {
       console.error('Network error:', error);
+      setHappyEvents([]);
     } finally {
       setLoading(false);
     }
@@ -53,26 +68,14 @@ const EvenementsHeureux = () => {
     fetchHappyEvents();
   }, []);
 
-  // Set up real-time subscription
+  // Set up real-time subscription - disabled for now to avoid auth issues
   useEffect(() => {
-    const channel = supabase
-      .channel('happy-events-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'happy_events'
-        },
-        () => {
-          fetchHappyEvents();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // Real-time disabled temporarily
+    // const channel = supabase
+    //   .channel('happy-events-changes')
+    //   .on('postgres_changes', { event: '*', schema: 'public', table: 'happy_events' }, fetchHappyEvents)
+    //   .subscribe();
+    // return () => supabase.removeChannel(channel);
   }, []);
 
   const handleEventClick = (event: HappyEvent) => {
