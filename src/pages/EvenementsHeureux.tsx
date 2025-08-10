@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Calendar, MapPin, Users, PartyPopper, Heart, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -38,7 +38,7 @@ const EvenementsHeureux = () => {
     category: 'Promotion',
     title: 'Promotion - ZAGOU SERGES RODRIGUE',
     memberName: 'ZAGOU SERGES RODRIGUE',
-    date: '2025-01-01',
+    date: '2025',
     location: '',
     description: 'Promu Secrétaire Général de la Préfecture de San-Pédro.',
     thought: 'Le Bureau Exécutif adresse ses félicitations au SG ZAGOU pour cette promotion bien méritée !',
@@ -50,7 +50,7 @@ const EvenementsHeureux = () => {
     category: 'Promotion',
     title: 'Promotion - OUATTARA MORY',
     memberName: 'OUATTARA MORY',
-    date: '2025-01-01',
+    date: '2025',
     location: '',
     description: 'Promu Secrétaire Général de la Préfecture de Zuénoula.',
     thought: 'Le Bureau Exécutif adresse ses félicitations au Doyen OUATTARA Mory pour cette promotion bien méritée !',
@@ -147,7 +147,7 @@ const EvenementsHeureux = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {heureuxEvents.map(event => {
               const IconComponent = getCategoryIcon(event.category);
-              return <Card key={event.id} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)}`}>
+              return <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
                     <div className="aspect-video overflow-hidden">
                       <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                     </div>
@@ -184,11 +184,6 @@ const EvenementsHeureux = () => {
                           <Heart className="h-3 w-3 inline mr-1" />
                           {event.thought}
                         </p>
-                      </div>
-                      <div className="mt-4">
-                        <Button onClick={() => setPreviewEvent(event)} variant="outline">
-                          Voir l'aperçu
-                        </Button>
                       </div>
                     </CardContent>
                   </Card>;
@@ -234,8 +229,8 @@ const EvenementsHeureux = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
-                <div className="aspect-video overflow-hidden rounded-md">
-                  <img src={previewEvent.image} alt={previewEvent.title} className="w-full h-full object-cover" />
+                <div className="overflow-hidden rounded-md">
+                  <img src={previewEvent.image} alt={previewEvent.title} className="w-full h-auto max-h-[70vh] object-contain" />
                 </div>
                 <div className="text-sm text-gray-700">
                   <div className="flex items-center mb-2">
