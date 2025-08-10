@@ -219,7 +219,7 @@ const EvenementsHeureux = () => {
         </section>
       </div>
       <Dialog open={!!previewEvent} onOpenChange={(open) => { if (!open) setPreviewEvent(null); }}>
-        <DialogContent className="w-full max-w-[92vw] sm:max-w-[88vw] md:max-w-[80vw] lg:max-w-3xl p-0 sm:p-2 md:p-4">
+        <DialogContent className="w-full max-w-[94vw] sm:max-w-[88vw] md:max-w-[80vw] lg:max-w-3xl p-4 sm:p-5 md:p-6 mx-auto max-h-[90vh] overflow-y-auto">
           {previewEvent && (
             <>
               <DialogHeader>
