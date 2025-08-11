@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { SupabaseProvider } from "@/context/SupabaseContext";
 
 // Pages
 import Index from "./pages/Index";
@@ -64,8 +65,9 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <LanguageProvider>
+    <SupabaseProvider>
+      <AuthProvider>
+        <LanguageProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -164,8 +166,9 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
-      </LanguageProvider>
-    </AuthProvider>
+        </LanguageProvider>
+      </AuthProvider>
+    </SupabaseProvider>
   </QueryClientProvider>
 );
 

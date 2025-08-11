@@ -49,26 +49,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('=== DÉBUT DE LA CONNEXION ===');
       console.log('Tentative de connexion pour:', username);
       
-      // CONNEXION DE SECOURS - Vos identifiants hardcodés
-      if (username === 'ari_dale' && password === 'Reseau@2025') {
-        const user: User = {
-          id: '1f2f2d6c-61e1-457c-bdf3-7f938f4e821a',
-          username: 'ari_dale',
-          firstName: 'Aristide',
-          lastName: 'Dalé',
-          email: 'aristidedale1@gmail.com',
-          role: 'admin_principal',
-          image_url: '/lovable-uploads/aristide-profile.png'
-        };
-        
-        console.log('=== CONNEXION RÉUSSIE (MODE SECOURS) ===');
-        setUser(user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        toast.success(`Connexion réussie ! Bienvenue ${user.firstName}`);
-        setLoading(false);
-        return true;
-      }
-      
       // Auth via RPC (server-side verification)
       const { data: authResult, error: authError } = await supabase
         .rpc('authenticate_app_user', { _username: username, _password: password });
@@ -80,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return false;
       }
 
-      if (!authResult || authResult.length === 0) {
+      if (!authResult || !Array.isArray(authResult) || authResult.length === 0) {
         toast.error('Nom d\'utilisateur ou mot de passe incorrect');
         setLoading(false);
         return false;
@@ -106,7 +86,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
     } catch (error) {
       console.error('Erreur de connexion:', error);
-      toast.error('Nom d\'utilisateur ou mot de passe incorrect');
+      toast.error('Erreur de réseau. Veuillez vérifier votre connexion.');
       setLoading(false);
       return false;
     }

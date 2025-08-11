@@ -25,3 +25,15 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     }
   }
 })
+
+// Test connectivity on initialization
+if (typeof window !== 'undefined') {
+  supabase.from('app_users').select('count', { count: 'exact', head: true })
+    .then(({ error }) => {
+      if (error) {
+        console.error('Supabase connection test failed:', error)
+      } else {
+        console.log('Supabase connection test successful')
+      }
+    })
+}

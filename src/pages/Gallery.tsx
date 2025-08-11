@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Calendar, Eye, Search } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { supabase } from '@/integrations/supabase/client';
+import { useSupabase } from '@/context/SupabaseContext';
+import SupabaseConnectionTest from '@/components/SupabaseConnectionTest';
 
 interface MediaItem {
   id: string;
@@ -20,6 +21,7 @@ interface MediaItem {
 
 const Gallery = () => {
   const isMobile = useIsMobile();
+  const { selectData, isConnected } = useSupabase();
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,24 +29,32 @@ const Gallery = () => {
   // Fetch media items from Supabase
   const fetchMediaItems = async () => {
     try {
-      const { data, error } = await supabase
-        .from('media_items')
-        .select('*')
-        .order('date', { ascending: false });
+      setLoading(true);
+      console.log('Fetching media items...');
+      
+      const { data, error } = await selectData('media_items', '*');
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching media items:', error);
+        setMediaItems([]);
+        return;
+      }
 
+      console.log('Media items fetched successfully:', data?.length || 0, 'items');
       setMediaItems(data || []);
     } catch (error) {
-      console.error('Error fetching media items:', error);
+      console.error('Network error fetching media items:', error);
+      setMediaItems([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMediaItems();
-  }, []);
+    if (isConnected) {
+      fetchMediaItems();
+    }
+  }, [isConnected]);
 
   const filteredItems = mediaItems.filter(item => 
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -121,6 +131,13 @@ const Gallery = () => {
                 className="pl-10 bg-white/90 backdrop-blur-sm"
               />
             </div>
+          </div>
+        </section>
+
+        {/* Connection Test (temporaire pour debug) */}
+        <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+          <div className="container mx-auto px-4">
+            <SupabaseConnectionTest />
           </div>
         </section>
 
