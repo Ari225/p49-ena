@@ -222,6 +222,51 @@ export type Database = {
           },
         ]
       }
+      happy_events: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          id: string
+          image_url: string | null
+          location: string | null
+          member_name: string
+          message: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          member_name: string
+          message?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          member_name?: string
+          message?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       journal_editions: {
         Row: {
           cover_image_url: string | null
@@ -486,6 +531,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      authenticate_app_user: {
+        Args: { _username: string; _password: string }
+        Returns: {
+          id: string
+          username: string
+          first_name: string
+          last_name: string
+          email: string
+          role: Database["public"]["Enums"]["user_role"]
+          image_url: string
+        }[]
+      }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
