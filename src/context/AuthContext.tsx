@@ -69,34 +69,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return true;
       }
       
-      // Tentative de connexion Supabase normale
-      const { data: users, error: fetchError } = await supabase
-        .from('app_users')
-        .select('*')
-        .eq('username', username)
-        .limit(1);
+      // Auth via RPC (server-side verification)
+      const { data: authResult, error: authError } = await supabase
+        .rpc('authenticate_app_user', { _username: username, _password: password });
 
-      if (fetchError) {
-        console.error('Erreur Supabase, utilisation du mode secours');
+      if (authError) {
+        console.error('Erreur Supabase RPC:', authError);
         toast.error('Nom d\'utilisateur ou mot de passe incorrect');
         setLoading(false);
         return false;
       }
 
-      if (!users || users.length === 0) {
-        toast.error('Nom d\'utilisateur incorrect');
+      if (!authResult || authResult.length === 0) {
+        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
         setLoading(false);
         return false;
       }
 
-      const foundUser = users[0];
-      const inputPasswordHash = btoa(password);
-      
-      if (foundUser.password_hash !== inputPasswordHash) {
-        toast.error('Mot de passe incorrect');
-        setLoading(false);
-        return false;
-      }
+      const foundUser = authResult[0];
 
       const user: User = {
         id: foundUser.id,
