@@ -8,6 +8,7 @@ import { Calendar, Eye, Search } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSupabase } from '@/context/SupabaseContext';
 import SupabaseConnectionTest from '@/components/SupabaseConnectionTest';
+import LoginTest from '@/components/LoginTest';
 
 interface MediaItem {
   id: string;
@@ -138,6 +139,9 @@ const Gallery = () => {
         <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <SupabaseConnectionTest />
+            <div className="mt-8">
+              <LoginTest />
+            </div>
           </div>
         </section>
 
