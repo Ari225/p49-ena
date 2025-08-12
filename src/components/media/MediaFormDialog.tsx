@@ -69,17 +69,13 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
     try {
       console.log('Starting file upload for:', file.name);
       
-      // Vérifier que l'utilisateur est connecté
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Utilisateur non connecté');
-      }
+      // L'utilisateur est déjà vérifié via useAuth, pas besoin de vérifier la session Supabase
 
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
       const filePath = `uploads/${fileName}`;
 
-      console.log('Uploading to path:', filePath, 'Session exists:', !!session);
+      console.log('Uploading to path:', filePath);
 
       const { data, error } = await supabase.storage
         .from('media-files')
