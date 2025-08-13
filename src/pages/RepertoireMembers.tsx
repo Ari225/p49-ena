@@ -55,7 +55,7 @@ const RepertoireMembers = () => {
         
         const formattedMembers: Member[] = (data || []).map((member: any) => ({
           id: member.id,
-          firstName: member['Prénoms'] || '',
+          firstName: member['Pr�noms'] || '',
           lastName: member['Nom de famille'] || '',
           position: member['Emploi fonction publique'] || '',
           locality: member['Lieu d\'exercice'] || '',
