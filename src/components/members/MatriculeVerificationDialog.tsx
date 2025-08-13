@@ -13,12 +13,14 @@ interface MatriculeVerificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onVerified: () => void;
+  memberId: string;
 }
 
 const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = ({
   isOpen,
   onClose,
-  onVerified
+  onVerified,
+  memberId
 }) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -38,11 +40,12 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
     }
 
     try {
-      // Vérifier le matricule dans la base de données
+      // Vérifier que le matricule correspond au membre spécifique
       const { data, error } = await (supabase as any)
         .from('members')
-        .select('Matricule')
-        .eq('Matricule', matricule.toUpperCase())
+        .select('matricule')
+        .eq('id', parseInt(memberId))
+        .eq('matricule', matricule.toUpperCase())
         .maybeSingle();
 
       if (error) {
@@ -53,11 +56,11 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
       }
 
       if (data) {
-        // Matricule trouvé dans la base
+        // Matricule correspond au membre
         onVerified();
         setMatricule('');
       } else {
-        setError('Matricule invalide. Veuillez vérifier et réessayer.');
+        setError('Ce matricule ne correspond pas à ce membre. Accès refusé.');
       }
       setIsLoading(false);
     } catch (error) {

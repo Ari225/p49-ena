@@ -150,6 +150,7 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
         isOpen={isMatriculeDialogOpen}
         onClose={() => setIsMatriculeDialogOpen(false)}
         onVerified={handleMatriculeVerified}
+        memberId={memberData.id.toString()}
       />
     </>
   );

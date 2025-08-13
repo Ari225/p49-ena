@@ -420,6 +420,7 @@ const ModifierMembre: React.FC = () => {
         isOpen={isVerificationOpen}
         onClose={handleVerificationClose}
         onVerified={handleVerificationSuccess}
+        memberId={memberId || ''}
       />
     </div>
   );
