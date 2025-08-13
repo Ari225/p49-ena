@@ -43,26 +43,25 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
     try {
       if (verificationMode === 'edit' && memberId) {
-        // Mode modification : vérifier que le matricule correspond au membre spécifique
+        // Mode modification : vérifier strictement que le matricule correspond au membre spécifique
         const { data, error } = await (supabase as any)
           .from('members')
           .select('matricule')
           .eq('id', parseInt(memberId))
-          .eq('matricule', matricule.toUpperCase())
           .maybeSingle();
 
         if (error) {
-          console.error('Error checking matricule:', error);
+          console.error('Error checking member matricule:', error);
           setError('Erreur lors de la vérification. Veuillez réessayer.');
           setIsLoading(false);
           return;
         }
 
-        if (data) {
+        if (data && data.matricule === matricule.toUpperCase()) {
           onVerified();
           setMatricule('');
         } else {
-          setError('Ce matricule ne correspond pas à ce membre. Accès refusé.');
+          setError('Ce matricule ne correspond pas à ce membre. Seul le matricule du membre peut être utilisé pour modifier ses informations.');
         }
       } else {
         // Mode aperçu : autoriser tous les matricules pour l'accès aux informations
