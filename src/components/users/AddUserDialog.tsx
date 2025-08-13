@@ -164,7 +164,7 @@ const AddUserDialog = ({ onUserAdded, isMobile = false }: AddUserDialogProps) =>
 
       console.log('Rôle mappé:', mappedRole);
 
-      // Création simple d'un hash pour le mot de passe
+      // Création d'un hash compatible avec la fonction authenticate_app_user
       const passwordHash = btoa(formData.password);
 
       // Insertion dans la base de données
