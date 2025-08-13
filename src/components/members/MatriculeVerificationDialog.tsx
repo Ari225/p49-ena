@@ -13,14 +13,16 @@ interface MatriculeVerificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onVerified: () => void;
-  memberId: string;
+  memberId?: string;
+  verificationMode?: 'view' | 'edit'; // 'view' pour aperçu, 'edit' pour modification
 }
 
 const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = ({
   isOpen,
   onClose,
   onVerified,
-  memberId
+  memberId,
+  verificationMode = 'view'
 }) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -40,27 +42,49 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
     }
 
     try {
-      // Vérifier que le matricule correspond au membre spécifique
-      const { data, error } = await (supabase as any)
-        .from('members')
-        .select('matricule')
-        .eq('id', parseInt(memberId))
-        .eq('matricule', matricule.toUpperCase())
-        .maybeSingle();
+      if (verificationMode === 'edit' && memberId) {
+        // Mode modification : vérifier que le matricule correspond au membre spécifique
+        const { data, error } = await (supabase as any)
+          .from('members')
+          .select('matricule')
+          .eq('id', parseInt(memberId))
+          .eq('matricule', matricule.toUpperCase())
+          .maybeSingle();
 
-      if (error) {
-        console.error('Error checking matricule:', error);
-        setError('Erreur lors de la vérification. Veuillez réessayer.');
-        setIsLoading(false);
-        return;
-      }
+        if (error) {
+          console.error('Error checking matricule:', error);
+          setError('Erreur lors de la vérification. Veuillez réessayer.');
+          setIsLoading(false);
+          return;
+        }
 
-      if (data) {
-        // Matricule correspond au membre
-        onVerified();
-        setMatricule('');
+        if (data) {
+          onVerified();
+          setMatricule('');
+        } else {
+          setError('Ce matricule ne correspond pas à ce membre. Accès refusé.');
+        }
       } else {
-        setError('Ce matricule ne correspond pas à ce membre. Accès refusé.');
+        // Mode aperçu : vérifier n'importe quel matricule valide dans la base
+        const { data, error } = await (supabase as any)
+          .from('members')
+          .select('matricule')
+          .eq('matricule', matricule.toUpperCase())
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error checking matricule:', error);
+          setError('Erreur lors de la vérification. Veuillez réessayer.');
+          setIsLoading(false);
+          return;
+        }
+
+        if (data) {
+          onVerified();
+          setMatricule('');
+        } else {
+          setError('Matricule invalide. Veuillez vérifier et réessayer.');
+        }
       }
       setIsLoading(false);
     } catch (error) {

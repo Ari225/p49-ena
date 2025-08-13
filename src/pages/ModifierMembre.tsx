@@ -421,6 +421,7 @@ const ModifierMembre: React.FC = () => {
         onClose={handleVerificationClose}
         onVerified={handleVerificationSuccess}
         memberId={memberId || ''}
+        verificationMode="edit"
       />
     </div>
   );

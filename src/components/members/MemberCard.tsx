@@ -125,7 +125,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
           isOpen={isMatriculeDialogOpen}
           onClose={() => setIsMatriculeDialogOpen(false)}
           onVerified={handleMatriculeVerified}
-          memberId={member.id.toString()}
+          verificationMode="view"
         />
       </>
     );
@@ -208,7 +208,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
           isOpen={isMatriculeDialogOpen}
           onClose={() => setIsMatriculeDialogOpen(false)}
           onVerified={handleMatriculeVerified}
-          memberId={member.id.toString()}
+          verificationMode="view"
         />
       </>
     );
@@ -290,7 +290,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
         isOpen={isMatriculeDialogOpen}
         onClose={() => setIsMatriculeDialogOpen(false)}
         onVerified={handleMatriculeVerified}
-        memberId={member.id.toString()}
+        verificationMode="view"
       />
     </>
   );
