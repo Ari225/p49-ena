@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { Facebook, Instagram, Linkedin, MapPin, Briefcase, Phone } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, MapPin, Briefcase } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import MemberDetailDialog from './MemberDetailDialog';
@@ -14,6 +15,8 @@ interface Member {
   position: string;
   locality: string;
   photo: string;
+  whatsapp: string | null;
+  matricule: string;
   socialMedia: {
     facebook?: string | null;
     instagram?: string | null;
@@ -30,7 +33,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
   const isTablet = useIsTablet();
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
   const [isMatriculeDialogOpen, setIsMatriculeDialogOpen] = useState(false);
-  const { firstName, lastName, position, locality, socialMedia } = member;
+  const { firstName, lastName, position, locality, socialMedia, whatsapp, photo } = member;
   
   const getInitials = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -57,7 +60,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             <div className="flex justify-center mb-3">
               <Avatar className="h-12 w-12 ring-2 ring-gray-200 group-hover:ring-primary transition-colors">
                 <AvatarImage 
-                  src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
+                  src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
                   alt={`${firstName} ${lastName}`}
                   className="object-cover"
                 />
@@ -88,9 +91,11 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
             {/* Contact Icons Mobile */}
             <div className="flex justify-center space-x-2 mt-auto">
-              <div className="p-1 text-gray-700 cursor-default" title="Téléphone">
-                <Phone className="h-3 w-3" />
-              </div>
+              {whatsapp && (
+                <div className="p-1 text-gray-700 cursor-default" title="WhatsApp">
+                  <MessageCircle className="h-3 w-3" />
+                </div>
+              )}
               {socialMedia.facebook && (
                 <div className="p-1 text-gray-700 cursor-default" title="Facebook">
                   <Facebook className="h-3 w-3" />
@@ -137,7 +142,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
             <div className="flex justify-center mb-4">
               <Avatar className="h-16 w-16 ring-2 ring-gray-200 group-hover:ring-primary transition-colors">
                 <AvatarImage 
-                  src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
+                  src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
                   alt={`${firstName} ${lastName}`}
                   className="object-cover"
                 />
@@ -168,9 +173,11 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
             {/* Contact Icons Tablette */}
             <div className="flex justify-center space-x-2 mt-auto">
-              <div className="p-2 text-gray-700 cursor-default" title="Téléphone">
-                <Phone className="h-4 w-4" />
-              </div>
+              {whatsapp && (
+                <div className="p-2 text-gray-700 cursor-default" title="WhatsApp">
+                  <MessageCircle className="h-4 w-4" />
+                </div>
+              )}
               {socialMedia.facebook && (
                 <div className="p-2 text-gray-700 cursor-default" title="Facebook">
                   <Facebook className="h-4 w-4" />
@@ -216,7 +223,7 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
           <div className="flex justify-center mb-4">
             <Avatar className="h-20 w-20 ring-2 ring-gray-200 group-hover:ring-primary transition-colors">
               <AvatarImage 
-                src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
+                src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
                 alt={`${firstName} ${lastName}`}
                 className="object-cover"
               />
@@ -247,9 +254,11 @@ const MemberCard: React.FC<MemberCardProps> = ({ member }) => {
 
           {/* Contact Icons Desktop */}
           <div className="flex justify-center space-x-3 mt-auto">
-            <div className="p-2 text-gray-700 cursor-default" title="Téléphone">
-              <Phone className="h-4 w-4" />
-            </div>
+            {whatsapp && (
+              <div className="p-2 text-gray-700 cursor-default" title="WhatsApp">
+                <MessageCircle className="h-4 w-4" />
+              </div>
+            )}
             {socialMedia.facebook && (
               <div className="p-2 text-gray-700 cursor-default" title="Facebook">
                 <Facebook className="h-4 w-4" />

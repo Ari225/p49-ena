@@ -1,53 +1,86 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
-// Mock data for 800+ members with Ivorian names and cities
-const generateMockMembers = () => {
-  const positions = ['Directeur Général', 'Directeur Adjoint', 'Chef de Service', 'Attaché d\'Administration', 'Secrétaire Général', 'Contrôleur Financier', 'Inspecteur', 'Analyste', 'Coordinateur', 'Responsable RH', 'Chef de Projet', 'Conseiller'];
-  const localities = ['Abidjan', 'Bouaké', 'Daloa', 'Yamoussoukro', 'San-Pédro', 'Korhogo', 'Man', 'Divo', 'Gagnoa', 'Anyama', 'Abengourou', 'Agboville', 'Grand-Bassam', 'Sassandra'];
-  const firstNames = ['Kouadio', 'Akissi', 'Kouassi', 'Adjoua', 'Yao', 'Amenan', 'Kofi', 'Affoué', 'N\'Guessan', 'Aya', 'Koffi', 'Mariam', 'Kouame', 'Fatou', 'Brou', 'Aminata'];
-  const lastNames = ['Diallo', 'Traoré', 'Ouattara', 'Koné', 'Coulibaly', 'Bamba', 'Yao', 'Kouassi', 'N\'Dri', 'Bakayoko', 'Touré', 'Fofana', 'Sangaré', 'Diabaté', 'Silué', 'Gbagbo'];
-  const members = [];
-  for (let i = 1; i <= 850; i++) {
-    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-    const position = positions[Math.floor(Math.random() * positions.length)];
-    const locality = localities[Math.floor(Math.random() * localities.length)];
-    members.push({
-      id: i,
-      firstName,
-      lastName,
-      position,
-      locality,
-      photo: `https://images.unsplash.com/photo-${1500000000000 + i}?w=150&h=150&fit=crop&face`,
-      socialMedia: {
-        facebook: Math.random() > 0.3 ? `https://facebook.com/${firstName.toLowerCase()}.${lastName.toLowerCase()}` : null,
-        instagram: Math.random() > 0.5 ? `https://instagram.com/${firstName.toLowerCase()}_${lastName.toLowerCase()}` : null,
-        linkedin: Math.random() > 0.4 ? `https://linkedin.com/in/${firstName.toLowerCase()}-${lastName.toLowerCase()}` : null
-      }
-    });
-  }
-  return members;
-};
+interface Member {
+  id: number;
+  firstName: string;
+  lastName: string;
+  position: string;
+  locality: string;
+  photo: string;
+  whatsapp: string | null;
+  matricule: string;
+  socialMedia: {
+    facebook?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+  };
+}
 
 const RepertoireMembers = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [allMembers, setAllMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
   const membersPerPage = 24;
-  const allMembers = useMemo(() => generateMockMembers(), []);
+
+  // Fetch members from Supabase
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await (supabase as any)
+          .from('members')
+          .select('*');
+        
+        if (error) {
+          console.error('Error fetching members:', error);
+          return;
+        }
+        
+        const formattedMembers: Member[] = (data || []).map((member: any) => ({
+          id: member.id,
+          firstName: member['Prénoms'] || '',
+          lastName: member['Nom de famille'] || '',
+          position: member['Emploi fonction publique'] || '',
+          locality: member['Lieu d\'exercice'] || '',
+          photo: member['Photo'] || '',
+          whatsapp: member['WhatsApp'] ? member['WhatsApp'].toString() : null,
+          matricule: member['Matricule'] || '',
+          socialMedia: {
+            facebook: member['Facebook'] || null,
+            instagram: member['instagram'] || null,
+            linkedin: member['linkedIn'] || null
+          }
+        }));
+        
+        setAllMembers(formattedMembers);
+      } catch (error) {
+        console.error('Error loading members:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
 
   // Filter members based on search term
   const filteredMembers = useMemo(() => {
     if (!searchTerm.trim()) return allMembers;
-    return allMembers.filter(member => member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || member.lastName.toLowerCase().includes(searchTerm.toLowerCase()));
+    return allMembers.filter(member => 
+      member.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      member.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }, [allMembers, searchTerm]);
 
   // Calculate pagination
@@ -176,8 +209,15 @@ const RepertoireMembers = () => {
             )}
           </div>
 
-          {/* Members Grid - Version spécifique selon l'appareil */}
-          {currentMembers.length > 0 ? (
+          {/* Loading State */}
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-gray-600">Chargement des membres...</p>
+            </div>
+          ) : (
+            <>
+              {/* Members Grid - Version spécifique selon l'appareil */}
+              {currentMembers.length > 0 ? (
             <>
               {/* MOBILE VERSION */}
               {isMobile && (
@@ -241,6 +281,8 @@ const RepertoireMembers = () => {
                 Afficher tous les membres
               </button>
             </div>
+          )}
+            </>
           )}
         </div>
       </div>

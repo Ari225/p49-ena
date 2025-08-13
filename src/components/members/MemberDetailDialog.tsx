@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Facebook, Instagram, Linkedin, MapPin, Briefcase, Phone } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, MapPin, Briefcase } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
@@ -12,7 +13,7 @@ interface Member {
   position: string;
   locality: string;
   photo?: string;
-  phone?: string;
+  whatsapp?: string | null;
   socialMedia: {
     facebook?: string | null;
     instagram?: string | null;
@@ -32,7 +33,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   
   if (!member) return null;
 
-  const { firstName, lastName, position, locality, socialMedia } = member;
+  const { firstName, lastName, position, locality, socialMedia, photo, whatsapp } = member;
   
   const getInitials = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -42,10 +43,11 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const handlePhoneClick = () => {
-    // Simuler un numéro de téléphone
-    const phoneNumber = `+225 ${Math.floor(Math.random() * 90000000 + 10000000)}`;
-    alert(`Numéro de téléphone: ${phoneNumber}`);
+  const handleWhatsAppClick = () => {
+    if (whatsapp) {
+      const whatsappUrl = `https://wa.me/${whatsapp}`;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   // ===========================================
@@ -60,7 +62,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             <div className="flex justify-center mb-4">
               <Avatar className="h-16 w-16 ring-4 ring-primary/20">
                 <AvatarImage 
-                  src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
+                  src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
                   alt={`${firstName} ${lastName}`}
                   className="object-cover"
                 />
@@ -91,14 +93,16 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
             {/* Contact Icons Mobile */}
             <div className="flex justify-center space-x-3">
-              {/* Phone Icon */}
-              <button
-                onClick={handlePhoneClick}
-                className="p-2 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-                title="Téléphone"
-              >
-                <Phone className="h-4 w-4" />
-              </button>
+              {/* WhatsApp Icon */}
+              {whatsapp && (
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="p-2 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                  title="WhatsApp"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </button>
+              )}
 
               {/* Social Media Icons */}
               {socialMedia.facebook && (
@@ -147,7 +151,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             <div className="flex justify-center mb-5">
               <Avatar className="h-20 w-20 ring-4 ring-primary/20">
                 <AvatarImage 
-                  src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
+                  src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
                   alt={`${firstName} ${lastName}`}
                   className="object-cover"
                 />
@@ -178,14 +182,16 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
             {/* Contact Icons Tablette */}
             <div className="flex justify-center space-x-4">
-              {/* Phone Icon */}
-              <button
-                onClick={handlePhoneClick}
-                className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-                title="Téléphone"
-              >
-                <Phone className="h-5 w-5" />
-              </button>
+              {/* WhatsApp Icon */}
+              {whatsapp && (
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                  title="WhatsApp"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                </button>
+              )}
 
               {/* Social Media Icons */}
               {socialMedia.facebook && (
@@ -233,7 +239,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
           <div className="flex justify-center mb-6">
             <Avatar className="h-24 w-24 ring-4 ring-primary/20">
               <AvatarImage 
-                src="/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"
+                src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
                 alt={`${firstName} ${lastName}`}
                 className="object-cover"
               />
@@ -264,14 +270,16 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
           {/* Contact Icons Desktop */}
           <div className="flex justify-center space-x-4">
-            {/* Phone Icon */}
-            <button
-              onClick={handlePhoneClick}
-              className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-              title="Téléphone"
-            >
-              <Phone className="h-5 w-5" />
-            </button>
+            {/* WhatsApp Icon */}
+            {whatsapp && (
+              <button
+                onClick={handleWhatsAppClick}
+                className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                title="WhatsApp"
+              >
+                <MessageCircle className="h-5 w-5" />
+              </button>
+            )}
 
             {/* Social Media Icons */}
             {socialMedia.facebook && (

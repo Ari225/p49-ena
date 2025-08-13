@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MatriculeVerificationDialogProps {
   isOpen: boolean;
@@ -25,9 +26,6 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Matricule par défaut pour les tests
-  const DEFAULT_MATRICULE = 'P49DEMO';
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -39,17 +37,34 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
       return;
     }
 
-    // Simuler un délai de vérification
-    setTimeout(() => {
-      // Accepter le matricule par défaut ou tout matricule de plus de 4 caractères
-      if (matricule.toUpperCase() === DEFAULT_MATRICULE || matricule.length >= 4) {
+    try {
+      // Vérifier le matricule dans la base de données
+      const { data, error } = await (supabase as any)
+        .from('members')
+        .select('Matricule')
+        .eq('Matricule', matricule.toUpperCase())
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error checking matricule:', error);
+        setError('Erreur lors de la vérification. Veuillez réessayer.');
+        setIsLoading(false);
+        return;
+      }
+
+      if (data) {
+        // Matricule trouvé dans la base
         onVerified();
         setMatricule('');
       } else {
         setError('Matricule invalide. Veuillez vérifier et réessayer.');
       }
       setIsLoading(false);
-    }, 1000);
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Erreur lors de la vérification. Veuillez réessayer.');
+      setIsLoading(false);
+    }
   };
 
   const handleClose = () => {
