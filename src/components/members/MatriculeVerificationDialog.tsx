@@ -65,26 +65,10 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
           setError('Ce matricule ne correspond pas à ce membre. Accès refusé.');
         }
       } else {
-        // Mode aperçu : vérifier n'importe quel matricule valide dans la base
-        const { data, error } = await (supabase as any)
-          .from('members')
-          .select('matricule')
-          .eq('matricule', matricule.toUpperCase())
-          .maybeSingle();
-
-        if (error) {
-          console.error('Error checking matricule:', error);
-          setError('Erreur lors de la vérification. Veuillez réessayer.');
-          setIsLoading(false);
-          return;
-        }
-
-        if (data) {
-          onVerified();
-          setMatricule('');
-        } else {
-          setError('Matricule invalide. Veuillez vérifier et réessayer.');
-        }
+        // Mode aperçu : autoriser tous les matricules pour l'accès aux informations
+        // Tant que le matricule n'est pas vide, l'accès est autorisé
+        onVerified();
+        setMatricule('');
       }
       setIsLoading(false);
     } catch (error) {
