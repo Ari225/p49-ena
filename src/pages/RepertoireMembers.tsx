@@ -38,20 +38,14 @@ const RepertoireMembers = () => {
     const fetchMembers = async () => {
       try {
         setLoading(true);
-        console.log('Fetching members from Supabase...');
         const { data, error } = await (supabase as any)
           .from('members')
           .select('*');
-        
-        console.log('Raw data from Supabase:', data);
-        console.log('Error from Supabase:', error);
         
         if (error) {
           console.error('Error fetching members:', error);
           return;
         }
-        
-        console.log('Number of records returned:', data?.length || 0);
         
         const formattedMembers: Member[] = (data || []).map((member: any) => ({
           id: member.id,
