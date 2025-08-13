@@ -2,26 +2,17 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2, Shield, User, Crown } from 'lucide-react';
-
-interface User {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  created_at: string;
-  image_url?: string;
-}
+import { AppUser } from '@/types/user';
 
 interface UserCardProps {
-  userItem: User;
+  userItem: AppUser;
   currentUserId?: string;
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
+  currentUserRole?: string;
+  onEdit: (user: AppUser) => void;
+  onDelete: (user: AppUser) => void;
 }
 
-const UserCard = ({ userItem, currentUserId, onEdit, onDelete }: UserCardProps) => {
+const UserCard = ({ userItem, currentUserId, currentUserRole, onEdit, onDelete }: UserCardProps) => {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin_principal':
@@ -40,7 +31,7 @@ const UserCard = ({ userItem, currentUserId, onEdit, onDelete }: UserCardProps) 
       case 'admin_principal':
         return 'Admin Principal';
       case 'admin_secondaire':
-        return 'Administrateur Secondaire';
+        return 'Admin Secondaire';
       case 'redacteur':
         return 'Rédacteur';
       default:
@@ -67,6 +58,42 @@ const UserCard = ({ userItem, currentUserId, onEdit, onDelete }: UserCardProps) 
 
   const handleDelete = () => {
     onDelete(userItem);
+  };
+
+  const canEditUser = () => {
+    // Admin principal peut tout modifier
+    if (currentUserRole === 'admin_principal') return true;
+    
+    // Admin secondaire ne peut pas modifier l'admin principal
+    if (currentUserRole === 'admin_secondaire' && userItem.role === 'admin_principal') return false;
+    
+    // Admin secondaire peut modifier ses propres infos et celles des rédacteurs
+    if (currentUserRole === 'admin_secondaire') {
+      return currentUserId === userItem.id || userItem.role === 'redacteur';
+    }
+    
+    // Rédacteur peut seulement modifier ses propres infos
+    if (currentUserRole === 'redacteur') {
+      return currentUserId === userItem.id;
+    }
+    
+    return false;
+  };
+
+  const canDeleteUser = () => {
+    // On ne peut pas se supprimer soi-même
+    if (userItem.id === currentUserId) return false;
+    
+    // Admin principal peut supprimer les autres
+    if (currentUserRole === 'admin_principal') return true;
+    
+    // Admin secondaire ne peut pas supprimer l'admin principal
+    if (currentUserRole === 'admin_secondaire' && userItem.role === 'admin_principal') return false;
+    
+    // Admin secondaire peut supprimer les rédacteurs
+    if (currentUserRole === 'admin_secondaire' && userItem.role === 'redacteur') return true;
+    
+    return false;
   };
 
   return (
@@ -112,11 +139,13 @@ const UserCard = ({ userItem, currentUserId, onEdit, onDelete }: UserCardProps) 
         </div>
       </div>
       <div className="flex space-x-2 pt-2 border-t border-gray-100">
-        <Button variant="outline" size="sm" className="flex-1 text-xs" onClick={handleEdit}>
-          <Edit className="h-3 w-3 mr-1" />
-          Modifier
-        </Button>
-        {userItem.id !== currentUserId && (
+        {canEditUser() && (
+          <Button variant="outline" size="sm" className="flex-1 text-xs" onClick={handleEdit}>
+            <Edit className="h-3 w-3 mr-1" />
+            Modifier
+          </Button>
+        )}
+        {canDeleteUser() && (
           <Button 
             variant="outline" 
             size="sm" 

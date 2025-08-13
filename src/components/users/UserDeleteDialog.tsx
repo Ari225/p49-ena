@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,20 +11,11 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
-
-interface User {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  created_at: string;
-  image_url?: string;
-}
+import { supabase } from '@/integrations/supabase/client';
+import { AppUser } from '@/types/user';
 
 interface UserDeleteDialogProps {
-  user: User | null;
+  user: AppUser | null;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (userId: string) => void;
@@ -36,12 +27,29 @@ const UserDeleteDialog: React.FC<UserDeleteDialogProps> = ({
   onClose,
   onConfirm
 }) => {
-  const handleConfirm = () => {
+  const [loading, setLoading] = useState(false);
+  const handleConfirm = async () => {
     if (!user) return;
     
-    onConfirm(user.id);
-    toast.success(`${user.first_name} ${user.last_name} a été supprimé`);
-    onClose();
+    setLoading(true);
+    
+    try {
+      const { error } = await supabase
+        .from('app_users')
+        .delete()
+        .eq('id', user.id);
+
+      if (error) throw error;
+      
+      onConfirm(user.id);
+      toast.success(`${user.first_name} ${user.last_name} a été supprimé`);
+      onClose();
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      toast.error('Erreur lors de la suppression de l\'utilisateur');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!user) return null;
@@ -57,12 +65,13 @@ const UserDeleteDialog: React.FC<UserDeleteDialogProps> = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Annuler</AlertDialogCancel>
+          <AlertDialogCancel onClick={onClose} disabled={loading}>Annuler</AlertDialogCancel>
           <AlertDialogAction 
             onClick={handleConfirm}
             className="bg-red-600 hover:bg-red-700"
+            disabled={loading}
           >
-            Supprimer
+            {loading ? 'Suppression...' : 'Supprimer'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

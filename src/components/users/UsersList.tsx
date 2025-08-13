@@ -5,39 +5,30 @@ import UserCard from './UserCard';
 import UserEditDialog from './UserEditDialog';
 import UserDeleteDialog from './UserDeleteDialog';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-interface User {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  created_at: string;
-  image_url?: string;
-}
+import { AppUser, AuthUser } from '@/types/user';
 
 interface UsersListProps {
-  users: User[];
+  users: AppUser[];
   currentUserId?: string;
+  currentUser?: AuthUser | null;
   isMobile?: boolean;
-  onUpdateUser?: (user: User) => void;
+  onUpdateUser?: (user: AppUser) => void;
   onDeleteUser?: (userId: string) => void;
 }
 
-const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDeleteUser }: UsersListProps) => {
-  const [editUser, setEditUser] = useState<User | null>(null);
-  const [deleteUser, setDeleteUser] = useState<User | null>(null);
+const UsersList = ({ users, currentUserId, currentUser, isMobile = false, onUpdateUser, onDeleteUser }: UsersListProps) => {
+  const [editUser, setEditUser] = useState<AppUser | null>(null);
+  const [deleteUser, setDeleteUser] = useState<AppUser | null>(null);
 
-  const handleEdit = (user: User) => {
+  const handleEdit = (user: AppUser) => {
     setEditUser(user);
   };
 
-  const handleDelete = (user: User) => {
+  const handleDelete = (user: AppUser) => {
     setDeleteUser(user);
   };
 
-  const handleSaveUser = (updatedUser: User) => {
+  const handleSaveUser = (updatedUser: AppUser) => {
     onUpdateUser?.(updatedUser);
   };
 
@@ -67,6 +58,7 @@ const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDel
               key={userItem.id} 
               userItem={userItem} 
               currentUserId={currentUserId}
+              currentUserRole={currentUser?.role}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
@@ -78,6 +70,7 @@ const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDel
           isOpen={!!editUser}
           onClose={() => setEditUser(null)}
           onSave={handleSaveUser}
+          currentUser={currentUser}
         />
         
         <UserDeleteDialog
@@ -108,6 +101,7 @@ const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDel
                     key={userItem.id} 
                     userItem={userItem} 
                     currentUserId={currentUserId}
+                    currentUserRole={currentUser?.role}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                   />
@@ -134,6 +128,7 @@ const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDel
                     key={userItem.id} 
                     userItem={userItem} 
                     currentUserId={currentUserId}
+                    currentUserRole={currentUser?.role}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                   />
@@ -160,6 +155,7 @@ const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDel
                     key={userItem.id} 
                     userItem={userItem} 
                     currentUserId={currentUserId}
+                    currentUserRole={currentUser?.role}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                   />
@@ -177,6 +173,7 @@ const UsersList = ({ users, currentUserId, isMobile = false, onUpdateUser, onDel
         isOpen={!!editUser}
         onClose={() => setEditUser(null)}
         onSave={handleSaveUser}
+        currentUser={currentUser}
       />
       
       <UserDeleteDialog

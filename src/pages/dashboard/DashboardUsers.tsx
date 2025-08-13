@@ -11,23 +11,13 @@ import UsersList from '@/components/users/UsersList';
 import UsersPageHeader from '@/components/users/UsersPageHeader';
 import LoadingState from '@/components/users/LoadingState';
 import { isAdmin } from '@/utils/roleUtils';
-
-interface User {
-  id: string;
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  role: string;
-  created_at: string;
-  image_url?: string;
-}
+import { AppUser } from '@/types/user';
 
 const DashboardUsers = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
@@ -42,7 +32,7 @@ const DashboardUsers = () => {
       if (error) {
         console.error('Erreur lors de la récupération des utilisateurs:', error);
         // Fallback vers les utilisateurs codés en dur
-        const hardcodedUsers: User[] = [
+        const hardcodedUsers: AppUser[] = [
           {
             id: '1',
             username: 'ari_dale',
@@ -85,14 +75,18 @@ const DashboardUsers = () => {
     fetchUsers(); // Recharger la liste depuis Supabase
   };
 
-  const handleUpdateUser = (updatedUser: User) => {
+  const handleUpdateUser = async (updatedUser: AppUser) => {
     setUsers(prevUsers => 
       prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u)
     );
+    // Recharger depuis la base pour avoir les données à jour
+    await fetchUsers();
   };
 
-  const handleDeleteUser = (userId: string) => {
+  const handleDeleteUser = async (userId: string) => {
     setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+    // Recharger depuis la base pour avoir les données à jour
+    await fetchUsers();
   };
 
   // Move authorization check AFTER all hooks
@@ -117,7 +111,8 @@ const DashboardUsers = () => {
           
           <UsersList 
             users={users} 
-            currentUserId={user?.id} 
+            currentUserId={user?.id}
+            currentUser={user}
             isMobile={true}
             onUpdateUser={handleUpdateUser}
             onDeleteUser={handleDeleteUser}
@@ -149,7 +144,8 @@ const DashboardUsers = () => {
             <CardContent>
               <UsersList 
                 users={users} 
-                currentUserId={user?.id} 
+                currentUserId={user?.id}
+                currentUser={user}
                 isMobile={false}
                 onUpdateUser={handleUpdateUser}
                 onDeleteUser={handleDeleteUser}
@@ -185,7 +181,8 @@ const DashboardUsers = () => {
             <CardContent>
               <UsersList 
                 users={users} 
-                currentUserId={user?.id} 
+                currentUserId={user?.id}
+                currentUser={user}
                 isMobile={false}
                 onUpdateUser={handleUpdateUser}
                 onDeleteUser={handleDeleteUser}
