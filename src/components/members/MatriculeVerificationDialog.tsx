@@ -46,7 +46,7 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
         // Mode modification : vérifier strictement que le matricule correspond au membre spécifique
         const { data, error } = await (supabase as any)
           .from('members')
-          .select('matricule')
+          .select('Matricule')
           .eq('id', parseInt(memberId))
           .maybeSingle();
 
@@ -57,7 +57,7 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
           return;
         }
 
-        if (data && data.matricule === matricule.toUpperCase()) {
+        if (data && data.Matricule === matricule.toUpperCase()) {
           onVerified();
           setMatricule('');
         } else {
