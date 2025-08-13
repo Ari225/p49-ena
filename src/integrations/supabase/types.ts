@@ -547,6 +547,10 @@ export type Database = {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      is_admin_principal: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       article_status: "en_attente" | "valide" | "refuse"
