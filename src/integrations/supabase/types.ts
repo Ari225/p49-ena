@@ -361,6 +361,69 @@ export type Database = {
           },
         ]
       }
+      members: {
+        Row: {
+          "Date de naissance": string | null
+          Ecole: string | null
+          Email: string | null
+          "Emploi fonction publique": string | null
+          Facebook: string | null
+          "Fili�re_EGAD": string | null
+          "Fili�re_EGEF": string | null
+          id: number
+          instagram: string | null
+          "Lieu d'exercice": string | null
+          linkedIn: string | null
+          Matricule: string | null
+          "Minist�re": string | null
+          "Nom de famille": string | null
+          Photo: string | null
+          "Pr�noms": string | null
+          "R�gion": string | null
+          WhatsApp: number | null
+        }
+        Insert: {
+          "Date de naissance"?: string | null
+          Ecole?: string | null
+          Email?: string | null
+          "Emploi fonction publique"?: string | null
+          Facebook?: string | null
+          "Fili�re_EGAD"?: string | null
+          "Fili�re_EGEF"?: string | null
+          id?: number
+          instagram?: string | null
+          "Lieu d'exercice"?: string | null
+          linkedIn?: string | null
+          Matricule?: string | null
+          "Minist�re"?: string | null
+          "Nom de famille"?: string | null
+          Photo?: string | null
+          "Pr�noms"?: string | null
+          "R�gion"?: string | null
+          WhatsApp?: number | null
+        }
+        Update: {
+          "Date de naissance"?: string | null
+          Ecole?: string | null
+          Email?: string | null
+          "Emploi fonction publique"?: string | null
+          Facebook?: string | null
+          "Fili�re_EGAD"?: string | null
+          "Fili�re_EGEF"?: string | null
+          id?: number
+          instagram?: string | null
+          "Lieu d'exercice"?: string | null
+          linkedIn?: string | null
+          Matricule?: string | null
+          "Minist�re"?: string | null
+          "Nom de famille"?: string | null
+          Photo?: string | null
+          "Pr�noms"?: string | null
+          "R�gion"?: string | null
+          WhatsApp?: number | null
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           category: string
@@ -546,6 +609,25 @@ export type Database = {
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
+      }
+      sp_inserer_membre: {
+        Args: {
+          p_prenoms: string
+          p_nom_famille: string
+          p_date_naissance: string
+          p_email: string
+          p_photo: string
+          p_matricule: string
+          p_ecole: string
+          p_filiere_egef: string
+          p_filiere_egad: string
+          p_ministere: string
+          p_lieu_exercice: string
+          p_emploi: string
+          p_region: string
+          p_whatsapp: string
+        }
+        Returns: number
       }
     }
     Enums: {
