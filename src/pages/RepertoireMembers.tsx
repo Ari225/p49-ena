@@ -53,21 +53,29 @@ const RepertoireMembers = () => {
         
         console.log('Number of records returned:', data?.length || 0);
         
-        const formattedMembers: Member[] = (data || []).map((member: any) => ({
-          id: member.id,
-          firstName: member['Pr�noms'] || '',
-          lastName: member['Nom de famille'] || '',
-          position: member['Emploi fonction publique'] || '',
-          locality: member['Lieu d\'exercice'] || '',
-          photo: member['Photo'] || '',
-          whatsapp: member['WhatsApp'] ? member['WhatsApp'].toString() : null,
-          matricule: member['Matricule'] || '',
-          socialMedia: {
-            facebook: member['Facebook'] || null,
-            instagram: member['instagram'] || null,
-            linkedin: member['linkedIn'] || null
-          }
-        }));
+        const formattedMembers: Member[] = (data || [])
+          .map((member: any) => ({
+            id: member.id,
+            firstName: member['Pr�noms'] || '',
+            lastName: member['Nom de famille'] || '',
+            position: member['Emploi fonction publique'] || '',
+            locality: member['Lieu d\'exercice'] || '',
+            photo: member['Photo'] || '',
+            whatsapp: member['WhatsApp'] ? member['WhatsApp'].toString() : null,
+            matricule: member['Matricule'] || '',
+            socialMedia: {
+              facebook: member['Facebook'] || null,
+              instagram: member['instagram'] || null,
+              linkedin: member['linkedIn'] || null
+            }
+          }))
+          .filter(member => member.firstName.trim() || member.lastName.trim()) // Filter out empty names
+          .sort((a, b) => {
+            // Sort alphabetically by lastName first, then firstName
+            const lastNameComparison = a.lastName.localeCompare(b.lastName, 'fr', { sensitivity: 'base' });
+            if (lastNameComparison !== 0) return lastNameComparison;
+            return a.firstName.localeCompare(b.firstName, 'fr', { sensitivity: 'base' });
+          });
         
         setAllMembers(formattedMembers);
       } catch (error) {
