@@ -44,6 +44,7 @@ import NotFound from "./pages/NotFound";
 import Regionales from "./pages/Regionales";
 import RenforcementCapacites from "./pages/RenforcementCapacites";
 import RepertoireMembers from "./pages/RepertoireMembers";
+import ModifierMembre from "./pages/ModifierMembre";
 import ReunionsConstitution from "./pages/ReunionsConstitution";
 import Suggestions from "./pages/Suggestions";
 import Temoignages from "./pages/Temoignages";
@@ -136,6 +137,7 @@ const App = () => (
               {/* Répertoire */}
               <Route path="/repertoire-membres" element={<RepertoireMembers />} />
               <Route path="/repertoire-members" element={<RepertoireMembers />} />
+              <Route path="/membre/modifier" element={<ModifierMembre />} />
               
               {/* Suggestions */}
               <Route path="/suggestions" element={<Suggestions />} />

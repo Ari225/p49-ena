@@ -92,7 +92,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             </div>
 
             {/* Contact Icons Mobile */}
-            <div className="flex justify-center space-x-3">
+            <div className="flex justify-center space-x-3 mb-4">
               {/* WhatsApp Icon */}
               {whatsapp && (
                 <button
@@ -132,6 +132,19 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   <Linkedin className="h-4 w-4" />
                 </button>
               )}
+            </div>
+
+            {/* Edit Button Mobile */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  onClose();
+                  window.location.href = `/membre/modifier?id=${member.id}`;
+                }}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+              >
+                Modifier mes informations
+              </button>
             </div>
           </div>
         </DialogContent>
@@ -181,7 +194,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             </div>
 
             {/* Contact Icons Tablette */}
-            <div className="flex justify-center space-x-4">
+            <div className="flex justify-center space-x-4 mb-5">
               {/* WhatsApp Icon */}
               {whatsapp && (
                 <button
@@ -221,6 +234,19 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   <Linkedin className="h-5 w-5" />
                 </button>
               )}
+            </div>
+
+            {/* Edit Button Tablette */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  onClose();
+                  window.location.href = `/membre/modifier?id=${member.id}`;
+                }}
+                className="px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+              >
+                Modifier mes informations
+              </button>
             </div>
           </div>
         </DialogContent>
@@ -269,7 +295,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
           </div>
 
           {/* Contact Icons Desktop */}
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-4 mb-6">
             {/* WhatsApp Icon */}
             {whatsapp && (
               <button
@@ -309,6 +335,19 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                 <Linkedin className="h-5 w-5" />
               </button>
             )}
+          </div>
+
+          {/* Edit Button Desktop */}
+          <div className="flex justify-center">
+            <button
+              onClick={() => {
+                onClose();
+                window.location.href = `/membre/modifier?id=${member.id}`;
+              }}
+              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+            >
+              Modifier mes informations
+            </button>
           </div>
         </div>
       </DialogContent>
