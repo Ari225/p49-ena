@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.12 (cd3cf9e)"
@@ -595,15 +595,15 @@ export type Database = {
     }
     Functions: {
       authenticate_app_user: {
-        Args: { _username: string; _password: string }
+        Args: { _password: string; _username: string }
         Returns: {
-          id: string
-          username: string
-          first_name: string
-          last_name: string
           email: string
-          role: Database["public"]["Enums"]["user_role"]
+          first_name: string
+          id: string
           image_url: string
+          last_name: string
+          role: Database["public"]["Enums"]["user_role"]
+          username: string
         }[]
       }
       get_current_user_role: {
@@ -616,18 +616,18 @@ export type Database = {
       }
       sp_inserer_membre: {
         Args: {
-          p_prenoms: string
-          p_nom_famille: string
           p_date_naissance: string
-          p_email: string
-          p_photo: string
-          p_matricule: string
           p_ecole: string
-          p_filiere_egef: string
-          p_filiere_egad: string
-          p_ministere: string
-          p_lieu_exercice: string
+          p_email: string
           p_emploi: string
+          p_filiere_egad: string
+          p_filiere_egef: string
+          p_lieu_exercice: string
+          p_matricule: string
+          p_ministere: string
+          p_nom_famille: string
+          p_photo: string
+          p_prenoms: string
           p_region: string
           p_whatsapp: string
         }
