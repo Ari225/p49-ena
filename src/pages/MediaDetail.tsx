@@ -7,7 +7,6 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ArrowLeft, Calendar, Play, Image as ImageIcon, Video, Download } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
-
 interface MediaItem {
   id: string;
   title: string;
@@ -17,29 +16,28 @@ interface MediaItem {
   date: string;
   created_at: string;
 }
-
 const MediaDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [media, setMedia] = useState<MediaItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
-
   useEffect(() => {
     if (id) {
       fetchMediaDetail();
     }
   }, [id]);
-
   const fetchMediaDetail = async () => {
     try {
-      const { data, error } = await supabase
-        .from('media_items')
-        .select('*')
-        .eq('id', id)
-        .single();
-
+      const {
+        data,
+        error
+      } = await supabase.from('media_items').select('*').eq('id', id).single();
       if (error) throw error;
       setMedia(data);
     } catch (error) {
@@ -49,7 +47,6 @@ const MediaDetail = () => {
       setLoading(false);
     }
   };
-
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'Événements':
@@ -72,7 +69,6 @@ const MediaDetail = () => {
         return 'bg-gray-100 text-gray-800';
     }
   };
-
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString('fr-FR');
@@ -80,11 +76,9 @@ const MediaDetail = () => {
       return dateString;
     }
   };
-
   const isVideo = (url: string) => {
     return url.includes('.mp4') || url.includes('.mov') || url.includes('.avi') || url.includes('video');
   };
-
   const downloadMedia = (url: string, filename: string) => {
     const link = document.createElement('a');
     link.href = url;
@@ -92,37 +86,25 @@ const MediaDetail = () => {
     link.target = '_blank';
     link.click();
   };
-
   if (loading) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="flex justify-center items-center min-h-[50vh]">
           <div className="text-gray-500 text-lg">Chargement...</div>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
-
   if (!media) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="flex justify-center items-center min-h-[50vh]">
           <div className="text-gray-500 text-lg">Média non trouvé</div>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
-
-  return (
-    <Layout>
+  return <Layout>
       <div className={`min-h-screen bg-gray-50 ${isMobile ? 'px-[25px] py-6' : 'px-8 lg:px-[100px] py-12'}`}>
         {/* Header */}
         <div className="mb-8">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/gallery')}
-            className="mb-4"
-          >
+          <Button variant="outline" onClick={() => navigate('/gallery')} className="mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Retour à la galerie
           </Button>
@@ -149,59 +131,27 @@ const MediaDetail = () => {
           {/* Main Media Display */}
           <div className="relative">
             <div className={`${isMobile ? 'aspect-video' : 'aspect-[16/10]'} bg-black flex items-center justify-center`}>
-              {isVideo(media.media_urls[selectedMediaIndex]) ? (
-                <video
-                  className="w-full h-full object-contain"
-                  controls
-                  src={media.media_urls[selectedMediaIndex]}
-                >
+              {isVideo(media.media_urls[selectedMediaIndex]) ? <video className="w-full h-full object-contain" controls src={media.media_urls[selectedMediaIndex]}>
                   Votre navigateur ne supporte pas la lecture vidéo.
-                </video>
-              ) : (
-                <img
-                  src={media.media_urls[selectedMediaIndex]}
-                  alt={media.title}
-                  className="w-full h-full object-contain"
-                />
-              )}
+                </video> : <img src={media.media_urls[selectedMediaIndex]} alt={media.title} className="w-full h-full object-contain" />}
             </div>
 
             {/* Download Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm"
-              onClick={() => downloadMedia(media.media_urls[selectedMediaIndex], `${media.title}_${selectedMediaIndex + 1}`)}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Télécharger
-            </Button>
+            
           </div>
 
           {/* Media Navigation */}
-          {media.media_urls.length > 1 && (
-            <div className="p-6">
+          {media.media_urls.length > 1 && <div className="p-6">
               <h3 className="text-lg font-semibold mb-4">
                 Médias ({media.media_urls.length})
               </h3>
               
               <Carousel className="w-full">
                 <CarouselContent className="-ml-2 md:-ml-4">
-                  {media.media_urls.map((url, index) => (
-                    <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/6">
-                      <div
-                        className={`relative aspect-square cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                          selectedMediaIndex === index ? 'border-primary' : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                        onClick={() => setSelectedMediaIndex(index)}
-                      >
-                        {isVideo(url) ? (
-                          <>
-                            <video
-                              className="w-full h-full object-cover"
-                              src={url}
-                              muted
-                            />
+                  {media.media_urls.map((url, index) => <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/6">
+                      <div className={`relative aspect-square cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${selectedMediaIndex === index ? 'border-primary' : 'border-gray-200 hover:border-gray-300'}`} onClick={() => setSelectedMediaIndex(index)}>
+                        {isVideo(url) ? <>
+                            <video className="w-full h-full object-cover" src={url} muted />
                             <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                               <div className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
                                 <Play className="w-4 h-4 text-primary ml-0.5" />
@@ -210,32 +160,21 @@ const MediaDetail = () => {
                             <div className="absolute bottom-1 right-1">
                               <Video className="w-3 h-3 text-white" />
                             </div>
-                          </>
-                        ) : (
-                          <>
-                            <img
-                              src={url}
-                              alt={`${media.title} ${index + 1}`}
-                              className="w-full h-full object-cover"
-                            />
+                          </> : <>
+                            <img src={url} alt={`${media.title} ${index + 1}`} className="w-full h-full object-cover" />
                             <div className="absolute bottom-1 right-1">
                               <ImageIcon className="w-3 h-3 text-white" />
                             </div>
-                          </>
-                        )}
+                          </>}
                       </div>
-                    </CarouselItem>
-                  ))}
+                    </CarouselItem>)}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
               </Carousel>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default MediaDetail;
