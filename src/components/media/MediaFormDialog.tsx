@@ -35,6 +35,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
     description: '',
     mediaFiles: []
   });
+  const [customCategory, setCustomCategory] = useState('');
   const isMobile = useIsMobile();
   const { toast } = useToast();
   const { user } = useAuth();
@@ -185,11 +186,13 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
       console.log('All files uploaded successfully. URLs:', mediaUrls);
 
       // Insert media item into database
+      const finalCategory = formData.category === 'Autre' ? customCategory : formData.category;
+      
       const { error } = await supabase
         .from('media_items')
         .insert({
           title: formData.title,
-          category: formData.category,
+          category: finalCategory,
           date: formData.date,
           description: formData.description,
           media_urls: mediaUrls,
@@ -231,6 +234,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
       description: '',
       mediaFiles: []
     });
+    setCustomCategory('');
   };
 
   const categories = [
@@ -287,6 +291,20 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
               </SelectContent>
             </Select>
           </div>
+
+          {formData.category === 'Autre' && (
+            <div className="space-y-2">
+              <Label htmlFor="customCategory" className="text-sm font-medium">Précisez la catégorie *</Label>
+              <Input
+                id="customCategory"
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                placeholder="Entrez la catégorie personnalisée"
+                className="w-full"
+                required
+              />
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="date" className="text-sm font-medium">Date *</Label>

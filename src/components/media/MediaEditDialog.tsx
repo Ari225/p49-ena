@@ -33,16 +33,23 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
     date: '',
     description: ''
   });
+  const [customCategory, setCustomCategory] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
     if (media) {
       setFormData({
         title: media.title,
-        category: media.category,
+        category: media.category === 'Autre' ? 'Autre' : media.category,
         date: media.date,
         description: media.description
       });
+      // Si la catégorie n'est pas dans la liste prédéfinie, c'est une catégorie personnalisée
+      const predefinedCategories = ['Évènement social', 'Les Régionales', 'Réunions', 'Assemblée Générale', 'Formation', 'Autre'];
+      if (media.category && !predefinedCategories.includes(media.category)) {
+        setCustomCategory(media.category);
+        setFormData(prev => ({ ...prev, category: 'Autre' }));
+      }
     }
   }, [media]);
 
@@ -71,11 +78,13 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
 
     setLoading(true);
     try {
+      const finalCategory = formData.category === 'Autre' ? customCategory : formData.category;
+      
       const { error } = await supabase
         .from('media_items')
         .update({
           title: formData.title,
-          category: formData.category,
+          category: finalCategory,
           date: formData.date,
           description: formData.description
         })
@@ -137,6 +146,19 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
               </SelectContent>
             </Select>
           </div>
+
+          {formData.category === 'Autre' && (
+            <div className="space-y-2">
+              <Label htmlFor="customCategory">Précisez la catégorie *</Label>
+              <Input
+                id="customCategory"
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                placeholder="Entrez la catégorie personnalisée"
+                required
+              />
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="date">Date *</Label>
