@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -22,6 +23,7 @@ interface MediaItem {
 
 const Gallery = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { selectData, isConnected } = useSupabase();
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
@@ -165,7 +167,11 @@ const Gallery = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredItems.map((item) => (
-                    <Card key={item.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white/90 backdrop-blur-sm">
+                    <Card 
+                      key={item.id} 
+                      className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white/90 backdrop-blur-sm"
+                      onClick={() => navigate(`/media/${item.id}`)}
+                    >
                       <div className="relative aspect-video overflow-hidden">
                         <img 
                           src={item.media_urls[0] || "https://images.unsplash.com/photo-1559223607-b4d0555ae227?w=400&h=300&fit=crop"} 
@@ -175,7 +181,7 @@ const Gallery = () => {
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                           <div className="flex items-center text-white">
                             <Eye className="w-5 h-5 mr-2" />
-                            <span className="font-semibold">Voir les médias</span>
+                            <span className="font-semibold">Voir les détails</span>
                           </div>
                         </div>
                         <div className="absolute top-4 right-4">

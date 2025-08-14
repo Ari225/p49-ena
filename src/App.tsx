@@ -38,6 +38,7 @@ import EvenementsMalheureux from "./pages/EvenementsMalheureux";
 import Formations from "./pages/Formations";
 import Galerie from "./pages/Galerie";
 import Gallery from "./pages/Gallery";
+import MediaDetail from "./pages/MediaDetail";
 import Journal from "./pages/Journal";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -125,9 +126,10 @@ const App = () => (
               <Route path="/departs-retraite" element={<DepartsRetraite />} />
               <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
               
-              {/* Galerie */}
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/galerie" element={<Galerie />} />
+               {/* Galerie */}
+               <Route path="/gallery" element={<Gallery />} />
+               <Route path="/galerie" element={<Galerie />} />
+               <Route path="/media/:id" element={<MediaDetail />} />
               
               {/* Journal */}
               <Route path="/journal" element={<Journal />} />

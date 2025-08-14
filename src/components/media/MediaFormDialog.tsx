@@ -11,6 +11,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
+import { compressMediaFile, formatFileSize } from '@/utils/mediaCompression';
 
 interface MediaFormData {
   title: string;
@@ -38,7 +39,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const validFiles = files.filter(file => 
       file.type.startsWith('image/') || file.type.startsWith('video/')
@@ -51,10 +52,38 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
         variant: "destructive"
       });
     }
+
+    // Compress files
+    const compressedFiles: File[] = [];
+    for (const file of validFiles) {
+      try {
+        const originalSize = formatFileSize(file.size);
+        const compressedFile = await compressMediaFile(file);
+        const compressedSize = formatFileSize(compressedFile.size);
+        
+        console.log(`File ${file.name}: ${originalSize} → ${compressedSize}`);
+        compressedFiles.push(compressedFile);
+        
+        if (compressedFile.size !== file.size) {
+          toast({
+            title: "Fichier compressé",
+            description: `${file.name}: ${originalSize} → ${compressedSize}`,
+          });
+        }
+      } catch (error) {
+        console.error('Compression error:', error);
+        toast({
+          title: "Erreur de compression",
+          description: `Impossible de compresser ${file.name}`,
+          variant: "destructive"
+        });
+        compressedFiles.push(file); // Use original file if compression fails
+      }
+    }
     
     setFormData(prev => ({ 
       ...prev, 
-      mediaFiles: [...prev.mediaFiles, ...validFiles] 
+      mediaFiles: [...prev.mediaFiles, ...compressedFiles] 
     }));
   };
 

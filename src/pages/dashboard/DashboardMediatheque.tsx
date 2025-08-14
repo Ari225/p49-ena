@@ -4,6 +4,7 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import MediaFormDialog from '@/components/media/MediaFormDialog';
 import MediaCard from '@/components/media/MediaCard';
+import MediaEditDialog from '@/components/media/MediaEditDialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -25,6 +26,8 @@ const DashboardMediatheque = () => {
   const { toast } = useToast();
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingMedia, setEditingMedia] = useState<MediaItem | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   // Fetch media items from Supabase
   const fetchMediaItems = async () => {
@@ -88,8 +91,18 @@ const DashboardMediatheque = () => {
   };
 
   const handleEdit = (media: MediaItem) => {
-    console.log('Modifier média:', media);
-    // TODO: Implement edit logic
+    setEditingMedia(media);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditingMedia(null);
+    setIsEditDialogOpen(false);
+  };
+
+  const handleEditUpdate = async () => {
+    await fetchMediaItems();
+    handleEditClose();
   };
 
   const handleDelete = async (id: string) => {
@@ -156,6 +169,13 @@ const DashboardMediatheque = () => {
           )}
         </div>
         <AdminSidebar />
+        
+        <MediaEditDialog
+          media={editingMedia}
+          isOpen={isEditDialogOpen}
+          onClose={handleEditClose}
+          onUpdate={handleEditUpdate}
+        />
       </Layout>
     );
   }
@@ -198,6 +218,13 @@ const DashboardMediatheque = () => {
             </div>
           )}
         </div>
+
+        <MediaEditDialog
+          media={editingMedia}
+          isOpen={isEditDialogOpen}
+          onClose={handleEditClose}
+          onUpdate={handleEditUpdate}
+        />
       </div>
     </Layout>
   );
