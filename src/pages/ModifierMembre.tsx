@@ -125,7 +125,7 @@ const ModifierMembre: React.FC = () => {
 
     setIsSaving(true);
     try {
-      // Préparer les données pour la mise à jour en utilisant les noms de colonnes corrects
+      // Préparer les données pour la mise à jour en utilisant les vrais noms de colonnes de la base
       const updateData = {
         'Prénoms': formData['Prénoms'],
         'Nom de famille': formData['Nom de famille'],
@@ -144,6 +144,9 @@ const ModifierMembre: React.FC = () => {
         'instagram': formData['instagram'],
         'linkedIn': formData['linkedIn']
       };
+
+      console.log('Données à sauvegarder:', updateData);
+      console.log('ID du membre:', memberData.id);
 
       const { error } = await supabase
         .from('members')
