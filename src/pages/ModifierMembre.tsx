@@ -125,25 +125,26 @@ const ModifierMembre: React.FC = () => {
 
     setIsSaving(true);
     try {
-      // Préparer les données pour la mise à jour en utilisant les vrais noms de colonnes de la base
-      const updateData = {
-        'Prénoms': formData['Prénoms'],
-        'Nom de famille': formData['Nom de famille'],
-        'Date de naissance': formData['Date de naissance'],
-        'Email': formData['Email'],
-        'Photo': formData['Photo'],
-        'Ecole': formData['Ecole'],
-        'Filière_EGEF': formData['Filière_EGEF'],
-        'Filière_EGAD': formData['Filière_EGAD'],
-        'Ministère': formData['Ministère'],
-        "Lieu d'exercice": formData["Lieu d'exercice"],
-        'Emploi fonction publique': formData['Emploi fonction publique'],
-        'Région': formData['Région'],
-        'WhatsApp': formData['WhatsApp'],
-        'Facebook': formData['Facebook'],
-        'instagram': formData['instagram'],
-        'linkedIn': formData['linkedIn']
-      };
+      // Préparer les données pour la mise à jour - les colonnes doivent correspondre exactement à la DB
+      const updateData: any = {};
+      
+      // Mapper les champs avec leurs vrais noms de colonnes dans la base
+      if (formData['Prénoms'] !== undefined) updateData['Prénoms'] = formData['Prénoms'];
+      if (formData['Nom de famille'] !== undefined) updateData['Nom de famille'] = formData['Nom de famille'];
+      if (formData['Date de naissance'] !== undefined) updateData['Date de naissance'] = formData['Date de naissance'];
+      if (formData['Email'] !== undefined) updateData['Email'] = formData['Email'];
+      if (formData['Photo'] !== undefined) updateData['Photo'] = formData['Photo'];
+      if (formData['Ecole'] !== undefined) updateData['Ecole'] = formData['Ecole'];
+      if (formData['Filière_EGEF'] !== undefined) updateData['Filière_EGEF'] = formData['Filière_EGEF'];
+      if (formData['Filière_EGAD'] !== undefined) updateData['Filière_EGAD'] = formData['Filière_EGAD'];
+      if (formData['Ministère'] !== undefined) updateData['Ministère'] = formData['Ministère'];
+      if (formData["Lieu d'exercice"] !== undefined) updateData["Lieu d'exercice"] = formData["Lieu d'exercice"];
+      if (formData['Emploi fonction publique'] !== undefined) updateData['Emploi fonction publique'] = formData['Emploi fonction publique'];
+      if (formData['Région'] !== undefined) updateData['Région'] = formData['Région'];
+      if (formData['WhatsApp'] !== undefined) updateData['WhatsApp'] = formData['WhatsApp'];
+      if (formData['Facebook'] !== undefined) updateData['Facebook'] = formData['Facebook'];
+      if (formData['instagram'] !== undefined) updateData['instagram'] = formData['instagram'];
+      if (formData['linkedIn'] !== undefined) updateData['linkedIn'] = formData['linkedIn'];
 
       console.log('Données à sauvegarder:', updateData);
       console.log('ID du membre:', memberData.id);
