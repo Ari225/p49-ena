@@ -610,6 +610,44 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_member_details: {
+        Args: { member_matricule: string; verification_matricule: string }
+        Returns: {
+          date_naissance: string
+          ecole: string
+          email: string
+          emploi_fonction_publique: string
+          facebook: string
+          filiere_egad: string
+          filiere_egef: string
+          id: number
+          instagram: string
+          lieu_exercice: string
+          linkedin: string
+          ministere: string
+          nom_famille: string
+          photo: string
+          prenoms: string
+          region: string
+          whatsapp: number
+        }[]
+      }
+      get_member_directory: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          emploi_fonction_publique: string
+          has_facebook: boolean
+          has_instagram: boolean
+          has_linkedin: boolean
+          has_whatsapp: boolean
+          id: number
+          lieu_exercice: string
+          matricule: string
+          nom_famille: string
+          photo: string
+          prenoms: string
+        }[]
+      }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
