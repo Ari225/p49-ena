@@ -87,7 +87,7 @@ const ModifierMembre: React.FC = () => {
   const handleInputChange = (field: keyof MemberData, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: field === 'WhatsApp' ? (value ? parseInt(value) : null) : value
     }));
   };
 
@@ -125,9 +125,29 @@ const ModifierMembre: React.FC = () => {
 
     setIsSaving(true);
     try {
+      // Préparer les données pour la mise à jour en utilisant les noms de colonnes corrects
+      const updateData = {
+        'Prénoms': formData['Prénoms'],
+        'Nom de famille': formData['Nom de famille'],
+        'Date de naissance': formData['Date de naissance'],
+        'Email': formData['Email'],
+        'Photo': formData['Photo'],
+        'Ecole': formData['Ecole'],
+        'Filière_EGEF': formData['Filière_EGEF'],
+        'Filière_EGAD': formData['Filière_EGAD'],
+        'Ministère': formData['Ministère'],
+        "Lieu d'exercice": formData["Lieu d'exercice"],
+        'Emploi fonction publique': formData['Emploi fonction publique'],
+        'Région': formData['Région'],
+        'WhatsApp': formData['WhatsApp'],
+        'Facebook': formData['Facebook'],
+        'instagram': formData['instagram'],
+        'linkedIn': formData['linkedIn']
+      };
+
       const { error } = await supabase
         .from('members')
-        .update(formData)
+        .update(updateData)
         .eq('id', memberData.id);
 
       if (error) throw error;
