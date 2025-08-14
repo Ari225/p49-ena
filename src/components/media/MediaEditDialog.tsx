@@ -47,14 +47,12 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
   }, [media]);
 
   const categories = [
-    'Événements',
-    'Formation', 
-    'Archives',
-    'Assemblées Générales',
-    'Régionales',
-    'Cérémonies',
-    'Partenariats',
-    'Événements Sociaux'
+    'Évènement social',
+    'Les Régionales',
+    'Réunions',
+    'Assemblée Générale',
+    'Formation',
+    'Autre'
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

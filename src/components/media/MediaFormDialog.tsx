@@ -234,14 +234,12 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   };
 
   const categories = [
-    'Événements',
-    'Formation', 
-    'Archives',
-    'Assemblées Générales',
-    'Régionales',
-    'Cérémonies',
-    'Partenariats',
-    'Événements Sociaux'
+    'Évènement social',
+    'Les Régionales',
+    'Réunions',
+    'Assemblée Générale',
+    'Formation',
+    'Autre'
   ];
 
   return (
