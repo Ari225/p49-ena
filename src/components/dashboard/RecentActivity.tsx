@@ -19,61 +19,185 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
           title: string;
           description: string;
           color: string;
+          timestamp: number;
         }> = [];
 
         // Récupérer les articles récents
-        const {
-          data: articles
-        } = await supabase.from('blog_articles').select('title, created_at').order('created_at', {
-          ascending: false
-        }).limit(2);
+        const { data: articles } = await supabase
+          .from('blog_articles')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(3);
+        
         if (articles) {
           articles.forEach(article => {
             const timeAgo = Math.floor((Date.now() - new Date(article.created_at).getTime()) / (1000 * 60 * 60));
             recentActivities.push({
               title: 'Nouvel article créé',
               description: `Article "${article.title}" créé il y a ${timeAgo}h`,
-              color: 'bg-green-500'
+              color: 'bg-green-500',
+              timestamp: new Date(article.created_at).getTime()
             });
           });
         }
 
-        // Récupérer les nouveaux utilisateurs
-        const {
-          data: users
-        } = await supabase.from('app_users').select('first_name, last_name, created_at').order('created_at', {
-          ascending: false
-        }).limit(2);
+        // Récupérer les nouveaux utilisateurs avec leur rôle
+        const { data: users } = await supabase
+          .from('app_users')
+          .select('first_name, last_name, role, created_at')
+          .order('created_at', { ascending: false })
+          .limit(3);
+        
         if (users) {
           users.forEach(user => {
             const timeAgo = Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60));
+            const roleLabel = user.role === 'admin_principal' ? 'Admin Principal' : 
+                            user.role === 'admin_secondaire' ? 'Admin Secondaire' : 'Rédacteur';
             recentActivities.push({
               title: 'Nouveau membre inscrit',
-              description: `${user.first_name} ${user.last_name} a rejoint il y a ${timeAgo}h`,
-              color: 'bg-blue-500'
+              description: `${user.first_name} ${user.last_name} (${roleLabel}) a rejoint il y a ${timeAgo}h`,
+              color: 'bg-blue-500',
+              timestamp: new Date(user.created_at).getTime()
             });
           });
         }
 
-        // Récupérer les événements récents
-        const {
-          data: events
-        } = await supabase.from('social_events').select('title, created_at').order('created_at', {
-          ascending: false
-        }).limit(1);
-        if (events) {
-          events.forEach(event => {
+        // Récupérer les événements sociaux récents
+        const { data: socialEvents } = await supabase
+          .from('social_events')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+        
+        if (socialEvents) {
+          socialEvents.forEach(event => {
             const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
             recentActivities.push({
-              title: 'Nouvel événement créé',
+              title: 'Nouvel événement social créé',
               description: `Événement "${event.title}" créé il y a ${timeAgo}h`,
-              color: 'bg-purple-500'
+              color: 'bg-purple-500',
+              timestamp: new Date(event.created_at).getTime()
             });
           });
         }
 
-        // Limiter à 3 activités les plus récentes
-        setActivities(recentActivities.slice(0, 3));
+        // Récupérer les actualités récentes
+        const { data: news } = await supabase
+          .from('news')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+        
+        if (news) {
+          news.forEach(newsItem => {
+            const timeAgo = Math.floor((Date.now() - new Date(newsItem.created_at).getTime()) / (1000 * 60 * 60));
+            recentActivities.push({
+              title: 'Nouvelle actualité créée',
+              description: `Actualité "${newsItem.title}" créée il y a ${timeAgo}h`,
+              color: 'bg-orange-500',
+              timestamp: new Date(newsItem.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les médias récents
+        const { data: media } = await supabase
+          .from('media_items')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+        
+        if (media) {
+          media.forEach(mediaItem => {
+            const timeAgo = Math.floor((Date.now() - new Date(mediaItem.created_at).getTime()) / (1000 * 60 * 60));
+            recentActivities.push({
+              title: 'Nouveau média ajouté',
+              description: `Média "${mediaItem.title}" ajouté il y a ${timeAgo}h`,
+              color: 'bg-pink-500',
+              timestamp: new Date(mediaItem.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les éditions de journal récentes
+        const { data: journals } = await supabase
+          .from('journal_editions')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+        
+        if (journals) {
+          journals.forEach(journal => {
+            const timeAgo = Math.floor((Date.now() - new Date(journal.created_at).getTime()) / (1000 * 60 * 60));
+            recentActivities.push({
+              title: 'Nouvelle édition du journal',
+              description: `Journal "${journal.title}" créé il y a ${timeAgo}h`,
+              color: 'bg-indigo-500',
+              timestamp: new Date(journal.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les événements difficiles récents
+        const { data: difficultEvents } = await supabase
+          .from('difficult_events')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        if (difficultEvents) {
+          difficultEvents.forEach(event => {
+            const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
+            recentActivities.push({
+              title: 'Événement difficile ajouté',
+              description: `"${event.title}" ajouté il y a ${timeAgo}h`,
+              color: 'bg-red-500',
+              timestamp: new Date(event.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les événements heureux récents
+        const { data: happyEvents } = await supabase
+          .from('happy_events')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        if (happyEvents) {
+          happyEvents.forEach(event => {
+            const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
+            recentActivities.push({
+              title: 'Événement heureux ajouté',
+              description: `"${event.title}" ajouté il y a ${timeAgo}h`,
+              color: 'bg-yellow-500',
+              timestamp: new Date(event.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les départs à la retraite récents
+        const { data: retirements } = await supabase
+          .from('retirement_departures')
+          .select('member_name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        if (retirements) {
+          retirements.forEach(retirement => {
+            const timeAgo = Math.floor((Date.now() - new Date(retirement.created_at).getTime()) / (1000 * 60 * 60));
+            recentActivities.push({
+              title: 'Départ à la retraite ajouté',
+              description: `Départ de ${retirement.member_name} ajouté il y a ${timeAgo}h`,
+              color: 'bg-gray-500',
+              timestamp: new Date(retirement.created_at).getTime()
+            });
+          });
+        }
+
+        // Trier par timestamp et limiter aux 10 plus récentes
+        recentActivities.sort((a, b) => b.timestamp - a.timestamp);
+        setActivities(recentActivities.slice(0, 10));
       } catch (error) {
         console.error('Erreur lors de la récupération des activités récentes:', error);
         // En cas d'erreur, afficher des données par défaut
