@@ -109,7 +109,7 @@ const MediaPopup: React.FC<MediaPopupProps> = ({
         <DialogHeader className="p-6 pb-0">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-primary text-lg">
-              {mediaItem.category} - {mediaItem.alt}
+              {mediaItem.alt}
               {canNavigate && (
                 <span className="text-sm font-normal text-muted-foreground ml-2">
                   ({currentIndex + 1}/{allMediaItems.length})
@@ -133,8 +133,8 @@ const MediaPopup: React.FC<MediaPopupProps> = ({
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Navigation buttons for desktop */}
-            {canNavigate && !isMobile && !isTablet && (
+            {/* Navigation buttons for all devices */}
+            {canNavigate && (
               <>
                 <button
                   onClick={handlePrevious}
@@ -176,11 +176,6 @@ const MediaPopup: React.FC<MediaPopupProps> = ({
             <span className="inline-block mt-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs">
               {mediaItem.category}
             </span>
-            {(isMobile || isTablet) && canNavigate && (
-              <p className="text-xs text-muted-foreground mt-2">
-                Glissez à gauche ou à droite pour naviguer
-              </p>
-            )}
           </div>
         </div>
       </DialogContent>
