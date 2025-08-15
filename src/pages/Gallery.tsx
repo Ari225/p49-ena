@@ -69,32 +69,27 @@ const Gallery = () => {
     item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Préparer les médias pour le popup
-  useEffect(() => {
-    const allMedia = filteredItems.flatMap((item, itemIndex) => 
-      item.media_urls.map((url, urlIndex) => {
+  // Préparer les médias pour le popup à partir d'un item spécifique
+  const handleMediaClick = (item: MediaItem, mediaIndex: number = 0) => {
+    if (item.media_urls && item.media_urls.length > 0) {
+      // Créer la liste des médias pour ce groupe seulement
+      const mediaGroup = item.media_urls.map((url, index) => {
         const isVideo = url.includes('.mp4') || url.includes('.mov') || url.includes('video');
         return {
-          id: itemIndex * 1000 + urlIndex,
+          id: index,
           src: url,
-          alt: `${item.title} - ${urlIndex + 1}`,
+          alt: `${item.title} - ${index + 1}`,
           category: item.category,
           type: isVideo ? 'video' : 'image',
           thumbnail: isVideo ? url : undefined,
         };
-      })
-    );
-    setAllMediaForPopup(allMedia);
-  }, [filteredItems]);
+      });
 
-  const handleMediaClick = (item: MediaItem, mediaIndex: number = 0) => {
-    const itemIndex = filteredItems.findIndex(filteredItem => filteredItem.id === item.id);
-    const absoluteIndex = filteredItems.slice(0, itemIndex).reduce((acc, curr) => acc + curr.media_urls.length, 0) + mediaIndex;
-    
-    setCurrentIndex(absoluteIndex);
-    const selectedMediaItem = allMediaForPopup[absoluteIndex];
-    setSelectedMedia(selectedMediaItem);
-    setIsPopupOpen(true);
+      setCurrentIndex(mediaIndex); // Commencer au média cliqué
+      setSelectedMedia(mediaGroup[mediaIndex]);
+      setAllMediaForPopup(mediaGroup);
+      setIsPopupOpen(true);
+    }
   };
 
   const handleClosePopup = () => {

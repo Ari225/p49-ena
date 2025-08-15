@@ -31,10 +31,12 @@ interface GalleryItem {
 const GallerySection = () => {
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
-  const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<any>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [originalMediaItems, setOriginalMediaItems] = useState<MediaItem[]>([]);
+  const [allMediaForPopup, setAllMediaForPopup] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchMediaItems = async () => {
@@ -70,6 +72,7 @@ const GallerySection = () => {
       });
 
       console.log('Transformed items:', transformedItems);
+      setOriginalMediaItems(data || []); // Sauvegarder les données originales
       setGalleryItems(transformedItems);
     } catch (error) {
       console.error('Error fetching media items:', error);
@@ -84,10 +87,31 @@ const GallerySection = () => {
   }, []);
 
   const handleMediaClick = (item: GalleryItem) => {
-    const index = galleryItems.findIndex(galleryItem => galleryItem.id === item.id);
-    setCurrentIndex(index);
-    setSelectedMedia(item);
-    setIsPopupOpen(true);
+    // Trouver l'item original avec tous ses médias
+    const originalItem = originalMediaItems.find(mediaItem => {
+      const firstUrl = mediaItem.media_urls[0] || '';
+      return firstUrl === item.src;
+    });
+
+    if (originalItem && originalItem.media_urls) {
+      // Créer la liste des médias pour ce groupe seulement
+      const mediaGroup = originalItem.media_urls.map((url, index) => {
+        const isVideo = url.includes('.mp4') || url.includes('.mov') || url.includes('video');
+        return {
+          id: index,
+          src: url,
+          alt: `${originalItem.title} - ${index + 1}`,
+          category: originalItem.category,
+          type: isVideo ? 'video' : 'image',
+          thumbnail: isVideo ? url : undefined,
+        };
+      });
+
+      setCurrentIndex(0); // Toujours commencer au premier média du groupe
+      setSelectedMedia(mediaGroup[0]);
+      setAllMediaForPopup(mediaGroup);
+      setIsPopupOpen(true);
+    }
   };
 
   const handleClosePopup = () => {
@@ -97,7 +121,7 @@ const GallerySection = () => {
 
   const handleNavigate = (index: number) => {
     setCurrentIndex(index);
-    setSelectedMedia(galleryItems[index]);
+    setSelectedMedia(allMediaForPopup[index]);
   };
 
   if (loading) {
@@ -237,7 +261,7 @@ const GallerySection = () => {
         isOpen={isPopupOpen}
         onClose={handleClosePopup}
         mediaItem={selectedMedia}
-        allMediaItems={galleryItems}
+        allMediaItems={allMediaForPopup}
         currentIndex={currentIndex}
         onNavigate={handleNavigate}
       />
