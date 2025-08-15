@@ -5,11 +5,12 @@ import Layout from '@/components/Layout';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Calendar, Eye, Search } from 'lucide-react';
+import { Calendar, Eye, Search, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSupabase } from '@/context/SupabaseContext';
 import SupabaseConnectionTest from '@/components/SupabaseConnectionTest';
 import LoginTest from '@/components/LoginTest';
+import MediaPopup from '@/components/MediaPopup';
 
 interface MediaItem {
   id: string;
@@ -28,6 +29,10 @@ const Gallery = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedMedia, setSelectedMedia] = useState<any>(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [allMediaForPopup, setAllMediaForPopup] = useState<any[]>([]);
 
   // Fetch media items from Supabase
   const fetchMediaItems = async () => {
@@ -63,6 +68,44 @@ const Gallery = () => {
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Préparer les médias pour le popup
+  useEffect(() => {
+    const allMedia = filteredItems.flatMap((item, itemIndex) => 
+      item.media_urls.map((url, urlIndex) => {
+        const isVideo = url.includes('.mp4') || url.includes('.mov') || url.includes('video');
+        return {
+          id: itemIndex * 1000 + urlIndex,
+          src: url,
+          alt: `${item.title} - ${urlIndex + 1}`,
+          category: item.category,
+          type: isVideo ? 'video' : 'image',
+          thumbnail: isVideo ? url : undefined,
+        };
+      })
+    );
+    setAllMediaForPopup(allMedia);
+  }, [filteredItems]);
+
+  const handleMediaClick = (item: MediaItem, mediaIndex: number = 0) => {
+    const itemIndex = filteredItems.findIndex(filteredItem => filteredItem.id === item.id);
+    const absoluteIndex = filteredItems.slice(0, itemIndex).reduce((acc, curr) => acc + curr.media_urls.length, 0) + mediaIndex;
+    
+    setCurrentIndex(absoluteIndex);
+    const selectedMediaItem = allMediaForPopup[absoluteIndex];
+    setSelectedMedia(selectedMediaItem);
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedMedia(null);
+  };
+
+  const handleNavigate = (index: number) => {
+    setCurrentIndex(index);
+    setSelectedMedia(allMediaForPopup[index]);
+  };
 
   const formatDate = (dateString: string) => {
     try {
@@ -170,7 +213,7 @@ const Gallery = () => {
                     <Card 
                       key={item.id} 
                       className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white/90 backdrop-blur-sm"
-                      onClick={() => navigate(`/media/${item.id}`)}
+                      onClick={() => handleMediaClick(item, 0)}
                     >
                       <div className="relative aspect-video overflow-hidden">
                         <img 
@@ -221,6 +264,15 @@ const Gallery = () => {
           </div>
         </section>
       </div>
+      
+      <MediaPopup 
+        isOpen={isPopupOpen}
+        onClose={handleClosePopup}
+        mediaItem={selectedMedia}
+        allMediaItems={allMediaForPopup}
+        currentIndex={currentIndex}
+        onNavigate={handleNavigate}
+      />
     </Layout>
   );
 };

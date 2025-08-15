@@ -33,6 +33,7 @@ const GallerySection = () => {
   const isTab = useIsTablet();
   const [selectedMedia, setSelectedMedia] = useState<GalleryItem | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -83,6 +84,8 @@ const GallerySection = () => {
   }, []);
 
   const handleMediaClick = (item: GalleryItem) => {
+    const index = galleryItems.findIndex(galleryItem => galleryItem.id === item.id);
+    setCurrentIndex(index);
     setSelectedMedia(item);
     setIsPopupOpen(true);
   };
@@ -90,6 +93,11 @@ const GallerySection = () => {
   const handleClosePopup = () => {
     setIsPopupOpen(false);
     setSelectedMedia(null);
+  };
+
+  const handleNavigate = (index: number) => {
+    setCurrentIndex(index);
+    setSelectedMedia(galleryItems[index]);
   };
 
   if (loading) {
@@ -229,6 +237,9 @@ const GallerySection = () => {
         isOpen={isPopupOpen}
         onClose={handleClosePopup}
         mediaItem={selectedMedia}
+        allMediaItems={galleryItems}
+        currentIndex={currentIndex}
+        onNavigate={handleNavigate}
       />
     </section>
   );
