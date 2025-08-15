@@ -150,15 +150,14 @@ const DashboardMediatheque = () => {
               <div className="text-gray-500">Chargement des médias...</div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {mediaItems.map((media) => (
-                <div key={media.id} className="min-w-0">
-                  <MediaCard
-                    media={media}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                  />
-                </div>
+                <MediaCard
+                  key={media.id}
+                  media={media}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
               {mediaItems.length === 0 && (
                 <div className="col-span-2 text-center py-8 text-gray-500">
@@ -200,15 +199,14 @@ const DashboardMediatheque = () => {
               <div className="text-gray-500">Chargement des médias...</div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {mediaItems.map((media) => (
-                <div key={media.id} className="min-w-0">
-                  <MediaCard
-                    media={media}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                  />
-                </div>
+                <MediaCard
+                  key={media.id}
+                  media={media}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               ))}
               {mediaItems.length === 0 && (
                 <div className="col-span-2 text-center py-8 text-gray-500">

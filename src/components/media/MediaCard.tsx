@@ -65,63 +65,92 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
     }
   };
 
+  // Première image pour l'aperçu
+  const previewImage = media.media_urls.find(url => 
+    url.includes('.jpg') || url.includes('.jpeg') || url.includes('.png') || url.includes('.webp')
+  );
+
   return (
-    <Card className="h-full hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
-      <CardHeader className="pb-2 p-3">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <div className="flex items-center space-x-2 min-w-0 flex-1">
+    <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-500 bg-background/50 backdrop-blur-sm">
+      {/* Aperçu Image */}
+      {previewImage && (
+        <div className="relative h-48 overflow-hidden">
+          <img 
+            src={previewImage} 
+            alt={media.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute top-3 left-3 flex gap-2">
             {getMediaIcon()}
-            <Badge className={`text-xs flex-shrink-0`}>
-              {media.media_urls.length} média{media.media_urls.length > 1 ? 's' : ''}
+            <Badge variant="secondary" className="bg-background/90 text-foreground text-xs backdrop-blur-sm">
+              {media.media_urls.length} fichier{media.media_urls.length > 1 ? 's' : ''}
             </Badge>
           </div>
-          <Badge variant="outline" className={`text-xs flex-shrink-0 ${getCategoryColor(media.category)}`}>
+          <Badge 
+            variant="outline" 
+            className="absolute top-3 right-3 bg-background/90 backdrop-blur-sm border-0 text-xs"
+          >
             {media.category}
           </Badge>
         </div>
-        <CardTitle className="text-sm text-primary line-clamp-2 leading-tight">
-          {media.title}
-        </CardTitle>
-      </CardHeader>
+      )}
       
-      <CardContent className="pt-0 p-3 flex flex-col h-full">
-        <p className="text-gray-600 text-xs mb-3 flex-1 line-clamp-2 leading-relaxed">
-          {media.description}
-        </p>
-        
-        <div className="space-y-2 mt-auto">
-          <div className="flex items-center text-xs text-gray-500">
-            <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
-            <span className="truncate">
-              {formatDate(media.date)}
-            </span>
+      {/* Si pas d'image, affichage simple */}
+      {!previewImage && (
+        <div className="h-32 bg-muted/30 flex items-center justify-center relative">
+          <div className="flex flex-col items-center gap-2 text-muted-foreground">
+            {getMediaIcon()}
+            <span className="text-sm font-medium">{media.media_urls.length} fichier{media.media_urls.length > 1 ? 's' : ''}</span>
+          </div>
+          <Badge 
+            variant="outline" 
+            className="absolute top-3 right-3 bg-background/90 backdrop-blur-sm border-0 text-xs"
+          >
+            {media.category}
+          </Badge>
+        </div>
+      )}
+      
+      <CardContent className="p-4">
+        <div className="space-y-3">
+          <div>
+            <h3 className="font-semibold text-foreground line-clamp-2 leading-tight mb-1">
+              {media.title}
+            </h3>
+            <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+              {media.description}
+            </p>
           </div>
           
-          <div className="flex gap-1 pt-2 border-t">
-            {onEdit && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onEdit(media)}
-                className="flex-1 text-xs h-7 px-2"
-              >
-                <Edit className="h-3 w-3 mr-1" />
-                <span className="hidden sm:inline">Modifier</span>
-                <span className="sm:hidden">Mod.</span>
-              </Button>
-            )}
-            {onDelete && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="flex-1 text-red-600 hover:text-red-700 text-xs h-7 px-2"
-                onClick={() => onDelete(media.id)}
-              >
-                <Trash2 className="h-3 w-3 mr-1" />
-                <span className="hidden sm:inline">Supprimer</span>
-                <span className="sm:hidden">Sup.</span>
-              </Button>
-            )}
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center text-xs text-muted-foreground">
+              <Calendar className="w-3 h-3 mr-1" />
+              <span>{formatDate(media.date)}</span>
+            </div>
+            
+            <div className="flex gap-1">
+              {onEdit && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => onEdit(media)}
+                  className="h-8 px-2 text-muted-foreground hover:text-primary"
+                >
+                  <Edit className="h-3 w-3" />
+                </Button>
+              )}
+              {onDelete && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-8 px-2 text-muted-foreground hover:text-destructive"
+                  onClick={() => onDelete(media.id)}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
