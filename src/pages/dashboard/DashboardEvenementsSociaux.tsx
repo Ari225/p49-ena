@@ -222,13 +222,58 @@ const DashboardEvenementsSociaux = () => {
   };
 
   const handleEditEvent = (event: SocialEvent) => {
-    // TODO: Implement edit functionality
-    console.log('Edit event:', event);
+    setEditingEvent(event);
+    setFormData({
+      eventType: event.eventType,
+      category: event.category,
+      customCategory: event.category,
+      title: event.title,
+      memberName: event.memberName,
+      date: event.date,
+      location: event.location || '',
+      description: event.description,
+      thought: event.thought,
+      image: null,
+      yearsOfService: event.yearsOfService || ''
+    });
+    setShowForm(true);
   };
 
-  const handleDeleteEvent = (event: SocialEvent) => {
-    // TODO: Implement delete functionality
-    console.log('Delete event:', event);
+  const handleDeleteEvent = async (event: SocialEvent) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
+      return;
+    }
+
+    try {
+      let result;
+
+      if (event.eventType === 'Heureux') {
+        result = await supabase
+          .from('happy_events')
+          .delete()
+          .eq('id', event.id);
+      } else if (event.eventType === 'Retraite') {
+        result = await supabase
+          .from('retirement_departures')
+          .delete()
+          .eq('id', event.id);
+      } else if (event.eventType === 'Malheureux') {
+        result = await supabase
+          .from('difficult_events')
+          .delete()
+          .eq('id', event.id);
+      }
+
+      const { error } = result || { error: new Error('Type d\'événement non reconnu') };
+
+      if (error) throw error;
+
+      toast.success('Événement supprimé avec succès');
+      fetchAllEvents(); // Refresh the events list
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      toast.error('Erreur lors de la suppression de l\'événement');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -253,7 +298,7 @@ const DashboardEvenementsSociaux = () => {
         formData.date.split('/').reverse().join('-') : 
         formData.date);
 
-      let imageUrl = null;
+      let imageUrl = editingEvent?.image || null;
 
       // Upload image if provided
       if (formData.image) {
@@ -277,10 +322,11 @@ const DashboardEvenementsSociaux = () => {
       }
 
       let result;
+      const isEditing = editingEvent !== null;
       
       // Determine table and additional fields based on event type
       if (formData.eventType === 'Heureux') {
-        const insertData = {
+        const eventData = {
           title: formData.title,
           member_name: formData.memberName,
           event_date: eventDate.toISOString().split('T')[0],
@@ -290,15 +336,22 @@ const DashboardEvenementsSociaux = () => {
           category: formData.category === 'autre' ? formData.customCategory : formData.category,
           custom_category: formData.category === 'autre' ? formData.customCategory : null,
           image_url: imageUrl,
-          created_by: user?.id
+          ...(isEditing ? {} : { created_by: user?.id })
         };
         
-        result = await supabase
-          .from('happy_events')
-          .insert(insertData);
+        if (isEditing) {
+          result = await supabase
+            .from('happy_events')
+            .update(eventData)
+            .eq('id', editingEvent.id);
+        } else {
+          result = await supabase
+            .from('happy_events')
+            .insert(eventData);
+        }
           
       } else if (formData.eventType === 'Retraite') {
-        const insertData: any = {
+        const eventData: any = {
           member_name: formData.memberName,
           retirement_date: eventDate.toISOString().split('T')[0],
           tribute_message: formData.thought,
@@ -307,19 +360,26 @@ const DashboardEvenementsSociaux = () => {
           category: 'retraite',
           custom_category: null,
           image_url: imageUrl,
-          created_by: user?.id
+          ...(isEditing ? {} : { created_by: user?.id })
         };
         
         if (formData.yearsOfService) {
-          insertData.years_of_service = parseInt(formData.yearsOfService);
+          eventData.years_of_service = parseInt(formData.yearsOfService);
         }
         
-        result = await supabase
-          .from('retirement_departures')
-          .insert(insertData);
+        if (isEditing) {
+          result = await supabase
+            .from('retirement_departures')
+            .update(eventData)
+            .eq('id', editingEvent.id);
+        } else {
+          result = await supabase
+            .from('retirement_departures')
+            .insert(eventData);
+        }
           
       } else if (formData.eventType === 'Malheureux') {
-        const insertData = {
+        const eventData = {
           title: formData.title,
           member_name: formData.memberName,
           event_date: eventDate.toISOString().split('T')[0],
@@ -328,20 +388,28 @@ const DashboardEvenementsSociaux = () => {
           category: formData.category === 'autre' ? formData.customCategory : formData.category,
           custom_category: formData.category === 'autre' ? formData.customCategory : null,
           image_url: imageUrl,
-          created_by: user?.id
+          ...(isEditing ? {} : { created_by: user?.id })
         };
         
-        result = await supabase
-          .from('difficult_events')
-          .insert(insertData);
+        if (isEditing) {
+          result = await supabase
+            .from('difficult_events')
+            .update(eventData)
+            .eq('id', editingEvent.id);
+        } else {
+          result = await supabase
+            .from('difficult_events')
+            .insert(eventData);
+        }
       }
 
       const { data, error } = result || { data: null, error: new Error('Type d\'événement non reconnu') };
 
       if (error) throw error;
 
-      toast.success('Événement ajouté avec succès');
+      toast.success(isEditing ? 'Événement modifié avec succès' : 'Événement ajouté avec succès');
       setShowForm(false);
+      setEditingEvent(null);
       
       // Reset form
       setFormData({
@@ -362,7 +430,7 @@ const DashboardEvenementsSociaux = () => {
       fetchAllEvents();
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Erreur lors de l\'ajout de l\'événement');
+      toast.error(editingEvent ? 'Erreur lors de la modification de l\'événement' : 'Erreur lors de l\'ajout de l\'événement');
     }
   };
 
@@ -400,12 +468,14 @@ const DashboardEvenementsSociaux = () => {
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-primary">Ajouter un événement</DialogTitle>
+                  <DialogTitle className="text-primary">
+                    {editingEvent ? 'Modifier l\'événement' : 'Ajouter un événement'}
+                  </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Type d'événement *</label>
-                    <Select onValueChange={(value) => handleSelectChange('eventType', value)} required>
+                    <Select onValueChange={(value) => handleSelectChange('eventType', value)} value={formData.eventType} required>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Sélectionner un type" />
                       </SelectTrigger>
@@ -421,7 +491,7 @@ const DashboardEvenementsSociaux = () => {
 
                   <div>
                     <label className="block text-sm font-medium mb-2">Catégorie *</label>
-                    <Select onValueChange={(value) => handleSelectChange('category', value)} required>
+                    <Select onValueChange={(value) => handleSelectChange('category', value)} value={formData.category} required>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Sélectionner une catégorie" />
                       </SelectTrigger>
@@ -536,11 +606,27 @@ const DashboardEvenementsSociaux = () => {
                   )}
 
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => setShowForm(false)}>
+                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => {
+                      setShowForm(false);
+                      setEditingEvent(null);
+                      setFormData({
+                        eventType: '',
+                        category: '',
+                        customCategory: '',
+                        title: '',
+                        memberName: '',
+                        date: '',
+                        location: '',
+                        description: '',
+                        thought: '',
+                        image: null,
+                        yearsOfService: ''
+                      });
+                    }}>
                       Annuler
                     </Button>
                     <Button type="submit">
-                      Ajouter
+                      {editingEvent ? 'Modifier' : 'Ajouter'}
                     </Button>
                   </div>
                 </form>
@@ -690,13 +776,15 @@ const DashboardEvenementsSociaux = () => {
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-primary text-xl">Ajouter un événement</DialogTitle>
+                  <DialogTitle className="text-primary text-xl">
+                    {editingEvent ? 'Modifier l\'événement' : 'Ajouter un événement'}
+                  </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Type d'événement *</label>
-                      <Select onValueChange={(value) => handleSelectChange('eventType', value)} required>
+                      <Select onValueChange={(value) => handleSelectChange('eventType', value)} value={formData.eventType} required>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Sélectionner un type" />
                         </SelectTrigger>
@@ -712,7 +800,7 @@ const DashboardEvenementsSociaux = () => {
 
                     <div>
                       <label className="block text-sm font-medium mb-2">Catégorie *</label>
-                      <Select onValueChange={(value) => handleSelectChange('category', value)} required>
+                      <Select onValueChange={(value) => handleSelectChange('category', value)} value={formData.category} required>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Sélectionner une catégorie" />
                         </SelectTrigger>
@@ -830,11 +918,27 @@ const DashboardEvenementsSociaux = () => {
                   )}
 
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => setShowForm(false)}>
+                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => {
+                      setShowForm(false);
+                      setEditingEvent(null);
+                      setFormData({
+                        eventType: '',
+                        category: '',
+                        customCategory: '',
+                        title: '',
+                        memberName: '',
+                        date: '',
+                        location: '',
+                        description: '',
+                        thought: '',
+                        image: null,
+                        yearsOfService: ''
+                      });
+                    }}>
                       Annuler
                     </Button>
                     <Button type="submit">
-                      Ajouter
+                      {editingEvent ? 'Modifier' : 'Ajouter'}
                     </Button>
                   </div>
                 </form>
