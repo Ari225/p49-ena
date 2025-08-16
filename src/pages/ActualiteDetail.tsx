@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
+import { formatContent } from '@/utils/contentSecurity';
 
 const ActualiteDetail = () => {
   const { id } = useParams();
@@ -188,11 +189,7 @@ const ActualiteDetail = () => {
                       lineHeight: '1.8',
                     }}
                     dangerouslySetInnerHTML={{ 
-                      __html: actualite.content
-                        .replace(/\n/g, '<br/>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                        .replace(/__(.*?)__/g, '<u>$1</u>')
+                      __html: formatContent(actualite.content)
                     }}
                   />
                 ) : (

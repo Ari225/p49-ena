@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { hashPassword } from '@/utils/passwordUtils';
+import { hashPassword, validatePasswordStrength } from '@/utils/passwordUtils';
 import { isAdminPrincipal } from '@/utils/roleUtils';
 import { AppUser, AuthUser } from '@/types/user';
 
@@ -110,6 +110,26 @@ const UserEditDialog: React.FC<UserEditDialogProps> = ({
         return;
       }
 
+      // Validation de la force du mot de passe si fourni
+      if (formData.password && canChangePassword()) {
+        const validation = validatePasswordStrength(formData.password);
+        if (!validation.isValid) {
+          toast.error(`Mot de passe faible: ${validation.errors.join(', ')}`);
+          setLoading(false);
+          return;
+        }
+
+        // Validation côté serveur
+        const { data: isValid, error: validationError } = await supabase
+          .rpc('validate_password_strength', { password: formData.password });
+
+        if (validationError || !isValid) {
+          toast.error('Le mot de passe ne respecte pas les critères de sécurité requis');
+          setLoading(false);
+          return;
+        }
+      }
+
       const updateData: any = {
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -129,6 +149,16 @@ const UserEditDialog: React.FC<UserEditDialogProps> = ({
         .eq('id', user.id);
 
       if (error) throw error;
+
+      // Log de l'événement de sécurité
+      await supabase.rpc('log_security_event', {
+        event_type: 'user_updated',
+        details: { 
+          target_user_id: user.id, 
+          updated_by: currentUser?.id,
+          password_changed: !!formData.password 
+        }
+      });
 
       const updatedUser: AppUser = {
         ...user,
