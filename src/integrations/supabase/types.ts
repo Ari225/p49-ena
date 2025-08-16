@@ -706,9 +706,26 @@ export type Database = {
         }
         Returns: number
       }
+      test_user_rls_policies: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          message: string
+          result: string
+          test_name: string
+        }[]
+      }
       validate_password_strength: {
         Args: { password: string }
         Returns: boolean
+      }
+      validate_user_security: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          details: string
+          recommendation: string
+          security_check: string
+          status: string
+        }[]
       }
     }
     Enums: {
