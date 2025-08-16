@@ -700,15 +700,14 @@ export type Database = {
         }[]
       }
       get_secure_user_info: {
-        Args: { target_user_id?: string }
+        Args: { target_user_id: string }
         Returns: {
-          created_at: string
           email: string
           first_name: string
           id: string
           image_url: string
           last_name: string
-          role: Database["public"]["Enums"]["user_role"]
+          role: string
           username: string
         }[]
       }
