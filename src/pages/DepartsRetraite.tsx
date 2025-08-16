@@ -1,64 +1,94 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, MapPin, Users, Heart, Clock, Trophy } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
+
 const DepartsRetraite = () => {
   const isMobile = useIsMobile();
-  const retraiteEvents = [{
-    id: '1',
-    eventType: 'Retraite',
-    category: 'Retraite',
-    title: 'Départ en retraite de M. Jean Koffi',
-    memberName: 'M. Jean Koffi',
-    yearsOfService: '35 ans de service',
-    date: '2024-02-01',
-    location: 'Bouaké',
-    description: 'Après 35 années de service dévoué au sein de l\'administration, M. Jean Koffi prend une retraite bien méritée.',
-    thought: 'Nous lui souhaitons une retraite heureuse et épanouie ! Merci pour tout ce que vous avez apporté.',
-    keyword: 'Retraite',
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-  }, {
-    id: '2',
-    eventType: 'Retraite',
-    category: 'Retraite',
-    title: 'Départ en retraite de Mme Adjoua Koffi',
-    memberName: 'Mme Adjoua Koffi',
-    yearsOfService: '30 ans de service',
-    date: '2024-01-20',
-    location: 'Abidjan',
-    description: 'Mme Adjoua Koffi termine sa carrière après 30 années d\'excellence dans ses fonctions.',
-    thought: 'Votre dévouement restera gravé dans nos mémoires. Profitez pleinement de cette nouvelle étape !',
-    keyword: 'Retraite',
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-  }, {
-    id: '3',
-    eventType: 'Retraite',
-    category: 'Retraite',
-    title: 'Départ en retraite de M.Konan Yao',
-    memberName: 'M. Konan Yao',
-    yearsOfService: '40 ans de service',
-    date: '2024-03-15',
-    location: 'Yamoussoukro',
-    description: 'Après 4 décennies de service exemplaire, M. Konan Yao entame sa retraite.',
-    thought: 'Quarante années de dévouement ! Vous avez marqué l\'histoire de notre institution.',
-    keyword: 'Retraite',
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-  }, {
-    id: '4',
-    eventType: 'Retraite',
-    category: 'Retraite',
-    title: 'Départ en retraite de Mme Fatou Traoré',
-    memberName: 'Mme Fatou Traoré',
-    yearsOfService: '28 ans de service',
-    date: '2024-02-28',
-    location: 'San-Pédro',
-    description: 'Mme Fatou Traoré clôture brillamment sa carrière après 28 années de loyaux services.',
-    thought: 'Votre sourire et votre professionnalisme vont nous manquer. Belle retraite !',
-    keyword: 'Retraite',
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-  }];
-  return <Layout>
+  const [retraiteEvents, setRetraiteEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    total: 0,
+    averageYears: 0,
+    totalYears: 0
+  });
+
+  useEffect(() => {
+    // Fetch initial data
+    const fetchRetirementEvents = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('retirement_departures')
+          .select('*')
+          .order('retirement_date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching retirement events:', error);
+        } else {
+          setRetraiteEvents(data || []);
+          
+          // Calculate stats
+          if (data && data.length > 0) {
+            const total = data.length;
+            const totalYears = data.reduce((sum, event) => sum + (event.years_of_service || 0), 0);
+            const averageYears = totalYears / total;
+            
+            setStats({
+              total,
+              averageYears: Math.round(averageYears),
+              totalYears
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRetirementEvents();
+
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('retirement_departures_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'retirement_departures'
+        },
+        (payload) => {
+          console.log('Retirement event change:', payload);
+          fetchRetirementEvents(); // Refetch data on any change
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const formatYearsOfService = (years) => {
+    return years ? `${years} ans de service` : 'Non spécifié';
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="bg-white min-h-screen flex items-center justify-center">
+          <div className="text-lg">Chargement des événements de retraite...</div>
+        </div>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
@@ -68,7 +98,6 @@ const DepartsRetraite = () => {
           </div>
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            
             <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
               Départs en Retraite
             </h1>
@@ -88,55 +117,70 @@ const DepartsRetraite = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {retraiteEvents.map(event => <Card key={event.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-blue-500 bg-blue-50">
-                  <div className="aspect-video overflow-hidden">
-                    <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                  </div>
-                  <CardHeader>
-                    <CardTitle className={`text-blue-800 ${isMobile ? 'text-base' : 'text-xl'} flex items-center`}>
-                      <Trophy className="w-5 h-5 mr-2" />
-                      {event.title}
-                    </CardTitle>
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        {new Date(event.date).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+            {retraiteEvents.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">Aucun événement de retraite enregistré pour le moment.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {retraiteEvents.map(event => (
+                  <Card key={event.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-blue-500 bg-blue-50">
+                    {event.image_url && (
+                      <div className="aspect-video overflow-hidden">
+                        <img src={event.image_url} alt={`Départ en retraite de ${event.member_name}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                       </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        {event.location}
+                    )}
+                    <CardHeader>
+                      <CardTitle className={`text-blue-800 ${isMobile ? 'text-base' : 'text-xl'} flex items-center`}>
+                        <Trophy className="w-5 h-5 mr-2" />
+                        Départ en retraite de {event.member_name}
+                      </CardTitle>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          {new Date(event.retirement_date).toLocaleDateString('fr-FR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </div>
+                        {event.department && (
+                          <div className="flex items-center">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            {event.department}
+                          </div>
+                        )}
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2" />
+                          {event.member_name}
+                        </div>
+                        <div className="flex items-center">
+                          <Clock className="w-4 h-4 mr-2" />
+                          {formatYearsOfService(event.years_of_service)}
+                        </div>
                       </div>
-                      <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-2" />
-                        {event.memberName}
+                    </CardHeader>
+                    <CardContent>
+                      {event.tribute_message && (
+                        <div className="bg-blue-100 p-3 rounded-lg border-l-2 border-blue-300 mb-4">
+                          <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-800 italic`}>
+                            <Heart className="h-3 w-3 inline mr-1" />
+                            {event.tribute_message}
+                          </p>
+                        </div>
+                      )}
+                      <div className="space-y-2">
+                        <p className="text-sm"><strong>Catégorie:</strong> {event.category || 'Retraite'}</p>
+                        {event.position && (
+                          <p className="text-sm"><strong>Fonction:</strong> {event.position}</p>
+                        )}
+                        <p className="text-sm"><strong>Années de service:</strong> {formatYearsOfService(event.years_of_service)}</p>
                       </div>
-                      <div className="flex items-center">
-                        <Clock className="w-4 h-4 mr-2" />
-                        {event.yearsOfService}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3 text-left`}>{event.description}</p>
-                    <div className="space-y-2 mb-4">
-                      <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                      <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
-                      <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
-                    </div>
-                    <div className="bg-blue-100 p-3 rounded-lg border-l-2 border-blue-300">
-                      <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-800 italic`}>
-                        <Heart className="h-3 w-3 inline mr-1" />
-                        {event.thought}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>)}
-            </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -149,23 +193,25 @@ const DepartsRetraite = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center p-6 bg-white">
                 <Trophy className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>15</h3>
-                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Départs cette année</p>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>{stats.total}</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Départs enregistrés</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Clock className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>32 ans</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>{stats.averageYears} ans</h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Moyenne d'années de service</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Users className="w-12 h-12 mx-auto mb-4 text-blue-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>450+</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>{stats.totalYears}</h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Années cumulées d'expérience</p>
               </Card>
             </div>
           </div>
         </section>
       </div>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default DepartsRetraite;
