@@ -618,6 +618,14 @@ export type Database = {
           username: string
         }[]
       }
+      confirm_security_lockdown: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          security_metric: string
+          status: string
+          threat_level: string
+        }[]
+      }
       final_security_check: {
         Args: Record<PropertyKey, never>
         Returns: {
