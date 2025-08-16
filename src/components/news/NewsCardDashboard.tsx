@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, Eye, Edit, User } from 'lucide-react';
+import { Calendar, Clock, Eye, EyeOff, Edit, Trash2 } from 'lucide-react';
 
 interface NewsItem {
   id: string;
@@ -12,20 +12,24 @@ interface NewsItem {
   published_date: string;
   image_url?: string;
   reading_time?: number;
-  published_by?: string;
   details?: string;
+  is_visible?: boolean;
 }
 
 interface NewsCardDashboardProps {
   item: NewsItem;
   variant?: 'mobile' | 'tablet' | 'desktop';
   onEdit?: () => void;
+  onDelete?: () => void;
+  onToggleVisibility?: () => void;
 }
 
 const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
   item,
   variant = 'mobile',
-  onEdit
+  onEdit,
+  onDelete,
+  onToggleVisibility
 }) => {
   const getImageUrl = () => {
     return item.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg';
@@ -47,8 +51,12 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
           </span>
         </div>
         <div className="absolute top-4 right-4">
-          <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
-            Publié
+          <span className={`px-2 py-1 rounded text-xs font-medium ${
+            item.is_visible 
+              ? 'bg-green-100 text-green-800' 
+              : 'bg-red-100 text-red-800'
+          }`}>
+            {item.is_visible ? 'Publié' : 'Masqué'}
           </span>
         </div>
       </div>
@@ -62,12 +70,6 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
             <Clock className={`${variant === 'mobile' ? 'h-4 w-4 mr-1' : 'h-3 w-3 mr-1'}`} />
             <span>{item.reading_time || 3} min</span>
           </div>
-          {item.published_by && (
-            <div className="flex items-center">
-              <User className={`${variant === 'mobile' ? 'h-4 w-4 mr-1' : 'h-3 w-3 mr-1'}`} />
-              <span className="truncate max-w-20">{item.published_by}</span>
-            </div>
-          )}
         </div>
         <h3 className={`font-semibold text-primary leading-tight line-clamp-2 mb-3 ${
           variant === 'mobile' ? 'text-base' : 
@@ -75,30 +77,64 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
         }`}>
           {item.title}
         </h3>
+        <p className={`text-gray-600 mb-2 font-medium ${
+          variant === 'mobile' ? 'text-xs' : 'text-sm'
+        }`}>
+          Résumé de l'actualité
+        </p>
         <p className={`text-gray-700 line-clamp-3 leading-relaxed mb-4 ${
           variant === 'mobile' ? 'text-xs' : 
           variant === 'tablet' ? 'text-sm' : 'text-sm'
         }`}>
           {item.summary}
         </p>
-        <div className={`flex ${variant === 'mobile' ? 'flex-col space-y-2' : 'items-center justify-between'}`}>
-          <div className={`flex ${variant === 'mobile' ? 'space-x-2' : 'space-x-2'}`}>
-            <Button variant="outline" size="sm" className={`${variant === 'mobile' ? 'flex-1' : ''} text-primary hover:text-white hover:bg-primary transition-all duration-300`}>
-              <Eye className="h-4 w-4 mr-2" />
-              Voir
+        <div className={`flex ${variant === 'mobile' ? 'flex-col space-y-2' : 'flex-wrap gap-2'}`}>
+          {onToggleVisibility && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className={`${variant === 'mobile' ? 'w-full' : ''} ${
+                item.is_visible 
+                  ? 'text-orange-600 hover:text-white hover:bg-orange-600' 
+                  : 'text-green-600 hover:text-white hover:bg-green-600'
+              } transition-all duration-300`}
+              onClick={onToggleVisibility}
+            >
+              {item.is_visible ? (
+                <>
+                  <EyeOff className="h-4 w-4 mr-2" />
+                  Masquer
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4 mr-2" />
+                  Publier
+                </>
+              )}
             </Button>
-            {onEdit && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className={`${variant === 'mobile' ? 'flex-1' : ''} text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-300`}
-                onClick={onEdit}
-              >
-                <Edit className="h-4 w-4 mr-2" />
-                Modifier
-              </Button>
-            )}
-          </div>
+          )}
+          {onEdit && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className={`${variant === 'mobile' ? 'w-full' : ''} text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-300`}
+              onClick={onEdit}
+            >
+              <Edit className="h-4 w-4 mr-2" />
+              Modifier
+            </Button>
+          )}
+          {onDelete && (
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className={`${variant === 'mobile' ? 'w-full' : ''} text-red-600 hover:text-white hover:bg-red-600 transition-all duration-300`}
+              onClick={onDelete}
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Supprimer
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

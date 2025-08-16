@@ -5,11 +5,13 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye, Calendar, Clock, User } from 'lucide-react';
+import { FileText, Plus } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import NewsFormDialog from '@/components/news/NewsFormDialog';
 import NewsCardDashboard from '@/components/news/NewsCardDashboard';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
 
 interface NewsItem {
   id: string;
@@ -19,8 +21,9 @@ interface NewsItem {
   published_date: string;
   image_url?: string;
   reading_time?: number;
-  published_by?: string;
   details?: string;
+  is_visible?: boolean;
+  created_by?: string;
 }
 
 const DashboardNews = () => {
@@ -40,32 +43,31 @@ const DashboardNews = () => {
   }, []);
 
   const fetchNews = async () => {
-    // Mock data instead of Supabase
-    const mockNews: NewsItem[] = [
-      {
-        id: '1',
-        title: 'Nouvelle formation en leadership',
-        summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
-        category: 'Formation',
-        published_date: '2024-01-15',
-        image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-        reading_time: 3,
-        published_by: 'Admin P49',
-        details: 'Détails complets de la formation en leadership...'
-      },
-      {
-        id: '2',
-        title: 'Assemblée générale annuelle',
-        summary: 'L\'assemblée générale de la P49 se tiendra le mois prochain.',
-        category: 'Événement',
-        published_date: '2024-01-10',
-        image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-        reading_time: 5,
-        published_by: 'Secrétaire Général',
-        details: 'Détails complets de l\'assemblée générale...'
+    try {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching news:', error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger les actualités",
+          variant: "destructive"
+        });
+        return;
       }
-    ];
-    setNews(mockNews);
+
+      setNews(data || []);
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les actualités",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleAddNews = () => {
@@ -78,12 +80,134 @@ const DashboardNews = () => {
     setIsFormOpen(true);
   };
 
-  const handleFormSubmit = (data: any) => {
-    console.log('News data submitted:', data);
-    setIsFormOpen(false);
-    setEditingNews(null);
-    // Refresh news list here
-    fetchNews();
+  const handleFormSubmit = async (data: any) => {
+    try {
+      let imageUrl = data.image_url;
+      
+      // Upload image if a new file is selected
+      if (data.image && data.image instanceof File) {
+        const fileExt = data.image.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `news/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('media-files')
+          .upload(filePath, data.image);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('media-files')
+          .getPublicUrl(filePath);
+
+        imageUrl = publicUrl;
+      }
+
+      const newsData = {
+        title: data.title,
+        summary: data.summary,
+        details: data.details,
+        category: data.category,
+        reading_time: data.reading_time,
+        published_date: data.published_date,
+        image_url: imageUrl,
+        created_by: user?.id
+      };
+
+      if (editingNews) {
+        // Update existing news
+        const { error } = await supabase
+          .from('news')
+          .update(newsData)
+          .eq('id', editingNews.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Succès",
+          description: "Actualité modifiée avec succès"
+        });
+      } else {
+        // Create new news
+        const { error } = await supabase
+          .from('news')
+          .insert([newsData]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Succès",
+          description: "Actualité créée avec succès"
+        });
+      }
+
+      setIsFormOpen(false);
+      setEditingNews(null);
+      fetchNews();
+    } catch (error) {
+      console.error('Error saving news:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de sauvegarder l'actualité",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteNews = async (newsId: string) => {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette actualité ?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('news')
+        .delete()
+        .eq('id', newsId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Succès",
+        description: "Actualité supprimée avec succès"
+      });
+
+      fetchNews();
+    } catch (error) {
+      console.error('Error deleting news:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer l'actualité",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleToggleVisibility = async (newsId: string, currentVisibility: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('news')
+        .update({ is_visible: !currentVisibility })
+        .eq('id', newsId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Succès",
+        description: `Actualité ${!currentVisibility ? 'publiée' : 'masquée'} avec succès`
+      });
+
+      fetchNews();
+    } catch (error) {
+      console.error('Error toggling visibility:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier la visibilité",
+        variant: "destructive"
+      });
+    }
   };
 
   if (isMobile) {
@@ -124,6 +248,8 @@ const DashboardNews = () => {
                       item={item} 
                       variant="mobile"
                       onEdit={() => handleEditNews(item)}
+                      onDelete={() => handleDeleteNews(item.id)}
+                      onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
                     />
                   ))
                 )}
@@ -178,6 +304,8 @@ const DashboardNews = () => {
                       item={item} 
                       variant="tablet"
                       onEdit={() => handleEditNews(item)}
+                      onDelete={() => handleDeleteNews(item.id)}
+                      onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
                     />
                   ))
                 )}
@@ -234,6 +362,8 @@ const DashboardNews = () => {
                       item={item} 
                       variant="desktop"
                       onEdit={() => handleEditNews(item)}
+                      onDelete={() => handleDeleteNews(item.id)}
+                      onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
                     />
                   ))
                 )}
