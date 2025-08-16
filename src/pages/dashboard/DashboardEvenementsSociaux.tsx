@@ -109,9 +109,20 @@ const DashboardEvenementsSociaux = () => {
   ];
 
   const eventCategories = {
-    Heureux: ['naissance', 'mariage', 'promotion', 'bapteme', 'anniversaire', 'autre_heureux'],
-    Retraite: ['Retraite'],
-    Malheureux: ['Décès', 'Maladie', 'Accidents']
+    Heureux: [
+      { value: 'naissance', label: 'Naissances' },
+      { value: 'mariage', label: 'Mariages' },
+      { value: 'promotion', label: 'Promotions' },
+      { value: 'bapteme', label: 'Baptêmes' },
+      { value: 'anniversaire', label: 'Anniversaires' },
+      { value: 'autre_heureux', label: 'Autre événement heureux' }
+    ],
+    Retraite: [{ value: 'retraite', label: 'Retraite' }],
+    Malheureux: [
+      { value: 'deces', label: 'Décès' },
+      { value: 'maladie', label: 'Maladie' },
+      { value: 'accident', label: 'Accidents' }
+    ]
   };
 
   const handleFormSuccess = () => {
@@ -240,11 +251,11 @@ const DashboardEvenementsSociaux = () => {
                         <SelectValue placeholder="Sélectionner une catégorie" />
                       </SelectTrigger>
                       <SelectContent>
-                        {formData.eventType && eventCategories[formData.eventType].map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
+                         {formData.eventType && eventCategories[formData.eventType].map((category) => (
+                           <SelectItem key={category.value} value={category.value}>
+                             {category.label}
+                           </SelectItem>
+                         ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -425,11 +436,11 @@ const DashboardEvenementsSociaux = () => {
                           <SelectValue placeholder="Sélectionner une catégorie" />
                         </SelectTrigger>
                         <SelectContent>
-                          {formData.eventType && eventCategories[formData.eventType].map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
+                           {formData.eventType && eventCategories[formData.eventType].map((category) => (
+                             <SelectItem key={category.value} value={category.value}>
+                               {category.label}
+                             </SelectItem>
+                           ))}
                         </SelectContent>
                       </Select>
                     </div>
