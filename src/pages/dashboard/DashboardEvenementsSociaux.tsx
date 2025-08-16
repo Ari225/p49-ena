@@ -12,6 +12,7 @@ import { Calendar, MapPin, Users, Plus, Edit, Trash2, Heart, PartyPopper, Frown 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 import { isAdmin } from '@/utils/roleUtils';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SocialEvent {
   id: string;
@@ -142,8 +143,28 @@ const DashboardEvenementsSociaux = () => {
     }
 
     try {
-      // TODO: Implement Supabase insertion
-      console.log('Form submitted:', formData);
+      // Parse date to ensure valid format
+      const eventDate = new Date(formData.date.includes('/') ? 
+        formData.date.split('/').reverse().join('-') : 
+        formData.date);
+
+      const { data, error } = await supabase
+        .from('social_events')
+        .insert({
+          event_type: formData.eventType,
+          category: formData.category,
+          title: formData.title,
+          member_name: formData.memberName,
+          event_date: eventDate.toISOString().split('T')[0],
+          location: formData.location || null,
+          description: formData.description,
+          thought: formData.thought,
+          years_of_service: formData.yearsOfService ? parseInt(formData.yearsOfService) : null,
+          created_by: user?.id
+        });
+
+      if (error) throw error;
+
       toast.success('Événement ajouté avec succès');
       setShowForm(false);
       
@@ -160,6 +181,9 @@ const DashboardEvenementsSociaux = () => {
         image: null,
         yearsOfService: ''
       });
+
+      // Refresh the events list
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
       toast.error('Erreur lors de l\'ajout de l\'événement');
