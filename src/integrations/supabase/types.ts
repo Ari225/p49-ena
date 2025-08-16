@@ -618,6 +618,15 @@ export type Database = {
           username: string
         }[]
       }
+      final_security_check: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          check_name: string
+          details: string
+          risk_level: string
+          status: string
+        }[]
+      }
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -658,6 +667,19 @@ export type Database = {
           nom_famille: string
           photo: string
           prenoms: string
+        }[]
+      }
+      get_secure_user_info: {
+        Args: { target_user_id?: string }
+        Returns: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          image_url: string
+          last_name: string
+          role: Database["public"]["Enums"]["user_role"]
+          username: string
         }[]
       }
       get_user_role: {
