@@ -44,21 +44,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSession(session);
         
         if (session?.user) {
-          // Récupérer les données du profil utilisateur
+          // Récupérer les données du profil utilisateur depuis app_users
           setTimeout(async () => {
             try {
-              // Utiliser une requête RPC sécurisée pour récupérer le profil
-              const { data: profile, error } = await supabase
-                .rpc('get_secure_user_info', { target_user_id: session.user.id });
+              // Utiliser une requête directe sur app_users
+              const { data: profileData, error } = await supabase
+                .from('app_users')
+                .select('id, username, first_name, last_name, email, role, image_url')
+                .eq('id', session.user.id)
+                .single();
 
               if (error) {
-                console.error('Error fetching profile:', error);
+                console.error('Error fetching user profile:', error);
                 setUser(null);
                 return;
               }
 
-              if (profile && profile.length > 0) {
-                const profileData = profile[0];
+              if (profileData) {
                 const authUser: AuthUser = {
                   id: profileData.id,
                   username: profileData.username,
