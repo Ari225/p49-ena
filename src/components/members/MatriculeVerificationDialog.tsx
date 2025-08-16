@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface MatriculeVerificationDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onVerified: () => void;
+  onVerified: (matricule?: string) => void;
   memberId?: string;
   verificationMode?: 'view' | 'edit'; // 'view' pour aperçu, 'edit' pour modification
 }
@@ -42,29 +42,59 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
     }
 
     try {
-      // Vérifier que le matricule existe dans la base de données en utilisant la fonction qui fonctionne déjà
-      const { data: memberDirectory, error: memberError } = await supabase.rpc('get_member_directory');
+      if (verificationMode === 'edit' && memberId) {
+        // Mode modification : vérifier que le matricule correspond exactement au membre à modifier
+        const { data: memberDirectory, error: memberError } = await supabase.rpc('get_member_directory');
 
-      if (memberError) {
-        console.error('Error fetching member directory:', memberError);
-        setError('Erreur lors de la vérification. Veuillez réessayer.');
-        setIsLoading(false);
-        return;
+        if (memberError) {
+          console.error('Error fetching member directory:', memberError);
+          setError('Erreur lors de la vérification. Veuillez réessayer.');
+          setIsLoading(false);
+          return;
+        }
+
+        // Trouver le membre par son ID
+        const targetMember = memberDirectory?.find((member: any) => 
+          member.id === parseInt(memberId)
+        );
+
+        if (!targetMember) {
+          setError('Membre non trouvé.');
+          setIsLoading(false);
+          return;
+        }
+
+        // Vérifier que le matricule entré correspond exactement au matricule du membre
+        if (!targetMember.matricule || targetMember.matricule.toUpperCase() !== matricule.toUpperCase()) {
+          setError('Ce matricule ne correspond pas à ce membre. Seul le matricule du membre peut être utilisé pour modifier ses informations.');
+          setIsLoading(false);
+          return;
+        }
+      } else {
+        // Mode aperçu : vérifier que le matricule existe dans la base de données
+        const { data: memberDirectory, error: memberError } = await supabase.rpc('get_member_directory');
+
+        if (memberError) {
+          console.error('Error fetching member directory:', memberError);
+          setError('Erreur lors de la vérification. Veuillez réessayer.');
+          setIsLoading(false);
+          return;
+        }
+
+        // Vérifier si le matricule existe dans la liste des membres
+        const memberExists = memberDirectory?.some((member: any) => 
+          member.matricule && member.matricule.toUpperCase() === matricule.toUpperCase()
+        );
+
+        if (!memberExists) {
+          setError('Ce matricule n\'existe pas dans notre base de données. Veuillez vérifier votre saisie.');
+          setIsLoading(false);
+          return;
+        }
       }
 
-      // Vérifier si le matricule existe dans la liste des membres
-      const memberExists = memberDirectory?.some((member: any) => 
-        member.matricule && member.matricule.toUpperCase() === matricule.toUpperCase()
-      );
-
-      if (!memberExists) {
-        setError('Ce matricule n\'existe pas dans notre base de données. Veuillez vérifier votre saisie.');
-        setIsLoading(false);
-        return;
-      }
-
-      // Matricule valide trouvé, autoriser l'accès
-      onVerified();
+      // Matricule valide, autoriser l'accès
+      onVerified(matricule.toUpperCase());
       setMatricule('');
       setIsLoading(false);
     } catch (error) {
