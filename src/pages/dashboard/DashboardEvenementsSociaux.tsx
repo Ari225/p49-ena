@@ -109,7 +109,7 @@ const DashboardEvenementsSociaux = () => {
   ];
 
   const eventCategories = {
-    Heureux: ['Naissances', 'Mariages', 'Promotions', 'Distinctions'],
+    Heureux: ['naissance', 'mariage', 'promotion', 'bapteme', 'anniversaire', 'autre_heureux'],
     Retraite: ['Retraite'],
     Malheureux: ['Décès', 'Maladie', 'Accidents']
   };
