@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -42,15 +42,8 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { error } = await signIn(signinEmail, signinPassword);
-    if (!error) {
-      navigate('/dashboard');
-    }
-  };
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const handleSignUp = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     const { error } = await signUp(signupEmail, signupPassword, {
       username,
@@ -61,13 +54,21 @@ const Auth = () => {
     if (!error) {
       setActiveTab('signin');
     }
-  };
+  }, [signupEmail, signupPassword, username, firstName, lastName, role, signUp, setActiveTab]);
+
+  const handleSignIn = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { error } = await signIn(signinEmail, signinPassword);
+    if (!error) {
+      navigate('/dashboard');
+    }
+  }, [signinEmail, signinPassword, signIn, navigate]);
 
   if (user) {
     return <div>Redirection vers le tableau de bord...</div>;
   }
 
-  const SignInForm = () => (
+  const SignInForm = useMemo(() => (
     <form onSubmit={handleSignIn} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="signin-email">Email</Label>
@@ -114,9 +115,9 @@ const Auth = () => {
         {loading ? 'Connexion...' : 'Se connecter'}
       </Button>
     </form>
-  );
+  ), [signinEmail, signinPassword, showPassword, loading, handleSignIn]);
 
-  const SignUpForm = () => (
+  const SignUpForm = useMemo(() => (
     <form onSubmit={handleSignUp} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -211,7 +212,7 @@ const Auth = () => {
         {loading ? 'Inscription...' : 'S\'inscrire'}
       </Button>
     </form>
-  );
+  ), [firstName, lastName, username, signupEmail, signupPassword, role, showPassword, loading, handleSignUp]);
 
   return (
     <Layout>
@@ -230,11 +231,11 @@ const Auth = () => {
                 {allowSignup && <TabsTrigger value="signup">Inscription</TabsTrigger>}
               </TabsList>
               <TabsContent value="signin" className="space-y-4 mt-6">
-                <SignInForm />
+                {SignInForm}
               </TabsContent>
               {allowSignup && (
                 <TabsContent value="signup" className="space-y-4 mt-6">
-                  <SignUpForm />
+                  {SignUpForm}
                 </TabsContent>
               )}
             </Tabs>
