@@ -52,8 +52,10 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [detailsText, setDetailsText] = useState('');
+  const [customCategory, setCustomCategory] = useState('');
+  const [showCustomCategory, setShowCustomCategory] = useState(false);
 
-  const categories = ['Formation', 'Événement', 'Partenariat', 'Actualité', 'Programme', 'Conférence'];
+  const categories = ['Formation', 'Événement', 'Partenariat', 'Actualité', 'Programme', 'Conférence', 'Autre'];
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -69,14 +71,25 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
 
   useEffect(() => {
     if (editingNews) {
+      const isCustomCategory = !categories.slice(0, -1).includes(editingNews.category);
+      
       form.reset({
         title: editingNews.title,
         summary: editingNews.summary,
         details: editingNews.details || '',
-        category: editingNews.category,
+        category: isCustomCategory ? 'Autre' : editingNews.category,
         reading_time: editingNews.reading_time || 3,
         published_date: editingNews.published_date
       });
+      
+      if (isCustomCategory) {
+        setCustomCategory(editingNews.category);
+        setShowCustomCategory(true);
+      } else {
+        setCustomCategory('');
+        setShowCustomCategory(false);
+      }
+      
       setDetailsText(editingNews.details || '');
       if (editingNews.image_url) {
         setImagePreview(editingNews.image_url);
@@ -93,6 +106,8 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
       setDetailsText('');
       setSelectedImage(null);
       setImagePreview(null);
+      setCustomCategory('');
+      setShowCustomCategory(false);
     }
   }, [editingNews, form]);
 
@@ -148,8 +163,10 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
   };
 
   const handleSubmit = (data: any) => {
+    const finalCategory = data.category === 'Autre' ? customCategory : data.category;
     const formData = {
       ...data,
+      category: finalCategory,
       details: detailsText,
       image: selectedImage,
       id: editingNews?.id
@@ -159,6 +176,8 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
     setSelectedImage(null);
     setImagePreview(null);
     setDetailsText('');
+    setCustomCategory('');
+    setShowCustomCategory(false);
     onClose();
   };
 
@@ -348,12 +367,15 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
                   />
                 </TabsContent>
                 
-                <TabsContent value="preview">
+                 <TabsContent value="preview">
                   <div className="border rounded-md p-4 min-h-[200px] bg-gray-50">
                     <div className="prose prose-sm max-w-none">
                       {detailsText ? (
-                        <div dangerouslySetInnerHTML={{ 
+                        <div 
+                          style={{ whiteSpace: 'pre-wrap' }}
+                          dangerouslySetInnerHTML={{ 
                           __html: detailsText
+                            .replace(/\n/g, '<br>')
                             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                             .replace(/\*(.*?)\*/g, '<em>$1</em>')
                             .replace(/__(.*?)__/g, '<u>$1</u>')
@@ -375,7 +397,16 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Catégorie</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select 
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setShowCustomCategory(value === 'Autre');
+                      if (value !== 'Autre') {
+                        setCustomCategory('');
+                      }
+                    }} 
+                    value={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Sélectionner une catégorie" />
@@ -393,6 +424,20 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
                 </FormItem>
               )}
             />
+
+            {showCustomCategory && (
+              <FormItem>
+                <FormLabel>Précisez la catégorie</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Entrez la catégorie personnalisée"
+                    value={customCategory}
+                    onChange={(e) => setCustomCategory(e.target.value)}
+                    required
+                  />
+                </FormControl>
+              </FormItem>
+            )}
 
             <div className="flex justify-end space-x-2 pt-4">
               <Button type="button" variant="outline" onClick={handleClose}>
