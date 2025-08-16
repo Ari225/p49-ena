@@ -88,6 +88,7 @@ const DashboardEvenementsSociaux = () => {
   const [formData, setFormData] = useState({
     eventType: '',
     category: '',
+    customCategory: '',
     title: '',
     memberName: '',
     date: '',
@@ -115,13 +116,14 @@ const DashboardEvenementsSociaux = () => {
       { value: 'promotion', label: 'Promotions' },
       { value: 'bapteme', label: 'Baptêmes' },
       { value: 'anniversaire', label: 'Anniversaires' },
-      { value: 'autre_heureux', label: 'Autre événement heureux' }
+      { value: 'autre', label: 'Autre' }
     ],
     Retraite: [{ value: 'retraite', label: 'Retraite' }],
     Malheureux: [
       { value: 'deces', label: 'Décès' },
       { value: 'maladie', label: 'Maladie' },
-      { value: 'accident', label: 'Accidents' }
+      { value: 'accident', label: 'Accidents' },
+      { value: 'autre', label: 'Autre' }
     ]
   };
 
@@ -153,22 +155,64 @@ const DashboardEvenementsSociaux = () => {
       return;
     }
 
+    // Validate custom category if "autre" is selected
+    if (formData.category === 'autre' && !formData.customCategory) {
+      toast.error('Veuillez préciser la catégorie personnalisée');
+      return;
+    }
+
     try {
       // Parse date to ensure valid format
       const eventDate = new Date(formData.date.includes('/') ? 
         formData.date.split('/').reverse().join('-') : 
         formData.date);
 
-      const { data, error } = await supabase
-        .from('social_events')
-        .insert({
-          category: formData.category,
-          title: formData.title,
-          member_name: formData.memberName,
-          event_date: eventDate.toISOString().split('T')[0],
-          description: formData.description,
-          created_by: user?.id
-        });
+      let tableName = '';
+      let insertData: any = {
+        title: formData.title,
+        member_name: formData.memberName,
+        event_date: eventDate.toISOString().split('T')[0],
+        description: formData.description,
+        created_by: user?.id,
+        category: formData.category === 'autre' ? formData.customCategory : formData.category,
+        custom_category: formData.category === 'autre' ? formData.customCategory : null
+      };
+
+      // Determine table and additional fields based on event type
+      if (formData.eventType === 'Heureux') {
+        tableName = 'happy_events';
+        insertData.message = formData.thought;
+        insertData.location = formData.location;
+      } else if (formData.eventType === 'Retraite') {
+        tableName = 'retirement_departures';
+        insertData.tribute_message = formData.thought;
+        insertData.department = formData.location;
+        if (formData.yearsOfService) {
+          insertData.years_of_service = parseInt(formData.yearsOfService);
+        }
+        insertData.retirement_date = eventDate.toISOString().split('T')[0];
+        insertData.position = 'Non spécifié';
+      } else if (formData.eventType === 'Malheureux') {
+        tableName = 'difficult_events';
+        insertData.family_support_message = formData.thought;
+      }
+
+      let result;
+      if (formData.eventType === 'Heureux') {
+        result = await supabase
+          .from('happy_events')
+          .insert(insertData);
+      } else if (formData.eventType === 'Retraite') {
+        result = await supabase
+          .from('retirement_departures')
+          .insert(insertData);
+      } else if (formData.eventType === 'Malheureux') {
+        result = await supabase
+          .from('difficult_events')
+          .insert(insertData);
+      }
+
+      const { data, error } = result || { data: null, error: new Error('Type d\'événement non reconnu') };
 
       if (error) throw error;
 
@@ -179,6 +223,7 @@ const DashboardEvenementsSociaux = () => {
       setFormData({
         eventType: '',
         category: '',
+        customCategory: '',
         title: '',
         memberName: '',
         date: '',
@@ -257,11 +302,24 @@ const DashboardEvenementsSociaux = () => {
                            </SelectItem>
                          ))}
                       </SelectContent>
-                    </Select>
-                  </div>
+                     </Select>
+                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Titre *</label>
+                   {formData.category === 'autre' && (
+                     <div>
+                       <label className="block text-sm font-medium mb-2">Préciser la catégorie *</label>
+                       <Input
+                         name="customCategory"
+                         value={formData.customCategory}
+                         onChange={handleInputChange}
+                         placeholder="Préciser la catégorie"
+                         required
+                       />
+                     </div>
+                   )}
+
+                   <div>
+                     <label className="block text-sm font-medium mb-2">Titre *</label>
                     <Input
                       name="title"
                       value={formData.title}
@@ -444,10 +502,23 @@ const DashboardEvenementsSociaux = () => {
                         </SelectContent>
                       </Select>
                     </div>
-                  </div>
+                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Titre *</label>
+                   {formData.category === 'autre' && (
+                     <div>
+                       <label className="block text-sm font-medium mb-2">Préciser la catégorie *</label>
+                       <Input
+                         name="customCategory"
+                         value={formData.customCategory}
+                         onChange={handleInputChange}
+                         placeholder="Préciser la catégorie"
+                         required
+                       />
+                     </div>
+                   )}
+
+                   <div>
+                     <label className="block text-sm font-medium mb-2">Titre *</label>
                     <Input
                       name="title"
                       value={formData.title}
