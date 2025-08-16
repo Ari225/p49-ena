@@ -82,7 +82,8 @@ const mockEvents: SocialEvent[] = [
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const [events, setEvents] = useState<SocialEvent[]>(mockEvents);
+  const [events, setEvents] = useState<SocialEvent[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<SocialEvent | null>(null);
   const [formData, setFormData] = useState({
@@ -98,6 +99,91 @@ const DashboardEvenementsSociaux = () => {
     image: null as File | null,
     yearsOfService: ''
   });
+
+  useEffect(() => {
+    fetchAllEvents();
+  }, []);
+
+  const fetchAllEvents = async () => {
+    try {
+      setLoading(true);
+      
+      // Récupérer les événements heureux
+      const { data: happyEvents, error: happyError } = await supabase
+        .from('happy_events')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (happyError) throw happyError;
+
+      // Récupérer les événements de retraite
+      const { data: retirementEvents, error: retirementError } = await supabase
+        .from('retirement_departures')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (retirementError) throw retirementError;
+
+      // Récupérer les événements difficiles
+      const { data: difficultEvents, error: difficultError } = await supabase
+        .from('difficult_events')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (difficultError) throw difficultError;
+
+      // Transformer et combiner tous les événements
+      const allEvents: SocialEvent[] = [
+        ...(happyEvents || []).map(event => ({
+          id: event.id,
+          eventType: 'Heureux',
+          category: event.category,
+          title: event.title,
+          memberName: event.member_name,
+          date: event.event_date,
+          location: event.location || '',
+          description: event.description || '',
+          thought: event.message || '',
+          image: event.image_url || ''
+        })),
+        ...(retirementEvents || []).map(event => ({
+          id: event.id,
+          eventType: 'Retraite',
+          category: event.category || 'retraite',
+          title: `Départ en retraite de ${event.member_name}`,
+          memberName: event.member_name,
+          date: event.retirement_date,
+          location: event.department || '',
+          description: `Après ${event.years_of_service || 'plusieurs'} années de service${event.position ? ` en tant que ${event.position}` : ''}.`,
+          thought: event.tribute_message || '',
+          image: event.image_url || '',
+          yearsOfService: event.years_of_service?.toString()
+        })),
+        ...(difficultEvents || []).map(event => ({
+          id: event.id,
+          eventType: 'Malheureux',
+          category: event.category,
+          title: event.title,
+          memberName: event.member_name,
+          date: event.event_date,
+          location: '',
+          description: event.description || '',
+          thought: event.family_support_message || '',
+          image: event.image_url || ''
+        }))
+      ];
+
+      // Trier par date de création (plus récent en premier)
+      allEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      
+      setEvents(allEvents);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des événements:', error);
+      toast.error('Erreur lors du chargement des événements');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
@@ -247,7 +333,7 @@ const DashboardEvenementsSociaux = () => {
       });
 
       // Refresh the events list
-      window.location.reload();
+      fetchAllEvents();
     } catch (error) {
       console.error('Error:', error);
       toast.error('Erreur lors de l\'ajout de l\'événement');
@@ -430,28 +516,121 @@ const DashboardEvenementsSociaux = () => {
             </Dialog>
           </div>
 
-          <div className="space-y-4">
-            {events.map((event) => (
-              <Card key={event.id} className="border-l-4 border-blue-500 bg-blue-50">
-                <CardHeader>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">{event.description}</p>
-                  <div className="flex justify-end space-x-2 mt-4">
-                    <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Modifier
-                    </Button>
-                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+              <p className="text-gray-600 mt-2">Chargement des événements...</p>
+            </div>
+          ) : events.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">Aucun événement enregistré</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {events.map((event) => {
+                const getCategoryIcon = (eventType: string, category: string) => {
+                  if (eventType === 'Heureux') {
+                    switch (category) {
+                      case 'naissance': return Heart;
+                      case 'mariage': return Heart;
+                      case 'promotion': return Edit;
+                      case 'bapteme': return Heart;
+                      case 'anniversaire': return PartyPopper;
+                      default: return PartyPopper;
+                    }
+                  } else if (eventType === 'Retraite') {
+                    return Users;
+                  } else {
+                    switch (category) {
+                      case 'deces': return Frown;
+                      case 'maladie': return Frown;
+                      case 'accident': return Frown;
+                      default: return Frown;
+                    }
+                  }
+                };
+
+                const getCategoryColor = (eventType: string) => {
+                  switch (eventType) {
+                    case 'Heureux': return 'border-l-green-500 bg-green-50';
+                    case 'Retraite': return 'border-l-blue-500 bg-blue-50';
+                    case 'Malheureux': return 'border-l-gray-500 bg-gray-50';
+                    default: return 'border-l-gray-500 bg-gray-50';
+                  }
+                };
+
+                const IconComponent = getCategoryIcon(event.eventType, event.category);
+
+                return (
+                  <Card key={event.id} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.eventType)}`}>
+                    {event.image && (
+                      <div className="aspect-video overflow-hidden">
+                        <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                      </div>
+                    )}
+                    <CardHeader>
+                      <CardTitle className="text-lg flex items-center">
+                        <IconComponent className="w-5 h-5 mr-2" />
+                        {event.title}
+                      </CardTitle>
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          {event.date}
+                        </div>
+                        {event.location && (
+                          <div className="flex items-center">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            {event.location}
+                          </div>
+                        )}
+                        <div className="flex items-center">
+                          <Users className="w-4 h-4 mr-2" />
+                          {event.memberName}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-700 text-sm mb-3">{event.description}</p>
+                      <div className="space-y-2 mb-4">
+                        <p className="text-sm"><strong>Type:</strong> {event.eventType}</p>
+                        <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                        {event.yearsOfService && (
+                          <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
+                        )}
+                      </div>
+                      {event.thought && (
+                        <div className={`p-3 rounded-lg border-l-2 mb-4 ${
+                          event.eventType === 'Heureux' ? 'bg-green-50 border-green-200' :
+                          event.eventType === 'Retraite' ? 'bg-blue-50 border-blue-200' :
+                          'bg-gray-50 border-gray-200'
+                        }`}>
+                          <p className={`text-sm italic ${
+                            event.eventType === 'Heureux' ? 'text-green-800' :
+                            event.eventType === 'Retraite' ? 'text-blue-800' :
+                            'text-gray-800'
+                          }`}>
+                            <Heart className="h-3 w-3 inline mr-1" />
+                            {event.thought}
+                          </p>
+                        </div>
+                      )}
+                      <div className="flex justify-end space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
+                          <Edit className="h-4 w-4 mr-2" />
+                          Modifier
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Supprimer
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
         </div>
         <AdminSidebar />
       </Layout>
