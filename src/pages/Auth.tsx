@@ -38,7 +38,21 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      // Redirection basée sur le rôle
+      const getRedirectPath = (role: string) => {
+        switch (role) {
+          case 'admin_principal':
+          case 'admin_secondaire':
+            return '/dashboard';
+          case 'redacteur':
+            return '/dashboard/my-articles';
+          default:
+            return '/dashboard';
+        }
+      };
+      
+      const redirectPath = getRedirectPath(user.role);
+      navigate(redirectPath, { replace: true });
     }
   }, [user, navigate]);
 
@@ -60,9 +74,10 @@ const Auth = () => {
     e.preventDefault();
     const { error } = await signIn(signinEmail, signinPassword);
     if (!error) {
-      navigate('/dashboard');
+      // La redirection se fera automatiquement via l'useEffect qui surveille l'état user
+      console.log('Connexion réussie, redirection en cours...');
     }
-  }, [signinEmail, signinPassword, signIn, navigate]);
+  }, [signinEmail, signinPassword, signIn]);
 
   if (user) {
     return <div>Redirection vers le tableau de bord...</div>;
