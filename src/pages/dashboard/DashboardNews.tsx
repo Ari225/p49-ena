@@ -1,15 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import Layout from '@/components/Layout';
+import { useIsMobile } from '@/hooks/use-mobile';
 import AdminSidebar from '@/components/AdminSidebar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import EditorSidebar from '@/components/EditorSidebar';
+import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye, Calendar, Clock, User } from 'lucide-react';
-import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
-import { isAdmin } from '@/utils/roleUtils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import NewsFormDialog from '@/components/news/NewsFormDialog';
-import NewsCardDashboard from '@/components/news/NewsCardDashboard';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface NewsItem {
   id: string;
@@ -19,53 +19,49 @@ interface NewsItem {
   published_date: string;
   image_url?: string;
   reading_time?: number;
-  published_by?: string;
   details?: string;
+  is_visible?: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 const DashboardNews = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const isTablet = useIsTablet();
+  const { toast } = useToast();
   const [news, setNews] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
 
-  if (!user || !isAdmin(user)) {
-    return <div>Non autorisé</div>;
-  }
+  // Vérifier les permissions
+  const canManageNews = user?.role === 'admin_principal' || user?.role === 'admin_secondaire' || user?.role === 'redacteur';
 
   useEffect(() => {
-    fetchNews();
-  }, []);
+    if (canManageNews) {
+      fetchNews();
+    }
+  }, [canManageNews]);
 
   const fetchNews = async () => {
-    // Mock data instead of Supabase
-    const mockNews: NewsItem[] = [
-      {
-        id: '1',
-        title: 'Nouvelle formation en leadership',
-        summary: 'Une formation spécialisée en leadership pour les membres de la P49.',
-        category: 'Formation',
-        published_date: '2024-01-15',
-        image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-        reading_time: 3,
-        published_by: 'Admin P49',
-        details: 'Détails complets de la formation en leadership...'
-      },
-      {
-        id: '2',
-        title: 'Assemblée générale annuelle',
-        summary: 'L\'assemblée générale de la P49 se tiendra le mois prochain.',
-        category: 'Événement',
-        published_date: '2024-01-10',
-        image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-        reading_time: 5,
-        published_by: 'Secrétaire Général',
-        details: 'Détails complets de l\'assemblée générale...'
-      }
-    ];
-    setNews(mockNews);
+    try {
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .order('published_date', { ascending: false });
+
+      if (error) throw error;
+      setNews(data || []);
+    } catch (error) {
+      console.error('Erreur lors du chargement des actualités:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les actualités",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddNews = () => {
@@ -78,177 +74,286 @@ const DashboardNews = () => {
     setIsFormOpen(true);
   };
 
-  const handleFormSubmit = (data: any) => {
-    console.log('News data submitted:', data);
-    setIsFormOpen(false);
-    setEditingNews(null);
-    // Refresh news list here
-    fetchNews();
+  const handleFormSubmit = async (formData: any) => {
+    try {
+      let imageUrl = formData.image ? null : editingNews?.image_url;
+
+      // Upload image if provided
+      if (formData.image) {
+        const fileExt = formData.image.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('media-files')
+          .upload(fileName, formData.image);
+
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage
+          .from('media-files')
+          .getPublicUrl(fileName);
+        imageUrl = data.publicUrl;
+      }
+
+      const newsData = {
+        title: formData.title,
+        summary: formData.summary,
+        details: formData.details,
+        category: formData.category,
+        reading_time: formData.reading_time,
+        published_date: formData.published_date,
+        image_url: imageUrl,
+        created_by: user?.id,
+        is_visible: editingNews?.is_visible ?? true
+      };
+
+      if (editingNews) {
+        // Update existing news
+        const { error } = await supabase
+          .from('news')
+          .update(newsData)
+          .eq('id', editingNews.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Succès",
+          description: "Actualité modifiée avec succès"
+        });
+      } else {
+        // Create new news
+        const { error } = await supabase
+          .from('news')
+          .insert([newsData]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Succès",
+          description: "Actualité ajoutée avec succès"
+        });
+      }
+
+      setIsFormOpen(false);
+      fetchNews();
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de sauvegarder l'actualité",
+        variant: "destructive"
+      });
+    }
   };
 
-  if (isMobile) {
+  const handleDeleteNews = async (newsId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette actualité ?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('news')
+        .delete()
+        .eq('id', newsId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Succès",
+        description: "Actualité supprimée avec succès"
+      });
+      fetchNews();
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer l'actualité",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleToggleVisibility = async (newsItem: NewsItem) => {
+    try {
+      const { error } = await supabase
+        .from('news')
+        .update({ is_visible: !newsItem.is_visible })
+        .eq('id', newsItem.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Succès",
+        description: `Actualité ${newsItem.is_visible ? 'masquée' : 'affichée'} avec succès`
+      });
+      fetchNews();
+    } catch (error) {
+      console.error('Erreur lors de la modification de la visibilité:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier la visibilité",
+        variant: "destructive"
+      });
+    }
+  };
+
+  if (!canManageNews) {
     return (
-      <Layout>
-        <div className="px-[25px] py-[50px] pb-20">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">
-              Gestion des Actualités
-            </h1>
-            <p className="text-gray-600 mt-2 text-sm">Créer et gérer les actualités du site</p>
-          </div>
-
-          <div className="mb-6">
-            <Button onClick={handleAddNews} className="bg-primary hover:bg-primary/90 w-full">
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvelle actualité
-            </Button>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-lg">
-                <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités ({news.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8">
-                    Aucune actualité créée
-                  </p>
-                ) : (
-                  news.map((item) => (
-                    <NewsCardDashboard 
-                      key={item.id} 
-                      item={item} 
-                      variant="mobile"
-                      onEdit={() => handleEditNews(item)}
-                    />
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Accès refusé</h1>
+          <p className="text-gray-600 mt-2">Vous n'avez pas les permissions pour accéder à cette page.</p>
         </div>
-        <AdminSidebar />
-        <NewsFormDialog
-          isOpen={isFormOpen}
-          onClose={() => setIsFormOpen(false)}
-          onSubmit={handleFormSubmit}
-          editingNews={editingNews}
-        />
-      </Layout>
+      </div>
     );
   }
 
-  if (isTablet) {
+  if (loading) {
     return (
-      <Layout>
-        <div className="px-[30px] py-[40px] pb-20">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des Actualités</h1>
-            <p className="text-gray-600 mt-2">Créer et gérer les actualités du site</p>
-          </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+          <p className="text-gray-600 mt-4">Chargement des actualités...</p>
+        </div>
+      </div>
+    );
+  }
 
-          <div className="mb-6">
-            <Button onClick={handleAddNews} className="bg-primary hover:bg-primary/90">
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvelle actualité
+  const NewsCard = ({ item }: { item: NewsItem }) => (
+    <Card className="overflow-hidden">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <CardTitle className="text-lg line-clamp-2">{item.title}</CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              {new Date(item.published_date).toLocaleDateString('fr-FR')}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 ml-4">
+            <Badge variant={item.is_visible ? "default" : "secondary"}>
+              {item.is_visible ? "Visible" : "Masqué"}
+            </Badge>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        {item.image_url && (
+          <img 
+            src={item.image_url} 
+            alt={item.title}
+            className="w-full h-32 object-cover rounded-md mb-3"
+          />
+        )}
+        <Badge variant="outline" className="mb-2">
+          {item.category}
+        </Badge>
+        <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+          {item.summary}
+        </p>
+        <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
+          <span>{item.reading_time} min de lecture</span>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => handleToggleVisibility(item)}
+            variant="outline"
+            size="sm"
+            className="flex-1"
+          >
+            {item.is_visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {item.is_visible ? 'Masquer' : 'Afficher'}
+          </Button>
+          <Button
+            onClick={() => handleEditNews(item)}
+            variant="outline"
+            size="sm"
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          <Button
+            onClick={() => handleDeleteNews(item.id)}
+            variant="destructive"
+            size="sm"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-bold">Actualités</h1>
+            <Button onClick={handleAddNews} size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter
             </Button>
           </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8 col-span-full">
-                    Aucune actualité créée
-                  </p>
-                ) : (
-                  news.map((item) => (
-                    <NewsCardDashboard 
-                      key={item.id} 
-                      item={item} 
-                      variant="tablet"
-                      onEdit={() => handleEditNews(item)}
-                    />
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="space-y-4">
+            {news.map((item) => (
+              <NewsCard key={item.id} item={item} />
+            ))}
+          </div>
         </div>
-        <AdminSidebar />
         <NewsFormDialog
           isOpen={isFormOpen}
           onClose={() => setIsFormOpen(false)}
           onSubmit={handleFormSubmit}
           editingNews={editingNews}
         />
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
+    <div className="min-h-screen bg-gray-50">
       <div className="flex">
-        <AdminSidebar />
-        
-        <div className="flex-1 ml-64 p-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des Actualités</h1>
-            <p className="text-gray-600 mt-2">Créer et gérer les actualités du site</p>
-          </div>
-
-          <div className="mb-6">
-            <Button onClick={handleAddNews} className="bg-primary hover:bg-primary/90">
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvelle actualité
+        {user?.role === 'admin_principal' || user?.role === 'admin_secondaire' ? (
+          <AdminSidebar />
+        ) : (
+          <EditorSidebar />
+        )}
+        <div className="flex-1 p-8">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold">Gestion des Actualités</h1>
+            <Button onClick={handleAddNews}>
+              <Plus className="h-5 w-5 mr-2" />
+              Nouvelle Actualité
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8 col-span-full">
-                    Aucune actualité créée
-                  </p>
-                ) : (
-                  news.map((item) => (
-                    <NewsCardDashboard 
-                      key={item.id} 
-                      item={item} 
-                      variant="desktop"
-                      onEdit={() => handleEditNews(item)}
-                    />
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {news.map((item) => (
+              <NewsCard key={item.id} item={item} />
+            ))}
+          </div>
+
+          {news.length === 0 && (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Aucune actualité
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Commencez par ajouter votre première actualité.
+              </p>
+              <Button onClick={handleAddNews}>
+                <Plus className="h-5 w-5 mr-2" />
+                Ajouter une actualité
+              </Button>
+            </div>
+          )}
         </div>
       </div>
+
       <NewsFormDialog
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         onSubmit={handleFormSubmit}
         editingNews={editingNews}
       />
-    </Layout>
+    </div>
   );
 };
 
