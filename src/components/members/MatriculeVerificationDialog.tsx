@@ -43,12 +43,11 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
 
     try {
       if (verificationMode === 'edit' && memberId) {
-        // Mode modification : vérifier strictement que le matricule correspond au membre spécifique
-        const { data, error } = await (supabase as any)
-          .from('members')
-          .select('Matricule')
-          .eq('id', parseInt(memberId))
-          .maybeSingle();
+        // Mode modification : utiliser la fonction sécurisée pour vérifier le matricule
+        const { data, error } = await supabase.rpc('get_member_details', {
+          member_matricule: matricule.toUpperCase(),
+          verification_matricule: matricule.toUpperCase()
+        });
 
         if (error) {
           console.error('Error checking member matricule:', error);
@@ -57,7 +56,8 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
           return;
         }
 
-        if (data && data.Matricule === matricule.toUpperCase()) {
+        // Vérifier que le membre trouvé correspond à l'ID demandé
+        if (data && data.length > 0 && data[0].id === parseInt(memberId)) {
           onVerified();
           setMatricule('');
         } else {

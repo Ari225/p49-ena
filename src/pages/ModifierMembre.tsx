@@ -44,22 +44,45 @@ const ModifierMembre: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   // Charger les données du membre après vérification
-  const loadMemberData = async () => {
-    if (!memberId) return;
+  const loadMemberData = async (memberMatricule?: string) => {
+    if (!memberId || !memberMatricule) return;
     
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('members')
-        .select('*')
-        .eq('id', parseInt(memberId))
-        .single();
+      // Utiliser la fonction sécurisée get_member_details
+      const { data, error } = await supabase.rpc('get_member_details', {
+        member_matricule: memberMatricule,
+        verification_matricule: memberMatricule
+      });
 
       if (error) throw error;
 
-      if (data) {
-        setMemberData(data as any);
-        setFormData(data as any);
+      if (data && data.length > 0) {
+        const memberInfo = data[0];
+        // Convertir vers le format attendu par le composant
+        const formattedData = {
+          id: memberInfo.id,
+          'Prénoms': memberInfo.prenoms || '',
+          'Nom de famille': memberInfo.nom_famille || '',
+          'Date de naissance': memberInfo.date_naissance || '',
+          'Email': memberInfo.email || '',
+          'Photo': memberInfo.photo || '',
+          'Matricule': memberMatricule,
+          'Ecole': memberInfo.ecole || '',
+          'Filière_EGEF': memberInfo.filiere_egef || '',
+          'Filière_EGAD': memberInfo.filiere_egad || '',
+          'Ministère': memberInfo.ministere || '',
+          "Lieu d'exercice": memberInfo.lieu_exercice || '',
+          'Emploi fonction publique': memberInfo.emploi_fonction_publique || '',
+          'Région': memberInfo.region || '',
+          'WhatsApp': memberInfo.whatsapp || 0,
+          'Facebook': memberInfo.facebook || '',
+          'instagram': memberInfo.instagram || '',
+          'linkedIn': memberInfo.linkedin || ''
+        };
+        
+        setMemberData(formattedData as any);
+        setFormData(formattedData as any);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error);
@@ -71,10 +94,11 @@ const ModifierMembre: React.FC = () => {
   };
 
   // Gérer la vérification réussie
-  const handleVerificationSuccess = () => {
+  const handleVerificationSuccess = (matricule?: string) => {
     setIsVerified(true);
     setIsVerificationOpen(false);
-    loadMemberData();
+    // Passer le matricule validé pour charger les données
+    loadMemberData(matricule);
   };
 
   // Gérer la fermeture de la vérification
@@ -149,10 +173,11 @@ const ModifierMembre: React.FC = () => {
       console.log('Données à sauvegarder:', updateData);
       console.log('ID du membre:', memberData.id);
 
-      const { error } = await supabase
-        .from('members')
-        .update(updateData)
-        .eq('id', memberData.id);
+      // Utiliser une fonction sécurisée pour la mise à jour (nous devons la créer)
+      const { error } = await supabase.rpc('update_member_info', {
+        member_id: memberData.id,
+        update_data: updateData
+      });
 
       if (error) throw error;
 
