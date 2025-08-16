@@ -626,6 +626,10 @@ export type Database = {
           threat_level: string
         }[]
       }
+      create_supabase_user_if_needed: {
+        Args: { app_user_id: string; user_email: string }
+        Returns: string
+      }
       final_security_check: {
         Args: Record<PropertyKey, never>
         Returns: {

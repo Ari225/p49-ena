@@ -78,6 +78,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         image_url: foundUser.image_url
       };
       
+      // NOUVEAU: Créer/synchroniser l'utilisateur avec Supabase Auth
+      try {
+        console.log('Tentative de connexion avec Supabase Auth...');
+        
+        // Essayer de se connecter avec un mot de passe temporaire basé sur l'ID utilisateur
+        const tempPassword = `temp_${foundUser.id}`;
+        const { data: signInResult, error: signInError } = await supabase.auth.signInWithPassword({
+          email: foundUser.email,
+          password: tempPassword
+        });
+        
+        if (signInError && signInError.message.includes('Invalid login credentials')) {
+          console.log('Utilisateur Supabase Auth inexistant, création en cours...');
+          
+          // Créer l'utilisateur avec Supabase Auth
+          const { error: signUpError } = await supabase.auth.signUp({
+            email: foundUser.email,
+            password: tempPassword,
+            options: {
+              data: {
+                username: foundUser.username,
+                first_name: foundUser.first_name,
+                last_name: foundUser.last_name
+              }
+            }
+          });
+          
+          if (signUpError) {
+            console.warn('Erreur lors de la création de l\'utilisateur Supabase:', signUpError);
+          } else {
+            console.log('Utilisateur Supabase créé avec succès');
+          }
+        } else if (!signInError) {
+          console.log('Connexion Supabase réussie');
+        }
+      } catch (supabaseError) {
+        console.warn('Erreur lors de la synchronisation Supabase:', supabaseError);
+        // Ne pas bloquer la connexion si la synchronisation échoue
+      }
+      
       setUser(user);
       localStorage.setItem('currentUser', JSON.stringify(user));
       toast.success(`Connexion réussie ! Bienvenue ${user.firstName || user.username}`);
