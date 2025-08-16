@@ -151,15 +151,11 @@ const DashboardEvenementsSociaux = () => {
       const { data, error } = await supabase
         .from('social_events')
         .insert({
-          event_type: formData.eventType,
           category: formData.category,
           title: formData.title,
           member_name: formData.memberName,
           event_date: eventDate.toISOString().split('T')[0],
-          location: formData.location || null,
           description: formData.description,
-          thought: formData.thought,
-          years_of_service: formData.yearsOfService ? parseInt(formData.yearsOfService) : null,
           created_by: user?.id
         });
 
