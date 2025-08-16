@@ -97,7 +97,8 @@ const DashboardEvenementsSociaux = () => {
     description: '',
     thought: '',
     image: null as File | null,
-    yearsOfService: ''
+    yearsOfService: '',
+    position: ''
   });
 
   useEffect(() => {
@@ -223,6 +224,16 @@ const DashboardEvenementsSociaux = () => {
 
   const handleEditEvent = (event: SocialEvent) => {
     setEditingEvent(event);
+    
+    // Extract position from description for retirement events
+    let position = '';
+    if (event.eventType === 'Retraite' && event.description.includes('en tant que ')) {
+      const match = event.description.match(/en tant que (.+)\./);
+      if (match) {
+        position = match[1];
+      }
+    }
+    
     setFormData({
       eventType: event.eventType,
       category: event.category,
@@ -234,7 +245,8 @@ const DashboardEvenementsSociaux = () => {
       description: event.description,
       thought: event.thought,
       image: null,
-      yearsOfService: event.yearsOfService || ''
+      yearsOfService: event.yearsOfService || '',
+      position: position
     });
     setShowForm(true);
   };
@@ -356,7 +368,7 @@ const DashboardEvenementsSociaux = () => {
           retirement_date: eventDate.toISOString().split('T')[0],
           tribute_message: formData.thought,
           department: formData.location,
-          position: 'Non spécifié',
+          position: formData.position || 'Non spécifié',
           category: 'retraite',
           custom_category: null,
           image_url: imageUrl,
@@ -423,7 +435,8 @@ const DashboardEvenementsSociaux = () => {
         description: '',
         thought: '',
         image: null,
-        yearsOfService: ''
+        yearsOfService: '',
+        position: ''
       });
 
       // Refresh the events list
@@ -594,22 +607,33 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   {formData.eventType === 'Retraite' && (
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Années de service</label>
-                      <Input
-                        name="yearsOfService"
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Années de service</label>
+                        <Input
+                          name="yearsOfService"
                         value={formData.yearsOfService}
                         onChange={handleInputChange}
                         placeholder="Nombre d'années de service"
                       />
                     </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Fonction</label>
+                      <Input
+                        name="position"
+                        value={formData.position}
+                        onChange={handleInputChange}
+                        placeholder="Fonction occupée"
+                      />
+                    </div>
+                    </>
                   )}
 
                   <div className="flex justify-end space-x-2">
                     <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => {
                       setShowForm(false);
                       setEditingEvent(null);
-                      setFormData({
+                       setFormData({
                         eventType: '',
                         category: '',
                         customCategory: '',
@@ -620,7 +644,8 @@ const DashboardEvenementsSociaux = () => {
                         description: '',
                         thought: '',
                         image: null,
-                        yearsOfService: ''
+                        yearsOfService: '',
+                        position: ''
                       });
                     }}>
                       Annuler
@@ -906,15 +931,26 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   {formData.eventType === 'Retraite' && (
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Années de service</label>
-                      <Input
-                        name="yearsOfService"
-                        value={formData.yearsOfService}
-                        onChange={handleInputChange}
-                        placeholder="Nombre d'années de service"
-                      />
-                    </div>
+                    <>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Années de service</label>
+                        <Input
+                          name="yearsOfService"
+                          value={formData.yearsOfService}
+                          onChange={handleInputChange}
+                          placeholder="Nombre d'années de service"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Fonction</label>
+                        <Input
+                          name="position"
+                          value={formData.position}
+                          onChange={handleInputChange}
+                          placeholder="Fonction occupée"
+                        />
+                      </div>
+                    </>
                   )}
 
                   <div className="flex justify-end space-x-2">
@@ -932,7 +968,8 @@ const DashboardEvenementsSociaux = () => {
                         description: '',
                         thought: '',
                         image: null,
-                        yearsOfService: ''
+                        yearsOfService: '',
+                        position: ''
                       });
                     }}>
                       Annuler
