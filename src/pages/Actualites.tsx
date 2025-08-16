@@ -1,72 +1,94 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 import NewsCard from '@/components/home/news/NewsCard';
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from '@/components/ui/pagination';
 
 const Actualites = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [searchTerm, setSearchTerm] = useState('');
+  const [actualites, setActualites] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Sample data - in a real app, this would come from an API
-  const actualites = [
-    {
-      id: '1',
-      title: "Nouvelle réforme de la fonction publique annoncée",
-      summary: "Le gouvernement annonce une série de réformes visant à moderniser l'administration publique ivoirienne...",
-      category: "Réforme",
-      published_date: "2024-01-15",
-      image_url: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg"
-    },
-    {
-      id: '2',
-      title: "Assemblée générale 2024 : Un succès remarquable",
-      summary: "Plus de 300 membres ont participé à l'assemblée générale annuelle de la P49 qui s'est tenue...",
-      category: "Événement",
-      published_date: "2024-01-10",
-      image_url: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg"
-    },
-    {
-      id: '3',
-      title: "Lancement du programme de formation digitale",
-      summary: "La P49 lance un nouveau programme de formation aux outils numériques pour ses membres...",
-      category: "Formation",
-      published_date: "2024-01-05",
-      image_url: "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg"
-    },
-    {
-      id: '4',
-      title: "Séminaire de développement professionnel",
-      summary: "Un séminaire intensif pour le renforcement des capacités professionnelles.",
-      category: "Formation",
-      published_date: "2024-01-20",
-      image_url: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg"
-    },
-    {
-      id: '5',
-      title: "Nouveau programme de mentorat",
-      summary: "Lancement du programme de mentorat pour les jeunes diplômés.",
-      category: "Programme",
-      published_date: "2024-01-18",
-      image_url: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg"
-    },
-    {
-      id: '6',
-      title: "Conférence internationale sur la gouvernance",
-      summary: "Participation à la conférence internationale sur les bonnes pratiques.",
-      category: "Conférence",
-      published_date: "2024-01-16",
-      image_url: "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg"
+  // Determine items per page based on device
+  const getItemsPerPage = () => {
+    if (isMobile) return 5;
+    if (isTablet) return 8;
+    return 9; // Desktop
+  };
+
+  const itemsPerPage = getItemsPerPage();
+
+  useEffect(() => {
+    fetchActualites();
+  }, []);
+
+  const fetchActualites = async () => {
+    try {
+      setLoading(true);
+      const { data: newsData, error } = await supabase
+        .from('news')
+        .select('*')
+        .eq('is_visible', true)
+        .order('published_date', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching news:', error);
+        return;
+      }
+
+      if (newsData) {
+        const formattedNews = newsData.map(item => ({
+          id: item.id,
+          title: item.title,
+          summary: item.summary || '',
+          category: item.category,
+          published_date: item.published_date,
+          image_url: item.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'
+        }));
+        setActualites(formattedNews);
+      }
+    } catch (error) {
+      console.error('Error in fetchActualites:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const filteredActualites = actualites.filter(actualite => {
     const matchesSearch = actualite.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          actualite.summary.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredActualites.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentActualites = filteredActualites.slice(startIndex, endIndex);
+
+  // Reset to first page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, itemsPerPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <Layout>
@@ -113,22 +135,78 @@ const Actualites = () => {
         {/* News Grid */}
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredActualites.map((actualite) => (
-                <NewsCard 
-                  key={actualite.id} 
-                  item={actualite} 
-                  variant={isMobile ? 'mobile' : 'desktop'}
-                />
-              ))}
-            </div>
-            
-            {filteredActualites.length === 0 && (
+            {loading ? (
               <div className="text-center py-12">
-                <p className={`text-gray-500 mb-4 ${isMobile ? 'text-sm' : ''}`}>
-                  Aucune actualité trouvée avec ce terme de recherche.
-                </p>
+                <p className="text-gray-500">Chargement des actualités...</p>
               </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {currentActualites.map((actualite) => (
+                    <NewsCard 
+                      key={actualite.id} 
+                      item={actualite} 
+                      variant={isMobile ? 'mobile' : 'desktop'}
+                    />
+                  ))}
+                </div>
+                
+                {filteredActualites.length === 0 && !loading && (
+                  <div className="text-center py-12">
+                    <p className={`text-gray-500 mb-4 ${isMobile ? 'text-sm' : ''}`}>
+                      Aucune actualité trouvée avec ce terme de recherche.
+                    </p>
+                  </div>
+                )}
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-12 flex justify-center">
+                    <Pagination>
+                      <PaginationContent>
+                        {currentPage > 1 && (
+                          <PaginationItem>
+                            <PaginationPrevious 
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(currentPage - 1);
+                              }}
+                            />
+                          </PaginationItem>
+                        )}
+                        
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <PaginationItem key={page}>
+                            <PaginationLink
+                              href="#"
+                              isActive={page === currentPage}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(page);
+                              }}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        
+                        {currentPage < totalPages && (
+                          <PaginationItem>
+                            <PaginationNext 
+                              href="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handlePageChange(currentPage + 1);
+                              }}
+                            />
+                          </PaginationItem>
+                        )}
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </section>
