@@ -1,69 +1,96 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 const ActualiteDetail = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
+  const [actualite, setActualite] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  // Mock data - in a real app, this would be fetched based on the ID
-  const actualiteData = {
-    '1': {
-      title: "Nouvelle réforme de la fonction publique annoncée",
-      content: `
-        <p class="text-lg leading-relaxed mb-6 text-gray-700">Le gouvernement ivoirien a annoncé aujourd'hui une série de réformes majeures visant à moderniser l'administration publique. Ces changements, qui entreront en vigueur dès le début de l'année prochaine, concernent plusieurs aspects cruciaux du service public.</p>
-        
-        <h3 class="text-2xl font-bold text-primary mb-4 mt-8">Les principales mesures</h3>
-        <p class="mb-4 text-gray-700 leading-relaxed">Parmi les mesures phares de cette réforme, on retrouve :</p>
-        <ul class="list-disc list-inside mb-6 space-y-2 text-gray-700 ml-4">
-          <li>La digitalisation des procédures administratives</li>
-          <li>L'amélioration des conditions de travail des fonctionnaires</li>
-          <li>La mise en place d'un système d'évaluation des performances</li>
-          <li>Le renforcement de la formation continue</li>
-        </ul>
-        
-        <h3 class="text-2xl font-bold text-primary mb-4 mt-8">Impact sur les membres de la P49</h3>
-        <p class="mb-4 text-gray-700 leading-relaxed">Ces réformes auront un impact direct sur les membres de la Promotion 49 de l'École Nationale d'Administration. En tant que cadres de l'administration publique, ils seront en première ligne pour mettre en œuvre ces changements.</p>
-        
-        <p class="mb-6 text-gray-700 leading-relaxed">La P49 s'engage à accompagner ses membres dans cette transition, notamment à travers des sessions de formation et d'information qui seront organisées dans les prochaines semaines.</p>
-      `,
-      category: "Réforme",
-      date: "2024-01-15",
-      author: "Direction P49",
-      image: "/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg",
-      readTime: "5 min"
-    },
-    '2': {
-      title: "Assemblée générale 2024 : Un succès remarquable",
-      content: `
-        <p class="text-lg leading-relaxed mb-6 text-gray-700">L'assemblée générale annuelle de la Promotion 49 de l'ENA s'est tenue avec un succès remarquable, rassemblant plus de 300 membres de notre promotion.</p>
-        
-        <h3 class="text-2xl font-bold text-primary mb-4 mt-8">Les temps forts de l'événement</h3>
-        <p class="mb-4 text-gray-700 leading-relaxed">Cette assemblée a été marquée par plusieurs moments importants :</p>
-        <ul class="list-disc list-inside mb-6 space-y-2 text-gray-700 ml-4">
-          <li>Présentation du bilan annuel des activités</li>
-          <li>Élection du nouveau bureau exécutif</li>
-          <li>Adoption du budget pour l'année en cours</li>
-          <li>Présentation des projets futurs</li>
-        </ul>
-        
-        <h3 class="text-2xl font-bold text-primary mb-4 mt-8">Perspectives d'avenir</h3>
-        <p class="mb-6 text-gray-700 leading-relaxed">Les membres présents ont exprimé leur satisfaction quant aux réalisations de l'année écoulée et ont approuvé à l'unanimité les orientations stratégiques pour les mois à venir.</p>
-      `,
-      category: "Événement",
-      date: "2024-01-10",
-      author: "Bureau Exécutif",
-      image: "/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg",
-      readTime: "3 min"
+  useEffect(() => {
+    if (id) {
+      fetchActualite();
+    }
+  }, [id]);
+
+  const fetchActualite = async () => {
+    try {
+      setLoading(true);
+      const { data: newsData, error } = await supabase
+        .from('news')
+        .select('*')
+        .eq('id', id)
+        .eq('is_visible', true)
+        .single();
+
+      if (error) {
+        console.error('Error fetching news:', error);
+        setNotFound(true);
+        return;
+      }
+
+      if (newsData) {
+        setActualite({
+          id: newsData.id,
+          title: newsData.title,
+          content: newsData.details || newsData.summary || '',
+          category: newsData.category,
+          date: newsData.published_date,
+          author: newsData.published_by || 'P49',
+          image: newsData.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
+          readTime: newsData.reading_time ? `${newsData.reading_time} min` : '3 min',
+          summary: newsData.summary
+        });
+      } else {
+        setNotFound(true);
+      }
+    } catch (error) {
+      console.error('Error in fetchActualite:', error);
+      setNotFound(true);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const actualite = actualiteData[id as keyof typeof actualiteData] || actualiteData['1'];
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement de l'actualité...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (notFound || !actualite) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Actualité non trouvée</h1>
+            <p className="text-gray-600 mb-6">L'actualité que vous recherchez n'existe pas ou n'est plus disponible.</p>
+            <Link to="/actualites">
+              <Button>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Retour aux actualités
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -138,11 +165,18 @@ const ActualiteDetail = () => {
               </div>
 
               {/* Article Body */}
+              {/* Article Body */}
               <div className="prose prose-lg max-w-none">
-                <div 
-                  className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-semibold [&>h3]:text-xl [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-4 [&>ul>li]:mb-2"
-                  dangerouslySetInnerHTML={{ __html: actualite.content }}
-                />
+                {actualite.content ? (
+                  <div 
+                    className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-semibold [&>h3]:text-xl [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-4 [&>ul>li]:mb-2"
+                    dangerouslySetInnerHTML={{ __html: actualite.content }}
+                  />
+                ) : (
+                  <p className="text-gray-700 leading-relaxed">
+                    {actualite.summary || 'Contenu de l\'actualité non disponible.'}
+                  </p>
+                )}
               </div>
 
               {/* Author Section */}
