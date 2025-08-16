@@ -105,6 +105,11 @@ const DashboardNews = () => {
         imageUrl = publicUrl;
       }
 
+      // Ensure user is authenticated
+      if (!user?.id) {
+        throw new Error('Utilisateur non authentifié');
+      }
+
       const newsData = {
         title: data.title,
         summary: data.summary,
@@ -113,7 +118,7 @@ const DashboardNews = () => {
         reading_time: data.reading_time,
         published_date: data.published_date,
         image_url: imageUrl,
-        created_by: user?.id
+        created_by: user.id
       };
 
       if (editingNews) {
