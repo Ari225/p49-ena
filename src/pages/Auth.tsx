@@ -36,27 +36,6 @@ const Auth = () => {
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('redacteur');
 
-  useEffect(() => {
-    if (user) {
-      // Redirection basée sur le rôle
-      const getRedirectPath = (role: string) => {
-        switch (role) {
-          case 'admin_principal':
-          case 'admin_secondaire':
-            return '/dashboard';
-          case 'redacteur':
-            return '/dashboard/my-articles';
-          default:
-            return '/dashboard';
-        }
-      };
-      
-      const redirectPath = getRedirectPath(user.role);
-      navigate(redirectPath, { replace: true });
-    }
-  }, [user, navigate]);
-
-
   const handleSignUp = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     const { error } = await signUp(signupEmail, signupPassword, {
@@ -74,21 +53,29 @@ const Auth = () => {
     e.preventDefault();
     const { error } = await signIn(signinEmail, signinPassword);
     if (!error) {
-      // La redirection se fera automatiquement via l'useEffect qui surveille l'état user
       console.log('Connexion réussie, redirection en cours...');
     }
   }, [signinEmail, signinPassword, signIn]);
 
-  // Déplacer la logique de redirection vers la fin pour éviter l'erreur de hooks
-  if (user) {
-    return (
-      <Layout>
-        <div className="min-h-screen flex items-center justify-center">
-          <div>Redirection vers le tableau de bord...</div>
-        </div>
-      </Layout>
-    );
-  }
+  // Effet pour la redirection basée sur le rôle - APRÈS tous les hooks
+  useEffect(() => {
+    if (user) {
+      const getRedirectPath = (role: string) => {
+        switch (role) {
+          case 'admin_principal':
+          case 'admin_secondaire':
+            return '/dashboard';
+          case 'redacteur':
+            return '/dashboard/my-articles';
+          default:
+            return '/dashboard';
+        }
+      };
+      
+      const redirectPath = getRedirectPath(user.role);
+      navigate(redirectPath, { replace: true });
+    }
+  }, [user, navigate]);
 
   const SignInForm = useMemo(() => (
     <form onSubmit={handleSignIn} className="space-y-4">
