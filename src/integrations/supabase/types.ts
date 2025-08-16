@@ -566,53 +566,6 @@ export type Database = {
           },
         ]
       }
-      social_events: {
-        Row: {
-          category: string
-          created_at: string
-          created_by: string | null
-          description: string | null
-          event_date: string
-          id: string
-          image_url: string | null
-          member_name: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          event_date: string
-          id?: string
-          image_url?: string | null
-          member_name: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          created_by?: string | null
-          description?: string | null
-          event_date?: string
-          id?: string
-          image_url?: string | null
-          member_name?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "social_events_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "app_users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
@@ -804,7 +757,9 @@ export type Database = {
         }[]
       }
       update_member_info: {
-        Args: { member_id: number; update_data: Json }
+        Args:
+          | { member_id: number; update_data: Json }
+          | { member_id: number; update_data: Json }
         Returns: undefined
       }
       validate_password_strength: {
