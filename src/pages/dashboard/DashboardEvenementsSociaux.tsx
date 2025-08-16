@@ -632,26 +632,108 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {events.map((event) => (
-              <Card key={event.id} className="border-l-4 border-blue-500 bg-blue-50">
-                <CardHeader>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">{event.description}</p>
-                  <div className="flex justify-end space-x-2 mt-4">
-                    <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Modifier
-                    </Button>
-                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {events.map((event) => {
+              const getCategoryIcon = (eventType: string, category: string) => {
+                if (eventType === 'Heureux') {
+                  switch (category) {
+                    case 'naissance': return Heart;
+                    case 'mariage': return Heart;
+                    case 'promotion': return Edit;
+                    case 'bapteme': return Heart;
+                    case 'anniversaire': return PartyPopper;
+                    default: return PartyPopper;
+                  }
+                } else if (eventType === 'Retraite') {
+                  return Users;
+                } else {
+                  switch (category) {
+                    case 'deces': return Frown;
+                    case 'maladie': return Frown;
+                    case 'accident': return Frown;
+                    default: return Frown;
+                  }
+                }
+              };
+
+              const getCategoryColor = (eventType: string) => {
+                switch (eventType) {
+                  case 'Heureux': return 'border-l-green-500 bg-green-50';
+                  case 'Retraite': return 'border-l-blue-500 bg-blue-50';
+                  case 'Malheureux': return 'border-l-gray-500 bg-gray-50';
+                  default: return 'border-l-gray-500 bg-gray-50';
+                }
+              };
+
+              const IconComponent = getCategoryIcon(event.eventType, event.category);
+
+              return (
+                <Card key={event.id} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.eventType)}`}>
+                  {event.image && (
+                    <div className="aspect-video overflow-hidden">
+                      <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                    </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center">
+                      <IconComponent className="w-5 h-5 mr-2" />
+                      {event.title}
+                    </CardTitle>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <div className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        {event.date}
+                      </div>
+                      {event.location && (
+                        <div className="flex items-center">
+                          <MapPin className="w-4 h-4 mr-2" />
+                          {event.location}
+                        </div>
+                      )}
+                      <div className="flex items-center">
+                        <Users className="w-4 h-4 mr-2" />
+                        {event.memberName}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 text-sm mb-3">{event.description}</p>
+                    <div className="space-y-2 mb-4">
+                      <p className="text-sm"><strong>Type:</strong> {event.eventType}</p>
+                      <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                      {event.yearsOfService && (
+                        <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
+                      )}
+                    </div>
+                    {event.thought && (
+                      <div className={`p-3 rounded-lg border-l-2 mb-4 ${
+                        event.eventType === 'Heureux' ? 'bg-green-50 border-green-200' :
+                        event.eventType === 'Retraite' ? 'bg-blue-50 border-blue-200' :
+                        'bg-gray-50 border-gray-200'
+                      }`}>
+                        <p className={`text-sm italic ${
+                          event.eventType === 'Heureux' ? 'text-green-800' :
+                          event.eventType === 'Retraite' ? 'text-blue-800' :
+                          'text-gray-800'
+                        }`}>
+                          <Heart className="h-3 w-3 inline mr-1" />
+                          {event.thought}
+                        </p>
+                      </div>
+                    )}
+                    <div className="flex justify-end space-x-2">
+                      <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Modifier
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Supprimer
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </div>
