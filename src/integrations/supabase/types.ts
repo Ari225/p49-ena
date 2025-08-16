@@ -664,6 +664,10 @@ export type Database = {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      log_security_event: {
+        Args: { details?: Json; event_type: string; user_id?: string }
+        Returns: undefined
+      }
       sp_inserer_membre: {
         Args: {
           p_date_naissance: string
@@ -682,6 +686,10 @@ export type Database = {
           p_whatsapp: string
         }
         Returns: number
+      }
+      validate_password_strength: {
+        Args: { password: string }
+        Returns: boolean
       }
     }
     Enums: {
