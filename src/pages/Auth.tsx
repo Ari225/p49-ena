@@ -79,8 +79,15 @@ const Auth = () => {
     }
   }, [signinEmail, signinPassword, signIn]);
 
+  // Déplacer la logique de redirection vers la fin pour éviter l'erreur de hooks
   if (user) {
-    return <div>Redirection vers le tableau de bord...</div>;
+    return (
+      <Layout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div>Redirection vers le tableau de bord...</div>
+        </div>
+      </Layout>
+    );
   }
 
   const SignInForm = useMemo(() => (
