@@ -72,6 +72,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 };
                 setUser(authUser);
                 console.log('User profile loaded:', authUser);
+                
+                // Forcer la navigation après avoir chargé le profil
+                if (window.location.pathname === '/auth') {
+                  window.location.href = '/dashboard';
+                }
               }
             } catch (error) {
               console.error('Error in profile fetch:', error);
