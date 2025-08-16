@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,10 @@ const Auth = () => {
   const { user, signIn, signUp, loading } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [searchParams] = useSearchParams();
+
+  // Vérifier si l'inscription est autorisée via le paramètre URL
+  const allowSignup = searchParams.get('mode') === 'signup';
 
   // États pour les formulaires
   const [activeTab, setActiveTab] = useState('signin');
@@ -86,13 +90,17 @@ const Auth = () => {
             onChange={(e) => setSigninPassword(e.target.value)}
             placeholder="Votre mot de passe"
             required
+            className="pr-10"
           />
           <Button
             type="button"
             variant="ghost"
             size="sm"
             className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowPassword(!showPassword);
+            }}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -166,13 +174,17 @@ const Auth = () => {
             onChange={(e) => setSignupPassword(e.target.value)}
             placeholder="Mot de passe sécurisé"
             required
+            className="pr-10"
           />
           <Button
             type="button"
             variant="ghost"
             size="sm"
             className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowPassword(!showPassword);
+            }}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -213,16 +225,18 @@ const Auth = () => {
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className={`grid w-full ${allowSignup ? 'grid-cols-2' : 'grid-cols-1'}`}>
                 <TabsTrigger value="signin">Connexion</TabsTrigger>
-                <TabsTrigger value="signup">Inscription</TabsTrigger>
+                {allowSignup && <TabsTrigger value="signup">Inscription</TabsTrigger>}
               </TabsList>
               <TabsContent value="signin" className="space-y-4 mt-6">
                 <SignInForm />
               </TabsContent>
-              <TabsContent value="signup" className="space-y-4 mt-6">
-                <SignUpForm />
-              </TabsContent>
+              {allowSignup && (
+                <TabsContent value="signup" className="space-y-4 mt-6">
+                  <SignUpForm />
+                </TabsContent>
+              )}
             </Tabs>
           </CardContent>
         </Card>
