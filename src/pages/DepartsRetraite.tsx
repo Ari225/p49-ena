@@ -1,275 +1,171 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Calendar, MapPin, Users, Heart, Star, Award, PartyPopper } from 'lucide-react';
+import { Calendar, MapPin, Users, Heart, Clock, Trophy } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { supabase } from '@/integrations/supabase/client';
-
-interface HappyEvent {
-  id: string;
-  title: string;
-  description: string;
-  event_date: string;
-  location: string | null;
-  category: string;
-  member_name: string;
-  message: string | null;
-  image_url: string | null;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
-  custom_category: string | null;
-}
-
 const DepartsRetraite = () => {
   const isMobile = useIsMobile();
-  const [previewEvent, setPreviewEvent] = useState<HappyEvent | null>(null);
-  const [heureuxEvents, setHeureuxEvents] = useState<HappyEvent[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHappyEvents = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('happy_events')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.error('Error fetching happy events:', error);
-        } else {
-          setHeureuxEvents(data || []);
-        }
-      } catch (error) {
-        console.error('Error fetching happy events:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHappyEvents();
-
-    // Set up real-time updates
-    const channel = supabase
-      .channel('schema-db-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'happy_events'
-        },
-        (payload) => {
-          console.log('Real-time update:', payload);
-          fetchHappyEvents(); // Refresh the data
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Mariage':
-        return Heart;
-      case 'Promotion':
-        return Star;
-      case 'Distinction':
-        return Award;
-      default:
-        return PartyPopper;
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Mariage':
-        return 'border-l-pink-500 bg-pink-50';
-      case 'Promotion':
-        return 'border-l-yellow-500 bg-yellow-50';
-      case 'Distinction':
-        return 'border-l-purple-500 bg-purple-50';
-      default:
-        return 'border-l-green-500 bg-green-50';
-    }
-  };
-
-  const formatEventDate = (dateStr: string) => {
-    if (/^\d{4}$/.test(dateStr)) return dateStr;
-    const parsed = new Date(dateStr);
-    return isNaN(parsed.getTime()) ? dateStr : parsed.toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  return (
-    <Layout>
+  const retraiteEvents = [{
+    id: '1',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de M. Jean Koffi',
+    memberName: 'M. Jean Koffi',
+    yearsOfService: '35 ans de service',
+    date: '2024-02-01',
+    location: 'Bouaké',
+    description: 'Après 35 années de service dévoué au sein de l\'administration, M. Jean Koffi prend une retraite bien méritée.',
+    thought: 'Nous lui souhaitons une retraite heureuse et épanouie ! Merci pour tout ce que vous avez apporté.',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }, {
+    id: '2',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de Mme Adjoua Koffi',
+    memberName: 'Mme Adjoua Koffi',
+    yearsOfService: '30 ans de service',
+    date: '2024-01-20',
+    location: 'Abidjan',
+    description: 'Mme Adjoua Koffi termine sa carrière après 30 années d\'excellence dans ses fonctions.',
+    thought: 'Votre dévouement restera gravé dans nos mémoires. Profitez pleinement de cette nouvelle étape !',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }, {
+    id: '3',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de M.Konan Yao',
+    memberName: 'M. Konan Yao',
+    yearsOfService: '40 ans de service',
+    date: '2024-03-15',
+    location: 'Yamoussoukro',
+    description: 'Après 4 décennies de service exemplaire, M. Konan Yao entame sa retraite.',
+    thought: 'Quarante années de dévouement ! Vous avez marqué l\'histoire de notre institution.',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }, {
+    id: '4',
+    eventType: 'Retraite',
+    category: 'Retraite',
+    title: 'Départ en retraite de Mme Fatou Traoré',
+    memberName: 'Mme Fatou Traoré',
+    yearsOfService: '28 ans de service',
+    date: '2024-02-28',
+    location: 'San-Pédro',
+    description: 'Mme Fatou Traoré clôture brillamment sa carrière après 28 années de loyaux services.',
+    thought: 'Votre sourire et votre professionnalisme vont nous manquer. Belle retraite !',
+    keyword: 'Retraite',
+    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
+  }];
+  return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img src="/lovable-uploads/bc525a09-b8a2-469f-b451-2f78bc437b6e.png" alt="Background événements heureux" className="w-full h-full object-cover" />
+            <img src="/lovable-uploads/c88b877d-abfc-430e-a6d4-5a7bc89ff587.png" alt="Background départs retraite" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
-              Événements Heureux
+            
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+              Départs en Retraite
             </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
-              Célébrons ensemble les moments de joie, les réussites et les bonheurs qui illuminent notre communauté
+            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+              Honorons ceux qui ont consacré leur carrière au service de notre institution et célébrons leur nouvelle étape de vie
             </p>
           </div>
         </section>
 
         {/* Events Section */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-0">
+        <section className={`py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
+          <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos moments de bonheur</h2>
+              <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos retraités honorés</h2>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
-                Partageons la joie des naissances, célébrons les promotions et honorons les distinctions de nos membres.
+                Rendons hommage à nos collègues qui prennent une retraite bien méritée après des années de service dévoué.
               </p>
             </div>
 
-            {loading ? (
-              <div className="text-center py-8">
-                <p className="text-gray-600">Chargement des événements...</p>
-              </div>
-            ) : heureuxEvents.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-gray-600">Aucun événement heureux disponible pour le moment.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {heureuxEvents.map(event => {
-                  const IconComponent = getCategoryIcon(event.category);
-                  return (
-                    <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
-                      <div className="aspect-video overflow-hidden">
-                        <img src={event.image_url || '/placeholder-image.jpg'} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {retraiteEvents.map(event => <Card key={event.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-blue-500 bg-blue-50">
+                  <div className="aspect-video overflow-hidden">
+                    <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <CardHeader>
+                    <CardTitle className={`text-blue-800 ${isMobile ? 'text-base' : 'text-xl'} flex items-center`}>
+                      <Trophy className="w-5 h-5 mr-2" />
+                      {event.title}
+                    </CardTitle>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <div className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        {new Date(event.date).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                       </div>
-                      <CardHeader>
-                        <CardTitle className={`text-green-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
-                          <IconComponent className="w-5 h-5 mr-2" />
-                          {event.title}
-                        </CardTitle>
-                        <div className="space-y-2 text-sm text-gray-600">
-                          <div className="flex items-center">
-                            <Calendar className="w-4 h-4 mr-2" />
-                            {formatEventDate(event.event_date)}
-                          </div>
-                          {event.location && (
-                            <div className="flex items-center">
-                              <MapPin className="w-4 h-4 mr-2" />
-                              {event.location}
-                            </div>
-                          )}
-                          <div className="flex items-center">
-                            <Users className="w-4 h-4 mr-2" />
-                            {event.member_name}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
-                        <div className="space-y-2 mb-4">
-                          <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                        </div>
-                        {event.message && (
-                          <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                            <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
-                              <Heart className="h-3 w-3 inline mr-1" />
-                              {event.message}
-                            </p>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            )}
+                      <div className="flex items-center">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        {event.location}
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="w-4 h-4 mr-2" />
+                        {event.memberName}
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="w-4 h-4 mr-2" />
+                        {event.yearsOfService}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3 text-left`}>{event.description}</p>
+                    <div className="space-y-2 mb-4">
+                      <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                      <p className="text-sm"><strong>Années de service:</strong> {event.yearsOfService}</p>
+                      <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
+                    </div>
+                    <div className="bg-blue-100 p-3 rounded-lg border-l-2 border-blue-300">
+                      <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-800 italic`}>
+                        <Heart className="h-3 w-3 inline mr-1" />
+                        {event.thought}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>)}
+            </div>
           </div>
         </section>
 
         {/* Statistics Section */}
-        <section className={`bg-green-50 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`bg-blue-50 py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
-              Nos bonheurs en chiffres
+              Statistiques des départs
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center p-6 bg-white">
-                <Heart className="w-12 h-12 mx-auto mb-4 text-pink-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>
-                  {heureuxEvents.filter(event => event.category === 'Mariage').length}
-                </h3>
-                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-pink-700`}>Mariages célébrés</p>
+                <Trophy className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>15</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Départs cette année</p>
               </Card>
               <Card className="text-center p-6 bg-white">
-                <Star className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>
-                  {heureuxEvents.filter(event => event.category === 'Promotion').length}
-                </h3>
-                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-yellow-700`}>Promotions célébrées</p>
+                <Clock className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>32 ans</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Moyenne d'années de service</p>
               </Card>
               <Card className="text-center p-6 bg-white">
-                <Award className="w-12 h-12 mx-auto mb-4 text-purple-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>
-                  {heureuxEvents.filter(event => event.category === 'Distinction').length}
-                </h3>
-                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-purple-700`}>Distinctions honorées</p>
+                <Users className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-blue-800 mb-2`}>450+</h3>
+                <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-700`}>Années cumulées d'expérience</p>
               </Card>
             </div>
           </div>
         </section>
       </div>
-      
-      <Dialog open={!!previewEvent} onOpenChange={open => {
-        if (!open) setPreviewEvent(null);
-      }}>
-        <DialogContent
-          className="mx-4 sm:mx-6 md:mx-8 w-[calc(100vw-2rem)] sm:w-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto"
-        >
-          {previewEvent && (
-            <>
-              <DialogHeader>
-                <DialogTitle>{previewEvent.title}</DialogTitle>
-                <DialogDescription>
-                  {previewEvent.category} • {formatEventDate(previewEvent.event_date)}{previewEvent.location ? ` • ${previewEvent.location}` : ''}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="overflow-hidden rounded-md">
-                  <img src={previewEvent.image_url || '/placeholder-image.jpg'} alt={previewEvent.title} className="w-full h-auto max-h-[70vh] object-contain" />
-                </div>
-                <div className="text-sm text-gray-700">
-                  <div className="flex items-center mb-2">
-                    <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
-                  </div>
-                  <p className="mb-3">{previewEvent.description}</p>
-                  {previewEvent.message && (
-                    <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                      <p className="italic text-green-800">
-                        <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.message}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default DepartsRetraite;
