@@ -183,24 +183,17 @@ const ActualiteDetail = () => {
               <div className="prose prose-lg max-w-none">
                 {actualite.content ? (
                   <div 
-                    className="text-gray-700 leading-relaxed 
-                    [&>h1]:text-gray-900 [&>h1]:font-bold [&>h1]:text-2xl [&>h1]:mb-4 [&>h1]:mt-6
-                    [&>h2]:text-gray-900 [&>h2]:font-bold [&>h2]:text-xl [&>h2]:mb-3 [&>h2]:mt-5
-                    [&>h3]:text-gray-900 [&>h3]:font-semibold [&>h3]:text-lg [&>h3]:mb-3 [&>h3]:mt-4
-                    [&>h4]:text-gray-900 [&>h4]:font-semibold [&>h4]:text-base [&>h4]:mb-2 [&>h4]:mt-3
-                    [&>p]:text-gray-700 [&>p]:mb-4 [&>p]:leading-relaxed
-                    [&>ul]:text-gray-700 [&>ul]:mb-4 [&>ul]:ml-6 [&>ul]:list-disc
-                    [&>ol]:text-gray-700 [&>ol]:mb-4 [&>ol]:ml-6 [&>ol]:list-decimal
-                    [&>li]:mb-2
-                    [&>strong]:font-bold [&>strong]:text-gray-900
-                    [&>b]:font-bold [&>b]:text-gray-900
-                    [&>em]:italic [&>em]:text-gray-800
-                    [&>i]:italic [&>i]:text-gray-800
-                    [&>u]:underline
-                    [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:pl-4 [&>blockquote]:italic [&>blockquote]:text-gray-600 [&>blockquote]:my-4
-                    [&>a]:text-primary [&>a]:underline [&>a]:hover:text-primary/80
-                    [&>br]:mb-2"
-                    dangerouslySetInnerHTML={{ __html: actualite.content }}
+                    className="text-gray-700 leading-relaxed whitespace-pre-wrap"
+                    style={{
+                      lineHeight: '1.8',
+                    }}
+                    dangerouslySetInnerHTML={{ 
+                      __html: actualite.content
+                        .replace(/\n/g, '<br/>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                        .replace(/__(.*?)__/g, '<u>$1</u>')
+                    }}
                   />
                 ) : (
                   <p className="text-gray-700 leading-relaxed">
@@ -208,6 +201,14 @@ const ActualiteDetail = () => {
                   </p>
                 )}
               </div>
+
+              {/* Debug info pour voir le contenu brut */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="mt-4 p-4 bg-gray-100 rounded text-xs">
+                  <strong>Debug - Contenu brut:</strong>
+                  <pre className="whitespace-pre-wrap">{actualite.content}</pre>
+                </div>
+              )}
 
               {/* Author Section */}
               <div className="mt-12 pt-8 border-t border-gray-100">
