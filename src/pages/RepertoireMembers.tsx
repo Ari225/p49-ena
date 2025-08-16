@@ -39,9 +39,10 @@ const RepertoireMembers = () => {
       try {
         setLoading(true);
         console.log('Fetching members from Supabase...');
-        const { data, error } = await (supabase as any)
-          .from('members')
-          .select('*');
+        
+        // Utiliser la fonction RPC get_member_directory au lieu d'un appel direct
+        const { data, error } = await supabase
+          .rpc('get_member_directory');
         
         console.log('Raw data from Supabase:', data);
         console.log('Error from Supabase:', error);
@@ -56,17 +57,17 @@ const RepertoireMembers = () => {
         const formattedMembers: Member[] = (data || [])
           .map((member: any) => ({
             id: member.id,
-            firstName: member['Pr�noms'] || '',
-            lastName: member['Nom de famille'] || '',
-            position: member['Emploi fonction publique'] || '',
-            locality: member['Lieu d\'exercice'] || '',
-            photo: member['Photo'] || '',
-            whatsapp: member['WhatsApp'] ? member['WhatsApp'].toString() : null,
-            matricule: member['Matricule'] || '',
+            firstName: member.prenoms || '',
+            lastName: member.nom_famille || '',
+            position: member.emploi_fonction_publique || '',
+            locality: member.lieu_exercice || '',
+            photo: member.photo || '',
+            whatsapp: member.has_whatsapp ? 'true' : null,
+            matricule: member.matricule || '',
             socialMedia: {
-              facebook: member['Facebook'] || null,
-              instagram: member['instagram'] || null,
-              linkedin: member['linkedIn'] || null
+              facebook: member.has_facebook ? 'true' : null,
+              instagram: member.has_instagram ? 'true' : null,
+              linkedin: member.has_linkedin ? 'true' : null
             }
           }))
           .filter(member => member.firstName.trim() || member.lastName.trim()) // Filter out empty names
