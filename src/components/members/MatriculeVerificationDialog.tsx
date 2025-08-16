@@ -42,21 +42,22 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
     }
 
     try {
-      // Vérifier que le matricule existe dans la base de données
-      const { data: memberData, error: memberError } = await supabase
-        .from('members')
-        .select('id, Matricule')
-        .eq('Matricule', matricule.toUpperCase())
-        .maybeSingle();
+      // Vérifier que le matricule existe dans la base de données en utilisant la fonction qui fonctionne déjà
+      const { data: memberDirectory, error: memberError } = await supabase.rpc('get_member_directory');
 
       if (memberError) {
-        console.error('Error checking matricule:', memberError);
+        console.error('Error fetching member directory:', memberError);
         setError('Erreur lors de la vérification. Veuillez réessayer.');
         setIsLoading(false);
         return;
       }
 
-      if (!memberData) {
+      // Vérifier si le matricule existe dans la liste des membres
+      const memberExists = memberDirectory?.some((member: any) => 
+        member.matricule && member.matricule.toUpperCase() === matricule.toUpperCase()
+      );
+
+      if (!memberExists) {
         setError('Ce matricule n\'existe pas dans notre base de données. Veuillez vérifier votre saisie.');
         setIsLoading(false);
         return;
