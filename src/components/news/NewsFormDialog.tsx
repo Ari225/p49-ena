@@ -19,6 +19,7 @@ const formSchema = z.object({
   details: z.string().min(1, 'Les détails sont requis'),
   category: z.string().min(1, 'La catégorie est requise'),
   reading_time: z.number().min(1, 'Le temps de lecture est requis'),
+  published_by: z.string().min(1, 'L\'auteur est requis'),
   published_date: z.string().min(1, 'La date est requise'),
   image: z.any().optional()
 });
@@ -31,8 +32,8 @@ interface NewsItem {
   published_date: string;
   image_url?: string;
   reading_time?: number;
+  published_by?: string;
   details?: string;
-  is_visible?: boolean;
 }
 
 interface NewsFormDialogProps {
@@ -63,6 +64,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
       details: '',
       category: '',
       reading_time: 3,
+      published_by: '',
       published_date: new Date().toISOString().split('T')[0]
     }
   });
@@ -75,6 +77,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
         details: editingNews.details || '',
         category: editingNews.category,
         reading_time: editingNews.reading_time || 3,
+        published_by: editingNews.published_by || '',
         published_date: editingNews.published_date
       });
       setDetailsText(editingNews.details || '');
@@ -88,6 +91,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
         details: '',
         category: '',
         reading_time: 3,
+        published_by: '',
         published_date: new Date().toISOString().split('T')[0]
       });
       setDetailsText('');
@@ -395,6 +399,19 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="published_by"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Publié par</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nom de l'auteur" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
             <div className="flex justify-end space-x-2 pt-4">

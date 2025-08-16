@@ -429,13 +429,9 @@ export type Database = {
           category: string
           created_at: string
           created_by: string | null
-          details: string | null
           id: string
           image_url: string | null
-          is_visible: boolean | null
-          published_by: string | null
           published_date: string
-          reading_time: number | null
           summary: string | null
           title: string
           updated_at: string
@@ -444,13 +440,9 @@ export type Database = {
           category: string
           created_at?: string
           created_by?: string | null
-          details?: string | null
           id?: string
           image_url?: string | null
-          is_visible?: boolean | null
-          published_by?: string | null
           published_date: string
-          reading_time?: number | null
           summary?: string | null
           title: string
           updated_at?: string
@@ -459,13 +451,9 @@ export type Database = {
           category?: string
           created_at?: string
           created_by?: string | null
-          details?: string | null
           id?: string
           image_url?: string | null
-          is_visible?: boolean | null
-          published_by?: string | null
           published_date?: string
-          reading_time?: number | null
           summary?: string | null
           title?: string
           updated_at?: string
