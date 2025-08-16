@@ -41,6 +41,7 @@ import Gallery from "./pages/Gallery";
 import MediaDetail from "./pages/MediaDetail";
 import Journal from "./pages/Journal";
 import Login from "./pages/Login";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Regionales from "./pages/Regionales";
 import RenforcementCapacites from "./pages/RenforcementCapacites";
@@ -152,6 +153,7 @@ const App = () => (
               
               {/* Auth */}
               <Route path="/login" element={<Login />} />
+              <Route path="/auth" element={<Auth />} />
               
               {/* Dashboard Routes */}
               <Route path="/dashboard/blog" element={<DashboardBlog />} />

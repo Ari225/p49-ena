@@ -1,9 +1,9 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { Session } from '@supabase/supabase-js';
 
-export interface User {
+export interface AuthUser {
   id: string;
   username: string;
   firstName: string;
@@ -13,134 +13,186 @@ export interface User {
   image_url?: string;
 }
 
+// Alias pour compatibilité
+export type User = AuthUser;
+
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
+  session: Session | null;
+  signUp: (email: string, password: string, userData: { username: string; firstName: string; lastName: string; role?: string }) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signOut: () => Promise<void>;
+  loading: boolean;
+  // Méthodes de compatibilité
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
-  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Charger l'utilisateur depuis localStorage au démarrage
   useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      try {
-        const parsedUser = JSON.parse(savedUser);
-        console.log('Utilisateur chargé depuis localStorage:', parsedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error('Error parsing saved user:', error);
-        localStorage.removeItem('currentUser');
+    // Établir l'écoute des changements d'auth d'abord
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
+        
+        setSession(session);
+        
+        if (session?.user) {
+          // Récupérer les données du profil utilisateur
+          setTimeout(async () => {
+            try {
+              // Utiliser une requête RPC sécurisée pour récupérer le profil
+              const { data: profile, error } = await supabase
+                .rpc('get_secure_user_info', { target_user_id: session.user.id });
+
+              if (error) {
+                console.error('Error fetching profile:', error);
+                setUser(null);
+                return;
+              }
+
+              if (profile && profile.length > 0) {
+                const profileData = profile[0];
+                const authUser: AuthUser = {
+                  id: profileData.id,
+                  username: profileData.username,
+                  firstName: profileData.first_name || '',
+                  lastName: profileData.last_name || '',
+                  email: profileData.email || session.user.email || '',
+                  role: profileData.role,
+                  image_url: profileData.image_url
+                };
+                setUser(authUser);
+                console.log('User profile loaded:', authUser);
+              }
+            } catch (error) {
+              console.error('Error in profile fetch:', error);
+              setUser(null);
+            }
+          }, 0);
+        } else {
+          setUser(null);
+        }
+        
+        setLoading(false);
       }
-    }
+    );
+
+    // Puis vérifier la session existante
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session check:', session?.user?.id);
+      // L'état sera géré par le listener ci-dessus
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
-    setLoading(true);
-    
+  const signUp = async (
+    email: string, 
+    password: string, 
+    userData: { username: string; firstName: string; lastName: string; role?: string }
+  ) => {
     try {
-      console.log('=== DÉBUT DE LA CONNEXION ===');
-      console.log('Tentative de connexion pour:', username);
+      setLoading(true);
       
-      // Auth via RPC (server-side verification)
-      const { data: authResult, error: authError } = await supabase
-        .rpc('authenticate_app_user', { _username: username, _password: password });
-
-      if (authError) {
-        console.error('Erreur Supabase RPC:', authError);
-        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
-        setLoading(false);
-        return false;
-      }
-
-      if (!authResult || !Array.isArray(authResult) || authResult.length === 0) {
-        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
-        setLoading(false);
-        return false;
-      }
-
-      const foundUser = authResult[0];
-
-      const user: User = {
-        id: foundUser.id,
-        username: foundUser.username,
-        firstName: foundUser.first_name || '',
-        lastName: foundUser.last_name || '',
-        email: foundUser.email,
-        role: foundUser.role,
-        image_url: foundUser.image_url
-      };
-      
-      // NOUVEAU: Créer/synchroniser l'utilisateur avec Supabase Auth
-      try {
-        console.log('Tentative de connexion avec Supabase Auth...');
-        
-        // Essayer de se connecter avec un mot de passe temporaire basé sur l'ID utilisateur
-        const tempPassword = `temp_${foundUser.id}`;
-        const { data: signInResult, error: signInError } = await supabase.auth.signInWithPassword({
-          email: foundUser.email,
-          password: tempPassword
-        });
-        
-        if (signInError && signInError.message.includes('Invalid login credentials')) {
-          console.log('Utilisateur Supabase Auth inexistant, création en cours...');
-          
-          // Créer l'utilisateur avec Supabase Auth
-          const { error: signUpError } = await supabase.auth.signUp({
-            email: foundUser.email,
-            password: tempPassword,
-            options: {
-              data: {
-                username: foundUser.username,
-                first_name: foundUser.first_name,
-                last_name: foundUser.last_name
-              }
-            }
-          });
-          
-          if (signUpError) {
-            console.warn('Erreur lors de la création de l\'utilisateur Supabase:', signUpError);
-          } else {
-            console.log('Utilisateur Supabase créé avec succès');
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            username: userData.username,
+            first_name: userData.firstName,
+            last_name: userData.lastName,
+            role: userData.role || 'redacteur'
           }
-        } else if (!signInError) {
-          console.log('Connexion Supabase réussie');
         }
-      } catch (supabaseError) {
-        console.warn('Erreur lors de la synchronisation Supabase:', supabaseError);
-        // Ne pas bloquer la connexion si la synchronisation échoue
+      });
+
+      if (error) {
+        toast.error('Erreur lors de l\'inscription: ' + error.message);
+        return { error };
       }
-      
-      setUser(user);
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      toast.success(`Connexion réussie ! Bienvenue ${user.firstName || user.username}`);
-      setLoading(false);
-      return true;
-      
+
+      toast.success('Inscription réussie ! Vérifiez votre email.');
+      return { error: null };
     } catch (error) {
-      console.error('Erreur de connexion:', error);
-      toast.error('Erreur de réseau. Veuillez vérifier votre connexion.');
+      console.error('Signup error:', error);
+      toast.error('Erreur réseau lors de l\'inscription');
+      return { error };
+    } finally {
       setLoading(false);
-      return false;
     }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      setLoading(true);
+      
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        toast.error('Email ou mot de passe incorrect');
+        return { error };
+      }
+
+      toast.success('Connexion réussie !');
+      return { error: null };
+    } catch (error) {
+      console.error('Signin error:', error);
+      toast.error('Erreur réseau lors de la connexion');
+      return { error };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      setUser(null);
+      setSession(null);
+      toast.success('Déconnexion réussie');
+    } catch (error) {
+      console.error('Signout error:', error);
+      toast.error('Erreur lors de la déconnexion');
+    }
+  };
+
+  // Fonction de compatibilité pour l'ancien système
+  const login = async (username: string, password: string): Promise<boolean> => {
+    // Pour la transition, essayer de se connecter avec l'email
+    const { error } = await signIn(username.includes('@') ? username : `${username}@example.com`, password);
+    return !error;
   };
 
   const logout = () => {
-    console.log('Déconnexion de l\'utilisateur');
-    setUser(null);
-    localStorage.removeItem('currentUser');
-    toast.success('Déconnexion réussie');
+    signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session,
+      signUp, 
+      signIn, 
+      signOut, 
+      loading,
+      // Compatibilité avec l'ancien code
+      login, 
+      logout 
+    }}>
       {children}
     </AuthContext.Provider>
   );

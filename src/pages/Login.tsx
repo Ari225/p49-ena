@@ -16,6 +16,11 @@ const Login = () => {
     }
   }, [user, navigate]);
 
+  // Rediriger vers la nouvelle page d'auth
+  useEffect(() => {
+    navigate('/auth');
+  }, [navigate]);
+
   return (
     <Layout>
       <LoginHero />
