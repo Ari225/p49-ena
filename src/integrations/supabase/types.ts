@@ -690,6 +690,10 @@ export type Database = {
         Args: { details?: Json; event_type: string; user_id?: string }
         Returns: undefined
       }
+      secure_newsletter_subscribe: {
+        Args: { subscriber_email: string }
+        Returns: Json
+      }
       security_audit_report: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -707,6 +711,15 @@ export type Database = {
           recommendations: string[]
           security_status: string
           timestamp_check: string
+        }[]
+      }
+      security_status_final: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          check_category: string
+          details: string
+          risk_level: string
+          status: string
         }[]
       }
       sp_inserer_membre: {
