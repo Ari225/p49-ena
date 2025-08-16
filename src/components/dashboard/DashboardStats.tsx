@@ -50,16 +50,16 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ isMobile = false }) => 
           .from('activities')
           .select('*', { count: 'exact', head: true });
 
-        // Comptage des événements (sociaux + difficiles)
-        const { count: socialEventsCount } = await supabase
-          .from('social_events')
+        // Comptage des événements (heureux + difficiles)
+        const { count: happyEventsCount } = await supabase
+          .from('happy_events')
           .select('*', { count: 'exact', head: true });
 
         const { count: difficultEventsCount } = await supabase
           .from('difficult_events')
           .select('*', { count: 'exact', head: true });
 
-        const totalEvents = (socialEventsCount || 0) + (difficultEventsCount || 0);
+        const totalEvents = (happyEventsCount || 0) + (difficultEventsCount || 0);
 
         // Visiteurs mensuels - pour l'instant simulation, à remplacer par une vraie solution analytics
         const currentMonth = new Date().getMonth();

@@ -62,18 +62,18 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
           });
         }
 
-        // Récupérer les événements sociaux récents
-        const { data: socialEvents } = await supabase
-          .from('social_events')
+        // Récupérer les événements heureux récents
+        const { data: happyEvents } = await supabase
+          .from('happy_events')
           .select('title, created_at')
           .order('created_at', { ascending: false })
           .limit(2);
         
-        if (socialEvents) {
-          socialEvents.forEach(event => {
+        if (happyEvents) {
+          happyEvents.forEach(event => {
             const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
             recentActivities.push({
-              title: 'Nouvel événement social créé',
+              title: 'Nouvel événement heureux créé',
               description: `Événement "${event.title}" créé il y a ${timeAgo}h`,
               color: 'bg-purple-500',
               timestamp: new Date(event.created_at).getTime()
@@ -157,15 +157,15 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
           });
         }
 
-        // Récupérer les événements heureux récents
-        const { data: happyEvents } = await supabase
+        // Récupérer les événements heureux récents (deuxième appel)
+        const { data: moreHappyEvents } = await supabase
           .from('happy_events')
           .select('title, created_at')
           .order('created_at', { ascending: false })
           .limit(1);
         
-        if (happyEvents) {
-          happyEvents.forEach(event => {
+        if (moreHappyEvents) {
+          moreHappyEvents.forEach(event => {
             const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
             recentActivities.push({
               title: 'Événement heureux ajouté',

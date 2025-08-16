@@ -173,10 +173,10 @@ const ModifierMembre: React.FC = () => {
       console.log('Données à sauvegarder:', updateData);
       console.log('ID du membre:', memberData.id);
 
-      // Utiliser une fonction sécurisée pour la mise à jour (nous devons la créer)
+      // Utiliser la fonction sécurisée pour la mise à jour
       const { error } = await supabase.rpc('update_member_info', {
-        member_id: memberData.id,
-        update_data: updateData
+        p_member_id: memberData.id,
+        p_update_data: updateData
       });
 
       if (error) throw error;
