@@ -167,46 +167,58 @@ const DashboardEvenementsSociaux = () => {
         formData.date.split('/').reverse().join('-') : 
         formData.date);
 
-      let tableName = '';
-      let insertData: any = {
-        title: formData.title,
-        member_name: formData.memberName,
-        event_date: eventDate.toISOString().split('T')[0],
-        description: formData.description,
-        created_by: user?.id,
-        category: formData.category === 'autre' ? formData.customCategory : formData.category,
-        custom_category: formData.category === 'autre' ? formData.customCategory : null
-      };
-
+      let result;
+      
       // Determine table and additional fields based on event type
       if (formData.eventType === 'Heureux') {
-        tableName = 'happy_events';
-        insertData.message = formData.thought;
-        insertData.location = formData.location;
-      } else if (formData.eventType === 'Retraite') {
-        tableName = 'retirement_departures';
-        insertData.tribute_message = formData.thought;
-        insertData.department = formData.location;
-        if (formData.yearsOfService) {
-          insertData.years_of_service = parseInt(formData.yearsOfService);
-        }
-        insertData.retirement_date = eventDate.toISOString().split('T')[0];
-        insertData.position = 'Non spécifié';
-      } else if (formData.eventType === 'Malheureux') {
-        tableName = 'difficult_events';
-        insertData.family_support_message = formData.thought;
-      }
-
-      let result;
-      if (formData.eventType === 'Heureux') {
+        const insertData = {
+          title: formData.title,
+          member_name: formData.memberName,
+          event_date: eventDate.toISOString().split('T')[0],
+          description: formData.description,
+          message: formData.thought,
+          location: formData.location,
+          category: formData.category === 'autre' ? formData.customCategory : formData.category,
+          custom_category: formData.category === 'autre' ? formData.customCategory : null,
+          created_by: user?.id
+        };
+        
         result = await supabase
           .from('happy_events')
           .insert(insertData);
+          
       } else if (formData.eventType === 'Retraite') {
+        const insertData: any = {
+          member_name: formData.memberName,
+          retirement_date: eventDate.toISOString().split('T')[0],
+          tribute_message: formData.thought,
+          department: formData.location,
+          position: 'Non spécifié',
+          category: 'retraite',
+          custom_category: null,
+          created_by: user?.id
+        };
+        
+        if (formData.yearsOfService) {
+          insertData.years_of_service = parseInt(formData.yearsOfService);
+        }
+        
         result = await supabase
           .from('retirement_departures')
           .insert(insertData);
+          
       } else if (formData.eventType === 'Malheureux') {
+        const insertData = {
+          title: formData.title,
+          member_name: formData.memberName,
+          event_date: eventDate.toISOString().split('T')[0],
+          description: formData.description,
+          family_support_message: formData.thought,
+          category: formData.category === 'autre' ? formData.customCategory : formData.category,
+          custom_category: formData.category === 'autre' ? formData.customCategory : null,
+          created_by: user?.id
+        };
+        
         result = await supabase
           .from('difficult_events')
           .insert(insertData);

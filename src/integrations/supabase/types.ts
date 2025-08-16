@@ -177,6 +177,7 @@ export type Database = {
           category: string
           created_at: string
           created_by: string | null
+          custom_category: string | null
           description: string | null
           event_date: string
           family_support_message: string | null
@@ -190,6 +191,7 @@ export type Database = {
           category: string
           created_at?: string
           created_by?: string | null
+          custom_category?: string | null
           description?: string | null
           event_date: string
           family_support_message?: string | null
@@ -203,6 +205,7 @@ export type Database = {
           category?: string
           created_at?: string
           created_by?: string | null
+          custom_category?: string | null
           description?: string | null
           event_date?: string
           family_support_message?: string | null
@@ -227,6 +230,7 @@ export type Database = {
           category: string
           created_at: string
           created_by: string | null
+          custom_category: string | null
           description: string | null
           event_date: string
           id: string
@@ -241,6 +245,7 @@ export type Database = {
           category: string
           created_at?: string
           created_by?: string | null
+          custom_category?: string | null
           description?: string | null
           event_date: string
           id?: string
@@ -255,6 +260,7 @@ export type Database = {
           category?: string
           created_at?: string
           created_by?: string | null
+          custom_category?: string | null
           description?: string | null
           event_date?: string
           id?: string
@@ -506,8 +512,10 @@ export type Database = {
       }
       retirement_departures: {
         Row: {
+          category: string | null
           created_at: string
           created_by: string | null
+          custom_category: string | null
           department: string | null
           id: string
           image_url: string | null
@@ -519,8 +527,10 @@ export type Database = {
           years_of_service: number | null
         }
         Insert: {
+          category?: string | null
           created_at?: string
           created_by?: string | null
+          custom_category?: string | null
           department?: string | null
           id?: string
           image_url?: string | null
@@ -532,8 +542,10 @@ export type Database = {
           years_of_service?: number | null
         }
         Update: {
+          category?: string | null
           created_at?: string
           created_by?: string | null
+          custom_category?: string | null
           department?: string | null
           id?: string
           image_url?: string | null
