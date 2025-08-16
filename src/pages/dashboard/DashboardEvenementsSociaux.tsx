@@ -253,6 +253,29 @@ const DashboardEvenementsSociaux = () => {
         formData.date.split('/').reverse().join('-') : 
         formData.date);
 
+      let imageUrl = null;
+
+      // Upload image if provided
+      if (formData.image) {
+        const fileExt = formData.image.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('media-files')
+          .upload(`events/${fileName}`, formData.image);
+
+        if (uploadError) {
+          throw new Error(`Erreur lors du téléchargement de l'image: ${uploadError.message}`);
+        }
+
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('media-files')
+          .getPublicUrl(uploadData.path);
+        
+        imageUrl = urlData.publicUrl;
+      }
+
       let result;
       
       // Determine table and additional fields based on event type
@@ -266,6 +289,7 @@ const DashboardEvenementsSociaux = () => {
           location: formData.location,
           category: formData.category === 'autre' ? formData.customCategory : formData.category,
           custom_category: formData.category === 'autre' ? formData.customCategory : null,
+          image_url: imageUrl,
           created_by: user?.id
         };
         
@@ -282,6 +306,7 @@ const DashboardEvenementsSociaux = () => {
           position: 'Non spécifié',
           category: 'retraite',
           custom_category: null,
+          image_url: imageUrl,
           created_by: user?.id
         };
         
@@ -302,6 +327,7 @@ const DashboardEvenementsSociaux = () => {
           family_support_message: formData.thought,
           category: formData.category === 'autre' ? formData.customCategory : formData.category,
           custom_category: formData.category === 'autre' ? formData.customCategory : null,
+          image_url: imageUrl,
           created_by: user?.id
         };
         
@@ -341,8 +367,14 @@ const DashboardEvenementsSociaux = () => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    
+    if (type === 'file') {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      setFormData(prev => ({ ...prev, [name]: file }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSelectChange = (name: string, value: string) => {
