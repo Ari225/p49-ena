@@ -8,83 +8,32 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Calendar, MapPin, Users, Plus, Edit, Trash2, Heart, PartyPopper, Frown } from 'lucide-react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Plus, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
+import { SocialEventCard } from '@/components/social-events/SocialEventCard';
 
 interface SocialEvent {
   id: string;
-  eventType: string;
-  category: string;
   title: string;
-  memberName: string;
-  date: string;
-  location: string;
-  description: string;
-  thought: string;
-  image: string;
-  yearsOfService?: string;
+  member_name: string;
+  event_date: string;
+  category: string;
+  description?: string;
+  image_url?: string;
 }
-
-const mockEvents: SocialEvent[] = [
-  {
-    id: '1',
-    eventType: 'Heureux',
-    category: 'Naissances',
-    title: 'Naissance de bébé Marie',
-    memberName: 'Famille Kouassi',
-    date: '2024-01-15',
-    location: 'Abidjan',
-    description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
-    thought: 'Félicitations aux heureux parents !',
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
-  },
-  {
-    id: '2',
-    eventType: 'Heureux',
-    category: 'Promotions',
-    title: 'Promotion au grade de Directeur',
-    memberName: 'M. Yao Kouadio',
-    date: '2024-02-10',
-    location: 'Yamoussoukro',
-    description: 'M. Yao Kouadio a été promu au grade de Directeur.',
-    thought: 'Félicitations pour cette promotion bien méritée !',
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
-  },
-  {
-    id: '3',
-    eventType: 'Retraite',
-    category: 'Retraite',
-    title: 'Départ en retraite de M. Koffi',
-    memberName: 'M. Jean Koffi',
-    date: '2024-02-01',
-    location: 'Bouaké',
-    description: 'Après 35 années de service dévoué, M. Koffi prend sa retraite.',
-    thought: 'Nous lui souhaitons une retraite heureuse et épanouie !',
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
-  },
-  {
-    id: '4',
-    eventType: 'Malheureux',
-    category: 'Décès',
-    title: 'Décès de Mme Adjoua',
-    memberName: 'Famille Adjoua',
-    date: '2024-01-20',
-    location: 'Daloa',
-    description: 'C\'est avec tristesse que nous annonçons le décès de Mme Adjoua.',
-    thought: 'Nos pensées accompagnent la famille en ces moments difficiles.',
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop"
-  }
-];
 
 const DashboardEvenementsSociaux = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const [events, setEvents] = useState<SocialEvent[]>(mockEvents);
+  const [events, setEvents] = useState<SocialEvent[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<SocialEvent | null>(null);
+  const [deleteEventId, setDeleteEventId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     eventType: '',
     category: '',
@@ -125,30 +74,77 @@ const DashboardEvenementsSociaux = () => {
     ]
   };
 
-  const handleFormSuccess = () => {
-    setShowForm(false);
+  // Charger les événements depuis la base de données
+  const loadEvents = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('social_events')
+        .select('*')
+        .order('event_date', { ascending: false });
+
+      if (error) throw error;
+      
+      setEvents(data || []);
+    } catch (error) {
+      console.error('Error loading events:', error);
+      toast.error('Erreur lors du chargement des événements');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleFormCancel = () => {
-    setShowForm(false);
-  };
+  useEffect(() => {
+    loadEvents();
+  }, []);
 
   const handleEditEvent = (event: SocialEvent) => {
-    // TODO: Implement edit functionality
-    console.log('Edit event:', event);
+    setEditingEvent(event);
+    setFormData({
+      eventType: '', // Nous ne stockons pas le type dans la DB
+      category: event.category,
+      title: event.title,
+      memberName: event.member_name,
+      date: event.event_date,
+      location: '',
+      description: event.description || '',
+      thought: '',
+      image: null,
+      yearsOfService: ''
+    });
+    setShowForm(true);
   };
 
-  const handleDeleteEvent = (event: SocialEvent) => {
-    // TODO: Implement delete functionality
-    console.log('Delete event:', event);
+  const handleDeleteEvent = (id: string) => {
+    setDeleteEventId(id);
+  };
+
+  const confirmDeleteEvent = async () => {
+    if (!deleteEventId) return;
+
+    try {
+      const { error } = await supabase
+        .from('social_events')
+        .delete()
+        .eq('id', deleteEventId);
+
+      if (error) throw error;
+
+      toast.success('Événement supprimé avec succès');
+      setDeleteEventId(null);
+      loadEvents(); // Recharger la liste
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      toast.error('Erreur lors de la suppression');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation - all fields required except location
-    if (!formData.eventType || !formData.category || !formData.title || 
-        !formData.memberName || !formData.date || !formData.description || !formData.thought) {
+    if (!formData.category || !formData.title || 
+        !formData.memberName || !formData.date || !formData.description) {
       toast.error('Tous les champs sont obligatoires sauf le lieu');
       return;
     }
@@ -159,21 +155,40 @@ const DashboardEvenementsSociaux = () => {
         formData.date.split('/').reverse().join('-') : 
         formData.date);
 
-      const { data, error } = await supabase
-        .from('social_events')
-        .insert({
-          category: formData.category,
-          title: formData.title,
-          member_name: formData.memberName,
-          event_date: eventDate.toISOString().split('T')[0],
-          description: formData.description,
-          created_by: user?.id
-        });
+      if (editingEvent) {
+        // Mode édition
+        const { error } = await supabase
+          .from('social_events')
+          .update({
+            category: formData.category,
+            title: formData.title,
+            member_name: formData.memberName,
+            event_date: eventDate.toISOString().split('T')[0],
+            description: formData.description,
+          })
+          .eq('id', editingEvent.id);
 
-      if (error) throw error;
+        if (error) throw error;
+        toast.success('Événement modifié avec succès');
+      } else {
+        // Mode création
+        const { error } = await supabase
+          .from('social_events')
+          .insert({
+            category: formData.category,
+            title: formData.title,
+            member_name: formData.memberName,
+            event_date: eventDate.toISOString().split('T')[0],
+            description: formData.description,
+            created_by: user?.id
+          });
 
-      toast.success('Événement ajouté avec succès');
+        if (error) throw error;
+        toast.success('Événement ajouté avec succès');
+      }
+
       setShowForm(false);
+      setEditingEvent(null);
       
       // Reset form
       setFormData({
@@ -189,11 +204,11 @@ const DashboardEvenementsSociaux = () => {
         yearsOfService: ''
       });
 
-      // Refresh the events list
-      window.location.reload();
+      // Recharger la liste
+      loadEvents();
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Erreur lors de l\'ajout de l\'événement');
+      toast.error('Erreur lors de l\'opération');
     }
   };
 
@@ -206,6 +221,22 @@ const DashboardEvenementsSociaux = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const resetForm = () => {
+    setEditingEvent(null);
+    setFormData({
+      eventType: '',
+      category: '',
+      title: '',
+      memberName: '',
+      date: '',
+      location: '',
+      description: '',
+      thought: '',
+      image: null,
+      yearsOfService: ''
+    });
+  };
+
   if (isMobile) {
     return (
       <Layout>
@@ -216,7 +247,10 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="mb-4">
-            <Dialog open={showForm} onOpenChange={setShowForm}>
+            <Dialog open={showForm} onOpenChange={(open) => {
+              setShowForm(open);
+              if (!open) resetForm();
+            }}>
               <DialogTrigger asChild>
                 <Button className="bg-primary hover:bg-primary/90 w-full">
                   <Plus className="mr-2 h-4 w-4" />
@@ -225,37 +259,32 @@ const DashboardEvenementsSociaux = () => {
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-primary">Ajouter un événement</DialogTitle>
+                  <DialogTitle className="text-primary">
+                    {editingEvent ? 'Modifier l\'événement' : 'Ajouter un événement'}
+                  </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Type d'événement *</label>
-                    <Select onValueChange={(value) => handleSelectChange('eventType', value)} required>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Sélectionner un type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {eventTypes.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            {type.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
                     <label className="block text-sm font-medium mb-2">Catégorie *</label>
-                    <Select onValueChange={(value) => handleSelectChange('category', value)} required>
+                    <Select 
+                      value={formData.category} 
+                      onValueChange={(value) => handleSelectChange('category', value)} 
+                      required
+                    >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Sélectionner une catégorie" />
                       </SelectTrigger>
                       <SelectContent>
-                         {formData.eventType && eventCategories[formData.eventType].map((category) => (
-                           <SelectItem key={category.value} value={category.value}>
-                             {category.label}
-                           </SelectItem>
-                         ))}
+                        <SelectItem value="naissance">Naissances</SelectItem>
+                        <SelectItem value="mariage">Mariages</SelectItem>
+                        <SelectItem value="promotion">Promotions</SelectItem>
+                        <SelectItem value="bapteme">Baptêmes</SelectItem>
+                        <SelectItem value="anniversaire">Anniversaires</SelectItem>
+                        <SelectItem value="autre_heureux">Autre événement heureux</SelectItem>
+                        <SelectItem value="retraite">Retraite</SelectItem>
+                        <SelectItem value="deces">Décès</SelectItem>
+                        <SelectItem value="maladie">Maladie</SelectItem>
+                        <SelectItem value="accident">Accidents</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -286,20 +315,10 @@ const DashboardEvenementsSociaux = () => {
                     <label className="block text-sm font-medium mb-2">Date *</label>
                     <Input
                       name="date"
+                      type="date"
                       value={formData.date}
                       onChange={handleInputChange}
-                      placeholder="jj/mm/aaaa ou mm/aaaa ou aaaa"
                       required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Lieu</label>
-                    <Input
-                      name="location"
-                      value={formData.location}
-                      onChange={handleInputChange}
-                      placeholder="Lieu de l'événement"
                     />
                   </div>
 
@@ -315,44 +334,12 @@ const DashboardEvenementsSociaux = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Pensée *</label>
-                    <Input
-                      name="thought"
-                      value={formData.thought}
-                      onChange={handleInputChange}
-                      placeholder="Pensée pour l'événement"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Image</label>
-                    <Input
-                      name="image"
-                      type="file"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-
-                  {formData.eventType === 'Retraite' && (
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Années de service</label>
-                      <Input
-                        name="yearsOfService"
-                        value={formData.yearsOfService}
-                        onChange={handleInputChange}
-                        placeholder="Nombre d'années de service"
-                      />
-                    </div>
-                  )}
-
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => setShowForm(false)}>
+                    <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
                       Annuler
                     </Button>
                     <Button type="submit">
-                      Ajouter
+                      {editingEvent ? 'Modifier' : 'Ajouter'}
                     </Button>
                   </div>
                 </form>
@@ -360,28 +347,27 @@ const DashboardEvenementsSociaux = () => {
             </Dialog>
           </div>
 
-          <div className="space-y-4">
-            {events.map((event) => (
-              <Card key={event.id} className="border-l-4 border-blue-500 bg-blue-50">
-                <CardHeader>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">{event.description}</p>
-                  <div className="flex justify-end space-x-2 mt-4">
-                    <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Modifier
-                    </Button>
-                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-8">
+              <Loader className="h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {events.map((event) => (
+                <SocialEventCard
+                  key={event.id}
+                  event={event}
+                  onEdit={handleEditEvent}
+                  onDelete={handleDeleteEvent}
+                />
+              ))}
+              {events.length === 0 && (
+                <Card className="p-8 text-center">
+                  <p className="text-gray-500">Aucun événement trouvé</p>
+                </Card>
+              )}
+            </div>
+          )}
         </div>
         <AdminSidebar />
       </Layout>
@@ -400,7 +386,10 @@ const DashboardEvenementsSociaux = () => {
           </div>
 
           <div className="mb-6">
-            <Dialog open={showForm} onOpenChange={setShowForm}>
+            <Dialog open={showForm} onOpenChange={(open) => {
+              setShowForm(open);
+              if (!open) resetForm();
+            }}>
               <DialogTrigger asChild>
                 <Button className="bg-primary hover:bg-primary/90">
                   <Plus className="mr-2 h-4 w-4" />
@@ -409,41 +398,34 @@ const DashboardEvenementsSociaux = () => {
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-primary text-xl">Ajouter un événement</DialogTitle>
+                  <DialogTitle className="text-primary text-xl">
+                    {editingEvent ? 'Modifier l\'événement' : 'Ajouter un événement'}
+                  </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Type d'événement *</label>
-                      <Select onValueChange={(value) => handleSelectChange('eventType', value)} required>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Sélectionner un type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {eventTypes.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
-                              {type.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Catégorie *</label>
-                      <Select onValueChange={(value) => handleSelectChange('category', value)} required>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Sélectionner une catégorie" />
-                        </SelectTrigger>
-                        <SelectContent>
-                           {formData.eventType && eventCategories[formData.eventType].map((category) => (
-                             <SelectItem key={category.value} value={category.value}>
-                               {category.label}
-                             </SelectItem>
-                           ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Catégorie *</label>
+                    <Select 
+                      value={formData.category} 
+                      onValueChange={(value) => handleSelectChange('category', value)} 
+                      required
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Sélectionner une catégorie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="naissance">Naissances</SelectItem>
+                        <SelectItem value="mariage">Mariages</SelectItem>
+                        <SelectItem value="promotion">Promotions</SelectItem>
+                        <SelectItem value="bapteme">Baptêmes</SelectItem>
+                        <SelectItem value="anniversaire">Anniversaires</SelectItem>
+                        <SelectItem value="autre_heureux">Autre événement heureux</SelectItem>
+                        <SelectItem value="retraite">Retraite</SelectItem>
+                        <SelectItem value="deces">Décès</SelectItem>
+                        <SelectItem value="maladie">Maladie</SelectItem>
+                        <SelectItem value="accident">Accidents</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div>
@@ -473,9 +455,9 @@ const DashboardEvenementsSociaux = () => {
                       <label className="block text-sm font-medium mb-2">Date *</label>
                       <Input
                         name="date"
+                        type="date"
                         value={formData.date}
                         onChange={handleInputChange}
-                        placeholder="jj/mm/aaaa ou mm/aaaa ou aaaa"
                         required
                       />
                     </div>
@@ -503,44 +485,12 @@ const DashboardEvenementsSociaux = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Pensée *</label>
-                    <Input
-                      name="thought"
-                      value={formData.thought}
-                      onChange={handleInputChange}
-                      placeholder="Pensée pour l'événement"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Image</label>
-                    <Input
-                      name="image"
-                      type="file"
-                      onChange={handleInputChange}
-                    />
-                  </div>
-
-                  {formData.eventType === 'Retraite' && (
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Années de service</label>
-                      <Input
-                        name="yearsOfService"
-                        value={formData.yearsOfService}
-                        onChange={handleInputChange}
-                        placeholder="Nombre d'années de service"
-                      />
-                    </div>
-                  )}
-
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => setShowForm(false)}>
+                    <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
                       Annuler
                     </Button>
                     <Button type="submit">
-                      Ajouter
+                      {editingEvent ? 'Modifier' : 'Ajouter'}
                     </Button>
                   </div>
                 </form>
@@ -548,30 +498,47 @@ const DashboardEvenementsSociaux = () => {
             </Dialog>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {events.map((event) => (
-              <Card key={event.id} className="border-l-4 border-blue-500 bg-blue-50">
-                <CardHeader>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600">{event.description}</p>
-                  <div className="flex justify-end space-x-2 mt-4">
-                    <Button variant="outline" size="sm" onClick={() => handleEditEvent(event)}>
-                      <Edit className="h-4 w-4 mr-2" />
-                      Modifier
-                    </Button>
-                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteEvent(event)}>
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-8">
+              <Loader className="h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {events.map((event) => (
+                <SocialEventCard
+                  key={event.id}
+                  event={event}
+                  onEdit={handleEditEvent}
+                  onDelete={handleDeleteEvent}
+                />
+              ))}
+              {events.length === 0 && (
+                <Card className="p-8 text-center col-span-full">
+                  <p className="text-gray-500">Aucun événement trouvé</p>
+                </Card>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Dialog de confirmation de suppression */}
+      <AlertDialog open={!!deleteEventId} onOpenChange={() => setDeleteEventId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir supprimer cet événement ? Cette action ne peut pas être annulée.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteEvent} className="bg-red-600 hover:bg-red-700">
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
