@@ -668,6 +668,25 @@ export type Database = {
         Args: { details?: Json; event_type: string; user_id?: string }
         Returns: undefined
       }
+      security_audit_report: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          affected_count: number
+          audit_category: string
+          issue_description: string
+          recommendation: string
+          severity_level: string
+        }[]
+      }
+      security_monitor: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          active_threats: number
+          recommendations: string[]
+          security_status: string
+          timestamp_check: string
+        }[]
+      }
       sp_inserer_membre: {
         Args: {
           p_date_naissance: string
