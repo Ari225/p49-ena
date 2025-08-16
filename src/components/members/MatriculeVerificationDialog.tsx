@@ -42,33 +42,29 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
     }
 
     try {
-      if (verificationMode === 'edit' && memberId) {
-        // Mode modification : utiliser la fonction sécurisée pour vérifier le matricule
-        const { data, error } = await supabase.rpc('get_member_details', {
-          member_matricule: matricule.toUpperCase(),
-          verification_matricule: matricule.toUpperCase()
-        });
+      // Vérifier que le matricule existe dans la base de données
+      const { data: memberData, error: memberError } = await supabase
+        .from('members')
+        .select('id, Matricule')
+        .eq('Matricule', matricule.toUpperCase())
+        .maybeSingle();
 
-        if (error) {
-          console.error('Error checking member matricule:', error);
-          setError('Erreur lors de la vérification. Veuillez réessayer.');
-          setIsLoading(false);
-          return;
-        }
-
-        // Vérifier que le membre trouvé correspond à l'ID demandé
-        if (data && data.length > 0 && data[0].id === parseInt(memberId)) {
-          onVerified();
-          setMatricule('');
-        } else {
-          setError('Ce matricule ne correspond pas à ce membre. Seul le matricule du membre peut être utilisé pour modifier ses informations.');
-        }
-      } else {
-        // Mode aperçu : autoriser tous les matricules pour l'accès aux informations
-        // Tant que le matricule n'est pas vide, l'accès est autorisé
-        onVerified();
-        setMatricule('');
+      if (memberError) {
+        console.error('Error checking matricule:', memberError);
+        setError('Erreur lors de la vérification. Veuillez réessayer.');
+        setIsLoading(false);
+        return;
       }
+
+      if (!memberData) {
+        setError('Ce matricule n\'existe pas dans notre base de données. Veuillez vérifier votre saisie.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Matricule valide trouvé, autoriser l'accès
+      onVerified();
+      setMatricule('');
       setIsLoading(false);
     } catch (error) {
       console.error('Error:', error);
