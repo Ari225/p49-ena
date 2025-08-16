@@ -19,7 +19,6 @@ const formSchema = z.object({
   details: z.string().min(1, 'Les détails sont requis'),
   category: z.string().min(1, 'La catégorie est requise'),
   reading_time: z.number().min(1, 'Le temps de lecture est requis'),
-  published_by: z.string().min(1, 'L\'auteur est requis'),
   published_date: z.string().min(1, 'La date est requise'),
   image: z.any().optional()
 });
@@ -64,7 +63,6 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
       details: '',
       category: '',
       reading_time: 3,
-      published_by: '',
       published_date: new Date().toISOString().split('T')[0]
     }
   });
@@ -77,7 +75,6 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
         details: editingNews.details || '',
         category: editingNews.category,
         reading_time: editingNews.reading_time || 3,
-        published_by: editingNews.published_by || '',
         published_date: editingNews.published_date
       });
       setDetailsText(editingNews.details || '');
@@ -91,7 +88,6 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
         details: '',
         category: '',
         reading_time: 3,
-        published_by: '',
         published_date: new Date().toISOString().split('T')[0]
       });
       setDetailsText('');
@@ -373,46 +369,30 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
               </Tabs>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Catégorie</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionner une catégorie" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="published_by"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Publié par</FormLabel>
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Catégorie</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <Input placeholder="Nom de l'auteur" {...field} />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner une catégorie" />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="flex justify-end space-x-2 pt-4">
               <Button type="button" variant="outline" onClick={handleClose}>
