@@ -788,6 +788,10 @@ export type Database = {
           test_name: string
         }[]
       }
+      update_member_info: {
+        Args: { member_id: number; update_data: Json }
+        Returns: undefined
+      }
       validate_password_strength: {
         Args: { password: string }
         Returns: boolean
