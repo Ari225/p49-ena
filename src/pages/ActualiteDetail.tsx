@@ -44,7 +44,7 @@ const ActualiteDetail = () => {
           content: newsData.details || newsData.summary || '',
           category: newsData.category,
           date: newsData.published_date,
-          author: newsData.published_by || 'P49',
+          author: newsData.published_by || '',
           image: newsData.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
           readTime: newsData.reading_time ? `${newsData.reading_time} min` : '3 min',
           summary: newsData.summary
@@ -57,6 +57,32 @@ const ActualiteDetail = () => {
       setNotFound(true);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    const title = actualite?.title || 'Actualité P49';
+    const text = actualite?.summary || 'Découvrez cette actualité de la P49';
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title,
+          text,
+          url,
+        });
+      } catch (error) {
+        console.error('Erreur lors du partage:', error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        // Vous pouvez ajouter une notification toast ici
+        alert('Lien copié dans le presse-papier !');
+      } catch (error) {
+        console.error('Erreur lors de la copie:', error);
+      }
     }
   };
 
@@ -126,13 +152,6 @@ const ActualiteDetail = () => {
                   {actualite.category}
                 </span>
               </div>
-              {/* Share Button */}
-              <div className="absolute top-4 right-4">
-                <Button size="sm" variant="secondary" className="bg-white/90 backdrop-blur text-gray-700 hover:bg-white shadow-sm">
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Partager
-                </Button>
-              </div>
             </div>
 
             {/* Content */}
@@ -144,10 +163,6 @@ const ActualiteDetail = () => {
 
               {/* Meta Information */}
               <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-6 border-b border-gray-100">
-                <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
-                  <User className="h-4 w-4 mr-2 text-primary" />
-                  <span className="font-medium text-sm">{actualite.author}</span>
-                </div>
                 <div className="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg">
                   <Calendar className="h-4 w-4 mr-2 text-primary" />
                   <span className="text-sm">
@@ -196,7 +211,7 @@ const ActualiteDetail = () => {
                         day: 'numeric'
                       })}
                     </p>
-                    <Button variant="outline" size="sm" className="text-gray-600 border-gray-200 hover:bg-gray-50">
+                    <Button variant="outline" size="sm" className="text-gray-600 border-gray-200 hover:bg-gray-50" onClick={handleShare}>
                       <Share2 className="h-4 w-4 mr-2" />
                       Partager cet article
                     </Button>
