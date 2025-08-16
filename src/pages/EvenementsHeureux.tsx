@@ -1,85 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Calendar, MapPin, Users, PartyPopper, Heart, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
+
+interface HappyEvent {
+  id: string;
+  title: string;
+  description: string;
+  event_date: string;
+  location: string | null;
+  category: string;
+  member_name: string;
+  message: string | null;
+  image_url: string | null;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
+  custom_category: string | null;
+}
+
 const EvenementsHeureux = () => {
   const isMobile = useIsMobile();
-  const [previewEvent, setPreviewEvent] = useState<typeof heureuxEvents[number] | null>(null);
-  const heureuxEvents = [{
-    id: '1',
-    eventType: 'Heureux',
-    category: 'Mariage',
-    title: 'Mariage coutumier du condisciple TAKOUO',
-    memberName: 'TAKOUO Nohon Arsène',
-    date: '2025-08-15',
-    location: 'N\'Zéré (Yamoussoukro)',
-    description: 'Monsieur TAKOUO Nohon Arsène, Délégué Régional Ouest de la P49 invite l\'ensemble de la communauté à son mariage coutumier.',
-    thought: 'Félicitations pour ce pas ! Qu\'il inaugure un chapitre de bonheur.',
-    keyword: 'Mariage',
-    image: "/lovable-uploads/568e67d2-0613-4aa6-8f40-05f6bb749cf3.png"
-  }, {
-    id: '2',
-    eventType: 'Heureux',
-    category: 'Distinction',
-    title: 'Prix d\'Excellence 2025 - BAGNON GNAGBO CESAR ZOUHO',
-    memberName: 'BAGNON GNAGBO CESAR ZOUHO',
-    date: '2025-08-04',
-    location: '',
-    description: 'Prix d\'Excellence du meilleur Agent de la Direction Générale du Trésor et de la Comptabilité Publique.',
-    thought: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
-    keyword: 'Distinction',
-    image: "/lovable-uploads/10872f0f-53e5-404c-b915-d3aa753e07d6.png"
-  }, {
-    id: '3',
-    eventType: 'Heureux',
-    category: 'Promotion',
-    title: 'Promotion - ZAGOU SERGES RODRIGUE',
-    memberName: 'ZAGOU SERGES RODRIGUE',
-    date: '2025',
-    location: '',
-    description: 'Promu Secrétaire Général de la Préfecture de San-Pédro.',
-    thought: 'Le Bureau Exécutif adresse ses félicitations au SG ZAGOU pour cette promotion bien méritée !',
-    keyword: 'Promotion',
-    image: "/lovable-uploads/1338f820-5562-4cf8-88ce-6cfc94e75bf9.png"
-  }, {
-    id: '4',
-    eventType: 'Heureux',
-    category: 'Promotion',
-    title: 'Promotion - OUATTARA MORY',
-    memberName: 'OUATTARA MORY',
-    date: '2025',
-    location: '',
-    description: 'Promu Secrétaire Général de la Préfecture de Zuénoula.',
-    thought: 'Le Bureau Exécutif adresse ses félicitations au Doyen OUATTARA Mory pour cette promotion bien méritée !',
-    keyword: 'Promotion',
-    image: "/lovable-uploads/bec5d4d9-ad0d-43b2-aefc-6922b0d1485f.png"
-  }, {
-    id: '5',
-    eventType: 'Heureux',
-    category: 'Distinction',
-    title: 'Prix d\'Excellence 2023 - KOFFI RICHARD N\'GORAN',
-    memberName: 'KOFFI RICHARD N\'GORAN',
-    date: '2023',
-    location: '',
-    description: 'Prix d\'Excellence du meilleur Diplomate.',
-    thought: 'Félicitations pour cette distinction ! Vous faites la fierté de votre pays.',
-    keyword: 'Distinction',
-    image: "/lovable-uploads/2d820a63-2de3-4a9a-960e-3287aee8041a.png"
-  }, {
-    id: '6',
-    eventType: 'Heureux',
-    category: 'Distinction',
-    title: 'Prix d\'Excellence 2016 - SEKONGO KITCHAFOLWORI',
-    memberName: 'SEKONGO KITCHAFOLWORI',
-    date: '2016',
-    location: '',
-    description: 'Prix d\'Excellence des Armées.',
-    thought: 'Félicitations pour cette distinction ! Votre dévouement est récompensée.',
-    keyword: 'Distinction',
-    image: "/lovable-uploads/2c2781f0-9336-4c70-bb02-190bf681d909.png"
-  }];
+  const [previewEvent, setPreviewEvent] = useState<HappyEvent | null>(null);
+  const [heureuxEvents, setHeureuxEvents] = useState<HappyEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHappyEvents = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('happy_events')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching happy events:', error);
+        } else {
+          setHeureuxEvents(data || []);
+        }
+      } catch (error) {
+        console.error('Error fetching happy events:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHappyEvents();
+  }, []);
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Mariage':
@@ -143,49 +113,60 @@ const EvenementsHeureux = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {heureuxEvents.map(event => {
-              const IconComponent = getCategoryIcon(event.category);
-              return <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
-                    <div className="aspect-video overflow-hidden">
-                      <img src={event.image} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                    </div>
-                    <CardHeader>
-                      <CardTitle className={`text-green-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
-                        <IconComponent className="w-5 h-5 mr-2" />
-                        {event.title}
-                      </CardTitle>
-                      <div className="space-y-2 text-sm text-gray-600">
-                        <div className="flex items-center">
-                          <Calendar className="w-4 h-4 mr-2" />
-                          {formatEventDate(event.date)}
+            {loading ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">Chargement des événements...</p>
+              </div>
+            ) : heureuxEvents.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-600">Aucun événement heureux disponible pour le moment.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {heureuxEvents.map(event => {
+                const IconComponent = getCategoryIcon(event.category);
+                return <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
+                      <div className="aspect-video overflow-hidden">
+                        <img src={event.image_url || '/placeholder-image.jpg'} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className={`text-green-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
+                          <IconComponent className="w-5 h-5 mr-2" />
+                          {event.title}
+                        </CardTitle>
+                        <div className="space-y-2 text-sm text-gray-600">
+                          <div className="flex items-center">
+                            <Calendar className="w-4 h-4 mr-2" />
+                            {formatEventDate(event.event_date)}
+                          </div>
+                          {event.location && <div className="flex items-center">
+                              <MapPin className="w-4 h-4 mr-2" />
+                              {event.location}
+                            </div>}
+                          <div className="flex items-center">
+                            <Users className="w-4 h-4 mr-2" />
+                            {event.member_name}
+                          </div>
                         </div>
-                        {event.location && <div className="flex items-center">
-                            <MapPin className="w-4 h-4 mr-2" />
-                            {event.location}
-                          </div>}
-                        <div className="flex items-center">
-                          <Users className="w-4 h-4 mr-2" />
-                          {event.memberName}
+                      </CardHeader>
+                      <CardContent>
+                        <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
+                        <div className="space-y-2 mb-4">
+                          <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
-                      <div className="space-y-2 mb-4">
-                        <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                        <p className="text-sm"><strong>Mot-clé:</strong> {event.keyword}</p>
-                      </div>
-                      <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                        <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
-                          <Heart className="h-3 w-3 inline mr-1" />
-                          {event.thought}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>;
-            })}
-            </div>
+                        {event.message && (
+                          <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
+                            <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
+                              <Heart className="h-3 w-3 inline mr-1" />
+                              {event.message}
+                            </p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>;
+              })}
+              </div>
+            )}
           </div>
         </section>
 
@@ -198,17 +179,23 @@ const EvenementsHeureux = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="text-center p-6 bg-white">
                 <Heart className="w-12 h-12 mx-auto mb-4 text-pink-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>1</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>
+                  {heureuxEvents.filter(event => event.category === 'Mariage').length}
+                </h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-pink-700`}>Mariages célébrés</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Star className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>2</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>
+                  {heureuxEvents.filter(event => event.category === 'Promotion').length}
+                </h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-yellow-700`}>Promotions célébrées</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Award className="w-12 h-12 mx-auto mb-4 text-purple-600" />
-                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>3</h3>
+                <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>
+                  {heureuxEvents.filter(event => event.category === 'Distinction').length}
+                </h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-purple-700`}>Distinctions honorées</p>
               </Card>
             </div>
@@ -221,30 +208,32 @@ const EvenementsHeureux = () => {
         <DialogContent
           className="mx-4 sm:mx-6 md:mx-8 w-[calc(100vw-2rem)] sm:w-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto"
         >
-          {previewEvent && <>
-              <DialogHeader>
-                <DialogTitle>{previewEvent.title}</DialogTitle>
-                <DialogDescription>
-                  {previewEvent.category} • {formatEventDate(previewEvent.date)}{previewEvent.location ? ` • ${previewEvent.location}` : ''}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="overflow-hidden rounded-md">
-                  <img src={previewEvent.image} alt={previewEvent.title} className="w-full h-auto max-h-[70vh] object-contain" />
-                </div>
-                <div className="text-sm text-gray-700">
-                  <div className="flex items-center mb-2">
-                    <Users className="w-4 h-4 mr-2" /> {previewEvent.memberName}
+              {previewEvent && <>
+                <DialogHeader>
+                  <DialogTitle>{previewEvent.title}</DialogTitle>
+                  <DialogDescription>
+                    {previewEvent.category} • {formatEventDate(previewEvent.event_date)}{previewEvent.location ? ` • ${previewEvent.location}` : ''}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="overflow-hidden rounded-md">
+                    <img src={previewEvent.image_url || '/placeholder-image.jpg'} alt={previewEvent.title} className="w-full h-auto max-h-[70vh] object-contain" />
                   </div>
-                  <p className="mb-3">{previewEvent.description}</p>
-                  <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                    <p className="italic text-green-800">
-                      <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.thought}
-                    </p>
+                  <div className="text-sm text-gray-700">
+                    <div className="flex items-center mb-2">
+                      <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
+                    </div>
+                    <p className="mb-3">{previewEvent.description}</p>
+                    {previewEvent.message && (
+                      <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
+                        <p className="italic text-green-800">
+                          <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.message}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </>}
+              </>}
         </DialogContent>
       </Dialog>
     </Layout>;
