@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 .from('app_users')
                 .select('id, username, first_name, last_name, email, role, image_url')
                 .eq('id', session.user.id)
-                .single();
+                .maybeSingle();
 
               if (error) {
                 console.error('Error fetching user profile:', error);
