@@ -23,7 +23,6 @@ interface SocialEvent {
   location: string;
   description: string;
   thought: string;
-  keyword: string;
   image: string;
   yearsOfService?: string;
 }
@@ -39,7 +38,6 @@ const mockEvents: SocialEvent[] = [
     location: 'Abidjan',
     description: 'Nous avons la joie d\'annoncer la naissance de Marie.',
     thought: 'Félicitations aux heureux parents !',
-    keyword: 'Naissances',
     image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&h=250&fit=crop"
   },
   {
@@ -52,7 +50,6 @@ const mockEvents: SocialEvent[] = [
     location: 'Yamoussoukro',
     description: 'M. Yao Kouadio a été promu au grade de Directeur.',
     thought: 'Félicitations pour cette promotion bien méritée !',
-    keyword: 'Promotions',
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
   },
   {
@@ -65,7 +62,6 @@ const mockEvents: SocialEvent[] = [
     location: 'Bouaké',
     description: 'Après 35 années de service dévoué, M. Koffi prend sa retraite.',
     thought: 'Nous lui souhaitons une retraite heureuse et épanouie !',
-    keyword: 'Retraite',
     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=250&fit=crop"
   },
   {
@@ -78,7 +74,6 @@ const mockEvents: SocialEvent[] = [
     location: 'Daloa',
     description: 'C\'est avec tristesse que nous annonçons le décès de Mme Adjoua.',
     thought: 'Nos pensées accompagnent la famille en ces moments difficiles.',
-    keyword: 'Décès',
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop"
   }
 ];
@@ -98,7 +93,6 @@ const DashboardEvenementsSociaux = () => {
     location: '',
     description: '',
     thought: '',
-    keyword: '',
     image: null as File | null,
     yearsOfService: ''
   });
@@ -139,9 +133,37 @@ const DashboardEvenementsSociaux = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validation - all fields required except location
+    if (!formData.eventType || !formData.category || !formData.title || 
+        !formData.memberName || !formData.date || !formData.description || !formData.thought) {
+      toast.error('Tous les champs sont obligatoires sauf le lieu');
+      return;
+    }
 
-    // TODO: Implement form submission logic
-    console.log('Form submitted:', formData);
+    try {
+      // TODO: Implement Supabase insertion
+      console.log('Form submitted:', formData);
+      toast.success('Événement ajouté avec succès');
+      setShowForm(false);
+      
+      // Reset form
+      setFormData({
+        eventType: '',
+        category: '',
+        title: '',
+        memberName: '',
+        date: '',
+        location: '',
+        description: '',
+        thought: '',
+        image: null,
+        yearsOfService: ''
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('Erreur lors de l\'ajout de l\'événement');
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -176,8 +198,8 @@ const DashboardEvenementsSociaux = () => {
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Type d'événement</label>
-                    <Select onValueChange={(value) => handleSelectChange('eventType', value)}>
+                    <label className="block text-sm font-medium mb-2">Type d'événement *</label>
+                    <Select onValueChange={(value) => handleSelectChange('eventType', value)} required>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Sélectionner un type" />
                       </SelectTrigger>
@@ -192,8 +214,8 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Catégorie</label>
-                    <Select onValueChange={(value) => handleSelectChange('category', value)}>
+                    <label className="block text-sm font-medium mb-2">Catégorie *</label>
+                    <Select onValueChange={(value) => handleSelectChange('category', value)} required>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Sélectionner une catégorie" />
                       </SelectTrigger>
@@ -208,32 +230,35 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Titre</label>
+                    <label className="block text-sm font-medium mb-2">Titre *</label>
                     <Input
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
                       placeholder="Titre de l'événement"
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Membre concerné</label>
+                    <label className="block text-sm font-medium mb-2">Concerné *</label>
                     <Input
                       name="memberName"
                       value={formData.memberName}
                       onChange={handleInputChange}
                       placeholder="Nom du membre"
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Date</label>
+                    <label className="block text-sm font-medium mb-2">Date *</label>
                     <Input
                       name="date"
-                      type="date"
                       value={formData.date}
                       onChange={handleInputChange}
+                      placeholder="jj/mm/aaaa ou mm/aaaa ou aaaa"
+                      required
                     />
                   </div>
 
@@ -248,33 +273,25 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Description</label>
+                    <label className="block text-sm font-medium mb-2">Description *</label>
                     <Textarea
                       name="description"
                       value={formData.description}
                       onChange={handleInputChange}
                       placeholder="Description de l'événement"
                       rows={3}
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Pensée</label>
+                    <label className="block text-sm font-medium mb-2">Pensée *</label>
                     <Input
                       name="thought"
                       value={formData.thought}
                       onChange={handleInputChange}
                       placeholder="Pensée pour l'événement"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Mot-clé</label>
-                    <Input
-                      name="keyword"
-                      value={formData.keyword}
-                      onChange={handleInputChange}
-                      placeholder="Mot-clé de l'événement"
+                      required
                     />
                   </div>
 
@@ -300,7 +317,7 @@ const DashboardEvenementsSociaux = () => {
                   )}
 
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>
+                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => setShowForm(false)}>
                       Annuler
                     </Button>
                     <Button type="submit">
@@ -366,8 +383,8 @@ const DashboardEvenementsSociaux = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Type d'événement</label>
-                      <Select onValueChange={(value) => handleSelectChange('eventType', value)}>
+                      <label className="block text-sm font-medium mb-2">Type d'événement *</label>
+                      <Select onValueChange={(value) => handleSelectChange('eventType', value)} required>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Sélectionner un type" />
                         </SelectTrigger>
@@ -382,8 +399,8 @@ const DashboardEvenementsSociaux = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2">Catégorie</label>
-                      <Select onValueChange={(value) => handleSelectChange('category', value)}>
+                      <label className="block text-sm font-medium mb-2">Catégorie *</label>
+                      <Select onValueChange={(value) => handleSelectChange('category', value)} required>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Sélectionner une catégorie" />
                         </SelectTrigger>
@@ -399,33 +416,36 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Titre</label>
+                    <label className="block text-sm font-medium mb-2">Titre *</label>
                     <Input
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
                       placeholder="Titre de l'événement"
+                      required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Membre concerné</label>
+                    <label className="block text-sm font-medium mb-2">Concerné *</label>
                     <Input
                       name="memberName"
                       value={formData.memberName}
                       onChange={handleInputChange}
                       placeholder="Nom du membre"
+                      required
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Date</label>
+                      <label className="block text-sm font-medium mb-2">Date *</label>
                       <Input
                         name="date"
-                        type="date"
                         value={formData.date}
                         onChange={handleInputChange}
+                        placeholder="jj/mm/aaaa ou mm/aaaa ou aaaa"
+                        required
                       />
                     </div>
 
@@ -441,36 +461,26 @@ const DashboardEvenementsSociaux = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2">Description</label>
+                    <label className="block text-sm font-medium mb-2">Description *</label>
                     <Textarea
                       name="description"
                       value={formData.description}
                       onChange={handleInputChange}
                       placeholder="Description de l'événement"
                       rows={3}
+                      required
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Pensée</label>
-                      <Input
-                        name="thought"
-                        value={formData.thought}
-                        onChange={handleInputChange}
-                        placeholder="Pensée pour l'événement"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Mot-clé</label>
-                      <Input
-                        name="keyword"
-                        value={formData.keyword}
-                        onChange={handleInputChange}
-                        placeholder="Mot-clé de l'événement"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Pensée *</label>
+                    <Input
+                      name="thought"
+                      value={formData.thought}
+                      onChange={handleInputChange}
+                      placeholder="Pensée pour l'événement"
+                      required
+                    />
                   </div>
 
                   <div>
@@ -495,7 +505,7 @@ const DashboardEvenementsSociaux = () => {
                   )}
 
                   <div className="flex justify-end space-x-2">
-                    <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>
+                    <Button type="button" variant="outline" className="text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400" onClick={() => setShowForm(false)}>
                       Annuler
                     </Button>
                     <Button type="submit">
