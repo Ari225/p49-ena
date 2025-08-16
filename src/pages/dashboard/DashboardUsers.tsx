@@ -24,10 +24,9 @@ const DashboardUsers = () => {
     try {
       console.log('Récupération des utilisateurs depuis Supabase...');
       
+      // Utiliser la fonction sécurisée au lieu de l'accès direct
       const { data, error } = await supabase
-        .from('app_users')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .rpc('get_users_list');
 
       if (error) {
         console.error('Erreur lors de la récupération des utilisateurs:', error);

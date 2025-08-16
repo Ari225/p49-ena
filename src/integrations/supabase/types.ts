@@ -627,6 +627,15 @@ export type Database = {
           status: string
         }[]
       }
+      final_vulnerability_test: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          details: string
+          result: string
+          severity: string
+          test_name: string
+        }[]
+      }
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -669,6 +678,15 @@ export type Database = {
           prenoms: string
         }[]
       }
+      get_newsletter_subscribers: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          email: string
+          id: string
+          is_active: boolean
+          subscribed_at: string
+        }[]
+      }
       get_secure_user_info: {
         Args: { target_user_id?: string }
         Returns: {
@@ -685,6 +703,19 @@ export type Database = {
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
+      }
+      get_users_list: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          image_url: string
+          last_name: string
+          role: Database["public"]["Enums"]["user_role"]
+          username: string
+        }[]
       }
       log_security_event: {
         Args: { details?: Json; event_type: string; user_id?: string }

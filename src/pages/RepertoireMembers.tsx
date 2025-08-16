@@ -40,7 +40,7 @@ const RepertoireMembers = () => {
         setLoading(true);
         console.log('Fetching members from Supabase...');
         
-        // Utiliser la fonction RPC get_member_directory au lieu d'un appel direct
+        // Utiliser la fonction RPC sécurisée pour les membres
         const { data, error } = await supabase
           .rpc('get_member_directory');
         
