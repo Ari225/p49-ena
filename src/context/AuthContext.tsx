@@ -47,12 +47,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Récupérer les données du profil utilisateur depuis app_users
           setTimeout(async () => {
             try {
-              // Utiliser une requête directe sur app_users
+              // Utiliser la fonction sécurisée qui contourne les politiques RLS
               const { data: profileData, error } = await supabase
-                .from('app_users')
-                .select('id, username, first_name, last_name, email, role, image_url')
-                .eq('id', session.user.id)
-                .maybeSingle();
+                .rpc('get_secure_user_info', { target_user_id: session.user.id });
 
               if (error) {
                 console.error('Error fetching user profile:', error);
@@ -60,15 +57,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 return;
               }
 
-              if (profileData) {
+              if (profileData && profileData.length > 0) {
+                const profile = profileData[0];
                 const authUser: AuthUser = {
-                  id: profileData.id,
-                  username: profileData.username,
-                  firstName: profileData.first_name || '',
-                  lastName: profileData.last_name || '',
-                  email: profileData.email || session.user.email || '',
-                  role: profileData.role,
-                  image_url: profileData.image_url
+                  id: profile.id,
+                  username: profile.username,
+                  firstName: profile.first_name || '',
+                  lastName: profile.last_name || '',
+                  email: profile.email || session.user.email || '',
+                  role: profile.role as 'admin_principal' | 'admin_secondaire' | 'redacteur',
+                  image_url: profile.image_url
                 };
                 setUser(authUser);
                 console.log('User profile loaded:', authUser);
