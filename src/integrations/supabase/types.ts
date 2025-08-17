@@ -172,6 +172,42 @@ export type Database = {
           },
         ]
       }
+      communiques: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          image_url: string | null
+          published_date: string
+          title: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description: string
+          id?: string
+          image_url?: string | null
+          published_date?: string
+          title: string
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          image_url?: string | null
+          published_date?: string
+          title?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: []
+      }
       difficult_events: {
         Row: {
           category: string
