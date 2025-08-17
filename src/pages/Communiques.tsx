@@ -17,6 +17,9 @@ interface CommuniqueItem {
   image: string;
   published_date: string;
   urgency: 'normal' | 'urgent' | 'important';
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
 }
 
 const Communiques = () => {
@@ -45,7 +48,10 @@ const Communiques = () => {
           color: 'red',
           image: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg',
           published_date: '2024-03-20',
-          urgency: 'urgent'
+          urgency: 'urgent',
+          created_at: '2024-03-20T00:00:00Z',
+          updated_at: '2024-03-20T00:00:00Z',
+          created_by: null
         },
         {
           id: '2',
@@ -55,7 +61,10 @@ const Communiques = () => {
           color: 'blue',
           image: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
           published_date: '2024-03-15',
-          urgency: 'normal'
+          urgency: 'normal',
+          created_at: '2024-03-15T00:00:00Z',
+          updated_at: '2024-03-15T00:00:00Z',
+          created_by: null
         },
         {
           id: '3',
@@ -65,7 +74,10 @@ const Communiques = () => {
           color: 'orange',
           image: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
           published_date: '2024-03-18',
-          urgency: 'important'
+          urgency: 'important',
+          created_at: '2024-03-18T00:00:00Z',
+          updated_at: '2024-03-18T00:00:00Z',
+          created_by: null
         }
       ];
       setCommuniques(mockCommuniques);

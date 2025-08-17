@@ -14,10 +14,12 @@ interface CommuniqueItem {
   id: string;
   title: string;
   description: string;
-  type: string;
   urgency: 'normal' | 'urgent' | 'important';
   published_date: string;
-  image?: string;
+  image_url?: string;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
 }
 
 interface CommuniqueDetailPopupProps {
@@ -98,10 +100,10 @@ const CommuniqueDetailPopup: React.FC<CommuniqueDetailPopupProps> = ({
         </DialogHeader>
         
         <div className={`space-y-4 ${getPaddingStyles()}`}>
-          {communique.image && (
+          {communique.image_url && (
             <div className="w-full">
               <img 
-                src={communique.image} 
+                src={communique.image_url} 
                 alt={communique.title}
                 className="w-full h-auto object-contain rounded-lg"
               />

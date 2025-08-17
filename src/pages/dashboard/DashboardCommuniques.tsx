@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
@@ -12,15 +12,18 @@ import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopu
 import CommuniqueDeleteConfirm from '@/components/communiques/CommuniqueDeleteConfirm';
 import { useToast } from '@/hooks/use-toast';
 import { isAdmin } from '@/utils/roleUtils';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CommuniqueItem {
   id: string;
   title: string;
   description: string;
-  type: string;
   urgency: 'normal' | 'urgent' | 'important';
   published_date: string;
   image_url?: string;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
 }
 
 const DashboardCommuniques = () => {
@@ -33,76 +36,133 @@ const DashboardCommuniques = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [selectedCommunique, setSelectedCommunique] = useState<CommuniqueItem | null>(null);
   const [editingCommunique, setEditingCommunique] = useState<CommuniqueItem | null>(null);
-  const [communiques, setCommuniques] = useState<CommuniqueItem[]>([
-    {
-      id: '1',
-      title: 'Communiqué urgent',
-      description: 'Report de l\'événement prévu le 25 mars 2024.',
-      type: 'Communiqué urgent',
-      urgency: 'urgent',
-      published_date: '2024-03-20',
-      image_url: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg'
-    },
-    {
-      id: '2',
-      title: 'Nouvelle inscription',
-      description: 'Ouverture des inscriptions pour la formation de mars.',
-      type: 'Information',
-      urgency: 'normal',
-      published_date: '2024-03-15',
-      image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'
+  const [communiques, setCommuniques] = useState<CommuniqueItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Charger les communiqués depuis la base de données
+  const loadCommuniques = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('communiques')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCommuniques((data || []) as CommuniqueItem[]);
+    } catch (error) {
+      console.error('Erreur lors du chargement des communiqués:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les communiqués.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    if (user && isAdmin(user)) {
+      loadCommuniques();
+    }
+  }, [user]);
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 
-  const handleSubmit = (formData: any) => {
-    console.log('Données du communiqué:', formData);
-    
-    if (formData.id) {
-      // Modification
-      setCommuniques(prev => prev.map(c => 
-        c.id === formData.id 
-          ? {
-              ...c,
-              title: formData.title,
-              description: formData.description,
-              urgency: formData.urgency,
-              type: formData.urgency === 'urgent' ? 'Communiqué urgent' : 
-                    formData.urgency === 'important' ? 'Information importante' : 'Information',
-              image_url: formData.image ? URL.createObjectURL(formData.image) : c.image_url
-            }
-          : c
-      ));
-      
-      toast({
-        title: "Communiqué modifié",
-        description: "Le communiqué a été modifié avec succès.",
-      });
-    } else {
-      // Ajout
-      const newCommunique: CommuniqueItem = {
-        id: Date.now().toString(),
-        title: formData.title,
-        description: formData.description,
-        type: formData.urgency === 'urgent' ? 'Communiqué urgent' : 
-              formData.urgency === 'important' ? 'Information importante' : 'Information',
-        urgency: formData.urgency,
-        published_date: formData.published_date,
-        image_url: formData.image ? URL.createObjectURL(formData.image) : undefined
-      };
+  const handleSubmit = async (formData: any) => {
+    try {
+      if (formData.id) {
+        // Modification
+        const updateData: any = {
+          title: formData.title,
+          description: formData.description,
+          urgency: formData.urgency,
+          published_date: formData.published_date
+        };
 
-      setCommuniques(prev => [newCommunique, ...prev]);
+        if (formData.image) {
+          // Upload de la nouvelle image
+          const fileExt = formData.image.name.split('.').pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `communiques/${fileName}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from('media-files')
+            .upload(filePath, formData.image);
+
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage
+              .from('media-files')
+              .getPublicUrl(filePath);
+            updateData.image_url = publicUrl;
+          }
+        }
+
+        const { error } = await supabase
+          .from('communiques')
+          .update(updateData)
+          .eq('id', formData.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Communiqué modifié",
+          description: "Le communiqué a été modifié avec succès.",
+        });
+      } else {
+        // Ajout
+        const insertData: any = {
+          title: formData.title,
+          description: formData.description,
+          urgency: formData.urgency,
+          published_date: formData.published_date,
+          created_by: user?.id
+        };
+
+        if (formData.image) {
+          // Upload de l'image
+          const fileExt = formData.image.name.split('.').pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const filePath = `communiques/${fileName}`;
+
+          const { error: uploadError } = await supabase.storage
+            .from('media-files')
+            .upload(filePath, formData.image);
+
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage
+              .from('media-files')
+              .getPublicUrl(filePath);
+            insertData.image_url = publicUrl;
+          }
+        }
+
+        const { error } = await supabase
+          .from('communiques')
+          .insert([insertData]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Communiqué publié",
+          description: "Le communiqué a été publié avec succès.",
+        });
+      }
       
+      // Recharger les données
+      await loadCommuniques();
+      setShowForm(false);
+      setEditingCommunique(null);
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
       toast({
-        title: "Communiqué publié",
-        description: "Le communiqué a été publié avec succès.",
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la sauvegarde.",
+        variant: "destructive"
       });
     }
-    
-    setEditingCommunique(null);
   };
 
   const handleEdit = (communique: CommuniqueItem) => {
@@ -115,13 +175,31 @@ const DashboardCommuniques = () => {
     setShowDeleteConfirm(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (selectedCommunique) {
-      setCommuniques(prev => prev.filter(c => c.id !== selectedCommunique.id));
-      toast({
-        title: "Communiqué supprimé",
-        description: "Le communiqué a été supprimé avec succès.",
-      });
+      try {
+        const { error } = await supabase
+          .from('communiques')
+          .delete()
+          .eq('id', selectedCommunique.id);
+
+        if (error) throw error;
+
+        toast({
+          title: "Communiqué supprimé",
+          description: "Le communiqué a été supprimé avec succès.",
+        });
+
+        // Recharger les données
+        await loadCommuniques();
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+        toast({
+          title: "Erreur",
+          description: "Une erreur est survenue lors de la suppression.",
+          variant: "destructive"
+        });
+      }
     }
     setShowDeleteConfirm(false);
     setSelectedCommunique(null);
@@ -164,8 +242,11 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
-          <div className="grid gap-6">
-            {communiques.map((communique) => (
+          {loading ? (
+            <div className="text-center py-8">Chargement...</div>
+          ) : (
+            <div className="grid gap-6">
+              {communiques.map((communique) => (
               <Card key={communique.id} className="overflow-hidden">
                 {communique.image_url && (
                   <div className="h-48">
@@ -221,8 +302,9 @@ const DashboardCommuniques = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
         <AdminSidebar />
         
@@ -279,9 +361,11 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
-          {/* Version Desktop : Grille 2 colonnes, Version Tablet : 1 communiqué par ligne comme dans Communiques.tsx */}
-          <div className={isTablet ? "space-y-4" : "grid grid-cols-1 lg:grid-cols-2 gap-6"}>
-            {communiques.map((communique) => (
+          {loading ? (
+            <div className="text-center py-8">Chargement...</div>
+          ) : (
+            <div className={isTablet ? "space-y-4" : "grid grid-cols-1 lg:grid-cols-2 gap-6"}>
+              {communiques.map((communique) => (
               <Card key={communique.id} className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
                 {communique.image_url && (
                   <div className="h-48 flex-shrink-0">
@@ -337,8 +421,9 @@ const DashboardCommuniques = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <CommuniqueFormDialog

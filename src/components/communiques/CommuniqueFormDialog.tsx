@@ -23,10 +23,12 @@ interface CommuniqueItem {
   id: string;
   title: string;
   description: string;
-  type: string;
   urgency: 'normal' | 'urgent' | 'important';
   published_date: string;
   image_url?: string;
+  created_at: string;
+  updated_at: string;
+  created_by: string | null;
 }
 
 interface CommuniqueFormDialogProps {
