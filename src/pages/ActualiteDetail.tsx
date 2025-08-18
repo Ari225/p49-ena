@@ -105,7 +105,7 @@ const ActualiteDetail = () => {
       </Layout>;
   }
   return <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         {/* Navigation Header */}
         <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
           <div className={`${isMobile ? 'px-4 py-4' : isTablet ? 'px-8 py-6' : 'px-16 py-6'} max-w-7xl mx-auto`}>
