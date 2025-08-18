@@ -181,7 +181,7 @@ const ActualiteDetail = () => {
               </div>
 
               {/* Article Body */}
-              <div className="prose prose-lg max-w-none">
+              <div className="prose prose-lg max-w-none [&_a]:pointer-events-auto [&_a]:cursor-pointer [&_a]:relative [&_a]:z-10">
                 {actualite.content ? (
                   <div 
                     className="text-gray-700 leading-relaxed whitespace-pre-wrap"
@@ -194,7 +194,7 @@ const ActualiteDetail = () => {
                   />
                 ) : (
                   <p className="text-gray-700 leading-relaxed">
-                    {actualite.summary || 'Contenu de l\'actualité non disponible.'}
+                    {actualite.summary || "Contenu de l'actualité non disponible."}
                   </p>
                 )}
               </div>

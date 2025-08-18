@@ -13,7 +13,7 @@ const configureDOMPurify = () => {
   // Set allowed tags and attributes
   return {
     ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a'],
-    ALLOWED_ATTR: ['href', 'target', 'rel'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
     FORBID_TAGS: ['script', 'object', 'embed', 'iframe', 'form', 'input'],
     FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'style']
   };
@@ -29,11 +29,21 @@ export const sanitizeHTML = (content: string): string => {
 export const formatContent = (content: string): string => {
   if (!content) return '';
   
-  const formatted = content
+  let formatted = content
     .replace(/\n/g, '<br/>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
     .replace(/__(.*?)__/g, '<u>$1</u>');
+  
+  // Convert URLs to clickable links
+  const urlRegex = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/[^\s<>"]*)?)/g;
+  formatted = formatted.replace(urlRegex, (url) => {
+    let href = url;
+    if (!url.startsWith('http')) {
+      href = url.startsWith('www.') ? `https://${url}` : `https://${url}`;
+    }
+    return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary/80 underline font-medium transition-colors">${url}</a>`;
+  });
     
   return sanitizeHTML(formatted);
 };
