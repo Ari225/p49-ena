@@ -15,17 +15,41 @@ const ActivitesSection = () => {
   const { toast } = useToast();
   const { activities, loading } = useActivities();
 
-  // Filtrer et trier les activités selon la date
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  // Filtrer et trier les activités selon la date et l'heure
+  const now = new Date();
+
+  const isActivityPast = (activity: any) => {
+    const activityDate = new Date(activity.date);
+    
+    // Si l'activité a une heure de fin, vérifier si elle est passée
+    if (activity.end_time) {
+      const [hours, minutes] = activity.end_time.split(':');
+      const activityEndDateTime = new Date(activityDate);
+      activityEndDateTime.setHours(parseInt(hours), parseInt(minutes));
+      return activityEndDateTime < now;
+    }
+    
+    // Si l'activité a une heure de début, vérifier si elle est passée
+    if (activity.start_time) {
+      const [hours, minutes] = activity.start_time.split(':');
+      const activityStartDateTime = new Date(activityDate);
+      activityStartDateTime.setHours(parseInt(hours), parseInt(minutes));
+      return activityStartDateTime < now;
+    }
+    
+    // Si pas d'heure, comparer seulement les dates
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    return activityDate < todayStart;
+  };
 
   const upcomingActivities = activities
-    .filter(activity => new Date(activity.date) >= today)
+    .filter(activity => !isActivityPast(activity))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 2);
 
   const pastActivities = activities
-    .filter(activity => new Date(activity.date) < today)
+    .filter(activity => isActivityPast(activity))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 2);
 
