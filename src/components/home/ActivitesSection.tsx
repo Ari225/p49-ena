@@ -31,25 +31,56 @@ const ActivitesSection = () => {
 
   const handleAddToCalendar = (activity: any) => {
     try {
-      const timeRange = activity.start_time && activity.end_time 
-        ? `${activity.start_time} - ${activity.end_time}` 
-        : '09:00 - 17:00';
-      
-      const {
-        startDate,
-        endDate
-      } = parseEventDate(activity.date, timeRange);
-      addToCalendar({
-        title: activity.title,
-        description: `${activity.description}\n\nCatégorie: ${activity.category}`,
-        startDate,
-        endDate,
-        location: activity.location
-      });
-      toast({
-        title: "Événement ajouté !",
-        description: "L'activité a été sauvegardée dans votre calendrier."
-      });
+      // Sur mobile/tablette, créer une URL pour ouvrir directement le calendrier
+      if (isMobile || isTablet) {
+        const startDate = new Date(activity.date);
+        if (activity.start_time) {
+          const [hours, minutes] = activity.start_time.split(':');
+          startDate.setHours(parseInt(hours), parseInt(minutes));
+        }
+        
+        const endDate = new Date(activity.date);
+        if (activity.end_time) {
+          const [hours, minutes] = activity.end_time.split(':');
+          endDate.setHours(parseInt(hours), parseInt(minutes));
+        } else {
+          endDate.setHours(startDate.getHours() + 2); // Durée par défaut de 2h
+        }
+        
+        // Formater pour Google Calendar
+        const formatDateForGoogle = (date: Date) => {
+          return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        };
+        
+        const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(activity.title)}&dates=${formatDateForGoogle(startDate)}/${formatDateForGoogle(endDate)}&details=${encodeURIComponent(activity.brief_description || activity.description)}&location=${encodeURIComponent(activity.location)}`;
+        
+        window.open(googleCalendarUrl, '_blank');
+        
+        toast({
+          title: "Calendrier ouvert !",
+          description: "L'événement s'ouvre dans votre application calendrier."
+        });
+      } else {
+        // Sur desktop, télécharger le fichier ICS
+        const timeRange = activity.start_time && activity.end_time 
+          ? `${activity.start_time} - ${activity.end_time}` 
+          : '09:00 - 17:00';
+        
+        const { startDate, endDate } = parseEventDate(activity.date, timeRange);
+        
+        addToCalendar({
+          title: activity.title,
+          description: `${activity.brief_description || activity.description}\n\nCatégorie: ${activity.other_category || activity.category}`,
+          startDate,
+          endDate,
+          location: activity.location
+        });
+        
+        toast({
+          title: "Événement ajouté !",
+          description: "L'activité a été sauvegardée dans votre calendrier."
+        });
+      }
     } catch (error) {
       toast({
         title: "Erreur",
@@ -207,13 +238,14 @@ const ActivitesSection = () => {
           </div>
         </div>
 
-        {/* Activités passées */}
-        <div className="mb-8 md:mb-12">
-          <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-[10px] md:mb-[10px] flex items-center`}>
-            <Calendar className="w-5 h-5 mr-2" />
-            Activités récentes
-          </h3>
-          <div className={getGridClasses()}>
+        {/* Activités passées - Afficher seulement s'il y en a */}
+        {pastActivities.length > 0 && (
+          <div className="mb-8 md:mb-12">
+            <h3 className={`${getSectionTitleClasses()} font-semibold text-primary mb-[10px] md:mb-[10px] flex items-center`}>
+              <Calendar className="w-5 h-5 mr-2" />
+              Activités récentes
+            </h3>
+            <div className={getGridClasses()}>
             {pastActivities.map(activity => (
               <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 opacity-80">
                 {(activity.image || activity.image_url) && (
@@ -270,8 +302,9 @@ const ActivitesSection = () => {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="text-center">
           <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] h-10 transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${getButtonClasses()}`}>

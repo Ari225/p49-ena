@@ -51,6 +51,7 @@ import ReunionsConstitution from "./pages/ReunionsConstitution";
 import Suggestions from "./pages/Suggestions";
 import Temoignages from "./pages/Temoignages";
 import TextesOfficiels from "./pages/TextesOfficiels";
+import ActiviteDetail from "./pages/ActiviteDetail";
 
 // Dashboard Pages
 import DashboardBlog from "./pages/dashboard/DashboardBlog";
@@ -90,6 +91,7 @@ const App = () => (
               
               {/* Agenda */}
               <Route path="/agenda" element={<Agenda />} />
+              <Route path="/activites/:id" element={<ActiviteDetail />} />
               
               {/* Archives */}
               <Route path="/archives" element={<Archives />} />
