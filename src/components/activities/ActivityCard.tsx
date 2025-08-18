@@ -69,11 +69,18 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onEdit, onDelete 
         }`}>
           <div className="flex items-center">
             <Calendar className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-            <span>{new Date(activity.date).toLocaleDateString('fr-FR')}</span>
+            <span>{new Date(activity.date).toLocaleDateString('fr-FR', { 
+              day: 'numeric', 
+              month: 'long', 
+              year: 'numeric' 
+            })}</span>
           </div>
           <div className="flex items-center">
             <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-            <span>{activity.start_time} - {activity.end_time}</span>
+            <span>
+              {activity.start_time}
+              {activity.end_time && ` - ${activity.end_time}`}
+            </span>
           </div>
           <div className="flex items-center">
             <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
