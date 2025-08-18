@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
 const CommuniquesSection = () => {
   const { t } = useLanguage();
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
-  const [selectedImage, setSelectedImage] = useState<string>('/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg');
-  const [selectedId, setSelectedId] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+  const [selectedId, setSelectedId] = useState<string>('');
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
+  const [communiques, setCommuniques] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Touch/swipe handling
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -93,45 +96,37 @@ const CommuniquesSection = () => {
     return textStyles.desktop;
   };
 
-  const communiques = [{
-    id: 1,
-    title: 'Communiqué urgent',
-    description: 'Report de l\'événement prévu le 25 mars 2024.',
-    urgency: 'urgent' as const,
-    image: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg'
-  }, {
-    id: 2,
-    title: 'Nouvelle inscription',
-    description: 'Ouverture des inscriptions pour la formation de mars.',
-    urgency: 'normal' as const,
-    image: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'
-  }, {
-    id: 3,
-    title: 'Félicitations',
-    description: 'Promotion de plusieurs membres à de nouveaux postes.',
-    urgency: 'normal' as const,
-    image: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg'
-  }, {
-    id: 4,
-    title: 'Communiqué de presse',
-    description: 'Publication des résultats du dernier concours interne.',
-    urgency: 'important' as const,
-    image: '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'
-  }, {
-    id: 5,
-    title: 'Communiqué ENA',
-    description: 'Nouvelles directives pour les formations continues.',
-    urgency: 'important' as const,
-    image: '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png'
-  }, {
-    id: 6,
-    title: 'Communiqué P49',
-    description: 'Assemblée générale extraordinaire du réseau P49.',
-    urgency: 'urgent' as const,
-    image: '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png'
-  }];
+  // Fetch communiques from database
+  useEffect(() => {
+    const fetchCommuniques = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('communiques')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(4);
 
-  const handleCommuniqueClick = (image: string, id: number) => {
+        if (error) {
+          console.error('Error fetching communiques:', error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          setCommuniques(data);
+          setSelectedImage(data[0].image_url || '');
+          setSelectedId(data[0].id);
+        }
+      } catch (error) {
+        console.error('Error fetching communiques:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCommuniques();
+  }, []);
+
+  const handleCommuniqueClick = (image: string, id: string) => {
     setSelectedImage(image);
     setSelectedId(id);
     // Find the index of the selected communique and update carousel position
@@ -142,18 +137,20 @@ const CommuniquesSection = () => {
   };
 
   const nextSlide = () => {
+    if (communiques.length === 0) return;
     const newIndex = (currentSlideIndex + 1) % communiques.length;
     setCurrentSlideIndex(newIndex);
     const currentCommunique = communiques[newIndex];
-    setSelectedImage(currentCommunique.image);
+    setSelectedImage(currentCommunique.image_url || '');
     setSelectedId(currentCommunique.id);
   };
 
   const prevSlide = () => {
+    if (communiques.length === 0) return;
     const newIndex = currentSlideIndex === 0 ? communiques.length - 1 : currentSlideIndex - 1;
     setCurrentSlideIndex(newIndex);
     const currentCommunique = communiques[newIndex];
-    setSelectedImage(currentCommunique.image);
+    setSelectedImage(currentCommunique.image_url || '');
     setSelectedId(currentCommunique.id);
   };
 
@@ -206,7 +203,7 @@ const CommuniquesSection = () => {
                     const styles = getColorStyles(communique.urgency);
                     return (
                       <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
-                        <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
+                        <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
                           <CardContent className="p-4 px-[24px] py-[20px] text-center">
                             <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
                               {communique.title}
@@ -258,63 +255,71 @@ const CommuniquesSection = () => {
                     const styles = getColorStyles(communique.urgency);
                     return (
                       <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
-                        <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                          <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between text-center">
-                            <h3 className={`${currentTextStyles.title} ${styles.textTitle} line-clamp-2`}>
-                              {communique.title}
-                            </h3>
-                            <p className={`${currentTextStyles.description} ${styles.textDesc} line-clamp-2`}>
-                              {communique.description}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              
-              {/* Navigation arrows */}
-              <div className="flex justify-center gap-4 mt-4">
-                <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Desktop layout: Original layout
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Image container */}
-            <div className="w-full lg:w-[500px] bg-transparent flex items-center justify-center">
-              <div className="w-full lg:w-[500px] bg-white shadow-xl rounded-lg px-0 py-0">
-                <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
-              </div>
-            </div>
-            
-            {/* Communiqués stacked */}
-            <div className="flex-1 space-y-3 md:space-y-4">
-              {communiques.map(communique => {
-                const styles = getColorStyles(communique.urgency);
-                return (
-                  <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image, communique.id)}>
-                    <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                      <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
-                        {communique.title}
-                      </h3>
-                      <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
-                        {communique.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-        )}
+                         <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
+                           <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between text-center">
+                             <h3 className={`${currentTextStyles.title} ${styles.textTitle} line-clamp-2`}>
+                               {communique.title}
+                             </h3>
+                             <p className={`${currentTextStyles.description} ${styles.textDesc} line-clamp-2`}>
+                               {communique.description}
+                             </p>
+                           </CardContent>
+                         </Card>
+                       </div>
+                     );
+                   })}
+                 </div>
+               </div>
+               
+               {/* Navigation arrows */}
+               <div className="flex justify-center gap-4 mt-4">
+                 <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
+                   <ChevronLeft className="h-4 w-4" />
+                 </Button>
+                 <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
+                   <ChevronRight className="h-4 w-4" />
+                 </Button>
+               </div>
+             </div>
+           </div>
+         ) : (
+           // Desktop layout: Original layout
+           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+             {loading ? (
+               <div className="flex items-center justify-center w-full h-64">
+                 <Loader2 className="h-8 w-8 animate-spin" />
+               </div>
+             ) : (
+               <>
+                 {/* Image container */}
+                 <div className="w-full lg:w-[500px] bg-transparent flex items-center justify-center">
+                   <div className="w-full lg:w-[500px] bg-white shadow-xl rounded-lg px-0 py-0">
+                     <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
+                   </div>
+                 </div>
+                 
+                 {/* Communiqués stacked */}
+                 <div className="flex-1 space-y-3 md:space-y-4">
+                   {communiques.map(communique => {
+                     const styles = getColorStyles(communique.urgency);
+                     return (
+                       <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
+                         <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
+                           <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
+                             {communique.title}
+                           </h3>
+                           <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                             {communique.description}
+                           </p>
+                         </CardContent>
+                       </Card>
+                     );
+                   })}
+                 </div>
+               </>
+             )}
+           </div>
+         )}
       </div>
     </section>
   );
