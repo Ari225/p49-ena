@@ -19,8 +19,7 @@ const formSchema = z.object({
   details: z.string().min(1, 'Les détails sont requis'),
   category: z.string().min(1, 'La catégorie est requise'),
   reading_time: z.number().min(1, 'Le temps de lecture est requis'),
-  published_date: z.string().min(1, 'La date est requise'),
-  image: z.any().refine((file) => file !== null, 'Une image est requise')
+  published_date: z.string().min(1, 'La date est requise')
 });
 
 interface NewsItem {
@@ -54,6 +53,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
   const [detailsText, setDetailsText] = useState('');
   const [customCategory, setCustomCategory] = useState('');
   const [showCustomCategory, setShowCustomCategory] = useState(false);
+  const [imageError, setImageError] = useState('');
 
   const categories = ['Formation', 'Événement', 'Partenariat', 'Actualité', 'Programme', 'Conférence', 'Autre'];
 
@@ -115,6 +115,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
     const file = event.target.files?.[0];
     if (file) {
       setSelectedImage(file);
+      setImageError(''); // Effacer l'erreur quand une image est sélectionnée
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
@@ -163,6 +164,13 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
   };
 
   const handleSubmit = (data: any) => {
+    // Vérifier que l'image est obligatoire
+    if (!selectedImage && !editingNews?.image_url) {
+      setImageError('Une image est requise');
+      return;
+    }
+
+    setImageError('');
     const finalCategory = data.category === 'Autre' ? customCategory : data.category;
     const formData = {
       ...data,
@@ -240,6 +248,9 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
                   </div>
                 )}
               </div>
+              {imageError && (
+                <p className="text-sm text-red-600">{imageError}</p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
