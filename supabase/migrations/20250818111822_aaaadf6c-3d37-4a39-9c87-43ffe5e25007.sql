@@ -1,0 +1,6 @@
+-- Supprimer l'ancienne contrainte de catégorie
+ALTER TABLE public.activities DROP CONSTRAINT IF EXISTS activities_category_check;
+
+-- Ajouter la nouvelle contrainte avec les bonnes catégories
+ALTER TABLE public.activities ADD CONSTRAINT activities_category_check 
+CHECK (category = ANY (ARRAY['Formation'::text, 'Conférence'::text, 'Réunion'::text, 'Assemblée générale'::text, 'Autre'::text]));
