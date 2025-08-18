@@ -28,8 +28,8 @@ export const useActivityEdit = () => {
       category: activity.category,
       other_category: activity.other_category || '',
       date: activity.date,
-      start_time: activity.start_time,
-      end_time: activity.end_time,
+      start_time: activity.start_time || '',
+      end_time: activity.end_time || '',
       location: activity.location,
       brief_description: activity.brief_description,
       description: activity.description
