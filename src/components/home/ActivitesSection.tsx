@@ -7,69 +7,41 @@ import { Calendar, MapPin, Users, Clock, ChevronRight, CalendarPlus, Eye } from 
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
+import { useActivities } from '@/hooks/useActivities';
 
 const ActivitesSection = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const { toast } = useToast();
+  const { activities, loading } = useActivities();
 
-  const upcomingActivities = [{
-    id: 1,
-    title: "Formation en Leadership Public",
-    date: "15 Avril 2024",
-    time: "09:00 - 17:00",
-    location: "ENA Abidjan",
-    participants: "25 places disponibles",
-    description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne.",
-    type: "Formation",
-    status: "À venir",
-    image: "lovable-uploads/narcissek.jpeg"
-  }, {
-    id: 2,
-    title: "Conférence sur la Digitalisation",
-    date: "22 Avril 2024",
-    time: "14:00 - 18:00",
-    location: "Hôtel Ivoire",
-    participants: "100 participants",
-    description: "Conférence sur les enjeux de la transformation numérique dans les services publics.",
-    type: "Conférence",
-    status: "À venir",
-    image: "lovable-uploads/narcissek.jpeg"
-  }];
+  // Filtrer et trier les activités selon la date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  const pastActivities = [{
-    id: 3,
-    title: "Assemblée Générale Ordinaire",
-    date: "20 Mars 2024",
-    time: "09:00 - 16:00",
-    location: "ENA Abidjan",
-    participants: "80 membres présents",
-    description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024.",
-    type: "Assemblée",
-    status: "Terminé",
-    image: "lovable-uploads/narcissek.jpeg"
-  }, {
-    id: 4,
-    title: "Atelier Gestion de Projet",
-    date: "10 Mars 2024",
-    time: "08:30 - 12:30",
-    location: "Centre de formation",
-    participants: "15 participants",
-    description: "Atelier pratique sur la gestion de projet dans l'administration publique.",
-    type: "Atelier",
-    status: "Terminé",
-    image: "lovable-uploads/narcissek.jpeg"
-  }];
+  const upcomingActivities = activities
+    .filter(activity => new Date(activity.date) >= today)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 2);
+
+  const pastActivities = activities
+    .filter(activity => new Date(activity.date) < today)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 2);
 
   const handleAddToCalendar = (activity: any) => {
     try {
+      const timeRange = activity.start_time && activity.end_time 
+        ? `${activity.start_time} - ${activity.end_time}` 
+        : '09:00 - 17:00';
+      
       const {
         startDate,
         endDate
-      } = parseEventDate(activity.date, activity.time);
+      } = parseEventDate(activity.date, timeRange);
       addToCalendar({
         title: activity.title,
-        description: `${activity.description}\n\nType: ${activity.type}\nParticipants: ${activity.participants}`,
+        description: `${activity.description}\n\nCatégorie: ${activity.category}`,
         startDate,
         endDate,
         location: activity.location
@@ -177,7 +149,7 @@ const ActivitesSection = () => {
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
-                      {activity.type}
+                      {activity.category}
                     </span>
                     <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
                       {activity.status}
@@ -199,15 +171,11 @@ const ActivitesSection = () => {
                     </div>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-2 text-primary" />
-                      <span>{activity.time}</span>
+                      <span>{activity.start_time && activity.end_time ? `${activity.start_time} - ${activity.end_time}` : 'Horaire à définir'}</span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="w-4 h-4 mr-2 text-primary" />
                       <span>{activity.location}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2 text-primary" />
-                      <span>{activity.participants}</span>
                     </div>
                   </div>
 
@@ -249,7 +217,7 @@ const ActivitesSection = () => {
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-gray-500 text-white px-2 py-1 rounded text-xs font-medium">
-                      {activity.type}
+                      {activity.category}
                     </span>
                     <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium">
                       {activity.status}
@@ -271,15 +239,11 @@ const ActivitesSection = () => {
                     </div>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-2 text-gray-500" />
-                      <span>{activity.time}</span>
+                      <span>{activity.start_time && activity.end_time ? `${activity.start_time} - ${activity.end_time}` : 'Horaire à définir'}</span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="w-4 h-4 mr-2 text-gray-500" />
                       <span>{activity.location}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Users className="w-4 h-4 mr-2 text-gray-500" />
-                      <span>{activity.participants}</span>
                     </div>
                   </div>
 
