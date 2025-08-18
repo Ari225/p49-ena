@@ -43,6 +43,7 @@ const ActualiteDetail = () => {
           id: newsData.id,
           title: newsData.title,
           content: newsData.details || newsData.summary || '',
+          details: newsData.details || '',
           category: newsData.category,
           date: newsData.published_date,
           author: newsData.published_by || '',
@@ -182,14 +183,14 @@ const ActualiteDetail = () => {
 
               {/* Article Body */}
               <div className="prose prose-lg max-w-none">
-                {actualite.content ? (
+                {(actualite.details || actualite.content) ? (
                   <div 
-                    className="text-gray-700 leading-relaxed whitespace-pre-wrap"
+                    className="text-gray-700 leading-relaxed whitespace-pre-wrap [&_a]:pointer-events-auto [&_a]:cursor-pointer [&_a]:z-10 [&_a]:relative"
                     style={{
                       lineHeight: '1.8',
                     }}
                     dangerouslySetInnerHTML={{ 
-                      __html: formatContent(actualite.content)
+                      __html: formatContent(actualite.details || actualite.content)
                     }}
                   />
                 ) : (
@@ -203,7 +204,7 @@ const ActualiteDetail = () => {
               {process.env.NODE_ENV === 'development' && (
                 <div className="mt-4 p-4 bg-gray-100 rounded text-xs">
                   <strong>Debug - Contenu brut:</strong>
-                  <pre className="whitespace-pre-wrap">{actualite.content}</pre>
+                  <pre className="whitespace-pre-wrap">{actualite.details || actualite.content}</pre>
                 </div>
               )}
 
