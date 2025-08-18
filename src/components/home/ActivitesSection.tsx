@@ -167,7 +167,7 @@ const ActivitesSection = () => {
             Activités à venir
           </h3>
           <div className={getGridClasses()}>
-            {upcomingActivities.map(activity => (
+            {upcomingActivities.slice(0, 2).map(activity => (
               <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
                 {activity.image && (
                   <div className="w-full h-48 overflow-hidden rounded-t-lg">
