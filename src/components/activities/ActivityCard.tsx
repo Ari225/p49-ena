@@ -59,7 +59,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onEdit, onDelete 
         } ${
           isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'
         }`}>
-          {activity.description}
+          {activity.brief_description}
         </p>
         
         <div className={`space-y-2 mb-4 ${
@@ -88,7 +88,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onEdit, onDelete 
           </div>
           <div className="flex items-center">
             <Users className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-            <span>{activity.brief_description}</span>
+            <span>{activity.description}</span>
           </div>
         </div>
 
