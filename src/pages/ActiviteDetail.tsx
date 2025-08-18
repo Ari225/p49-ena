@@ -8,65 +8,15 @@ import { Calendar, MapPin, Users, Clock, ArrowLeft, CalendarPlus } from 'lucide-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { addToCalendar, parseEventDate } from '@/utils/calendarUtils';
 import { useToast } from '@/hooks/use-toast';
+import { useActivities } from '@/hooks/useActivities';
 
 const ActiviteDetail = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
   const { toast } = useToast();
+  const { activities } = useActivities();
 
-  // Données simulées des activités
-  const allActivities = [
-    {
-      id: 1,
-      title: "Formation en Leadership Public",
-      date: "15 Avril 2024",
-      time: "09:00 - 17:00",
-      location: "ENA Abidjan",
-      participants: "25 places disponibles",
-      description: "Formation intensive sur les techniques de leadership dans l'administration publique moderne. Cette formation couvre les aspects essentiels du leadership, la gestion d'équipe, et les stratégies de communication efficace dans un contexte administratif.",
-      type: "Formation",
-      status: "À venir",
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop"
-    },
-    {
-      id: 2,
-      title: "Conférence sur la Digitalisation",
-      date: "22 Avril 2024", 
-      time: "14:00 - 18:00",
-      location: "Hôtel Ivoire",
-      participants: "100 participants",
-      description: "Conférence sur les enjeux de la transformation numérique dans les services publics. Découvrez les dernières innovations technologiques et leur impact sur l'efficacité administrative.",
-      type: "Conférence",
-      status: "À venir",
-      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=400&fit=crop"
-    },
-    {
-      id: 3,
-      title: "Assemblée Générale Ordinaire",
-      date: "20 Mars 2024",
-      time: "09:00 - 16:00", 
-      location: "ENA Abidjan",
-      participants: "80 membres présents",
-      description: "Assemblée générale ordinaire avec présentation du bilan et perspectives 2024. Participation active de tous les membres pour définir les orientations futures de l'association.",
-      type: "Assemblée",
-      status: "Terminé",
-      image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=400&fit=crop"
-    },
-    {
-      id: 4,
-      title: "Atelier Gestion de Projet",
-      date: "10 Mars 2024",
-      time: "08:30 - 12:30",
-      location: "Centre de formation",
-      participants: "15 participants",
-      description: "Atelier pratique sur la gestion de projet dans l'administration publique. Méthodologies agiles, outils de planification et techniques de suivi de projet.",
-      type: "Atelier",
-      status: "Terminé",
-      image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&h=400&fit=crop"
-    }
-  ];
-
-  const activity = allActivities.find(a => a.id === parseInt(id || '0'));
+  const activity = activities.find(a => a.id === id);
 
   if (!activity) {
     return (
@@ -92,11 +42,15 @@ const ActiviteDetail = () => {
 
   const handleAddToCalendar = () => {
     try {
-      const { startDate, endDate } = parseEventDate(activity.date, activity.time);
+      const timeRange = activity.start_time && activity.end_time 
+        ? `${activity.start_time} - ${activity.end_time}` 
+        : '09:00 - 17:00';
+      
+      const { startDate, endDate } = parseEventDate(activity.date, timeRange);
       
       addToCalendar({
         title: activity.title,
-        description: `${activity.description}\n\nType: ${activity.type}\nParticipants: ${activity.participants}`,
+        description: `${activity.description}\n\nCatégorie: ${activity.other_category || activity.category}`,
         startDate,
         endDate,
         location: activity.location
@@ -120,14 +74,16 @@ const ActiviteDetail = () => {
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section avec Image */}
         <div className="relative">
-          <div className="h-80 md:h-96 overflow-hidden">
-            <img 
-              src={activity.image} 
-              alt={activity.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          </div>
+          {(activity.image || activity.image_url) && (
+            <div className="h-80 md:h-96 overflow-hidden">
+              <img 
+                src={activity.image || activity.image_url} 
+                alt={activity.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            </div>
+          )}
           
           {/* Bouton retour en overlay */}
           <div className="absolute top-6 left-6">
@@ -151,7 +107,7 @@ const ActiviteDetail = () => {
                     ? 'bg-primary/90 text-white' 
                     : 'bg-gray-500/90 text-white'
                 }`}>
-                  {activity.type}
+                  {activity.other_category || activity.category}
                 </span>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${
                   activity.status === 'À venir'
@@ -169,19 +125,20 @@ const ActiviteDetail = () => {
               <div className="flex flex-wrap items-center gap-4 text-sm text-white/90">
                 <div className="flex items-center">
                   <Calendar className="w-4 h-4 mr-2" />
-                  {activity.date}
+                  {new Date(activity.date).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
                 </div>
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
-                  {activity.time}
+                  {activity.start_time}
+                  {activity.end_time && ` - ${activity.end_time}`}
                 </div>
                 <div className="flex items-center">
                   <MapPin className="w-4 h-4 mr-2" />
                   {activity.location}
-                </div>
-                <div className="flex items-center">
-                  <Users className="w-4 h-4 mr-2" />
-                  {activity.participants}
                 </div>
               </div>
             </div>

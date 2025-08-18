@@ -141,15 +141,15 @@ const ActivitesSection = () => {
           <div className={getGridClasses()}>
             {upcomingActivities.slice(0, 2).map(activity => (
               <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
-                {activity.image && (
+                {(activity.image || activity.image_url) && (
                   <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                    <img src={activity.image} alt={activity.title} className="w-full h-full object-cover" />
+                    <img src={activity.image || activity.image_url} alt={activity.title} className="w-full h-full object-cover" />
                   </div>
                 )}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
-                      {activity.category}
+                      {activity.other_category || activity.category}
                     </span>
                     <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
                       {activity.status}
@@ -161,17 +161,24 @@ const ActivitesSection = () => {
                   </h4>
                   
                   <p className={`text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
-                    {activity.description}
+                    {activity.brief_description}
                   </p>
                   
                   <div className={`space-y-2 text-gray-700 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-primary" />
-                      <span>{activity.date}</span>
+                      <span>{new Date(activity.date).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}</span>
                     </div>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-2 text-primary" />
-                      <span>{activity.start_time && activity.end_time ? `${activity.start_time} - ${activity.end_time}` : 'Horaire à définir'}</span>
+                      <span>
+                        {activity.start_time}
+                        {activity.end_time && ` - ${activity.end_time}`}
+                      </span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="w-4 h-4 mr-2 text-primary" />
@@ -209,18 +216,18 @@ const ActivitesSection = () => {
           <div className={getGridClasses()}>
             {pastActivities.map(activity => (
               <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300 opacity-80">
-                {activity.image && (
+                {(activity.image || activity.image_url) && (
                   <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                    <img src={activity.image} alt={activity.title} className="w-full h-full object-cover grayscale" />
+                    <img src={activity.image || activity.image_url} alt={activity.title} className="w-full h-full object-cover grayscale" />
                   </div>
                 )}
                 <CardContent className="p-4 md:p-6">
                   <div className="flex justify-between items-start mb-3">
                     <span className="bg-gray-500 text-white px-2 py-1 rounded text-xs font-medium">
-                      {activity.category}
+                      {activity.other_category || activity.category}
                     </span>
                     <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium">
-                      {activity.status}
+                      Terminé
                     </span>
                   </div>
                   
@@ -229,17 +236,24 @@ const ActivitesSection = () => {
                   </h4>
                   
                   <p className={`text-gray-500 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
-                    {activity.description}
+                    {activity.brief_description}
                   </p>
                   
                   <div className={`space-y-2 text-gray-500 mb-4 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' :'text-sm md:text-sm'}`}>
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                      <span>{activity.date}</span>
+                      <span>{new Date(activity.date).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}</span>
                     </div>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-2 text-gray-500" />
-                      <span>{activity.start_time && activity.end_time ? `${activity.start_time} - ${activity.end_time}` : 'Horaire à définir'}</span>
+                      <span>
+                        {activity.start_time}
+                        {activity.end_time && ` - ${activity.end_time}`}
+                      </span>
                     </div>
                     <div className="flex items-center">
                       <MapPin className="w-4 h-4 mr-2 text-gray-500" />
