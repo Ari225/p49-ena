@@ -625,6 +625,10 @@ export type Database = {
           username: string
         }[]
       }
+      can_access_full_member_data: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       confirm_security_lockdown: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -706,6 +710,43 @@ export type Database = {
           subscribed_at: string
         }[]
       }
+      get_public_member_directory: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          emploi_fonction_publique: string
+          has_facebook: boolean
+          has_instagram: boolean
+          has_linkedin: boolean
+          has_whatsapp: boolean
+          id: number
+          lieu_exercice: string
+          nom_famille_masque: string
+          prenoms_masque: string
+          region: string
+        }[]
+      }
+      get_secure_member_details: {
+        Args: { target_member_id: number }
+        Returns: {
+          date_naissance: string
+          ecole: string
+          email: string
+          emploi_fonction_publique: string
+          facebook: string
+          filiere_egad: string
+          filiere_egef: string
+          id: number
+          instagram: string
+          lieu_exercice: string
+          linkedin: string
+          ministere: string
+          nom_famille: string
+          photo: string
+          prenoms: string
+          region: string
+          whatsapp: number
+        }[]
+      }
       get_secure_user_info: {
         Args: { target_user_id: string }
         Returns: {
@@ -738,6 +779,10 @@ export type Database = {
       log_security_event: {
         Args: { details?: Json; event_type: string; user_id?: string }
         Returns: undefined
+      }
+      mask_sensitive_data: {
+        Args: { data_value: string; show_full?: boolean }
+        Returns: string
       }
       secure_newsletter_subscribe: {
         Args: { subscriber_email: string }
