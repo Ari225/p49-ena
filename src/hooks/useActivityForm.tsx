@@ -12,11 +12,12 @@ export const useActivityForm = () => {
   const [formData, setFormData] = useState<ActivityFormData>({
     title: '',
     category: '',
-    type: '',
+    other_category: '',
     date: '',
-    time: '',
+    start_time: '',
+    end_time: '',
     location: '',
-    participants: '',
+    brief_description: '',
     description: ''
   });
 
@@ -24,11 +25,12 @@ export const useActivityForm = () => {
     setFormData({
       title: '',
       category: '',
-      type: '',
+      other_category: '',
       date: '',
-      time: '',
+      start_time: '',
+      end_time: '',
       location: '',
-      participants: '',
+      brief_description: '',
       description: ''
     });
     setSelectedImage(null);

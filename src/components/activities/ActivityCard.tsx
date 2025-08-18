@@ -35,7 +35,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onEdit, onDelete 
               ? 'bg-gray-500 text-white' 
               : 'bg-primary text-white'
           }`}>
-            {activity.type || activity.category}
+            {activity.other_category || activity.category}
           </span>
           <span className={`px-2 py-1 rounded text-xs font-medium ${
             activity.status === 'À venir' 
@@ -73,7 +73,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onEdit, onDelete 
           </div>
           <div className="flex items-center">
             <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-            <span>{activity.time}</span>
+            <span>{activity.start_time} - {activity.end_time}</span>
           </div>
           <div className="flex items-center">
             <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
@@ -81,7 +81,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onEdit, onDelete 
           </div>
           <div className="flex items-center">
             <Users className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-            <span>{activity.participants}</span>
+            <span>{activity.brief_description}</span>
           </div>
         </div>
 

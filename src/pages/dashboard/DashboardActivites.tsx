@@ -20,12 +20,12 @@ const DashboardActivites = () => {
     {
       id: '1',
       title: 'Formation en Leadership Public',
-      category: 'Autre activité',
-      type: 'Formation',
+      category: 'Formation',
       date: '2024-04-15',
-      time: '09:00 - 17:00',
+      start_time: '09:00',
+      end_time: '17:00',
       location: 'ENA Abidjan',
-      participants: '25 places disponibles',
+      brief_description: 'Formation intensive sur les techniques de leadership',
       description: 'Formation intensive sur les techniques de leadership dans l\'administration publique moderne.',
       status: 'À venir',
       image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop'
@@ -33,12 +33,12 @@ const DashboardActivites = () => {
     {
       id: '2',
       title: 'Conférence sur la Digitalisation',
-      category: 'Autre activité',
-      type: 'Conférence',
+      category: 'Conférence',
       date: '2024-04-25',
-      time: '14:00 - 18:00',
+      start_time: '14:00',
+      end_time: '18:00',
       location: 'Hôtel Ivoire',
-      participants: '100 participants',
+      brief_description: 'Conférence sur les enjeux de la transformation numérique',
       description: 'Conférence sur les enjeux de la transformation numérique dans les services publics.',
       status: 'À venir',
       image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop'

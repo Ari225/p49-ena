@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,8 +5,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useActivityForm } from '@/hooks/useActivityForm';
 import ImageUpload from './ImageUpload';
-import { categoryOptions, typeOptions } from '@/types/activity';
-import { Calendar, Clock, MapPin, Users, FileText, Tag } from 'lucide-react';
+import { categoryOptions } from '@/types/activity';
+import { Calendar, Clock, MapPin, FileText, Tag } from 'lucide-react';
 
 interface ActivityFormProps {
   onSuccess: () => void;
@@ -51,72 +50,83 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           />
         </div>
 
-        {/* Catégorie et Type */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-700 flex items-center">
-              <Tag className="w-4 h-4 mr-2 text-primary" />
-              Catégorie *
-            </Label>
-            <select
-              className="w-full p-3 border border-gray-300 rounded-md focus:border-primary focus:ring-1 focus:ring-primary bg-white"
-              value={formData.category}
-              onChange={(e) => setFormData({...formData, category: e.target.value, type: ''})}
-              required
-            >
-              <option value="">Sélectionnez une catégorie</option>
-              {categoryOptions.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </div>
-
-          {formData.category === 'Autre activité' && (
-            <div className="space-y-2">
-              <Label className="text-sm font-medium text-gray-700">
-                Type d'activité *
-              </Label>
-              <select
-                className="w-full p-3 border border-gray-300 rounded-md focus:border-primary focus:ring-1 focus:ring-primary bg-white"
-                value={formData.type}
-                onChange={(e) => setFormData({...formData, type: e.target.value})}
-                required
-              >
-                <option value="">Sélectionnez un type</option>
-                {typeOptions.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            </div>
-          )}
+        {/* Catégorie */}
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700 flex items-center">
+            <Tag className="w-4 h-4 mr-2 text-primary" />
+            Catégorie *
+          </Label>
+          <select
+            className="w-full p-3 border border-gray-300 rounded-md focus:border-primary focus:ring-1 focus:ring-primary bg-white"
+            value={formData.category}
+            onChange={(e) => setFormData({...formData, category: e.target.value, other_category: ''})}
+            required
+          >
+            <option value="">Sélectionnez une catégorie</option>
+            {categoryOptions.map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Date et Heure */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Autre catégorie conditionnelle */}
+        {formData.category === 'Autre' && (
           <div className="space-y-2">
-            <Label htmlFor="date" className="text-sm font-medium text-gray-700 flex items-center">
-              <Calendar className="w-4 h-4 mr-2 text-primary" />
-              Date *
+            <Label className="text-sm font-medium text-gray-700">
+              Précisez la catégorie *
             </Label>
             <Input
-              id="date"
-              type="date"
-              value={formData.date}
-              onChange={(e) => setFormData({...formData, date: e.target.value})}
+              placeholder="Précisez le type d'activité"
+              value={formData.other_category}
+              onChange={(e) => setFormData({...formData, other_category: e.target.value})}
+              className="border-gray-300 focus:border-primary focus:ring-primary"
+              required
+            />
+          </div>
+        )}
+
+        {/* Date */}
+        <div className="space-y-2">
+          <Label htmlFor="date" className="text-sm font-medium text-gray-700 flex items-center">
+            <Calendar className="w-4 h-4 mr-2 text-primary" />
+            Date *
+          </Label>
+          <Input
+            id="date"
+            type="date"
+            value={formData.date}
+            onChange={(e) => setFormData({...formData, date: e.target.value})}
+            className="border-gray-300 focus:border-primary focus:ring-primary"
+            required
+          />
+        </div>
+
+        {/* Heures de début et fin */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="start_time" className="text-sm font-medium text-gray-700 flex items-center">
+              <Clock className="w-4 h-4 mr-2 text-primary" />
+              Heure de début *
+            </Label>
+            <Input
+              id="start_time"
+              type="time"
+              value={formData.start_time}
+              onChange={(e) => setFormData({...formData, start_time: e.target.value})}
               className="border-gray-300 focus:border-primary focus:ring-primary"
               required
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="time" className="text-sm font-medium text-gray-700 flex items-center">
+            <Label htmlFor="end_time" className="text-sm font-medium text-gray-700 flex items-center">
               <Clock className="w-4 h-4 mr-2 text-primary" />
-              Heure *
+              Heure de fin *
             </Label>
             <Input
-              id="time"
-              placeholder="ex: 09:00 - 17:00"
-              value={formData.time}
-              onChange={(e) => setFormData({...formData, time: e.target.value})}
+              id="end_time"
+              type="time"
+              value={formData.end_time}
+              onChange={(e) => setFormData({...formData, end_time: e.target.value})}
               className="border-gray-300 focus:border-primary focus:ring-primary"
               required
             />
@@ -139,26 +149,25 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           />
         </div>
 
-        {/* Participants */}
+        {/* Description brève */}
         <div className="space-y-2">
-          <Label htmlFor="participants" className="text-sm font-medium text-gray-700 flex items-center">
-            <Users className="w-4 h-4 mr-2 text-primary" />
-            Nombre de participants *
+          <Label htmlFor="brief_description" className="text-sm font-medium text-gray-700">
+            Description brève *
           </Label>
           <Input
-            id="participants"
-            placeholder="ex: 25 places disponibles"
-            value={formData.participants}
-            onChange={(e) => setFormData({...formData, participants: e.target.value})}
+            id="brief_description"
+            placeholder="Résumé en une phrase"
+            value={formData.brief_description}
+            onChange={(e) => setFormData({...formData, brief_description: e.target.value})}
             className="border-gray-300 focus:border-primary focus:ring-primary"
             required
           />
         </div>
 
-        {/* Description */}
+        {/* Description détaillée */}
         <div className="space-y-2">
           <Label htmlFor="description" className="text-sm font-medium text-gray-700">
-            Description de l'activité *
+            Description détaillée *
           </Label>
           <Textarea
             id="description"
@@ -179,18 +188,18 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
         />
 
         {/* Boutons d'action */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
+        <div className="flex gap-3 pt-4 border-t border-gray-200">
           <Button 
             type="submit" 
-            className="flex-1 bg-primary hover:bg-primary/90 text-white font-medium py-3"
+            className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6"
           >
-            Publier l'activité
+            Publier
           </Button>
           <Button 
             type="button" 
             variant="outline" 
             onClick={onCancel}
-            className="flex-1 border-gray-300 text-gray-700 py-3 hover:bg-gray-50"
+            className="border-gray-300 text-gray-700 py-3 px-6 hover:bg-gray-50"
           >
             Annuler
           </Button>

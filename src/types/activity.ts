@@ -2,12 +2,13 @@
 export interface Activity {
   id: string;
   title: string;
-  category: 'Les Régionales' | 'Assemblées Générales' | 'Réunions de constitution' | 'Autre activité';
-  type?: string;
+  category: 'Formation' | 'Conférence' | 'Réunion' | 'Assemblée générale' | 'Autre';
+  other_category?: string;
   date: string;
-  time: string;
+  start_time: string;
+  end_time: string;
   location: string;
-  participants: string;
+  brief_description: string;
   description: string;
   status: 'À venir' | 'Terminé';
   image?: string;
@@ -18,26 +19,19 @@ export interface Activity {
 export interface ActivityFormData {
   title: string;
   category: string;
-  type: string;
+  other_category: string;
   date: string;
-  time: string;
+  start_time: string;
+  end_time: string;
   location: string;
-  participants: string;
+  brief_description: string;
   description: string;
 }
 
 export const categoryOptions = [
-  'Les Régionales',
-  'Assemblées Générales', 
-  'Réunions de constitution',
-  'Autre activité'
-] as const;
-
-export const typeOptions = [
   'Formation',
-  'Séminaire',
-  'Atelier',
   'Conférence',
-  'Assemblée',
-  'Table Ronde'
+  'Réunion',
+  'Assemblée générale',
+  'Autre'
 ] as const;

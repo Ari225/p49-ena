@@ -16,51 +16,57 @@ export type Database = {
     Tables: {
       activities: {
         Row: {
+          brief_description: string | null
           category: string
           created_at: string
           created_by: string | null
           date: string
           description: string
+          end_time: string | null
           id: string
           image_url: string | null
           location: string
-          participants: string
+          other_category: string | null
+          start_time: string | null
           status: string
-          time: string
+          time: string | null
           title: string
-          type: string | null
           updated_at: string
         }
         Insert: {
+          brief_description?: string | null
           category: string
           created_at?: string
           created_by?: string | null
           date: string
           description: string
+          end_time?: string | null
           id?: string
           image_url?: string | null
           location: string
-          participants: string
+          other_category?: string | null
+          start_time?: string | null
           status?: string
-          time: string
+          time?: string | null
           title: string
-          type?: string | null
           updated_at?: string
         }
         Update: {
+          brief_description?: string | null
           category?: string
           created_at?: string
           created_by?: string | null
           date?: string
           description?: string
+          end_time?: string | null
           id?: string
           image_url?: string | null
           location?: string
-          participants?: string
+          other_category?: string | null
+          start_time?: string | null
           status?: string
-          time?: string
+          time?: string | null
           title?: string
-          type?: string | null
           updated_at?: string
         }
         Relationships: [
