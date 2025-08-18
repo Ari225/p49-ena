@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Upload, X, Bold, Italic, Underline, List, Link } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { formatContent } from '@/utils/contentSecurity';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Le titre est requis'),
@@ -385,14 +386,9 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
                         <div 
                           style={{ whiteSpace: 'pre-wrap' }}
                           dangerouslySetInnerHTML={{ 
-                          __html: detailsText
-                            .replace(/\n/g, '<br>')
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                            .replace(/__(.*?)__/g, '<u>$1</u>')
-                            .replace(/\n- (.*)/g, '<ul><li>$1</li></ul>')
-                            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-600 underline">$1</a>')
-                        }} />
+                            __html: formatContent(detailsText)
+                          }} 
+                        />
                       ) : (
                         <p className="text-gray-500">Aperçu du contenu...</p>
                       )}
