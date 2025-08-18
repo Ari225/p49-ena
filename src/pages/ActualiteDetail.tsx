@@ -187,13 +187,7 @@ const ActualiteDetail = () => {
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">
                       {actualite.author}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-3">
-                      Publié le {new Date(actualite.date).toLocaleDateString('fr-FR', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                    </p>
+                    
                     <Button variant="outline" size="sm" className="text-gray-600 border-gray-200 hover:bg-gray-50" onClick={handleShare}>
                       <Share2 className="h-4 w-4 mr-2" />
                       Partager cet article
