@@ -13,9 +13,9 @@ const configureDOMPurify = () => {
   // Set allowed tags and attributes
   return {
     ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a'],
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
     FORBID_TAGS: ['script', 'object', 'embed', 'iframe', 'form', 'input'],
-    FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover']
+    FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover', 'style']
   };
 };
 
@@ -33,9 +33,7 @@ export const formatContent = (content: string): string => {
     .replace(/\n/g, '<br/>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/__(.*?)__/g, '<u>$1</u>')
-    .replace(/\n- (.*)/g, '<ul><li>$1</li></ul>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-colors no-underline" target="_blank" rel="noopener noreferrer">$1</a>');
+    .replace(/__(.*?)__/g, '<u>$1</u>');
     
   return sanitizeHTML(formatted);
 };
