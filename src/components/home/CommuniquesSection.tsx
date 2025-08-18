@@ -55,21 +55,21 @@ const CommuniquesSection = () => {
           bg: 'bg-transparent',
           border: 'border-red-200',
           textTitle: 'text-red-800',
-          textDesc: 'text-red-600'
+          textDesc: 'text-gray-700'
         };
       case 'important':
         return {
           bg: 'bg-transparent',
           border: 'border-orange-200',
           textTitle: 'text-orange-800',
-          textDesc: 'text-orange-600'
+          textDesc: 'text-gray-700'
         };
       default:
         return {
           bg: 'bg-transparent',
           border: 'border-green-200',
           textTitle: 'text-green-800',
-          textDesc: 'text-green-600'
+          textDesc: 'text-gray-700'
         };
     }
   };
@@ -104,7 +104,7 @@ const CommuniquesSection = () => {
           .from('communiques')
           .select('*')
           .order('created_at', { ascending: false })
-          .limit(4);
+          .limit(3);
 
         if (error) {
           console.error('Error fetching communiques:', error);
