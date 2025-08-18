@@ -180,9 +180,7 @@ const ActualiteDetail = () => {
               {/* Author Section */}
               <div className="mt-12 pt-8 border-t border-gray-100">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                    <User className="h-6 w-6 text-white" />
-                  </div>
+                  
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">
                       {actualite.author}
