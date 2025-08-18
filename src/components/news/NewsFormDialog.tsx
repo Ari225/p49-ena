@@ -20,7 +20,7 @@ const formSchema = z.object({
   category: z.string().min(1, 'La catégorie est requise'),
   reading_time: z.number().min(1, 'Le temps de lecture est requis'),
   published_date: z.string().min(1, 'La date est requise'),
-  image: z.any().optional()
+  image: z.any().refine((file) => file !== null, 'Une image est requise')
 });
 
 interface NewsItem {
