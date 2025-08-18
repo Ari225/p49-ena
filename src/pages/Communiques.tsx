@@ -2,21 +2,20 @@ import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Search } from 'lucide-react';
+import { Calendar, Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopup';
+import { supabase } from '@/integrations/supabase/client';
 
 interface CommuniqueItem {
   id: string;
   title: string;
   description: string;
-  type: string;
-  color: string;
-  image: string;
-  published_date: string;
   urgency: 'normal' | 'urgent' | 'important';
+  image_url: string | null;
+  published_date: string;
   created_at: string;
   updated_at: string;
   created_by: string | null;
@@ -39,48 +38,20 @@ const Communiques = () => {
   const fetchCommuniques = async () => {
     try {
       setLoading(true);
-      const mockCommuniques: CommuniqueItem[] = [
-        {
-          id: '1',
-          title: 'Communiqué urgent',
-          description: 'Report de l\'événement prévu le 25 mars 2024.',
-          type: 'Communiqué urgent',
-          color: 'red',
-          image: '/lovable-uploads/cdf92e8b-3396-4192-b8a1-f94647a7b289.jpg',
-          published_date: '2024-03-20',
-          urgency: 'urgent',
-          created_at: '2024-03-20T00:00:00Z',
-          updated_at: '2024-03-20T00:00:00Z',
-          created_by: null
-        },
-        {
-          id: '2',
-          title: 'Nouvelle inscription',
-          description: 'Ouverture des inscriptions pour la formation de mars.',
-          type: 'Information',
-          color: 'blue',
-          image: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          published_date: '2024-03-15',
-          urgency: 'normal',
-          created_at: '2024-03-15T00:00:00Z',
-          updated_at: '2024-03-15T00:00:00Z',
-          created_by: null
-        },
-        {
-          id: '3',
-          title: 'Information importante',
-          description: 'Mise à jour des procédures administratives.',
-          type: 'Information importante',
-          color: 'orange',
-          image: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-          published_date: '2024-03-18',
-          urgency: 'important',
-          created_at: '2024-03-18T00:00:00Z',
-          updated_at: '2024-03-18T00:00:00Z',
-          created_by: null
-        }
-      ];
-      setCommuniques(mockCommuniques);
+      const { data, error } = await supabase
+        .from('communiques')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching communiques:', error);
+        return;
+      }
+
+      setCommuniques((data || []).map(item => ({
+        ...item,
+        urgency: item.urgency as 'normal' | 'urgent' | 'important'
+      })));
     } catch (error) {
       console.error('Error fetching communiques:', error);
     } finally {
@@ -167,7 +138,9 @@ const Communiques = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center">Chargement...</div>
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
         </div>
       </Layout>
     );
@@ -342,10 +315,10 @@ const Communiques = () => {
                       className={`overflow-hidden hover:shadow-lg transition-shadow cursor-pointer bg-white border-gray-200 h-full flex flex-col`}
                       onClick={() => handleCardClick(item)}
                     >
-                      {item.image && (
+                      {item.image_url && (
                         <div className="h-48 flex-shrink-0">
                           <img 
-                            src={item.image} 
+                            src={item.image_url} 
                             alt={item.title} 
                             className="w-full h-full object-cover"
                           />
