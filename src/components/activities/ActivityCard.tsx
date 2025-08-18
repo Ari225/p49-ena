@@ -16,7 +16,36 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const isPast = activity.status === 'Terminé';
+  
+  // Calculer le statut automatique basé sur la date/heure
+  const getActivityStatus = (activity: ActivityType) => {
+    const now = new Date();
+    const activityDate = new Date(activity.date);
+    
+    // Si l'activité a une heure de fin, vérifier si elle est passée
+    if (activity.end_time) {
+      const [hours, minutes] = activity.end_time.split(':');
+      const activityEndDateTime = new Date(activityDate);
+      activityEndDateTime.setHours(parseInt(hours), parseInt(minutes));
+      return activityEndDateTime < now ? 'Terminé' : 'À venir';
+    }
+    
+    // Si l'activité a une heure de début, vérifier si elle est passée
+    if (activity.start_time) {
+      const [hours, minutes] = activity.start_time.split(':');
+      const activityStartDateTime = new Date(activityDate);
+      activityStartDateTime.setHours(parseInt(hours), parseInt(minutes));
+      return activityStartDateTime < now ? 'Terminé' : 'À venir';
+    }
+    
+    // Si pas d'heure, comparer seulement les dates
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    return activityDate < todayStart ? 'Terminé' : 'À venir';
+  };
+
+  const currentStatus = getActivityStatus(activity);
+  const isPast = currentStatus === 'Terminé';
   return <Card className={`hover:shadow-lg transition-shadow duration-300 ${isPast ? 'opacity-80' : ''}`}>
       {(activity.image || activity.image_url) && <div className="w-full h-48 overflow-hidden rounded-t-lg">
           <img src={activity.image || activity.image_url} alt={activity.title} className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`} />
@@ -26,8 +55,8 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
           <span className={`px-2 py-1 rounded text-xs font-medium ${isPast ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
             {activity.other_category || activity.category}
           </span>
-          <span className={`px-2 py-1 rounded text-xs font-medium ${activity.status === 'À venir' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-            {activity.status}
+          <span className={`px-2 py-1 rounded text-xs font-medium ${currentStatus === 'À venir' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+            {currentStatus}
           </span>
         </div>
         

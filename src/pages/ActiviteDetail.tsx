@@ -18,6 +18,37 @@ const ActiviteDetail = () => {
 
   const activity = activities.find(a => a.id === id);
 
+  // Calculer le statut automatique basé sur la date/heure
+  const getActivityStatus = (activity: any) => {
+    if (!activity) return 'À venir';
+    
+    const now = new Date();
+    const activityDate = new Date(activity.date);
+    
+    // Si l'activité a une heure de fin, vérifier si elle est passée
+    if (activity.end_time) {
+      const [hours, minutes] = activity.end_time.split(':');
+      const activityEndDateTime = new Date(activityDate);
+      activityEndDateTime.setHours(parseInt(hours), parseInt(minutes));
+      return activityEndDateTime < now ? 'Terminé' : 'À venir';
+    }
+    
+    // Si l'activité a une heure de début, vérifier si elle est passée
+    if (activity.start_time) {
+      const [hours, minutes] = activity.start_time.split(':');
+      const activityStartDateTime = new Date(activityDate);
+      activityStartDateTime.setHours(parseInt(hours), parseInt(minutes));
+      return activityStartDateTime < now ? 'Terminé' : 'À venir';
+    }
+    
+    // Si pas d'heure, comparer seulement les dates
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    return activityDate < todayStart ? 'Terminé' : 'À venir';
+  };
+
+  const currentStatus = activity ? getActivityStatus(activity) : 'À venir';
+
   if (!activity) {
     return (
       <Layout>
@@ -103,18 +134,18 @@ const ActiviteDetail = () => {
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${
-                  activity.status === 'À venir' 
+                  currentStatus === 'À venir' 
                     ? 'bg-primary/90 text-white' 
                     : 'bg-gray-500/90 text-white'
                 }`}>
                   {activity.other_category || activity.category}
                 </span>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm ${
-                  activity.status === 'À venir'
+                  currentStatus === 'À venir'
                     ? 'bg-green-500/90 text-white'
                     : 'bg-gray-400/90 text-white'
                 }`}>
-                  {activity.status}
+                  {currentStatus}
                 </span>
               </div>
               
@@ -163,7 +194,7 @@ const ActiviteDetail = () => {
           </Card>
 
           {/* Bouton d'action */}
-          {activity.status === 'À venir' && (
+          {currentStatus === 'À venir' && (
             <div className="mt-8 text-center">
               <Button
                 onClick={handleAddToCalendar}
