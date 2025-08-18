@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Loader2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ActivityForm from '@/components/activities/ActivityForm';
+import ActivityEditForm from '@/components/activities/ActivityEditForm';
 import ActivityCard from '@/components/activities/ActivityCard';
 import { Activity } from '@/types/activity';
 import { isAdmin } from '@/utils/roleUtils';
@@ -16,6 +17,8 @@ const DashboardActivites = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const { activities, loading, error, refetch, deleteActivity } = useActivities();
 
   if (!user || !isAdmin(user)) {
@@ -31,9 +34,20 @@ const DashboardActivites = () => {
     setShowForm(false);
   };
 
+  const handleEditFormSuccess = () => {
+    setShowEditForm(false);
+    setSelectedActivity(null);
+    refetch(); // Refresh activities after successful edit
+  };
+
+  const handleEditFormCancel = () => {
+    setShowEditForm(false);
+    setSelectedActivity(null);
+  };
+
   const handleEditActivity = (activity: Activity) => {
-    // TODO: Implement edit functionality
-    console.log('Edit activity:', activity);
+    setSelectedActivity(activity);
+    setShowEditForm(true);
   };
 
   const handleDeleteActivity = async (activity: Activity) => {
@@ -70,6 +84,22 @@ const DashboardActivites = () => {
               </DialogContent>
             </Dialog>
           </div>
+
+          {/* Dialog pour modification */}
+          <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
+            <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-hidden rounded-lg mx-auto">
+              <DialogHeader>
+                <DialogTitle className="text-primary">Modifier l'activité</DialogTitle>
+              </DialogHeader>
+              {selectedActivity && (
+                <ActivityEditForm
+                  activity={selectedActivity}
+                  onSuccess={handleEditFormSuccess}
+                  onCancel={handleEditFormCancel}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
 
           <div className="space-y-4">
             {loading ? (
@@ -128,6 +158,22 @@ const DashboardActivites = () => {
               </DialogContent>
             </Dialog>
           </div>
+
+          {/* Dialog pour modification */}
+          <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
+            <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-hidden rounded-lg mx-auto">
+              <DialogHeader>
+                <DialogTitle className="text-primary text-xl">Modifier l'activité</DialogTitle>
+              </DialogHeader>
+              {selectedActivity && (
+                <ActivityEditForm
+                  activity={selectedActivity}
+                  onSuccess={handleEditFormSuccess}
+                  onCancel={handleEditFormCancel}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (

@@ -1,15 +1,15 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { ActivityFormData } from '@/types/activity';
+import { Activity, ActivityFormData } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
 
-export const useActivityForm = () => {
+export const useActivityEdit = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<ActivityFormData>({
     title: '',
     category: '',
@@ -21,6 +21,22 @@ export const useActivityForm = () => {
     brief_description: '',
     description: ''
   });
+
+  const initializeForm = (activity: Activity) => {
+    setFormData({
+      title: activity.title,
+      category: activity.category,
+      other_category: activity.other_category || '',
+      date: activity.date,
+      start_time: activity.start_time,
+      end_time: activity.end_time,
+      location: activity.location,
+      brief_description: activity.brief_description,
+      description: activity.description
+    });
+    setCurrentImageUrl(activity.image_url || null);
+    setImagePreview(activity.image_url || null);
+  };
 
   const resetForm = () => {
     setFormData({
@@ -36,34 +52,33 @@ export const useActivityForm = () => {
     });
     setSelectedImage(null);
     setImagePreview(null);
+    setCurrentImageUrl(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleUpdate = async (activityId: string) => {
     if (!user) {
       toast({
         title: "Erreur",
-        description: "Vous devez être connecté pour créer une activité.",
+        description: "Vous devez être connecté pour modifier une activité.",
         variant: "destructive"
       });
       return false;
     }
 
-    // Valider que l'image est obligatoire
-    if (!selectedImage) {
+    // Valider qu'il y a une image (soit existante, soit nouvelle)
+    if (!selectedImage && !currentImageUrl) {
       toast({
         title: "Erreur",
-        description: "L'image est obligatoire pour créer une activité.",
+        description: "L'image est obligatoire pour l'activité.",
         variant: "destructive"
       });
       return false;
     }
     
     try {
-      let imageUrl = null;
+      let imageUrl = currentImageUrl;
       
-      // Upload image if selected
+      // Upload new image if selected
       if (selectedImage) {
         const fileExt = selectedImage.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
@@ -90,10 +105,10 @@ export const useActivityForm = () => {
         imageUrl = publicUrl;
       }
 
-      // Insert activity into database
+      // Update activity in database
       const { error } = await supabase
         .from('activities')
-        .insert({
+        .update({
           title: formData.title,
           category: formData.category,
           other_category: formData.category === 'Autre' ? formData.other_category : null,
@@ -103,32 +118,31 @@ export const useActivityForm = () => {
           location: formData.location,
           brief_description: formData.brief_description,
           description: formData.description,
-          image_url: imageUrl,
-          created_by: user.id
-        });
+          image_url: imageUrl
+        })
+        .eq('id', activityId);
 
       if (error) {
-        console.error('Error creating activity:', error);
+        console.error('Error updating activity:', error);
         toast({
           title: "Erreur",
-          description: "Impossible de créer l'activité.",
+          description: "Impossible de modifier l'activité.",
           variant: "destructive"
         });
         return false;
       }
       
       toast({
-        title: "Activité créée !",
-        description: "L'activité a été ajoutée avec succès.",
+        title: "Activité modifiée !",
+        description: "L'activité a été mise à jour avec succès.",
       });
 
-      resetForm();
       return true;
     } catch (error) {
-      console.error('Error creating activity:', error);
+      console.error('Error updating activity:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de créer l'activité.",
+        description: "Impossible de modifier l'activité.",
         variant: "destructive"
       });
       return false;
@@ -142,7 +156,9 @@ export const useActivityForm = () => {
     setSelectedImage,
     imagePreview,
     setImagePreview,
-    handleSubmit,
+    currentImageUrl,
+    initializeForm,
+    handleUpdate,
     resetForm
   };
 };

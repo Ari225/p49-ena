@@ -34,7 +34,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">Image de l'activité</label>
+      <label className="block text-sm font-medium text-gray-700">
+        Image de l'activité *
+      </label>
       {!imagePreview ? (
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
           <Upload className="mx-auto h-12 w-12 text-gray-400" />
