@@ -120,7 +120,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           <div className="space-y-2">
             <Label htmlFor="end_time" className="text-sm font-medium text-gray-700 flex items-center">
               <Clock className="w-4 h-4 mr-2 text-primary" />
-              Heure de fin *
+              Heure de fin
             </Label>
             <Input
               id="end_time"
@@ -128,7 +128,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
               value={formData.end_time}
               onChange={(e) => setFormData({...formData, end_time: e.target.value})}
               className="border-gray-300 focus:border-primary focus:ring-primary"
-              required
             />
           </div>
         </div>
@@ -188,13 +187,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
         />
 
         {/* Boutons d'action */}
-        <div className="flex gap-3 pt-4 border-t border-gray-200">
-          <Button 
-            type="submit" 
-            className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6"
-          >
-            Publier
-          </Button>
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
           <Button 
             type="button" 
             variant="outline" 
@@ -202,6 +195,12 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
             className="border-gray-300 text-gray-700 py-3 px-6 hover:bg-gray-50"
           >
             Annuler
+          </Button>
+          <Button 
+            type="submit" 
+            className="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6"
+          >
+            Publier
           </Button>
         </div>
       </form>
