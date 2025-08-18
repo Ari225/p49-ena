@@ -4,46 +4,19 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ActivityForm from '@/components/activities/ActivityForm';
 import ActivityCard from '@/components/activities/ActivityCard';
 import { Activity } from '@/types/activity';
 import { isAdmin } from '@/utils/roleUtils';
+import { useActivities } from '@/hooks/useActivities';
 
 const DashboardActivites = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
-
-  const mockActivities: Activity[] = [
-    {
-      id: '1',
-      title: 'Formation en Leadership Public',
-      category: 'Formation',
-      date: '2024-04-15',
-      start_time: '09:00',
-      end_time: '17:00',
-      location: 'ENA Abidjan',
-      brief_description: 'Formation intensive sur les techniques de leadership',
-      description: 'Formation intensive sur les techniques de leadership dans l\'administration publique moderne.',
-      status: 'À venir',
-      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop'
-    },
-    {
-      id: '2',
-      title: 'Conférence sur la Digitalisation',
-      category: 'Conférence',
-      date: '2024-04-25',
-      start_time: '14:00',
-      end_time: '18:00',
-      location: 'Hôtel Ivoire',
-      brief_description: 'Conférence sur les enjeux de la transformation numérique',
-      description: 'Conférence sur les enjeux de la transformation numérique dans les services publics.',
-      status: 'À venir',
-      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop'
-    }
-  ];
+  const { activities, loading, error, refetch, deleteActivity } = useActivities();
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
@@ -51,6 +24,7 @@ const DashboardActivites = () => {
 
   const handleFormSuccess = () => {
     setShowForm(false);
+    refetch(); // Refresh activities after successful creation
   };
 
   const handleFormCancel = () => {
@@ -62,9 +36,10 @@ const DashboardActivites = () => {
     console.log('Edit activity:', activity);
   };
 
-  const handleDeleteActivity = (activity: Activity) => {
-    // TODO: Implement delete functionality
-    console.log('Delete activity:', activity);
+  const handleDeleteActivity = async (activity: Activity) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')) {
+      await deleteActivity(activity.id);
+    }
   };
 
   if (isMobile) {
@@ -97,14 +72,25 @@ const DashboardActivites = () => {
           </div>
 
           <div className="space-y-4">
-            {mockActivities.map((activity) => (
-              <ActivityCard
-                key={activity.id}
-                activity={activity}
-                onEdit={handleEditActivity}
-                onDelete={handleDeleteActivity}
-              />
-            ))}
+            {loading ? (
+              <div className="flex justify-center items-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <span className="ml-2">Chargement des activités...</span>
+              </div>
+            ) : activities.length > 0 ? (
+              activities.map((activity) => (
+                <ActivityCard
+                  key={activity.id}
+                  activity={activity}
+                  onEdit={handleEditActivity}
+                  onDelete={handleDeleteActivity}
+                />
+              ))
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                Aucune activité enregistrée
+              </div>
+            )}
           </div>
         </div>
         <AdminSidebar />
@@ -144,14 +130,25 @@ const DashboardActivites = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {mockActivities.map((activity) => (
-              <ActivityCard
-                key={activity.id}
-                activity={activity}
-                onEdit={handleEditActivity}
-                onDelete={handleDeleteActivity}
-              />
-            ))}
+            {loading ? (
+              <div className="col-span-full flex justify-center items-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <span className="ml-2">Chargement des activités...</span>
+              </div>
+            ) : activities.length > 0 ? (
+              activities.map((activity) => (
+                <ActivityCard
+                  key={activity.id}
+                  activity={activity}
+                  onEdit={handleEditActivity}
+                  onDelete={handleDeleteActivity}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center py-8 text-gray-500">
+                Aucune activité enregistrée
+              </div>
+            )}
           </div>
         </div>
       </div>
