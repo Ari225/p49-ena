@@ -16,10 +16,21 @@ interface Testimonial {
 const TestimonialsSection = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     fetchDailyTestimonials();
   }, []);
+
+  useEffect(() => {
+    if (testimonials.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+      }, 7000); // 7 secondes de pause sur chaque carte
+
+      return () => clearInterval(interval);
+    }
+  }, [testimonials.length]);
 
   const fetchDailyTestimonials = async () => {
     try {
@@ -63,12 +74,12 @@ const TestimonialsSection = () => {
         <h2 className="text-3xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
         
         <div className="relative overflow-hidden">
-          {/* Slide infini de droite vers gauche */}
+          {/* Slide infini avec pauses de 7 secondes */}
           <div 
-            className="flex animate-scroll-left gap-6" 
+            className="flex transition-transform duration-1000 ease-in-out gap-6" 
             style={{
-              animation: 'slideLeft 20s linear infinite',
-              width: 'fit-content'
+              transform: `translateX(-${currentIndex * 320}px)`, // 320px = 320px (width) + gap
+              width: `${testimonials.length * 3 * 320}px` // Triple pour l'effet infini
             }}
           >
             {/* Répéter les témoignages plusieurs fois pour effet infini */}
@@ -117,17 +128,6 @@ const TestimonialsSection = () => {
       
       <style dangerouslySetInnerHTML={{
         __html: `
-          @keyframes slideLeft {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-100%);
-            }
-          }
-          .animate-scroll-left {
-            animation: slideLeft 20s linear infinite;
-          }
           .line-clamp-4 {
             display: -webkit-box;
             -webkit-line-clamp: 4;
