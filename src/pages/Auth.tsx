@@ -52,9 +52,9 @@ const Auth = () => {
     try {
       const { data, error } = await supabase
         .from('members')
-        .select('id, "Pr�noms", "Nom de famille"')
+        .select('id, "Prénoms", "Nom de famille"')
         .eq('Matricule', matricule)
-        .single();
+        .maybeSingle();
       
       if (error || !data) {
         setMatriculeError('Matricule non trouvé. Veuillez vérifier votre matricule.');
