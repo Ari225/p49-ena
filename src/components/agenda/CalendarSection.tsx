@@ -4,6 +4,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CalendarIcon } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { fr } from 'date-fns/locale';
 
 interface CalendarSectionProps {
   selectedDate: Date | undefined;
@@ -74,6 +75,7 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
             selected={selectedDate}
             onSelect={onSelectDate}
             className={getCalendarClasses()}
+            locale={fr}
             modifiers={{
               hasEvents: (date) => hasEvents(date)
             }}
