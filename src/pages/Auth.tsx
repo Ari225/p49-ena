@@ -8,8 +8,9 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
   const { user, signIn, signUp, loading } = useAuth();
@@ -17,8 +18,8 @@ const Auth = () => {
   const isMobile = useIsMobile();
   const [searchParams] = useSearchParams();
 
-  // Vérifier si l'inscription est autorisée via le paramètre URL
-  const allowSignup = searchParams.get('mode') === 'signup';
+  // Toujours permettre l'inscription maintenant
+  const allowSignup = true;
 
   // États pour les formulaires
   const [activeTab, setActiveTab] = useState('signin');
@@ -35,9 +36,47 @@ const Auth = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('redacteur');
+  
+  // États pour la vérification matricule
+  const [matriculeStep, setMatriculeStep] = useState(true);
+  const [matricule, setMatricule] = useState('');
+  const [matriculeVerified, setMatriculeVerified] = useState(false);
+  const [matriculeLoading, setMatriculeLoading] = useState(false);
+  const [matriculeError, setMatriculeError] = useState('');
+
+  const handleMatriculeVerification = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMatriculeLoading(true);
+    setMatriculeError('');
+    
+    try {
+      const { data, error } = await supabase
+        .from('members')
+        .select('id, "Prénoms", "Nom de famille"')
+        .eq('Matricule', matricule)
+        .single();
+      
+      if (error || !data) {
+        setMatriculeError('Matricule non trouvé. Veuillez vérifier votre matricule.');
+        return;
+      }
+      
+      setMatriculeVerified(true);
+      setMatriculeStep(false);
+    } catch (error) {
+      setMatriculeError('Erreur lors de la vérification. Veuillez réessayer.');
+    } finally {
+      setMatriculeLoading(false);
+    }
+  }, [matricule]);
 
   const handleSignUp = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!matriculeVerified) {
+      setMatriculeError('Veuillez d\'abord vérifier votre matricule.');
+      return;
+    }
+    
     const { error } = await signUp(signupEmail, signupPassword, {
       username,
       firstName,
@@ -46,8 +85,18 @@ const Auth = () => {
     });
     if (!error) {
       setActiveTab('signin');
+      // Reset tous les états d'inscription
+      setMatriculeStep(true);
+      setMatriculeVerified(false);
+      setMatricule('');
+      setSignupEmail('');
+      setSignupPassword('');
+      setUsername('');
+      setFirstName('');
+      setLastName('');
+      setRole('redacteur');
     }
-  }, [signupEmail, signupPassword, username, firstName, lastName, role, signUp, setActiveTab]);
+  }, [signupEmail, signupPassword, username, firstName, lastName, role, signUp, setActiveTab, matriculeVerified]);
 
   const handleSignIn = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -126,8 +175,58 @@ const Auth = () => {
     </form>
   ), [signinEmail, signinPassword, showPassword, loading, handleSignIn]);
 
+  const MatriculeVerificationForm = useMemo(() => (
+    <form onSubmit={handleMatriculeVerification} className="space-y-4">
+      <div className="text-center space-y-2 mb-6">
+        <h3 className="text-lg font-semibold">Vérification d'accès</h3>
+        <p className="text-sm text-muted-foreground">
+          Pour vous inscrire, veuillez d'abord vérifier votre matricule
+        </p>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="matricule">Matricule</Label>
+        <Input
+          id="matricule"
+          type="text"
+          value={matricule}
+          onChange={(e) => setMatricule(e.target.value)}
+          placeholder="Entrez votre matricule"
+          required
+        />
+        {matriculeError && (
+          <p className="text-sm text-destructive">{matriculeError}</p>
+        )}
+      </div>
+      <Button type="submit" className="w-full" disabled={matriculeLoading}>
+        {matriculeLoading ? 'Vérification...' : 'Vérifier le matricule'}
+      </Button>
+    </form>
+  ), [matricule, matriculeError, matriculeLoading, handleMatriculeVerification]);
+
   const SignUpForm = useMemo(() => (
-    <form onSubmit={handleSignUp} className="space-y-4">
+    <div className="space-y-4">
+      <div className="flex items-center gap-3 mb-4">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            setMatriculeStep(true);
+            setMatriculeVerified(false);
+            setMatriculeError('');
+          }}
+          className="p-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div>
+          <h3 className="text-lg font-semibold">Inscription</h3>
+          <p className="text-sm text-muted-foreground">
+            Matricule vérifié ✓ - Complétez votre inscription
+          </p>
+        </div>
+      </div>
+      <form onSubmit={handleSignUp} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="signup-firstname">Prénom</Label>
@@ -217,10 +316,11 @@ const Auth = () => {
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? 'Inscription...' : 'S\'inscrire'}
-      </Button>
-    </form>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? 'Inscription...' : 'S\'inscrire'}
+        </Button>
+      </form>
+    </div>
   ), [firstName, lastName, username, signupEmail, signupPassword, role, showPassword, loading, handleSignUp]);
 
   return (
@@ -244,7 +344,7 @@ const Auth = () => {
               </TabsContent>
               {allowSignup && (
                 <TabsContent value="signup" className="space-y-4 mt-6">
-                  {SignUpForm}
+                  {matriculeStep ? MatriculeVerificationForm : SignUpForm}
                 </TabsContent>
               )}
             </Tabs>
