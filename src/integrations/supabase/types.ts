@@ -608,6 +608,42 @@ export type Database = {
           },
         ]
       }
+      testimonials: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          member_id: number
+          member_name: string
+          member_position: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          member_id: number
+          member_name: string
+          member_position: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          member_id?: number
+          member_name?: string
+          member_position?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -640,6 +676,14 @@ export type Database = {
       create_supabase_user_if_needed: {
         Args: { app_user_id: string; user_email: string }
         Returns: string
+      }
+      create_testimonial_with_verification: {
+        Args: { p_content: string; p_image_url?: string; p_matricule: string }
+        Returns: {
+          message: string
+          success: boolean
+          testimonial_id: string
+        }[]
       }
       final_security_check: {
         Args: Record<PropertyKey, never>
