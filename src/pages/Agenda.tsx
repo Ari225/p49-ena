@@ -338,7 +338,7 @@ const Agenda = () => {
                                 {!isPast && (
                                   <Button 
                                     size="sm" 
-                                    className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
+                                    className={`bg-green-600 hover:bg-green-700 text-white ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
                                     onClick={() => handleAddToCalendar(activity)}
                                   >
                                     <Calendar className="w-4 h-4 mr-1" />
