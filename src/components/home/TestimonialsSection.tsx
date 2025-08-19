@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { useIsMobile, useIsTablet, useIsDesktop } from '@/hooks/use-mobile';
+import Autoplay from "embla-carousel-autoplay";
 
 interface Testimonial {
   id: string;
@@ -16,21 +19,17 @@ interface Testimonial {
 const TestimonialsSection = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const isDesktop = useIsDesktop();
+
+  const autoplayPlugin = React.useRef(
+    Autoplay({ delay: 7000, stopOnInteraction: true })
+  );
 
   useEffect(() => {
     fetchDailyTestimonials();
   }, []);
-
-  useEffect(() => {
-    if (testimonials.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-      }, 7000); // 7 secondes de pause sur chaque carte
-
-      return () => clearInterval(interval);
-    }
-  }, [testimonials.length]);
 
   const fetchDailyTestimonials = async () => {
     try {
@@ -68,52 +67,97 @@ const TestimonialsSection = () => {
     );
   }
 
+  // Responsive carousel options
+  const getCarouselOptions = () => {
+    if (isMobile) {
+      return {
+        align: "center" as const,
+        slidesToScroll: 1,
+        containScroll: "trimSnaps" as const,
+      };
+    }
+    if (isTablet) {
+      return {
+        align: "center" as const,
+        slidesToScroll: 1,
+        containScroll: "trimSnaps" as const,
+      };
+    }
+    return {
+      align: "center" as const,
+      slidesToScroll: 1,
+      containScroll: "trimSnaps" as const,
+    };
+  };
+
   return (
-    <section className="py-[75px] px-8 md:px-12 lg:py-[100px] lg:px-[100px] bg-white">
+    <section className="py-[75px] px-4 md:px-8 lg:py-[100px] lg:px-16 bg-white">
       <div className="container mx-auto px-0">
         <h2 className="text-3xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
         
-        <div className="relative overflow-hidden">
-          {/* Slide infini avec pauses de 7 secondes */}
-          <div 
-            className="flex transition-transform duration-1000 ease-in-out gap-6" 
-            style={{
-              transform: `translateX(-${currentIndex * 320}px)`, // 320px = 320px (width) + gap
-              width: `${testimonials.length * 3 * 320}px` // Triple pour l'effet infini
-            }}
+        <div className="relative">
+          <Carousel
+            opts={getCarouselOptions()}
+            plugins={[autoplayPlugin.current]}
+            className="w-full"
+            onMouseEnter={() => autoplayPlugin.current.stop()}
+            onMouseLeave={() => autoplayPlugin.current.play()}
           >
-            {/* Répéter les témoignages plusieurs fois pour effet infini */}
-            {Array.from({ length: 3 }).map((_, setIndex) => (
-              testimonials.map((testimonial, index) => (
-                <div key={`${setIndex}-${index}`} className="w-80 flex-shrink-0">
-                  <Card className="h-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg">
-                    <CardContent className="p-6">
-                      <div className="flex flex-col items-center gap-4">
-                        <img 
-                          src={testimonial.image_url || "/lovable-uploads/narcissek.jpeg"} 
-                          alt={testimonial.member_name} 
-                          className="w-20 h-20 rounded-full object-cover flex-shrink-0" 
-                        />
-                        <div className="flex-1 text-center">
-                          <p className="italic mb-4 text-gray-600 text-base line-clamp-4">
-                            "{testimonial.content}"
-                          </p>
-                          <div>
-                            <h4 className="font-semibold text-primary text-base">
-                              {testimonial.member_name}
-                            </h4>
-                            <p className="text-sm text-gray-500">
-                              {testimonial.member_position}
+            <CarouselContent className={`
+              ${isMobile ? '-ml-2 md:-ml-4' : ''}
+              ${isTablet ? '-ml-4' : ''}
+              ${isDesktop ? '-ml-6' : ''}
+            `}>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem 
+                  key={index} 
+                  className={`
+                    ${isMobile ? 'pl-2 md:pl-4 basis-full' : ''}
+                    ${isTablet ? 'pl-4 basis-1/2 md:basis-1/3' : ''}
+                    ${isDesktop ? 'pl-6 basis-1/3' : ''}
+                  `}
+                >
+                  <div className="p-1">
+                    <Card className={`
+                      h-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg
+                      ${isTablet && 'mx-2'}
+                      ${isDesktop && 'mx-1'}
+                    `}>
+                      <CardContent className="p-6">
+                        <div className="flex flex-col items-center gap-4">
+                          <img 
+                            src={testimonial.image_url || "/lovable-uploads/narcissek.jpeg"} 
+                            alt={testimonial.member_name} 
+                            className="w-20 h-20 rounded-full object-cover flex-shrink-0" 
+                          />
+                          <div className="flex-1 text-center">
+                            <p className="italic mb-4 text-gray-600 text-base line-clamp-4">
+                              "{testimonial.content}"
                             </p>
+                            <div>
+                              <h4 className="font-semibold text-primary text-base">
+                                {testimonial.member_name}
+                              </h4>
+                              <p className="text-sm text-gray-500">
+                                {testimonial.member_position}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))
-            ))}
-          </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            {isDesktop && (
+              <>
+                <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2" />
+                <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2" />
+              </>
+            )}
+          </Carousel>
         </div>
         
         <div className="text-center mt-8">
