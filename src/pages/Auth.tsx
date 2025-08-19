@@ -50,13 +50,13 @@ const Auth = () => {
     setMatriculeError('');
     
     try {
-      const { data, error } = await supabase
-        .from('members')
-        .select('id, "Prénoms", "Nom de famille"')
-        .eq('Matricule', matricule)
-        .maybeSingle();
+      // Utiliser la fonction sécurisée pour vérifier le matricule
+      const { data, error } = await supabase.rpc('get_member_details', {
+        member_matricule: matricule,
+        verification_matricule: matricule
+      });
       
-      if (error || !data) {
+      if (error || !data || data.length === 0) {
         setMatriculeError('Matricule non trouvé. Veuillez vérifier votre matricule.');
         return;
       }
@@ -64,6 +64,7 @@ const Auth = () => {
       setMatriculeVerified(true);
       setMatriculeStep(false);
     } catch (error) {
+      console.error('Erreur lors de la vérification du matricule:', error);
       setMatriculeError('Erreur lors de la vérification. Veuillez réessayer.');
     } finally {
       setMatriculeLoading(false);
