@@ -707,6 +707,17 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_daily_testimonials: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string
+          member_name: string
+          member_position: string
+        }[]
+      }
       get_member_details: {
         Args: { member_matricule: string; verification_matricule: string }
         Returns: {
