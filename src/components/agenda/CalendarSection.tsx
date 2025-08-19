@@ -21,9 +21,9 @@ const CalendarSection = ({ selectedDate, onSelectDate, hasEvents }: CalendarSect
     if (isMobile) {
       return 'rounded-md border scale-90 w-full'; // Mobile - réduit la taille
     } else if (isTablet) {
-      return 'rounded-md border scale-95 w-full'; // Tablette - légèrement réduit
+      return 'rounded-md border w-full scale-105'; // Tablette - augmenté
     } else {
-      return 'rounded-md border'; // Desktop - taille normale
+      return 'rounded-md border w-full scale-110'; // Desktop - augmenté
     }
   };
 
