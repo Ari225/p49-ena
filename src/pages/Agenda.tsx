@@ -338,7 +338,6 @@ const Agenda = () => {
                                 {!isPast && (
                                   <Button 
                                     size="sm" 
-                                    variant="outline" 
                                     className={`${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
                                     onClick={() => handleAddToCalendar(activity)}
                                   >
