@@ -190,6 +190,15 @@ const Agenda = () => {
                           
                           return (
                             <Card key={activity.id} className={`hover:shadow-md transition-shadow ${isPast ? 'opacity-80' : ''}`}>
+                              {(activity.image || activity.image_url) && (
+                                <div className="w-full h-32 overflow-hidden rounded-t-lg">
+                                  <img 
+                                    src={activity.image || activity.image_url} 
+                                    alt={activity.title} 
+                                    className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`} 
+                                  />
+                                </div>
+                              )}
                               <CardContent className="p-4">
                                 <div className="flex justify-between items-start mb-2">
                                   <span className={`px-2 py-1 rounded text-xs font-medium ${isPast ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
@@ -227,17 +236,16 @@ const Agenda = () => {
                                   >
                                     Détails
                                   </Button>
-                                  {!isPast && (
-                                    <Button 
-                                      size="sm" 
-                                      variant="outline" 
-                                      className="text-xs"
-                                      onClick={() => handleAddToCalendar(activity)}
-                                    >
-                                      <Calendar className="w-3 h-3 mr-1" />
-                                      Ajouter
-                                    </Button>
-                                  )}
+                                   {!isPast && (
+                                     <Button 
+                                       size="sm" 
+                                       className="text-xs bg-green-600 hover:bg-green-700 text-white"
+                                       onClick={() => handleAddToCalendar(activity)}
+                                     >
+                                       <Calendar className="w-3 h-3 mr-1" />
+                                       Ajouter
+                                     </Button>
+                                   )}
                                 </div>
                               </CardContent>
                             </Card>
