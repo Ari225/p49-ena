@@ -52,7 +52,7 @@ const Auth = () => {
     try {
       const { data, error } = await supabase
         .from('members')
-        .select('id, "Prénoms", "Nom de famille"')
+        .select('id, "Pr�noms", "Nom de famille"')
         .eq('Matricule', matricule)
         .single();
       
