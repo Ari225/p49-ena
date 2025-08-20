@@ -136,6 +136,67 @@ export const usePopups = () => {
     }
   };
 
+  const updatePopup = async (id: string, formData: PopupFormData, imageUrl?: string) => {
+    if (!user) {
+      toast({
+        title: "Erreur",
+        description: "Vous devez être connecté pour modifier un pop-up",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('popups')
+        .update({
+          title: formData.title,
+          message: formData.message,
+          type: formData.type,
+          other_type: formData.other_type,
+          target_audience: formData.target_audience,
+          author: formData.author,
+          position: formData.position,
+          image_url: imageUrl
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const updatedPopup: PopupItem = {
+        id: data.id,
+        title: data.title,
+        message: data.message,
+        type: data.type as 'announcement' | 'welcome' | 'alert' | 'information' | 'other',
+        other_type: data.other_type,
+        isActive: data.is_active,
+        created_date: data.created_date,
+        image_url: data.image_url,
+        target_audience: data.target_audience as 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only',
+        author: data.author,
+        position: data.position
+      };
+
+      setPopups(prev => prev.map(p => p.id === id ? updatedPopup : p));
+      
+      toast({
+        title: "Pop-up modifié",
+        description: "Le pop-up a été mis à jour avec succès"
+      });
+
+      return updatedPopup;
+    } catch (error) {
+      console.error('Error updating popup:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de modifier le pop-up",
+        variant: "destructive"
+      });
+    }
+  };
+
   const deletePopup = async (id: string) => {
     try {
       const { error } = await supabase
@@ -191,6 +252,7 @@ export const usePopups = () => {
     popups,
     loading,
     createPopup,
+    updatePopup,
     togglePopupStatus,
     deletePopup,
     refreshPopups: fetchPopups

@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import Layout from '@/components/Layout';
-import PresidentWelcomeModal from '@/components/PresidentWelcomeModal';
+import PopupDisplay from '@/components/popups/PopupDisplay';
 import HeroSection from '@/components/home/HeroSection';
 import ValuesSection from '@/components/home/ValuesSection';
 import ActualitesSection from '@/components/home/ActualitesSection';
@@ -46,7 +46,7 @@ const Index = () => {
 
   return (
     <Layout>
-      <PresidentWelcomeModal />
+      <PopupDisplay />
       <HeroSection backgroundImages={backgroundImages} />
       <ValuesSection />
       <ActualitesSection />

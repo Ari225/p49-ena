@@ -9,8 +9,9 @@ import { Plus, Loader2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import PopupForm from '@/components/popups/PopupForm';
 import PopupCard from '@/components/popups/PopupCard';
+import PopupEditDialog from '@/components/popups/PopupEditDialog';
 import { getTypeBadge, getAudienceBadge } from '@/utils/popupUtils';
-import { PopupFormData } from '@/types/popup';
+import { PopupFormData, PopupItem } from '@/types/popup';
 import { isAdmin } from '@/utils/roleUtils';
 import { usePopups } from '@/hooks/usePopups';
 import { useImageUpload } from '@/hooks/useImageUpload';
@@ -19,7 +20,9 @@ const DashboardPopups = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
-  const { popups, loading, createPopup, togglePopupStatus, deletePopup } = usePopups();
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editingPopup, setEditingPopup] = useState<PopupItem | null>(null);
+  const { popups, loading, createPopup, updatePopup, togglePopupStatus, deletePopup } = usePopups();
   const { uploadImage, uploading } = useImageUpload();
 
   if (!user || !isAdmin(user)) {
@@ -49,6 +52,17 @@ const DashboardPopups = () => {
 
   const togglePopupStatusHandler = (id: string) => {
     togglePopupStatus(id);
+  };
+
+  const editPopupHandler = (popup: PopupItem) => {
+    setEditingPopup(popup);
+    setShowEditDialog(true);
+  };
+
+  const handleEditSubmit = async (id: string, formData: PopupFormData, imageUrl?: string) => {
+    await updatePopup(id, formData, imageUrl);
+    setShowEditDialog(false);
+    setEditingPopup(null);
   };
 
   const deletePopupHandler = (id: string) => {
@@ -108,6 +122,7 @@ const DashboardPopups = () => {
                   key={popup.id}
                   popup={popup}
                   onToggleStatus={togglePopupStatusHandler}
+                  onEdit={editPopupHandler}
                   onDelete={deletePopupHandler}
                   isMobile={true}
                   getTypeBadge={getTypeBadge}
@@ -116,6 +131,16 @@ const DashboardPopups = () => {
               ))
             )}
           </div>
+
+          <PopupEditDialog
+            isOpen={showEditDialog}
+            onClose={() => {
+              setShowEditDialog(false);
+              setEditingPopup(null);
+            }}
+            popup={editingPopup}
+            onUpdate={handleEditSubmit}
+          />
         </div>
         <AdminSidebar />
       </Layout>
@@ -175,6 +200,7 @@ const DashboardPopups = () => {
                   key={popup.id}
                   popup={popup}
                   onToggleStatus={togglePopupStatusHandler}
+                  onEdit={editPopupHandler}
                   onDelete={deletePopupHandler}
                   isMobile={false}
                   getTypeBadge={getTypeBadge}
@@ -183,6 +209,16 @@ const DashboardPopups = () => {
               ))
             )}
           </div>
+
+          <PopupEditDialog
+            isOpen={showEditDialog}
+            onClose={() => {
+              setShowEditDialog(false);
+              setEditingPopup(null);
+            }}
+            popup={editingPopup}
+            onUpdate={handleEditSubmit}
+          />
         </div>
       </div>
     </Layout>

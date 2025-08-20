@@ -9,6 +9,7 @@ import { PopupItem } from '@/types/popup';
 interface PopupCardProps {
   popup: PopupItem;
   onToggleStatus: (id: string) => void;
+  onEdit: (popup: PopupItem) => void;
   onDelete: (id: string) => void;
   isMobile: boolean;
   getTypeBadge: (type: string) => React.ReactNode;
@@ -18,6 +19,7 @@ interface PopupCardProps {
 const PopupCard: React.FC<PopupCardProps> = ({
   popup,
   onToggleStatus,
+  onEdit,
   onDelete,
   isMobile,
   getTypeBadge,
@@ -69,7 +71,7 @@ const PopupCard: React.FC<PopupCardProps> = ({
               {popup.isActive ? <EyeOff className="h-4 w-4 mr-1" /> : <Eye className="h-4 w-4 mr-1" />}
               {popup.isActive ? 'Désactiver' : 'Activer'}
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={() => onEdit(popup)}>
               <Edit className="h-4 w-4 mr-1" />
               Modifier
             </Button>
@@ -92,7 +94,7 @@ const PopupCard: React.FC<PopupCardProps> = ({
             >
               {popup.isActive ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" onClick={() => onEdit(popup)}>
               <Edit className="h-4 w-4" />
             </Button>
             <Button 
