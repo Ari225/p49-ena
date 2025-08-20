@@ -47,7 +47,7 @@ const PopupDisplay = () => {
     <>
       <Dialog open={isOpen} onOpenChange={() => {}}>
         <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : isTablet ? 'max-w-[calc(100vw-80px)] max-h-[calc(100vh-80px)]' : 'max-w-[calc(100vw-200px)] max-h-[calc(100vh-100px)]'}`} hideCloseButton>
-          <div className={`flex w-full h-full rounded-lg overflow-hidden ${isMobile || isTablet ? 'flex-col' : 'flex-row md:flex-row'}`}>
+          <div className={`flex w-full h-full rounded-lg overflow-hidden ${isMobile || isTablet || !currentPopup.message ? 'flex-col' : 'flex-row md:flex-row'}`}>
             
             {/* Image Section */}
             {currentPopup.image_url && (
@@ -69,7 +69,11 @@ const PopupDisplay = () => {
             )}
 
             {/* Content Section */}
-            <div className={`flex flex-col ${currentPopup.image_url ? (isMobile || isTablet ? 'flex-1' : 'md:w-2/3') : 'w-full'} ${isMobile ? 'max-h-[calc(100vh-350px)]' : isTablet ? 'max-h-[calc(100vh-480px)]' : 'max-h-[calc(100vh-160px)]'}`}>
+            <div className={`flex flex-col ${
+              currentPopup.image_url 
+                ? (isMobile || isTablet || !currentPopup.message ? 'flex-1' : 'md:w-2/3') 
+                : 'w-full'
+            } ${isMobile ? 'max-h-[calc(100vh-350px)]' : isTablet ? 'max-h-[calc(100vh-480px)]' : 'max-h-[calc(100vh-160px)]'}`}>
               
               {/* Content Header and Body */}
               <div className={`flex-1 overflow-y-auto p-4 md:p-8 space-y-4 bg-white ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-base'}`}>
@@ -106,12 +110,7 @@ const PopupDisplay = () => {
                   </div>
                 )}
 
-                {/* If no message, show minimal content */}
-                {!currentPopup.message && (
-                  <div className={`text-gray-600 ${isMobile ? 'text-sm' : 'text-base'}`}>
-                    <p>Veuillez consulter les informations disponibles.</p>
-                  </div>
-                )}
+                 {/* If no message, show minimal content - removed default text */}
               </div>
               
               {/* Fixed buttons at bottom */}
