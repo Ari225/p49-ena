@@ -46,6 +46,12 @@ const RepertoireMembers = () => {
         
         console.log('Raw data from Supabase:', data);
         console.log('Error from Supabase:', error);
+        console.log('Data type:', typeof data);
+        console.log('Data length:', data?.length);
+        if (data && data.length > 0) {
+          console.log('First member example:', data[0]);
+          console.log('All keys in first member:', Object.keys(data[0]));
+        }
         
         if (error) {
           console.error('Error fetching members:', error);
@@ -55,27 +61,29 @@ const RepertoireMembers = () => {
         console.log('Number of records returned:', data?.length || 0);
         
         const formattedMembers: Member[] = (data || [])
-          .map((member: any) => ({
-            id: member.id,
-            // Utiliser les noms depuis la fonction sécurisée
-            firstName: member.prenoms || '',
-            lastName: member.nom_famille || '',
-            position: member.emploi_fonction_publique || '',
-            locality: member.lieu_exercice || '',
-            photo: member.photo || '',
-            whatsapp: member.has_whatsapp ? 'true' : null,
-            matricule: member.matricule || '',
-            socialMedia: {
-              facebook: member.has_facebook ? 'true' : null,
-              instagram: member.has_instagram ? 'true' : null,
-              linkedin: member.has_linkedin ? 'true' : null
-            }
-          }))
+          .map((member: any) => {
+            console.log('Processing member:', member);
+            return {
+              id: member.id,
+              // Utiliser les noms depuis la fonction sécurisée, même s'ils sont masqués
+              firstName: member.prenoms || member.prenoms_masque || '',
+              lastName: member.nom_famille || member.nom_famille_masque || '',
+              position: member.emploi_fonction_publique || '',
+              locality: member.lieu_exercice || '',
+              photo: member.photo || '',
+              whatsapp: member.has_whatsapp ? 'true' : null,
+              matricule: member.matricule || '',
+              socialMedia: {
+                facebook: member.has_facebook ? 'true' : null,
+                instagram: member.has_instagram ? 'true' : null,
+                linkedin: member.has_linkedin ? 'true' : null
+              }
+            };
+          })
           .filter(member => 
-            // Filtrer les membres avec des noms vides ou masqués incomplets
+            // Garder les membres même avec des noms masqués
             member.firstName && member.firstName.trim() && 
-            member.lastName && member.lastName.trim() &&
-            !member.firstName.includes('***') && !member.lastName.includes('***')
+            member.lastName && member.lastName.trim()
           )
           .sort((a, b) => {
             // Sort alphabetically by lastName first, then firstName
@@ -85,6 +93,7 @@ const RepertoireMembers = () => {
           });
         
         console.log('Formatted members:', formattedMembers);
+        console.log('Number of formatted members:', formattedMembers.length);
         setAllMembers(formattedMembers);
       } catch (error) {
         console.error('Error loading members:', error);
