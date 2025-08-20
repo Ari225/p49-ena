@@ -1,51 +1,136 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { toast } from 'sonner';
 
 const BlogDetail = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
+  const [blog, setBlog] = useState<any>(null);
+  const [relatedArticles, setRelatedArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data - in a real app, this would be fetched based on the ID
-  const blogData = {
-    '1': {
-      title: "L'évolution de l'administration publique ivoirienne",
-      content: `
-        <p class="text-lg leading-relaxed mb-6 text-gray-700">L'administration publique ivoirienne connaît une transformation majeure depuis ces dernières années. Cette évolution s'inscrit dans une démarche de modernisation et d'efficacité accrue des services publics.</p>
-        
-        <h3 class="text-2xl font-bold text-primary mb-4 mt-8">Les défis actuels</h3>
-        <p class="mb-4 text-gray-700 leading-relaxed">Parmi les principaux défis auxquels fait face l'administration publique, nous pouvons citer :</p>
-        <ul class="list-disc list-inside mb-6 space-y-2 text-gray-700 ml-4">
-          <li>La digitalisation des processus administratifs</li>
-          <li>L'amélioration de la qualité des services aux citoyens</li>
-          <li>La formation continue des agents</li>
-          <li>La lutte contre la bureaucratie excessive</li>
-        </ul>
-        
-        <h3 class="text-2xl font-bold text-primary mb-4 mt-8">Le rôle de la P49</h3>
-        <p class="mb-4 text-gray-700 leading-relaxed">En tant que diplômés de l'École Nationale d'Administration, les membres de la Promotion 49 jouent un rôle crucial dans cette transformation. Nous sommes appelés à être les acteurs du changement.</p>
-        
-        <blockquote class="border-l-4 border-primary bg-gray-50 p-6 my-8 italic text-gray-700">
-          "L'administration publique moderne doit être au service du citoyen, efficace et transparente. C'est notre mission en tant que cadres de l'État."
-        </blockquote>
-        
-        <p class="mb-6 text-gray-700 leading-relaxed">Cette mission nous engage tous et chacun dans nos postes respectifs. Elle nécessite une vision commune et une approche coordonnée des réformes à entreprendre.</p>
-      `,
-      category: "Administration",
-      date: "2024-01-20",
-      author: "Dr. Kouamé N'Guessan",
-      image: "/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg",
-      readTime: "8 min",
-      tags: ["Administration", "Réforme", "P49", "Modernisation"]
+  useEffect(() => {
+    if (id) {
+      fetchBlogData();
+      fetchRelatedArticles();
+    }
+  }, [id]);
+
+  const fetchBlogData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blog_articles')
+        .select('*')
+        .eq('id', id)
+        .eq('status', 'valide')
+        .single();
+
+      if (error) {
+        console.error('Erreur lors de la récupération de l\'article:', error);
+        return;
+      }
+
+      setBlog(data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération de l\'article:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const blog = blogData[id as keyof typeof blogData] || blogData['1'];
+  const fetchRelatedArticles = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blog_articles')
+        .select('id, title, summary, image_url, published_date, author_name, reading_time, category')
+        .eq('status', 'valide')
+        .neq('id', id)
+        .order('published_date', { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error('Erreur lors de la récupération des articles connexes:', error);
+        return;
+      }
+
+      setRelatedArticles(data || []);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des articles connexes:', error);
+    }
+  };
+
+  const formatContent = (content: string) => {
+    if (!content) return '';
+    
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+    
+    const htmlContent = marked.parse(content);
+    return DOMPurify.sanitize(htmlContent as string);
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: blog?.title || 'Article du blog P49',
+      text: blog?.summary || 'Découvrez cet article intéressant sur le blog de la P49',
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success('Lien copié dans le presse-papier');
+      }
+    } catch (error) {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('Lien copié dans le presse-papier');
+    }
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Chargement de l'article...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!blog) {
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Article non trouvé</h1>
+            <p className="text-gray-600 mb-6">L'article que vous recherchez n'existe pas ou n'est pas encore publié.</p>
+            <Link to="/blog">
+              <Button>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Retour au blog
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -53,7 +138,7 @@ const BlogDetail = () => {
         {/* Hero Section with Image */}
         <div className="relative h-96 overflow-hidden">
           <img 
-            src={blog.image} 
+            src={blog.image_url || '/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg'} 
             alt={blog.title}
             className="w-full h-full object-cover"
           />
@@ -71,7 +156,11 @@ const BlogDetail = () => {
 
           {/* Share Button */}
           <div className="absolute top-6 right-6">
-            <Button size="sm" className="bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/30">
+            <Button 
+              size="sm" 
+              onClick={handleShare}
+              className="bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/30"
+            >
               <Share2 className="h-4 w-4 mr-2" />
               Partager
             </Button>
@@ -92,12 +181,12 @@ const BlogDetail = () => {
               <div className="flex flex-wrap items-center gap-4 text-white/90">
                 <div className="flex items-center">
                   <User className="h-4 w-4 mr-2" />
-                  <span className="font-medium">{blog.author}</span>
+                  <span className="font-medium">{blog.author_name || 'Auteur anonyme'}</span>
                 </div>
                 <div className="flex items-center">
                   <Calendar className="h-4 w-4 mr-2" />
                   <span>
-                    {new Date(blog.date).toLocaleDateString('fr-FR', {
+                    {new Date(blog.published_date || blog.created_at).toLocaleDateString('fr-FR', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
@@ -106,7 +195,7 @@ const BlogDetail = () => {
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-2" />
-                  <span>{blog.readTime} de lecture</span>
+                  <span>{blog.reading_time || 5} min de lecture</span>
                 </div>
               </div>
             </div>
@@ -134,7 +223,7 @@ const BlogDetail = () => {
             <div className="prose prose-lg max-w-none">
               <div 
                 className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-bold [&>h3]:text-2xl [&>h3]:mb-4 [&>h3]:mt-8 [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-6 [&>p]:leading-relaxed [&>ul>li]:mb-2 [&>blockquote]:my-8 [&>blockquote]:p-6 [&>blockquote]:bg-gray-50 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-gray-700 [&>blockquote]:rounded-r-lg"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
+                dangerouslySetInnerHTML={{ __html: formatContent(blog.content) }}
               />
             </div>
 
@@ -146,12 +235,17 @@ const BlogDetail = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {blog.author}
+                    {blog.author_name || 'Auteur anonyme'}
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.
+                    {blog.author_function || 'Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.'}
                   </p>
-                  <Button variant="outline" size="sm" className="text-gray-600 border-gray-300 hover:bg-gray-50">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleShare}
+                    className="text-gray-600 border-gray-300 hover:bg-gray-50"
+                  >
                     <Share2 className="h-4 w-4 mr-2" />
                     Partager cet article
                   </Button>
@@ -174,20 +268,38 @@ const BlogDetail = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((item) => (
-                <div key={item} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <div className="w-full h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg mb-4"></div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Article similaire {item}</h3>
-                  <p className="text-gray-600 text-sm mb-4">Résumé de l'article...</p>
-                  <div className="flex items-center text-xs text-gray-500">
-                    <Calendar className="h-3 w-3 mr-1" />
-                    <span>15 Jan 2024</span>
-                    <span className="mx-2">•</span>
-                    <Clock className="h-3 w-3 mr-1" />
-                    <span>5 min</span>
+              {relatedArticles.length > 0 ? relatedArticles.map((article) => (
+                <Link key={article.id} to={`/blog/${article.id}`} className="block">
+                  <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
+                    <div className="w-full h-32 mb-4 rounded-lg overflow-hidden">
+                      {article.image_url ? (
+                        <img 
+                          src={article.image_url} 
+                          alt={article.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg"></div>
+                      )}
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{article.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{article.summary}</p>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      <span>
+                        {new Date(article.published_date).toLocaleDateString('fr-FR')}
+                      </span>
+                      <span className="mx-2">•</span>
+                      <Clock className="h-3 w-3 mr-1" />
+                      <span>{article.reading_time || 5} min</span>
+                    </div>
                   </div>
+                </Link>
+              )) : (
+                <div className="col-span-full text-center text-gray-500">
+                  <p>Aucun article connexe trouvé</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
