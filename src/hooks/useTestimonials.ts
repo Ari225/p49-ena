@@ -36,38 +36,60 @@ export const useTestimonials = () => {
 
   const updateTestimonial = async (id: string, content: string) => {
     try {
-      const { error } = await supabase
+      console.log('Tentative de modification du témoignage:', id, content);
+      
+      // Vérifier d'abord l'utilisateur connecté
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log('Utilisateur connecté:', user?.id);
+      
+      const { data, error } = await supabase
         .from('testimonials')
         .update({ content })
-        .eq('id', id);
+        .eq('id', id)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur Supabase lors de la modification:', error);
+        throw error;
+      }
       
+      console.log('Modification réussie:', data);
       toast.success('Témoignage modifié avec succès');
       await loadTestimonials();
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors de la modification:', error);
-      toast.error('Erreur lors de la modification du témoignage');
+      toast.error(`Erreur lors de la modification: ${error.message || 'Erreur inconnue'}`);
       return false;
     }
   };
 
   const deleteTestimonial = async (id: string) => {
     try {
-      const { error } = await supabase
+      console.log('Tentative de suppression du témoignage:', id);
+      
+      // Vérifier d'abord l'utilisateur connecté
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log('Utilisateur connecté:', user?.id);
+      
+      const { data, error } = await supabase
         .from('testimonials')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur Supabase lors de la suppression:', error);
+        throw error;
+      }
       
+      console.log('Suppression réussie:', data);
       toast.success('Témoignage supprimé avec succès');
       await loadTestimonials();
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors de la suppression:', error);
-      toast.error('Erreur lors de la suppression du témoignage');
+      toast.error(`Erreur lors de la suppression: ${error.message || 'Erreur inconnue'}`);
       return false;
     }
   };
