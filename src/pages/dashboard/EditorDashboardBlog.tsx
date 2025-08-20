@@ -11,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 interface BlogPost {
   id: string;
@@ -206,6 +208,22 @@ const EditorDashboardBlog = () => {
     }
   };
 
+  const formatContent = (content: string) => {
+    if (!content) return '';
+    
+    // Configure marked options
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+    
+    // Convert markdown to HTML
+    const htmlContent = marked.parse(content);
+    
+    // Sanitize HTML to prevent XSS attacks
+    return DOMPurify.sanitize(htmlContent as string);
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -359,8 +377,8 @@ const EditorDashboardBlog = () => {
                   <p className="text-gray-600 italic">{viewingArticle.summary}</p>
                 )}
                 <div 
-                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700 whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} 
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: formatContent(viewingArticle.content || '') }} 
                 />
               </div>
             )}
@@ -526,8 +544,8 @@ const EditorDashboardBlog = () => {
                   <p className="text-gray-600 italic">{viewingArticle.summary}</p>
                 )}
                 <div 
-                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700 whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} 
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: formatContent(viewingArticle.content || '') }} 
                 />
               </div>
             )}
@@ -695,8 +713,8 @@ const EditorDashboardBlog = () => {
                 <p className="text-gray-600 italic">{viewingArticle.summary}</p>
               )}
                 <div 
-                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700 whitespace-pre-wrap"
-                  dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} 
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: formatContent(viewingArticle.content || '') }} 
                 />
             </div>
           )}
