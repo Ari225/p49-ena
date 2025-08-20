@@ -6,16 +6,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Upload, X } from 'lucide-react';
-
-interface PopupFormData {
-  title: string;
-  message: string;
-  type: 'welcome' | 'announcement' | 'alert';
-  display_duration: number;
-  priority: 'low' | 'medium' | 'high';
-  target_audience: 'all' | 'members' | 'admins';
-  auto_close: boolean;
-}
+import { compressMediaFile } from '@/utils/mediaCompression';
+import { PopupFormData } from '@/types/popup';
 
 interface PopupFormProps {
   onSubmit: (formData: PopupFormData, imagePreview: string | null) => void;
@@ -27,23 +19,39 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
     title: '',
     message: '',
     type: 'announcement',
-    display_duration: 5,
-    priority: 'medium',
-    target_audience: 'all',
-    auto_close: true
+    other_type: '',
+    target_audience: 'all_visitors',
+    author: '',
+    position: ''
   });
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isCompressing, setIsCompressing] = useState(false);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      setIsCompressing(true);
+      try {
+        const compressedFile = await compressMediaFile(file);
+        setSelectedImage(compressedFile);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.error('Erreur lors de la compression:', error);
+        // Utiliser le fichier original en cas d'erreur
+        setSelectedImage(file);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+      } finally {
+        setIsCompressing(false);
+      }
     }
   };
 
@@ -54,15 +62,19 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!imagePreview) {
+      alert('Une image est obligatoire');
+      return;
+    }
     onSubmit(formData, imagePreview);
     setFormData({ 
       title: '', 
       message: '', 
       type: 'announcement',
-      display_duration: 5,
-      priority: 'medium',
-      target_audience: 'all',
-      auto_close: true
+      other_type: '',
+      target_audience: 'all_visitors',
+      author: '',
+      position: ''
     });
     setSelectedImage(null);
     setImagePreview(null);
@@ -73,7 +85,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
       {isMobile ? (
         <>
           <div className="space-y-2">
-            <Label htmlFor="title">Titre</Label>
+            <Label htmlFor="title">Titre *</Label>
             <Input
               id="title"
               placeholder="Titre du pop-up"
@@ -82,22 +94,10 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
               required
             />
           </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              placeholder="Contenu du pop-up"
-              value={formData.message}
-              onChange={(e) => setFormData({...formData, message: e.target.value})}
-              required
-              rows={3}
-            />
-          </div>
 
           <div className="space-y-2">
-            <Label htmlFor="type">Type</Label>
-            <Select value={formData.type} onValueChange={(value: 'welcome' | 'announcement' | 'alert') => setFormData({...formData, type: value})}>
+            <Label htmlFor="type">Type *</Label>
+            <Select value={formData.type} onValueChange={(value: 'announcement' | 'welcome' | 'alert' | 'information' | 'other') => setFormData({...formData, type: value})}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -105,15 +105,77 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
                 <SelectItem value="announcement">Annonce</SelectItem>
                 <SelectItem value="welcome">Bienvenue</SelectItem>
                 <SelectItem value="alert">Alerte</SelectItem>
+                <SelectItem value="information">Information</SelectItem>
+                <SelectItem value="other">Autre</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          {formData.type === 'other' && (
+            <div className="space-y-2">
+              <Label htmlFor="other_type">Précision du type</Label>
+              <Input
+                id="other_type"
+                placeholder="Précisez le type"
+                value={formData.other_type}
+                onChange={(e) => setFormData({...formData, other_type: e.target.value})}
+                required
+              />
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <Label htmlFor="target_audience">Public cible</Label>
+            <Select value={formData.target_audience} onValueChange={(value: 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only') => setFormData({...formData, target_audience: value})}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all_visitors">Tous les visiteurs du site</SelectItem>
+                <SelectItem value="all_users">Tous les utilisateurs (Admins et rédacteurs)</SelectItem>
+                <SelectItem value="admins_only">Administrateurs uniquement</SelectItem>
+                <SelectItem value="editors_only">Rédacteurs uniquement</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea
+              id="message"
+              placeholder="Contenu du pop-up (optionnel)"
+              value={formData.message}
+              onChange={(e) => setFormData({...formData, message: e.target.value})}
+              rows={3}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="author">Auteur *</Label>
+            <Input
+              id="author"
+              placeholder="Nom de l'auteur"
+              value={formData.author}
+              onChange={(e) => setFormData({...formData, author: e.target.value})}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="position">Poste</Label>
+            <Input
+              id="position"
+              placeholder="Poste ou fonction (optionnel)"
+              value={formData.position}
+              onChange={(e) => setFormData({...formData, position: e.target.value})}
+            />
           </div>
         </>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Titre</Label>
+              <Label htmlFor="title">Titre *</Label>
               <Input
                 id="title"
                 placeholder="Titre du pop-up"
@@ -123,8 +185,8 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="type">Type</Label>
-              <Select value={formData.type} onValueChange={(value: 'welcome' | 'announcement' | 'alert') => setFormData({...formData, type: value})}>
+              <Label htmlFor="type">Type *</Label>
+              <Select value={formData.type} onValueChange={(value: 'announcement' | 'welcome' | 'alert' | 'information' | 'other') => setFormData({...formData, type: value})}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -132,38 +194,92 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
                   <SelectItem value="announcement">Annonce</SelectItem>
                   <SelectItem value="welcome">Bienvenue</SelectItem>
                   <SelectItem value="alert">Alerte</SelectItem>
+                  <SelectItem value="information">Information</SelectItem>
+                  <SelectItem value="other">Autre</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          {formData.type === 'other' && (
+            <div className="space-y-2">
+              <Label htmlFor="other_type">Précision du type</Label>
+              <Input
+                id="other_type"
+                placeholder="Précisez le type"
+                value={formData.other_type}
+                onChange={(e) => setFormData({...formData, other_type: e.target.value})}
+                required
+              />
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <Label htmlFor="target_audience">Public cible</Label>
+            <Select value={formData.target_audience} onValueChange={(value: 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only') => setFormData({...formData, target_audience: value})}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all_visitors">Tous les visiteurs du site</SelectItem>
+                <SelectItem value="all_users">Tous les utilisateurs (Admins et rédacteurs)</SelectItem>
+                <SelectItem value="admins_only">Administrateurs uniquement</SelectItem>
+                <SelectItem value="editors_only">Rédacteurs uniquement</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="message">Message</Label>
             <Textarea
               id="message"
-              placeholder="Contenu du pop-up"
+              placeholder="Contenu du pop-up (optionnel)"
               value={formData.message}
               onChange={(e) => setFormData({...formData, message: e.target.value})}
-              required
               rows={4}
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="author">Auteur *</Label>
+              <Input
+                id="author"
+                placeholder="Nom de l'auteur"
+                value={formData.author}
+                onChange={(e) => setFormData({...formData, author: e.target.value})}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="position">Poste</Label>
+              <Input
+                id="position"
+                placeholder="Poste ou fonction (optionnel)"
+                value={formData.position}
+                onChange={(e) => setFormData({...formData, position: e.target.value})}
+              />
+            </div>
           </div>
         </>
       )}
 
       <div className="space-y-2">
-        <Label>Image (optionnelle)</Label>
+        <Label>Image * {isCompressing && <span className="text-sm text-blue-600">(Compression en cours...)</span>}</Label>
         {!imagePreview ? (
           <div className={`border-2 border-dashed border-gray-300 rounded-lg ${isMobile ? 'p-4' : 'p-6'} text-center`}>
             <Upload className={`mx-auto text-gray-400 mb-2 ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`} />
             <label htmlFor="image-upload" className="cursor-pointer">
-              <span className="text-sm text-gray-600">Cliquez pour ajouter une image</span>
+              <span className="text-sm text-gray-600">
+                {isCompressing ? 'Compression...' : 'Cliquez pour ajouter une image (obligatoire)'}
+              </span>
               <input
                 id="image-upload"
                 type="file"
                 accept="image/*"
                 className="hidden"
                 onChange={handleImageUpload}
+                disabled={isCompressing}
               />
             </label>
           </div>
@@ -185,81 +301,9 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
         )}
       </div>
 
-      <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-3'} gap-4`}>
-        <div className="space-y-2">
-          <Label htmlFor="duration">{isMobile ? 'Durée (secondes)' : 'Durée d\'affichage (secondes)'}</Label>
-          <Input
-            id="duration"
-            type="number"
-            min="1"
-            max="60"
-            value={formData.display_duration}
-            onChange={(e) => setFormData({...formData, display_duration: parseInt(e.target.value)})}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="priority">Priorité</Label>
-          <Select value={formData.priority} onValueChange={(value: 'low' | 'medium' | 'high') => setFormData({...formData, priority: value})}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Faible</SelectItem>
-              <SelectItem value="medium">Moyenne</SelectItem>
-              <SelectItem value="high">Élevée</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {!isMobile && (
-          <div className="space-y-2">
-            <Label htmlFor="audience">Public cible</Label>
-            <Select value={formData.target_audience} onValueChange={(value: 'all' | 'members' | 'admins') => setFormData({...formData, target_audience: value})}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les utilisateurs</SelectItem>
-                <SelectItem value="members">Membres uniquement</SelectItem>
-                <SelectItem value="admins">Administrateurs uniquement</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
-      </div>
-
-      {isMobile && (
-        <div className="space-y-2">
-          <Label htmlFor="audience">Public cible</Label>
-          <Select value={formData.target_audience} onValueChange={(value: 'all' | 'members' | 'admins') => setFormData({...formData, target_audience: value})}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous les utilisateurs</SelectItem>
-              <SelectItem value="members">Membres uniquement</SelectItem>
-              <SelectItem value="admins">Administrateurs uniquement</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          id="auto-close"
-          checked={formData.auto_close}
-          onChange={(e) => setFormData({...formData, auto_close: e.target.checked})}
-          className="rounded"
-        />
-        <Label htmlFor="auto-close" className={isMobile ? 'text-sm' : ''}>
-          {isMobile ? 'Fermeture automatique' : 'Fermeture automatique après la durée définie'}
-        </Label>
-      </div>
-
-      <Button type="submit" className="w-full">Créer le pop-up</Button>
+      <Button type="submit" className="w-full" disabled={isCompressing}>
+        {isCompressing ? 'Compression en cours...' : 'Créer le pop-up'}
+      </Button>
     </form>
   );
 };

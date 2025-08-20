@@ -10,33 +10,26 @@ export const getTypeBadge = (type: string) => {
       return <Badge className="bg-green-100 text-green-800">Annonce</Badge>;
     case 'alert':
       return <Badge className="bg-red-100 text-red-800">Alerte</Badge>;
+    case 'information':
+      return <Badge className="bg-purple-100 text-purple-800">Information</Badge>;
+    case 'other':
+      return <Badge className="bg-gray-100 text-gray-800">Autre</Badge>;
     default:
-      return <Badge variant="secondary">Autre</Badge>;
-  }
-};
-
-export const getPriorityBadge = (priority: string) => {
-  switch (priority) {
-    case 'high':
-      return <Badge variant="destructive">Élevée</Badge>;
-    case 'medium':
-      return <Badge className="bg-yellow-100 text-yellow-800">Moyenne</Badge>;
-    case 'low':
-      return <Badge variant="secondary">Faible</Badge>;
-    default:
-      return <Badge variant="secondary">-</Badge>;
+      return <Badge variant="secondary">Non défini</Badge>;
   }
 };
 
 export const getAudienceBadge = (audience: string) => {
   switch (audience) {
-    case 'all':
-      return <Badge variant="outline">Tous</Badge>;
-    case 'members':
-      return <Badge className="bg-purple-100 text-purple-800">Membres</Badge>;
-    case 'admins':
-      return <Badge className="bg-orange-100 text-orange-800">Admins</Badge>;
+    case 'all_visitors':
+      return <Badge variant="outline">Tous les visiteurs</Badge>;
+    case 'all_users':
+      return <Badge className="bg-purple-100 text-purple-800">Tous les utilisateurs</Badge>;
+    case 'admins_only':
+      return <Badge className="bg-orange-100 text-orange-800">Admins uniquement</Badge>;
+    case 'editors_only':
+      return <Badge className="bg-blue-100 text-blue-800">Rédacteurs uniquement</Badge>;
     default:
-      return <Badge variant="outline">-</Badge>;
+      return <Badge variant="outline">Non défini</Badge>;
   }
 };

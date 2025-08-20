@@ -4,20 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Eye, EyeOff } from 'lucide-react';
-
-interface PopupItem {
-  id: string;
-  title: string;
-  message: string;
-  type: 'welcome' | 'announcement' | 'alert';
-  isActive: boolean;
-  created_date: string;
-  image_url?: string;
-  display_duration: number;
-  priority: 'low' | 'medium' | 'high';
-  target_audience: 'all' | 'members' | 'admins';
-  auto_close: boolean;
-}
+import { PopupItem } from '@/types/popup';
 
 interface PopupCardProps {
   popup: PopupItem;
@@ -25,7 +12,6 @@ interface PopupCardProps {
   onDelete: (id: string) => void;
   isMobile: boolean;
   getTypeBadge: (type: string) => React.ReactNode;
-  getPriorityBadge: (priority: string) => React.ReactNode;
   getAudienceBadge: (audience: string) => React.ReactNode;
 }
 
@@ -35,7 +21,6 @@ const PopupCard: React.FC<PopupCardProps> = ({
   onDelete,
   isMobile,
   getTypeBadge,
-  getPriorityBadge,
   getAudienceBadge
 }) => {
   return (
@@ -44,7 +29,7 @@ const PopupCard: React.FC<PopupCardProps> = ({
         <div className="flex items-center justify-between mb-2">
           <div className="flex flex-wrap items-center gap-2">
             {getTypeBadge(popup.type)}
-            {getPriorityBadge(popup.priority)}
+            {popup.other_type && <Badge variant="outline">{popup.other_type}</Badge>}
             <Badge variant={popup.isActive ? "default" : "secondary"}>
               {popup.isActive ? "Actif" : "Inactif"}
             </Badge>
@@ -63,13 +48,15 @@ const PopupCard: React.FC<PopupCardProps> = ({
             className="w-full h-32 object-cover rounded-lg mb-3"
           />
         )}
-        <p className={`text-gray-600 mb-3 text-sm ${isMobile ? 'line-clamp-2' : 'line-clamp-3'}`}>
-          {popup.message}
-        </p>
+        {popup.message && (
+          <p className={`text-gray-600 mb-3 text-sm ${isMobile ? 'line-clamp-2' : 'line-clamp-3'}`}>
+            {popup.message}
+          </p>
+        )}
         <div className={`flex flex-wrap gap-2 mb-4 ${isMobile ? 'text-xs' : ''}`}>
           {getAudienceBadge(popup.target_audience)}
-          <Badge variant="outline">{popup.display_duration}s</Badge>
-          {popup.auto_close && <Badge variant="outline">Auto-fermeture</Badge>}
+          {popup.author && <Badge variant="outline">Par: {popup.author}</Badge>}
+          {popup.position && <Badge variant="outline">{popup.position}</Badge>}
         </div>
         
         {isMobile ? (

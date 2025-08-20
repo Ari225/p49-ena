@@ -10,7 +10,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/hooks/use-toast';
 import PopupForm from '@/components/popups/PopupForm';
 import PopupCard from '@/components/popups/PopupCard';
-import { getTypeBadge, getPriorityBadge, getAudienceBadge } from '@/utils/popupUtils';
+import { getTypeBadge, getAudienceBadge } from '@/utils/popupUtils';
 import { PopupItem, PopupFormData } from '@/types/popup';
 import { isAdmin } from '@/utils/roleUtils';
 
@@ -26,10 +26,9 @@ const DashboardPopups = () => {
       type: 'welcome',
       isActive: true,
       created_date: '2024-03-20',
-      display_duration: 10,
-      priority: 'high',
-      target_audience: 'all',
-      auto_close: false
+      target_audience: 'all_visitors',
+      author: 'Mme la Présidente',
+      position: 'Présidente du Réseau P49 ENA'
     }
   ]);
 
@@ -43,13 +42,13 @@ const DashboardPopups = () => {
       title: formData.title,
       message: formData.message,
       type: formData.type,
+      other_type: formData.other_type,
       isActive: false,
       created_date: new Date().toISOString().split('T')[0],
       image_url: imagePreview || undefined,
-      display_duration: formData.display_duration,
-      priority: formData.priority,
       target_audience: formData.target_audience,
-      auto_close: formData.auto_close
+      author: formData.author,
+      position: formData.position
     };
 
     setPopups([...popups, newPopup]);
@@ -110,7 +109,6 @@ const DashboardPopups = () => {
                 onDelete={deletePopup}
                 isMobile={true}
                 getTypeBadge={getTypeBadge}
-                getPriorityBadge={getPriorityBadge}
                 getAudienceBadge={getAudienceBadge}
               />
             ))}
@@ -158,7 +156,6 @@ const DashboardPopups = () => {
                 onDelete={deletePopup}
                 isMobile={false}
                 getTypeBadge={getTypeBadge}
-                getPriorityBadge={getPriorityBadge}
                 getAudienceBadge={getAudienceBadge}
               />
             ))}

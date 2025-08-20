@@ -2,23 +2,23 @@
 export interface PopupItem {
   id: string;
   title: string;
-  message: string;
-  type: 'welcome' | 'announcement' | 'alert';
+  message?: string;
+  type: 'announcement' | 'welcome' | 'alert' | 'information' | 'other';
+  other_type?: string;
   isActive: boolean;
   created_date: string;
   image_url?: string;
-  display_duration: number;
-  priority: 'low' | 'medium' | 'high';
-  target_audience: 'all' | 'members' | 'admins';
-  auto_close: boolean;
+  target_audience: 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only';
+  author: string;
+  position?: string;
 }
 
 export interface PopupFormData {
   title: string;
-  message: string;
-  type: 'welcome' | 'announcement' | 'alert';
-  display_duration: number;
-  priority: 'low' | 'medium' | 'high';
-  target_audience: 'all' | 'members' | 'admins';
-  auto_close: boolean;
+  message?: string;
+  type: 'announcement' | 'welcome' | 'alert' | 'information' | 'other';
+  other_type?: string;
+  target_audience: 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only';
+  author: string;
+  position?: string;
 }
