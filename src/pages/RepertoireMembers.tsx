@@ -7,7 +7,6 @@ import Layout from '@/components/Layout';
 import MemberCard from '@/components/members/MemberCard';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/context/AuthContext';
 
 interface Member {
   id: number;
@@ -28,7 +27,6 @@ interface Member {
 const RepertoireMembers = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [allMembers, setAllMembers] = useState<Member[]>([]);
@@ -41,36 +39,8 @@ const RepertoireMembers = () => {
       try {
         setLoading(true);
         
-        // Utiliser la fonction appropriée selon les permissions de l'utilisateur
-        let data, error;
-        
-        if (user && (user.role === 'admin_principal' || user.role === 'admin_secondaire')) {
-          // Admin : accès aux données complètes via direct select (avec RLS)
-          const result = await supabase
-            .from('members')
-            .select(`
-              id,
-              "Pr�noms",
-              "Nom de famille", 
-              "Emploi fonction publique",
-              "Lieu d'exercice",
-              "Photo",
-              "Matricule",
-              "WhatsApp",
-              "Facebook",
-              "instagram", 
-              "linkedIn"
-            `)
-            .order('"Nom de famille"', { ascending: true });
-          
-          data = result.data;
-          error = result.error;
-        } else {
-          // Utilisateur normal : fonction masquée
-          const result = await supabase.rpc('get_member_directory');
-          data = result.data;
-          error = result.error;
-        }
+        // Utiliser la nouvelle fonction publique qui retourne toutes les données sans masquage
+        const { data, error } = await supabase.rpc('get_all_members_public');
         
         if (error) {
           console.error('Error fetching members:', error);
@@ -78,34 +48,22 @@ const RepertoireMembers = () => {
         }
         
         const formattedMembers: Member[] = (data || [])
-          .map((member: any) => {
-            // Gérer les deux structures de données (admin vs utilisateur normal)
-            const isAdminData = user && (user.role === 'admin_principal' || user.role === 'admin_secondaire');
-            
-            return {
-              id: member.id,
-              firstName: isAdminData ? member["Pr�noms"] || '' : member.prenoms || '',
-              lastName: isAdminData ? member["Nom de famille"] || '' : member.nom_famille || '',
-              position: isAdminData ? member["Emploi fonction publique"] || '' : member.emploi_fonction_publique || '',
-              locality: isAdminData ? member["Lieu d'exercice"] || '' : member.lieu_exercice || '',
-              photo: isAdminData ? member["Photo"] || '' : member.photo || '',
-              whatsapp: isAdminData ? 
-                (member["WhatsApp"] ? 'true' : null) : 
-                (member.has_whatsapp ? 'true' : null),
-              matricule: isAdminData ? member["Matricule"] || '' : member.matricule || '',
-              socialMedia: {
-                facebook: isAdminData ? 
-                  (member["Facebook"] ? 'true' : null) : 
-                  (member.has_facebook ? 'true' : null),
-                instagram: isAdminData ? 
-                  (member["instagram"] ? 'true' : null) : 
-                  (member.has_instagram ? 'true' : null),
-                linkedin: isAdminData ? 
-                  (member["linkedIn"] ? 'true' : null) : 
-                  (member.has_linkedin ? 'true' : null)
-              }
-            };
-          })
+          .map((member: any) => ({
+            id: member.id,
+            // Utiliser les vraies données complètes sans masquage
+            firstName: member.prenoms || '',
+            lastName: member.nom_famille || '',
+            position: member.emploi_fonction_publique || '',
+            locality: member.lieu_exercice || '',
+            photo: member.photo || '',
+            whatsapp: member.whatsapp ? 'true' : null,
+            matricule: member.matricule || '',
+            socialMedia: {
+              facebook: member.facebook ? 'true' : null,
+              instagram: member.instagram ? 'true' : null,
+              linkedin: member.linkedin ? 'true' : null
+            }
+          }))
           .filter(member => 
             // Garder tous les membres qui ont des noms
             member.firstName && member.firstName.trim() && 
@@ -127,7 +85,7 @@ const RepertoireMembers = () => {
     };
 
     fetchMembers();
-  }, [user]); // Re-fetch when user authentication changes
+  }, []); // Pas besoin de dépendre de l'utilisateur maintenant
 
   // Filter members based on search term
   const filteredMembers = useMemo(() => {

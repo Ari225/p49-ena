@@ -721,6 +721,29 @@ export type Database = {
           test_name: string
         }[]
       }
+      get_all_members_public: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          date_naissance: string
+          ecole: string
+          email: string
+          emploi_fonction_publique: string
+          facebook: string
+          filiere_egad: string
+          filiere_egef: string
+          id: number
+          instagram: string
+          lieu_exercice: string
+          linkedin: string
+          matricule: string
+          ministere: string
+          nom_famille: string
+          photo: string
+          prenoms: string
+          region: string
+          whatsapp: number
+        }[]
+      }
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: string
