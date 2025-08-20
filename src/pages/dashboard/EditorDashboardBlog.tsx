@@ -358,7 +358,10 @@ const EditorDashboardBlog = () => {
                 {viewingArticle.summary && (
                   <p className="text-gray-600 italic">{viewingArticle.summary}</p>
                 )}
-                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} />
+                <div 
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700 whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} 
+                />
               </div>
             )}
           </DialogContent>
@@ -522,7 +525,10 @@ const EditorDashboardBlog = () => {
                 {viewingArticle.summary && (
                   <p className="text-gray-600 italic">{viewingArticle.summary}</p>
                 )}
-                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} />
+                <div 
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700 whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} 
+                />
               </div>
             )}
           </DialogContent>
@@ -688,7 +694,10 @@ const EditorDashboardBlog = () => {
               {viewingArticle.summary && (
                 <p className="text-gray-600 italic">{viewingArticle.summary}</p>
               )}
-              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} />
+                <div 
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-600 prose-blockquote:border-l-primary prose-blockquote:text-gray-600 prose-ul:text-gray-700 prose-ol:text-gray-700 whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} 
+                />
             </div>
           )}
         </DialogContent>
