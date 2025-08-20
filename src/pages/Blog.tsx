@@ -138,45 +138,47 @@ const Blog = () => {
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             {filteredPosts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredPosts.map((post) => (
-                  <Link key={post.id} to={`/blog/${post.id}`}>
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
-                      {post.image_url && (
-                        <div className="h-48">
-                          <img 
-                            src={post.image_url} 
-                            alt={post.title} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      )}
-                      <CardHeader>
-                        <div className="flex items-center justify-between mb-2">
-                          <Badge variant="secondary">{post.category}</Badge>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredPosts.map((post) => (
+                    <Link key={post.id} to={`/blog/${post.id}`}>
+                      <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
+                        {post.image_url && (
+                          <div className="h-48 relative">
+                            <img 
+                              src={post.image_url} 
+                              alt={post.title} 
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium backdrop-blur-sm">
+                              <Clock className="w-3 h-3 mr-1 inline" />
+                              {post.reading_time || 5} min
+                            </div>
+                          </div>
+                        )}
+                        <CardHeader>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                              {post.category || 'Non catégorisé'}
+                            </span>
+                            <div className="flex items-center text-xs text-gray-500">
+                              <Calendar className="w-3 h-3 mr-1" />
+                              {new Date(post.published_date).toLocaleDateString('fr-FR')}
+                            </div>
+                          </div>
+                          <CardTitle className="text-lg">{post.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600 mb-4">{post.summary}</p>
                           <div className="flex items-center text-sm text-gray-500">
-                            <Clock className="w-4 h-4 mr-1" />
-                            {post.reading_time} min
+                            <div className="flex items-center">
+                              <User className="w-4 h-4 mr-1" />
+                              {post.author_name || 'Auteur anonyme'}
+                            </div>
                           </div>
-                        </div>
-                        <CardTitle className="text-lg">{post.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 mb-4">{post.summary}</p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <div className="flex items-center">
-                            <User className="w-4 h-4 mr-1" />
-                            {post.author_name || 'Auteur anonyme'}
-                          </div>
-                          <div className="flex items-center">
-                            <Calendar className="w-4 h-4 mr-1" />
-                            {new Date(post.published_date).toLocaleDateString('fr-FR')}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
               </div>
             ) : (
               <div className="text-center py-12">
