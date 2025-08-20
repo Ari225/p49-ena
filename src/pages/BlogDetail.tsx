@@ -191,8 +191,18 @@ const BlogDetail = () => {
             {/* Author Section */}
             <div className="mt-12 pt-8 border-t border-gray-200">
               <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <User className="h-8 w-8 text-white" />
+                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-lg">
+                  {blog.author_image ? (
+                    <img 
+                      src={blog.author_image} 
+                      alt={blog.author_name || 'Auteur'} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+                      <User className="h-8 w-8 text-white" />
+                    </div>
+                  )}
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
