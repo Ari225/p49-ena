@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Users, FileText, Calendar, Settings, PenTool, MessageSquare, BarChart3, Bell, BookOpen, MapPin, Briefcase, Star, PartyPopper, Activity, PlayCircle } from 'lucide-react';
+import { FileText, PenTool, MessageSquare, BarChart3, BookOpen, MapPin, Briefcase, Star, PartyPopper, Activity, PlayCircle, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -18,9 +18,9 @@ const AdminSidebar = () => {
       icon: BarChart3
     },
     {
-      title: 'Utilisateurs',
-      href: '/dashboard/users',
-      icon: Users
+      title: 'Les Régionales',
+      href: '/regionales',
+      icon: MapPin
     },
     {
       title: 'Actualités',
@@ -75,24 +75,14 @@ const AdminSidebar = () => {
       icon: PlayCircle
     },
     {
-      title: 'Évènements',
-      href: '/dashboard/events',
-      icon: Calendar
-    },
-    {
       title: 'Pop-ups',
       href: '/dashboard/popups',
       icon: MessageSquare
     },
     {
-      title: 'Notifications',
-      href: '/dashboard/notifications',
-      icon: Bell
-    },
-    {
-      title: 'Paramètres',
-      href: '/dashboard/settings',
-      icon: Settings
+      title: 'Profil',
+      href: '/dashboard/profile',
+      icon: User
     }
   ];
 
