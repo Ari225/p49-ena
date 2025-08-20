@@ -781,6 +781,29 @@ export type Database = {
           whatsapp: number
         }[]
       }
+      get_member_details_public: {
+        Args: { member_matricule: string; verification_matricule: string }
+        Returns: {
+          date_naissance: string
+          ecole: string
+          email: string
+          emploi_fonction_publique: string
+          facebook: string
+          filiere_egad: string
+          filiere_egef: string
+          id: number
+          instagram: string
+          lieu_exercice: string
+          linkedin: string
+          matricule: string
+          ministere: string
+          nom_famille: string
+          photo: string
+          prenoms: string
+          region: string
+          whatsapp: number
+        }[]
+      }
       get_member_directory: {
         Args: Record<PropertyKey, never>
         Returns: {

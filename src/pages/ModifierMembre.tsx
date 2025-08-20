@@ -49,8 +49,8 @@ const ModifierMembre: React.FC = () => {
     
     setIsLoading(true);
     try {
-      // Utiliser la fonction sécurisée get_member_details
-      const { data, error } = await supabase.rpc('get_member_details', {
+      // Utiliser la nouvelle fonction publique sécurisée
+      const { data, error } = await supabase.rpc('get_member_details_public', {
         member_matricule: memberMatricule,
         verification_matricule: memberMatricule
       });
