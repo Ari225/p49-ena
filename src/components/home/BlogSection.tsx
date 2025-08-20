@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PenTool, Calendar, User, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { PenTool, Calendar, User, ChevronRight, ChevronLeft, Tag } from 'lucide-react';
 import { useIsMobile, useIsTablet, useIsDesktop } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -14,6 +15,7 @@ interface BlogArticle {
   image_url: string;
   published_date: string;
   author_name: string;
+  category: string;
 }
 
 const BlogSection = () => {
@@ -33,7 +35,7 @@ const BlogSection = () => {
     try {
       const { data: articles, error } = await supabase
         .from('blog_articles')
-        .select('id, title, summary, image_url, published_date, author_name')
+        .select('id, title, summary, image_url, published_date, author_name, category')
         .eq('status', 'valide')
         .order('published_date', { ascending: false })
         .limit(3);
@@ -138,13 +140,18 @@ const BlogSection = () => {
                             <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
                           </div>
                         )}
-                        <CardContent className="p-4 md:p-6">
-                          <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
-                            {article.title}
-                          </h3>
-                          <p className={`text-gray-700 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
-                            {article.summary}
-                          </p>
+                         <CardContent className="p-4 md:p-6">
+                           {article.category && (
+                             <Badge variant="secondary" className="mb-2 text-xs">
+                               {article.category}
+                             </Badge>
+                           )}
+                           <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
+                             {article.title}
+                           </h3>
+                           <p className={`text-gray-700 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
+                             {article.summary}
+                           </p>
                            <div className="flex items-center justify-between text-sm text-gray-700">
                              <div className="flex items-center">
                                <User className="w-3 h-3 mr-1" />
@@ -187,13 +194,18 @@ const BlogSection = () => {
                       <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
                     </div>
                   )}
-                  <CardContent className="p-5">
-                    <h3 className={`font-semibold text-primary mb-3 line-clamp-2 ${getCardTitleSize()}`}>
-                      {article.title}
-                    </h3>
-                    <p className={`text-gray-600 mb-4 line-clamp-3 ${getCardSummarySize()}`}>
-                      {article.summary}
-                    </p>
+                   <CardContent className="p-5">
+                     {article.category && (
+                       <Badge variant="secondary" className="mb-3 text-xs">
+                         {article.category}
+                       </Badge>
+                     )}
+                     <h3 className={`font-semibold text-primary mb-3 line-clamp-2 ${getCardTitleSize()}`}>
+                       {article.title}
+                     </h3>
+                     <p className={`text-gray-600 mb-4 line-clamp-3 ${getCardSummarySize()}`}>
+                       {article.summary}
+                     </p>
                      <div className="flex items-center justify-between text-sm text-gray-700">
                        <div className="flex items-center">
                          <User className="w-3 h-3 mr-1" />
@@ -224,13 +236,18 @@ const BlogSection = () => {
                       <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" />
                     </div>
                   )}
-                  <CardContent className="p-4 md:p-6">
-                    <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
-                      {article.title}
-                    </h3>
-                    <p className={`text-gray-600 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
-                      {article.summary}
-                    </p>
+                   <CardContent className="p-4 md:p-6">
+                     {article.category && (
+                       <Badge variant="secondary" className="mb-2 text-xs">
+                         {article.category}
+                       </Badge>
+                     )}
+                     <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
+                       {article.title}
+                     </h3>
+                     <p className={`text-gray-600 mb-3 md:mb-4 line-clamp-3 ${getCardSummarySize()}`}>
+                       {article.summary}
+                     </p>
                      <div className="flex items-center justify-between text-sm text-gray-700">
                        <div className="flex items-center">
                          <User className="w-3 h-3 mr-1" />
