@@ -8,15 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 interface BlogPost {
   id: string;
   title: string;
-  excerpt: string;
+  summary: string;
   category: string;
   image_url: string;
   published_date: string;
-  author: string;
+  author_name: string;
   reading_time: number;
 }
 
@@ -26,7 +27,6 @@ const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     fetchPosts();
@@ -35,45 +35,37 @@ const Blog = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      // Mock data
-      const mockPosts: BlogPost[] = [
-        {
-          id: '1',
-          title: 'L\'importance de la formation continue dans l\'administration publique',
-          excerpt: 'Découvrez pourquoi la formation continue est essentielle pour l\'excellence de l\'administration publique.',
-          category: 'Formation',
-          image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          published_date: '2024-01-20',
-          author: 'Dr. Kouakou Marie',
-          reading_time: 5
-        },
-        {
-          id: '2',
-          title: 'Les défis de la digitalisation administrative',
-          excerpt: 'Comment les nouvelles technologies transforment l\'administration publique moderne.',
-          category: 'Innovation',
-          image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-          published_date: '2024-01-15',
-          author: 'M. Traoré Seydou',
-          reading_time: 7
-        }
-      ];
-      setPosts(mockPosts);
+      
+      const { data, error } = await supabase
+        .from('blog_articles')
+        .select('id, title, summary, category, image_url, published_date, author_name, reading_time')
+        .eq('status', 'valide')
+        .order('published_date', { ascending: false });
+
+      if (error) {
+        console.error('Erreur lors de la récupération des articles:', error);
+        return;
+      }
+
+      if (data) {
+        setPosts(data);
+      }
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error('Erreur lors de la récupération des articles:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === '' || post.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    if (!searchTerm) return true;
+    
+    const searchLower = searchTerm.toLowerCase();
+    return post.title.toLowerCase().includes(searchLower) ||
+           post.summary.toLowerCase().includes(searchLower) ||
+           (post.category && post.category.toLowerCase().includes(searchLower)) ||
+           (post.author_name && post.author_name.toLowerCase().includes(searchLower));
   });
-
-  const categories = [...new Set(posts.map(post => post.category))];
 
   if (loading) {
     return (
@@ -125,35 +117,18 @@ const Blog = () => {
           </div>
         </section>
 
-        {/* Filters Section */}
+        {/* Search Section */}
         <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
+            <div className="flex justify-center">
+              <div className="w-full max-w-md relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Rechercher un article..."
+                  placeholder="Rechercher par titre, catégorie ou auteur..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant={selectedCategory === '' ? 'default' : 'outline'}
-                  onClick={() => setSelectedCategory('')}
-                >
-                  Toutes
-                </Button>
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={selectedCategory === category ? 'default' : 'outline'}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </Button>
-                ))}
               </div>
             </div>
           </div>
@@ -187,11 +162,11 @@ const Blog = () => {
                         <CardTitle className="text-lg">{post.title}</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                        <p className="text-gray-600 mb-4">{post.summary}</p>
                         <div className="flex items-center justify-between text-sm text-gray-500">
                           <div className="flex items-center">
                             <User className="w-4 h-4 mr-1" />
-                            {post.author}
+                            {post.author_name || 'Auteur anonyme'}
                           </div>
                           <div className="flex items-center">
                             <Calendar className="w-4 h-4 mr-1" />
@@ -206,7 +181,7 @@ const Blog = () => {
             ) : (
               <div className="text-center py-12">
                 <p className="text-gray-500 mb-4">Aucun article trouvé.</p>
-                <Button onClick={() => { setSearchTerm(''); setSelectedCategory(''); }}>
+                <Button onClick={() => setSearchTerm('')}>
                   Afficher tous les articles
                 </Button>
               </div>
