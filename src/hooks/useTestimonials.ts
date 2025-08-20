@@ -38,18 +38,13 @@ export const useTestimonials = () => {
     try {
       console.log('Tentative de modification du témoignage:', id, content);
       
-      // Vérifier d'abord l'utilisateur connecté
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('Utilisateur connecté:', user?.id);
-      
-      const { data, error } = await supabase
-        .from('testimonials')
-        .update({ content })
-        .eq('id', id)
-        .select();
+      const { data, error } = await supabase.rpc('update_testimonial_secure', {
+        testimonial_id: id,
+        new_content: content
+      });
 
       if (error) {
-        console.error('Erreur Supabase lors de la modification:', error);
+        console.error('Erreur lors de la modification:', error);
         throw error;
       }
       
@@ -68,18 +63,12 @@ export const useTestimonials = () => {
     try {
       console.log('Tentative de suppression du témoignage:', id);
       
-      // Vérifier d'abord l'utilisateur connecté
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log('Utilisateur connecté:', user?.id);
-      
-      const { data, error } = await supabase
-        .from('testimonials')
-        .delete()
-        .eq('id', id)
-        .select();
+      const { data, error } = await supabase.rpc('delete_testimonial_secure', {
+        testimonial_id: id
+      });
 
       if (error) {
-        console.error('Erreur Supabase lors de la suppression:', error);
+        console.error('Erreur lors de la suppression:', error);
         throw error;
       }
       

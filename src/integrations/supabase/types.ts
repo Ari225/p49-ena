@@ -754,6 +754,10 @@ export type Database = {
           testimonial_id: string
         }[]
       }
+      delete_testimonial_secure: {
+        Args: { testimonial_id: string }
+        Returns: boolean
+      }
       final_security_check: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -1052,6 +1056,10 @@ export type Database = {
       }
       update_member_info: {
         Args: { p_member_id: number; p_update_data: Json }
+        Returns: boolean
+      }
+      update_testimonial_secure: {
+        Args: { new_content: string; testimonial_id: string }
         Returns: boolean
       }
       update_user_profile: {
