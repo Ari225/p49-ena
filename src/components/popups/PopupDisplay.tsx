@@ -51,11 +51,19 @@ const PopupDisplay = () => {
             
             {/* Image Section */}
             {currentPopup.image_url && (
-              <div className={`relative overflow-hidden ${isMobile ? 'h-auto' : isTablet ? 'h-auto' : 'md:w-1/3'}`}>
+              <div className={`relative overflow-hidden ${
+                currentPopup.message 
+                  ? (isMobile ? 'h-auto' : isTablet ? 'h-auto' : 'md:w-1/3')
+                  : 'flex items-center justify-center'
+              }`}>
                 <img 
                   src={currentPopup.image_url} 
                   alt={currentPopup.title} 
-                  className={`w-full h-full ${currentPopup.message ? 'object-cover' : 'object-contain'} ${isMobile ? 'max-h-64' : isTablet ? 'max-h-80' : ''}`} 
+                  className={`${
+                    currentPopup.message 
+                      ? `w-full h-full object-cover object-top ${isMobile ? 'max-h-64' : isTablet ? 'max-h-80' : ''}`
+                      : 'max-w-full max-h-full object-contain'
+                  }`} 
                 />
               </div>
             )}
