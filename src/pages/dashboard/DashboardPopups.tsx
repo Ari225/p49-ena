@@ -5,73 +5,56 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { toast } from '@/hooks/use-toast';
 import PopupForm from '@/components/popups/PopupForm';
 import PopupCard from '@/components/popups/PopupCard';
 import { getTypeBadge, getAudienceBadge } from '@/utils/popupUtils';
-import { PopupItem, PopupFormData } from '@/types/popup';
+import { PopupFormData } from '@/types/popup';
 import { isAdmin } from '@/utils/roleUtils';
+import { usePopups } from '@/hooks/usePopups';
+import { useImageUpload } from '@/hooks/useImageUpload';
 
 const DashboardPopups = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
-  const [popups, setPopups] = useState<PopupItem[]>([
-    {
-      id: '1',
-      title: 'Message de bienvenue de la Présidente',
-      message: 'Bienvenue sur le site du Réseau P49 ENA. Nous sommes ravis de vous accueillir...',
-      type: 'welcome',
-      isActive: true,
-      created_date: '2024-03-20',
-      target_audience: 'all_visitors',
-      author: 'Mme la Présidente',
-      position: 'Présidente du Réseau P49 ENA'
-    }
-  ]);
+  const { popups, loading, createPopup, togglePopupStatus, deletePopup } = usePopups();
+  const { uploadImage, uploading } = useImageUpload();
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
 
-  const handleFormSubmit = (formData: PopupFormData, imagePreview: string | null) => {
-    const newPopup: PopupItem = {
-      id: Date.now().toString(),
-      title: formData.title,
-      message: formData.message,
-      type: formData.type,
-      other_type: formData.other_type,
-      isActive: false,
-      created_date: new Date().toISOString().split('T')[0],
-      image_url: imagePreview || undefined,
-      target_audience: formData.target_audience,
-      author: formData.author,
-      position: formData.position
-    };
-
-    setPopups([...popups, newPopup]);
-    setShowForm(false);
+  const handleFormSubmit = async (formData: PopupFormData, imagePreview: string | null) => {
+    let imageUrl = null;
     
-    toast({
-      title: "Pop-up créé",
-      description: "Le pop-up a été ajouté avec succès"
-    });
+    if (imagePreview && imagePreview.startsWith('data:')) {
+      // Convert base64 to file and upload
+      try {
+        const response = await fetch(imagePreview);
+        const blob = await response.blob();
+        const file = new File([blob], 'popup-image.jpg', { type: 'image/jpeg' });
+        imageUrl = await uploadImage(file);
+      } catch (error) {
+        console.error('Error processing image:', error);
+      }
+    }
+
+    const newPopup = await createPopup(formData, imageUrl || undefined);
+    if (newPopup) {
+      setShowForm(false);
+    }
   };
 
-  const togglePopupStatus = (id: string) => {
-    setPopups(popups.map(popup => 
-      popup.id === id ? { ...popup, isActive: !popup.isActive } : popup
-    ));
+  const togglePopupStatusHandler = (id: string) => {
+    togglePopupStatus(id);
   };
 
-  const deletePopup = (id: string) => {
-    setPopups(popups.filter(popup => popup.id !== id));
-    toast({
-      title: "Pop-up supprimé",
-      description: "Le pop-up a été supprimé avec succès"
-    });
+  const deletePopupHandler = (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce pop-up ?')) {
+      deletePopup(id);
+    }
   };
 
   if (isMobile) {
@@ -86,9 +69,18 @@ const DashboardPopups = () => {
           <div className="mb-4">
             <Dialog open={showForm} onOpenChange={setShowForm}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90 w-full">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nouveau pop-up
+                <Button className="bg-primary hover:bg-primary/90 w-full" disabled={uploading || loading}>
+                  {uploading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Upload en cours...
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Nouveau pop-up
+                    </>
+                  )}
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
@@ -101,17 +93,28 @@ const DashboardPopups = () => {
           </div>
 
           <div className="space-y-4">
-            {popups.map((popup) => (
-              <PopupCard
-                key={popup.id}
-                popup={popup}
-                onToggleStatus={togglePopupStatus}
-                onDelete={deletePopup}
-                isMobile={true}
-                getTypeBadge={getTypeBadge}
-                getAudienceBadge={getAudienceBadge}
-              />
-            ))}
+            {loading ? (
+              <div className="flex justify-center items-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <span className="ml-2">Chargement des pop-ups...</span>
+              </div>
+            ) : popups.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                Aucun pop-up créé pour le moment
+              </div>
+            ) : (
+              popups.map((popup) => (
+                <PopupCard
+                  key={popup.id}
+                  popup={popup}
+                  onToggleStatus={togglePopupStatusHandler}
+                  onDelete={deletePopupHandler}
+                  isMobile={true}
+                  getTypeBadge={getTypeBadge}
+                  getAudienceBadge={getAudienceBadge}
+                />
+              ))
+            )}
           </div>
         </div>
         <AdminSidebar />
@@ -133,9 +136,18 @@ const DashboardPopups = () => {
           <div className="mb-6">
             <Dialog open={showForm} onOpenChange={setShowForm}>
               <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nouveau pop-up
+                <Button className="bg-primary hover:bg-primary/90" disabled={uploading || loading}>
+                  {uploading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Upload en cours...
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Nouveau pop-up
+                    </>
+                  )}
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
@@ -148,17 +160,28 @@ const DashboardPopups = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {popups.map((popup) => (
-              <PopupCard
-                key={popup.id}
-                popup={popup}
-                onToggleStatus={togglePopupStatus}
-                onDelete={deletePopup}
-                isMobile={false}
-                getTypeBadge={getTypeBadge}
-                getAudienceBadge={getAudienceBadge}
-              />
-            ))}
+            {loading ? (
+              <div className="col-span-full flex justify-center items-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <span className="ml-2">Chargement des pop-ups...</span>
+              </div>
+            ) : popups.length === 0 ? (
+              <div className="col-span-full text-center py-8 text-gray-500">
+                Aucun pop-up créé pour le moment
+              </div>
+            ) : (
+              popups.map((popup) => (
+                <PopupCard
+                  key={popup.id}
+                  popup={popup}
+                  onToggleStatus={togglePopupStatusHandler}
+                  onDelete={deletePopupHandler}
+                  isMobile={false}
+                  getTypeBadge={getTypeBadge}
+                  getAudienceBadge={getAudienceBadge}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

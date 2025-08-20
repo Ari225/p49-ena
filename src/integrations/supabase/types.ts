@@ -570,6 +570,57 @@ export type Database = {
         }
         Relationships: []
       }
+      popups: {
+        Row: {
+          author: string
+          created_at: string
+          created_by: string | null
+          created_date: string
+          id: string
+          image_url: string | null
+          is_active: boolean
+          message: string | null
+          other_type: string | null
+          position: string | null
+          target_audience: string
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          author: string
+          created_at?: string
+          created_by?: string | null
+          created_date?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          message?: string | null
+          other_type?: string | null
+          position?: string | null
+          target_audience: string
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          created_by?: string | null
+          created_date?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          message?: string | null
+          other_type?: string | null
+          position?: string | null
+          target_audience?: string
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       retirement_departures: {
         Row: {
           category: string | null
