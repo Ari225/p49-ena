@@ -55,7 +55,7 @@ const PopupDisplay = () => {
                 <img 
                   src={currentPopup.image_url} 
                   alt={currentPopup.title} 
-                  className={`w-full h-auto object-contain ${isMobile ? 'max-h-64' : isTablet ? 'max-h-80' : ''}`} 
+                  className={`w-full h-full ${currentPopup.message ? 'object-cover' : 'object-contain'} ${isMobile ? 'max-h-64' : isTablet ? 'max-h-80' : ''}`} 
                 />
               </div>
             )}

@@ -126,6 +126,7 @@ export const usePopupDisplay = () => {
     // Reporter le popup de 1 heure
     const postponeUntil = new Date().getTime() + (60 * 60 * 1000); // 1 heure
     setCookie(`popup_postponed_until_${popupId}`, postponeUntil.toString(), 1);
+    setCurrentPopup(null);
     setIsOpen(false);
     processNextInQueue();
   };
@@ -134,6 +135,7 @@ export const usePopupDisplay = () => {
     // Reporter le popup de 1 jour
     const postponeUntil = new Date().getTime() + (24 * 60 * 60 * 1000); // 1 jour
     setCookie(`popup_postponed_until_${popupId}`, postponeUntil.toString(), 1);
+    setCurrentPopup(null);
     setIsOpen(false);
     processNextInQueue();
   };
