@@ -101,15 +101,9 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
               onClick={onToggleVisibility}
             >
               {item.is_visible ? (
-                <>
-                  <EyeOff className="h-4 w-4 mr-2" />
-                  Masquer
-                </>
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <>
-                  <Eye className="h-4 w-4 mr-2" />
-                  Publier
-                </>
+                <Eye className="h-4 w-4" />
               )}
             </Button>
           )}
@@ -120,8 +114,7 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
               className="text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-300"
               onClick={onEdit}
             >
-              <Edit className="h-4 w-4 mr-2" />
-              Modifier
+              <Edit className="h-4 w-4" />
             </Button>
           )}
           {onDelete && (
@@ -131,8 +124,7 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
               className="text-red-600 hover:text-white hover:bg-red-600 transition-all duration-300"
               onClick={onDelete}
             >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Supprimer
+              <Trash2 className="h-4 w-4" />
             </Button>
           )}
         </div>
