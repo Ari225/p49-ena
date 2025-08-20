@@ -123,7 +123,10 @@ export type Database = {
       }
       blog_articles: {
         Row: {
+          author_function: string | null
           author_id: string | null
+          author_image: string | null
+          author_name: string | null
           content: string
           created_at: string
           id: string
@@ -137,7 +140,10 @@ export type Database = {
           validated_by: string | null
         }
         Insert: {
+          author_function?: string | null
           author_id?: string | null
+          author_image?: string | null
+          author_name?: string | null
           content: string
           created_at?: string
           id?: string
@@ -151,7 +157,10 @@ export type Database = {
           validated_by?: string | null
         }
         Update: {
+          author_function?: string | null
           author_id?: string | null
+          author_image?: string | null
+          author_name?: string | null
           content?: string
           created_at?: string
           id?: string

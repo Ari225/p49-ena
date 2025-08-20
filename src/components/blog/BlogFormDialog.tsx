@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Upload, X, Bold, Italic, Underline, List, Link, Quote, ListOrdered } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Le titre est requis'),
@@ -55,6 +56,12 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
   const [customCategory, setCustomCategory] = useState('');
   const [showCustomCategory, setShowCustomCategory] = useState(false);
   const [imageError, setImageError] = useState('');
+  const [memberData, setMemberData] = useState<{
+    name: string;
+    function: string;
+    image: string;
+  } | null>(null);
+  const [matriculeError, setMatriculeError] = useState<string | null>(null);
 
   const categories = ['Société', 'Administration', 'Informatique', 'Politique', 'Autre'];
 
@@ -187,9 +194,49 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
     }, 0);
   };
 
+  const fetchMemberData = async (matricule: string) => {
+    if (!matricule.trim()) {
+      setMemberData(null);
+      setMatriculeError(null);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('members')
+        .select('"Prénoms", "Nom de famille", "Emploi fonction publique", "Photo"')
+        .eq('Matricule', matricule)
+        .maybeSingle();
+
+      if (error || !data) {
+        setMatriculeError('Matricule non trouvé dans la base de données');
+        setMemberData(null);
+        return;
+      }
+
+      const memberInfo = {
+        name: `${data['Prénoms']} ${data['Nom de famille']}`,
+        function: data['Emploi fonction publique'] || 'Fonction non spécifiée',
+        image: data['Photo'] || ''
+      };
+
+      setMemberData(memberInfo);
+      setMatriculeError(null);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données du membre:', error);
+      setMatriculeError('Erreur lors de la vérification du matricule');
+      setMemberData(null);
+    }
+  };
+
   const handleSubmit = (data: any) => {
     if (!selectedImage && !editingArticle?.image_url) {
       setImageError('Une image est requise');
+      return;
+    }
+
+    if (!memberData) {
+      setMatriculeError('Veuillez entrer un matricule valide');
       return;
     }
 
@@ -199,7 +246,8 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
       ...data,
       category: finalCategory,
       content: contentText,
-      selectedImage: selectedImage
+      selectedImage: selectedImage,
+      authorData: memberData
     };
 
     onSubmit(submitData);
@@ -304,8 +352,28 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
                   <FormItem>
                     <FormLabel>Matricule *</FormLabel>
                     <FormControl>
-                      <Input placeholder="Votre matricule" {...field} />
+                      <Input 
+                        placeholder="Votre matricule" 
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          fetchMemberData(e.target.value);
+                        }}
+                      />
                     </FormControl>
+                    {matriculeError && (
+                      <p className="text-sm text-red-600">{matriculeError}</p>
+                    )}
+                    {memberData && (
+                      <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-md">
+                        <p className="text-sm text-green-800">
+                          <span className="font-medium">Membre trouvé:</span> {memberData.name}
+                        </p>
+                        <p className="text-sm text-green-700">
+                          <span className="font-medium">Fonction:</span> {memberData.function}
+                        </p>
+                      </div>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}

@@ -109,6 +109,9 @@ const EditorDashboardBlog = () => {
           category: articleData.category,
           reading_time: articleData.reading_time,
           matricule: articleData.matricule,
+          author_name: articleData.authorData?.name,
+          author_function: articleData.authorData?.function,
+          author_image: articleData.authorData?.image,
           image_url: imageUrl,
           author_id: user?.id,
           status: 'en_attente'
