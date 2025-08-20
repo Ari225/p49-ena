@@ -8,14 +8,25 @@ import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye, Trash2 } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
+import BlogFormDialog from '@/components/blog/BlogFormDialog';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface BlogPost {
   id: string;
   title: string;
   summary: string;
-  author: string;
-  published_date: string;
+  content?: string;
+  category?: string;
+  reading_time?: number;
+  image_url?: string;
+  author_id?: string;
+  author?: string;
+  created_at: string;
+  updated_at: string;
+  published_date?: string;
   status: string;
+  validated_by?: string;
 }
 
 const DashboardBlog = () => {
@@ -24,6 +35,8 @@ const DashboardBlog = () => {
   const isTablet = useIsTablet();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingArticle, setEditingArticle] = useState(null);
 
   if (!user) {
     return <div>Non autorisé</div>;
@@ -36,22 +49,80 @@ const DashboardBlog = () => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      // Mock data instead of Supabase
-      const mockPosts: BlogPost[] = [
-        {
-          id: '1',
-          title: 'Les valeurs de la P49',
-          summary: 'Un article sur les valeurs fondamentales de notre promotion.',
-          author: 'Admin',
-          published_date: '2024-01-15',
-          status: 'published'
-        }
-      ];
-      setPosts(mockPosts);
+      const { data, error } = await supabase
+        .from('blog_articles')
+        .select(`
+          *,
+          app_users!author_id(first_name, last_name)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      // Transform data to match BlogPost interface
+      const transformedPosts = (data || []).map(post => ({
+        ...post,
+        author: post.app_users ? `${post.app_users.first_name} ${post.app_users.last_name}` : 'Auteur inconnu',
+        published_date: post.published_date || post.created_at
+      }));
+
+      setPosts(transformedPosts);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
+      toast.error('Erreur lors du chargement des articles');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCreateArticle = async (articleData: any) => {
+    try {
+      let imageUrl = null;
+
+      // Upload image if selected
+      if (articleData.selectedImage) {
+        const fileExt = articleData.selectedImage.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('blog-images')
+          .upload(fileName, articleData.selectedImage);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data: urlData } = supabase.storage
+          .from('blog-images')
+          .getPublicUrl(uploadData.path);
+        
+        imageUrl = urlData.publicUrl;
+      }
+
+      const { error } = await supabase
+        .from('blog_articles')
+        .insert({
+          title: articleData.title,
+          summary: articleData.summary,
+          content: articleData.content,
+          category: articleData.category,
+          reading_time: articleData.reading_time,
+          image_url: imageUrl,
+          author_id: user?.id,
+          status: 'en_attente'
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success('Article créé avec succès');
+      setIsFormOpen(false);
+      fetchPosts();
+    } catch (error) {
+      console.error('Error creating article:', error);
+      toast.error('Erreur lors de la création de l\'article');
     }
   };
 
@@ -90,7 +161,10 @@ const DashboardBlog = () => {
           </div>
 
           <div className="mb-4">
-            <Button className="bg-primary hover:bg-primary/90 w-full">
+            <Button 
+              className="bg-primary hover:bg-primary/90 w-full"
+              onClick={() => setIsFormOpen(true)}
+            >
               <Plus className="mr-2 h-4 w-4" />
               Nouvel article
             </Button>
@@ -143,6 +217,13 @@ const DashboardBlog = () => {
           </Card>
         </div>
         <AdminSidebar />
+        
+        <BlogFormDialog
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          onSubmit={handleCreateArticle}
+          editingArticle={editingArticle}
+        />
       </Layout>
     );
   }
@@ -157,7 +238,10 @@ const DashboardBlog = () => {
           </div>
 
           <div className="mb-6">
-            <Button className="bg-primary hover:bg-primary/90">
+            <Button 
+              className="bg-primary hover:bg-primary/90"
+              onClick={() => setIsFormOpen(true)}
+            >
               <Plus className="mr-2 h-4 w-4" />
               Nouvel article
             </Button>
@@ -208,6 +292,13 @@ const DashboardBlog = () => {
           </Card>
         </div>
         <AdminSidebar />
+        
+        <BlogFormDialog
+          isOpen={isFormOpen}
+          onClose={() => setIsFormOpen(false)}
+          onSubmit={handleCreateArticle}
+          editingArticle={editingArticle}
+        />
       </Layout>
     );
   }
@@ -224,7 +315,10 @@ const DashboardBlog = () => {
           </div>
 
           <div className="mb-6">
-            <Button className="bg-primary hover:bg-primary/90">
+            <Button 
+              className="bg-primary hover:bg-primary/90"
+              onClick={() => setIsFormOpen(true)}
+            >
               <Plus className="mr-2 h-4 w-4" />
               Nouvel article
             </Button>
@@ -275,6 +369,13 @@ const DashboardBlog = () => {
           </Card>
         </div>
       </div>
+      
+      <BlogFormDialog
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={handleCreateArticle}
+        editingArticle={editingArticle}
+      />
     </Layout>
   );
 };
