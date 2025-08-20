@@ -25,7 +25,7 @@ const DashboardBlog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
-  if (!user || !isAdmin(user)) {
+  if (!user) {
     return <div>Non autorisé</div>;
   }
 
