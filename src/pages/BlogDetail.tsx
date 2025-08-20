@@ -129,10 +129,7 @@ const BlogDetail = () => {
 
           {/* Share Button */}
           <div className="absolute top-6 right-6">
-            <Button size="sm" onClick={handleShare} className="bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 border border-white/30">
-              <Share2 className="h-4 w-4 mr-2" />
-              Partager
-            </Button>
+            
           </div>
 
           {/* Title Overlay */}
@@ -192,17 +189,9 @@ const BlogDetail = () => {
             <div className="mt-12 pt-8 border-t border-gray-200">
               <div className="flex items-start space-x-6">
                 <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-lg">
-                  {blog.author_image ? (
-                    <img 
-                      src={blog.author_image} 
-                      alt={blog.author_name || 'Auteur'} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+                  {blog.author_image ? <img src={blog.author_image} alt={blog.author_name || 'Auteur'} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
                       <User className="h-8 w-8 text-white" />
-                    </div>
-                  )}
+                    </div>}
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
