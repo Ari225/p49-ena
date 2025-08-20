@@ -24,24 +24,19 @@ const EditorSidebar = () => {
       icon: BarChart3
     },
     {
-      title: 'Mes Articles',
-      href: '/dashboard/my-articles',
+      title: 'Articles de blog',
+      href: '/dashboard/blog',
       icon: PenTool
     },
     {
-      title: 'Nouvel Article',
-      href: '/dashboard/new-article',
-      icon: FileText
-    },
-    {
-      title: 'Articles Journal',
-      href: '/dashboard/journal-articles',
+      title: 'Écho des Régions',
+      href: '/dashboard/echo-regions',
       icon: BookOpen
     },
     {
-      title: 'Articles Soumis',
-      href: '/dashboard/submitted',
-      icon: Send
+      title: 'Actualités',
+      href: '/dashboard/actualites',
+      icon: FileText
     },
     {
       title: 'Mon Profil',
@@ -90,7 +85,6 @@ const EditorSidebar = () => {
   return (
     <div className="w-64 bg-primary text-white h-screen fixed left-0 top-20 overflow-y-auto">
       <div className="p-6">
-        <h2 className="text-xl font-bold mb-6">Rédaction</h2>
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;

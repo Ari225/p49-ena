@@ -26,6 +26,7 @@ import DashboardTemoignages from '@/pages/dashboard/DashboardTemoignages';
 import DashboardEvenementsSociaux from '@/pages/dashboard/DashboardEvenementsSociaux';
 import DashboardActivites from '@/pages/dashboard/DashboardActivites';
 import DashboardMediatheque from '@/pages/dashboard/DashboardMediatheque';
+import DashboardActualites from '@/pages/dashboard/DashboardActualites';
 import SecurityDashboard from '@/components/dashboard/SecurityDashboard';
 import DashboardHome from './DashboardHome';
 
@@ -56,6 +57,7 @@ const DashboardRoutes = () => {
       <Route path="/add-news" element={<DashboardAddNews />} />
       <Route path="/add-user" element={<DashboardAddUser />} />
       <Route path="/add-journal" element={<DashboardAddJournal />} />
+      <Route path="/actualites" element={<DashboardActualites />} />
       <Route path="/security" element={<SecurityDashboard />} />
     </Routes>
   );
