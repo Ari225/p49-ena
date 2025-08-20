@@ -178,6 +178,12 @@ const DashboardJournal = () => {
           </Card>
         </div>
         <AdminSidebar />
+        
+        <JournalEditionDialog 
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSuccess={handleDialogSuccess}
+        />
       </Layout>
     );
   }

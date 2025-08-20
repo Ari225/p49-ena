@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -49,16 +49,14 @@ const JournalEditionDialog = ({ open, onOpenChange, onSuccess }: JournalEditionD
         }
       }
 
-      // Upload and compress PDF if provided
+      // Upload PDF if provided (without compression for PDFs)
       if (formData.pdfFile) {
-        const compressedPdf = await compressMediaFile(formData.pdfFile);
-        
-        const fileExt = compressedPdf.name.split('.').pop();
-        const fileName = `journal-pdfs/${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+        const fileExt = formData.pdfFile.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
 
         const { data: pdfData, error: pdfError } = await supabase.storage
-          .from('media-files')
-          .upload(fileName, compressedPdf, {
+          .from('journal-pdfs')
+          .upload(fileName, formData.pdfFile, {
             cacheControl: '3600',
             upsert: false
           });
@@ -66,7 +64,7 @@ const JournalEditionDialog = ({ open, onOpenChange, onSuccess }: JournalEditionD
         if (pdfError) throw pdfError;
 
         const { data: pdfPublicUrlData } = supabase.storage
-          .from('media-files')
+          .from('journal-pdfs')
           .getPublicUrl(pdfData.path);
 
         pdfUrl = pdfPublicUrlData.publicUrl;
@@ -120,6 +118,9 @@ const JournalEditionDialog = ({ open, onOpenChange, onSuccess }: JournalEditionD
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nouvelle Édition du Journal</DialogTitle>
+          <DialogDescription>
+            Créer une nouvelle édition du journal Perspectives 49 avec titre, résumé et fichiers optionnels.
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
