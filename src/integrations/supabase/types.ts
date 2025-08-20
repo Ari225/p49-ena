@@ -902,6 +902,17 @@ export type Database = {
         Args: { p_member_id: number; p_update_data: Json }
         Returns: boolean
       }
+      update_user_profile: {
+        Args: {
+          new_email: string
+          new_first_name: string
+          new_last_name: string
+          new_password_hash?: string
+          new_username: string
+          user_id: string
+        }
+        Returns: Json
+      }
       validate_password_strength: {
         Args: { password: string }
         Returns: boolean

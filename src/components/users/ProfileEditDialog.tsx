@@ -64,35 +64,34 @@ const ProfileEditDialog = ({ user, isOpen, onClose, onSave }: ProfileEditDialogP
 
     setLoading(true);
     try {
-      const updateData: any = {
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        username: formData.username,
-        email: formData.email
-      };
-
+      let hashedPassword = null;
+      
       if (formData.password) {
-        // Hash password using bcrypt (same as UserEditDialog)
+        // Hash password using bcrypt
         const bcrypt = await import('bcryptjs');
-        const hashedPassword = bcrypt.hashSync(formData.password, 12);
-        updateData.password_hash = hashedPassword;
+        hashedPassword = bcrypt.hashSync(formData.password, 12);
       }
 
-      const { error } = await supabase
-        .from('app_users')
-        .update(updateData)
-        .eq('id', user.id);
+      // Utiliser la fonction sécurisée update_user_profile
+      const { data, error } = await supabase.rpc('update_user_profile', {
+        user_id: user.id,
+        new_first_name: formData.firstName,
+        new_last_name: formData.lastName,
+        new_username: formData.username,
+        new_email: formData.email,
+        new_password_hash: hashedPassword
+      });
 
       if (error) throw error;
 
-      // Log security event
-      await supabase.rpc('log_security_event', {
-        event_type: 'profile_updated',
-        user_id: user.id,
-        details: {
-          updated_fields: Object.keys(updateData).filter(key => key !== 'password_hash')
-        }
-      });
+      if (data && typeof data === 'object' && 'success' in data && !(data as any).success) {
+        toast({
+          title: "Erreur",
+          description: (data as any).error,
+          variant: "destructive",
+        });
+        return;
+      }
 
       toast({
         title: "Profil mis à jour",
