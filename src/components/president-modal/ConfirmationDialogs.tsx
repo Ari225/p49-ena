@@ -4,24 +4,24 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface ConfirmationDialogsProps {
-  showNeverShowConfirm: boolean;
+  showReadLaterConfirm: boolean;
   showCloseConfirm: boolean;
-  onConfirmNeverShow: () => void;
-  onCancelNeverShow: () => void;
+  onConfirmReadLater: () => void;
+  onCancelReadLater: () => void;
   onConfirmClose: () => void;
   onCancelClose: () => void;
-  setShowNeverShowConfirm: (show: boolean) => void;
+  setShowReadLaterConfirm: (show: boolean) => void;
   setShowCloseConfirm: (show: boolean) => void;
 }
 
 const ConfirmationDialogs = ({
-  showNeverShowConfirm,
+  showReadLaterConfirm,
   showCloseConfirm,
-  onConfirmNeverShow,
-  onCancelNeverShow,
+  onConfirmReadLater,
+  onCancelReadLater,
   onConfirmClose,
   onCancelClose,
-  setShowNeverShowConfirm,
+  setShowReadLaterConfirm,
   setShowCloseConfirm
 }: ConfirmationDialogsProps) => {
   const isMobile = useIsMobile();
@@ -29,20 +29,20 @@ const ConfirmationDialogs = ({
 
   return (
     <>
-      {/* Pop-up de confirmation pour "Ne plus revoir" */}
-      <AlertDialog open={showNeverShowConfirm} onOpenChange={setShowNeverShowConfirm}>
+      {/* Pop-up de confirmation pour "Lire plus tard" */}
+      <AlertDialog open={showReadLaterConfirm} onOpenChange={setShowReadLaterConfirm}>
         <AlertDialogContent className={`rounded-lg ${isMobile || isTablet ? 'max-w-[calc(100vw-40px)] mx-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
           <AlertDialogHeader>
-            <AlertDialogTitle className={isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'}>Confirmation</AlertDialogTitle>
+            <AlertDialogTitle className={isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'}>Lire plus tard</AlertDialogTitle>
             <AlertDialogDescription className={isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}>
-              Vous ne verrez plus jamais ce message. Voulez-vous continuer ?
+              Ce message sera affiché plus tard.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className={isMobile || isTablet ? 'flex-row justify-center gap-3 space-y-0' : ''}>
-            <AlertDialogCancel onClick={onCancelNeverShow} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
+            <AlertDialogCancel onClick={onCancelReadLater} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
               Annuler
             </AlertDialogCancel>
-            <AlertDialogAction onClick={onConfirmNeverShow} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
+            <AlertDialogAction onClick={onConfirmReadLater} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
               Confirmer
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -53,9 +53,9 @@ const ConfirmationDialogs = ({
       <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
         <AlertDialogContent className={`rounded-lg ${isMobile || isTablet ? 'max-w-[calc(100vw-40px)] mx-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2' : ''}`}>
           <AlertDialogHeader>
-            <AlertDialogTitle className={isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'}>Information</AlertDialogTitle>
+            <AlertDialogTitle className={isMobile ? 'text-base' : isTablet ? 'text-lg' : 'text-xl'}>Fermer le message</AlertDialogTitle>
             <AlertDialogDescription className={isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}>
-              Vous pourrez voir ce message à nouveau.
+              Voulez-vous fermer ?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className={isMobile || isTablet ? 'flex-row justify-center gap-3 space-y-0' : ''}>
@@ -63,7 +63,7 @@ const ConfirmationDialogs = ({
               Annuler
             </AlertDialogCancel>
             <AlertDialogAction onClick={onConfirmClose} className={`${isMobile || isTablet ? 'flex-1 m-0' : ''} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm'}`}>
-              Confirmer
+              Fermer
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

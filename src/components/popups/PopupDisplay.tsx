@@ -8,30 +8,30 @@ import { getTypeBadge } from '@/utils/popupUtils';
 import { Badge } from '@/components/ui/badge';
 
 const PopupDisplay = () => {
-  const [showNeverShowConfirm, setShowNeverShowConfirm] = useState(false);
+  const [showReadLaterConfirm, setShowReadLaterConfirm] = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   
-  const { currentPopup, isOpen, setIsOpen, handleNeverShowAgain, handleClose } = usePopupDisplay();
+  const { currentPopup, isOpen, setIsOpen, handleReadLater, handleClose } = usePopupDisplay();
 
   if (!currentPopup) return null;
 
-  const onNeverShowAgain = () => {
-    setShowNeverShowConfirm(true);
+  const onReadLater = () => {
+    setShowReadLaterConfirm(true);
   };
 
   const onClose = () => {
     setShowCloseConfirm(true);
   };
 
-  const handleConfirmNeverShow = () => {
-    handleNeverShowAgain(currentPopup.id);
-    setShowNeverShowConfirm(false);
+  const handleConfirmReadLater = () => {
+    handleReadLater(currentPopup.id);
+    setShowReadLaterConfirm(false);
   };
 
-  const handleCancelNeverShow = () => {
-    setShowNeverShowConfirm(false);
+  const handleCancelReadLater = () => {
+    setShowReadLaterConfirm(false);
   };
 
   const handleConfirmClose = () => {
@@ -51,11 +51,11 @@ const PopupDisplay = () => {
             
             {/* Image Section */}
             {currentPopup.image_url && (
-              <div className={`relative overflow-hidden ${isMobile ? 'h-[250px]' : isTablet ? 'h-[400px]' : 'md:w-1/3'}`}>
+              <div className={`relative overflow-hidden ${isMobile ? 'h-auto' : isTablet ? 'h-auto' : 'md:w-1/3'}`}>
                 <img 
                   src={currentPopup.image_url} 
                   alt={currentPopup.title} 
-                  className={`w-full object-cover ${isMobile ? 'h-[250px] object-top' : isTablet ? 'h-[400px] object-top' : 'h-full object-center'}`} 
+                  className={`w-full h-auto object-contain ${isMobile ? 'max-h-64' : isTablet ? 'max-h-80' : ''}`} 
                 />
               </div>
             )}
@@ -108,7 +108,7 @@ const PopupDisplay = () => {
               
               {/* Fixed buttons at bottom */}
               <ModalButtons 
-                onNeverShowAgain={onNeverShowAgain}
+                onReadLater={onReadLater}
                 onClose={onClose}
               />
             </div>
@@ -117,13 +117,13 @@ const PopupDisplay = () => {
       </Dialog>
 
       <ConfirmationDialogs 
-        showNeverShowConfirm={showNeverShowConfirm}
+        showReadLaterConfirm={showReadLaterConfirm}
         showCloseConfirm={showCloseConfirm}
-        onConfirmNeverShow={handleConfirmNeverShow}
-        onCancelNeverShow={handleCancelNeverShow}
+        onConfirmReadLater={handleConfirmReadLater}
+        onCancelReadLater={handleCancelReadLater}
         onConfirmClose={handleConfirmClose}
         onCancelClose={handleCancelClose}
-        setShowNeverShowConfirm={setShowNeverShowConfirm}
+        setShowReadLaterConfirm={setShowReadLaterConfirm}
         setShowCloseConfirm={setShowCloseConfirm}
       />
     </>

@@ -7,6 +7,8 @@ import { useCookieManager } from '@/hooks/useCookieManager';
 export const usePopupDisplay = () => {
   const [currentPopup, setCurrentPopup] = useState<PopupItem | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [popupQueue, setPopupQueue] = useState<PopupItem[]>([]);
+  const [isProcessingQueue, setIsProcessingQueue] = useState(false);
   const { user } = useAuth();
   const { setCookie, getCookie } = useCookieManager();
 
@@ -47,7 +49,9 @@ export const usePopupDisplay = () => {
     }
   };
 
-  const fetchAndShowPopup = async () => {
+  const fetchAndBuildQueue = async () => {
+    if (isProcessingQueue) return;
+    
     try {
       const { data, error } = await supabase
         .from('popups')
@@ -57,8 +61,8 @@ export const usePopupDisplay = () => {
 
       if (error) throw error;
 
-      // Trouver le premier popup qui doit être affiché
-      const popupToShow = data?.find(popup => shouldShowPopup({
+      // Filtrer tous les popups qui doivent être affichés
+      const popupsToShow = data?.filter(popup => shouldShowPopup({
         id: popup.id,
         title: popup.title,
         message: popup.message,
@@ -70,52 +74,79 @@ export const usePopupDisplay = () => {
         target_audience: popup.target_audience as 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only',
         author: popup.author,
         position: popup.position
-      }));
+      })).map(popup => ({
+        id: popup.id,
+        title: popup.title,
+        message: popup.message,
+        type: popup.type as 'announcement' | 'welcome' | 'alert' | 'information' | 'other',
+        other_type: popup.other_type,
+        isActive: popup.is_active,
+        created_date: popup.created_date,
+        image_url: popup.image_url,
+        target_audience: popup.target_audience as 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only',
+        author: popup.author,
+        position: popup.position
+      })) || [];
 
-      if (popupToShow) {
-        setCurrentPopup({
-          id: popupToShow.id,
-          title: popupToShow.title,
-          message: popupToShow.message,
-          type: popupToShow.type as 'announcement' | 'welcome' | 'alert' | 'information' | 'other',
-          other_type: popupToShow.other_type,
-          isActive: popupToShow.is_active,
-          created_date: popupToShow.created_date,
-          image_url: popupToShow.image_url,
-          target_audience: popupToShow.target_audience as 'all_visitors' | 'all_users' | 'admins_only' | 'editors_only',
-          author: popupToShow.author,
-          position: popupToShow.position
-        });
-        setIsOpen(true);
-        sessionStorage.setItem(`popup_shown_${popupToShow.id}`, 'true');
+      if (popupsToShow.length > 0) {
+        setPopupQueue(popupsToShow);
+        setIsProcessingQueue(true);
+        showNextPopup(popupsToShow);
       }
     } catch (error) {
       console.error('Error fetching popups:', error);
     }
   };
 
-  const handleNeverShowAgain = (popupId: string) => {
-    setCookie(`popup_never_show_${popupId}`, 'true', 365); // 1 an
+  const showNextPopup = (queue: PopupItem[]) => {
+    if (queue.length === 0) {
+      setIsProcessingQueue(false);
+      return;
+    }
+
+    const [nextPopup, ...remainingQueue] = queue;
+    setCurrentPopup(nextPopup);
+    setIsOpen(true);
+    sessionStorage.setItem(`popup_shown_${nextPopup.id}`, 'true');
+    setPopupQueue(remainingQueue);
+  };
+
+  const processNextInQueue = () => {
+    if (popupQueue.length > 0) {
+      // Attendre 15 secondes avant d'afficher le prochain popup
+      setTimeout(() => {
+        showNextPopup(popupQueue);
+      }, 15000);
+    } else {
+      setIsProcessingQueue(false);
+    }
+  };
+
+  const handleReadLater = (popupId: string) => {
+    // Reporter le popup de 1 heure
+    const postponeUntil = new Date().getTime() + (60 * 60 * 1000); // 1 heure
+    setCookie(`popup_postponed_until_${popupId}`, postponeUntil.toString(), 1);
     setIsOpen(false);
+    processNextInQueue();
   };
 
   const handleClose = (popupId: string) => {
-    // Reporter le popup de 1-2 jours
-    const randomDays = Math.random() < 0.5 ? 1 : 2;
-    const postponeUntil = new Date().getTime() + (randomDays * 24 * 60 * 60 * 1000);
-    setCookie(`popup_postponed_until_${popupId}`, postponeUntil.toString(), randomDays);
+    // Reporter le popup de 1 jour
+    const postponeUntil = new Date().getTime() + (24 * 60 * 60 * 1000); // 1 jour
+    setCookie(`popup_postponed_until_${popupId}`, postponeUntil.toString(), 1);
     setIsOpen(false);
+    processNextInQueue();
   };
 
   useEffect(() => {
-    fetchAndShowPopup();
+    fetchAndBuildQueue();
   }, [user]);
 
   return {
     currentPopup,
     isOpen,
     setIsOpen,
-    handleNeverShowAgain,
+    handleReadLater,
     handleClose
   };
 };

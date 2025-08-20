@@ -9,7 +9,7 @@ import ConfirmationDialogs from './president-modal/ConfirmationDialogs';
 
 const PresidentWelcomeModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showNeverShowConfirm, setShowNeverShowConfirm] = useState(false);
+  const [showReadLaterConfirm, setShowReadLaterConfirm] = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -43,28 +43,29 @@ const PresidentWelcomeModal = () => {
     setShowCloseConfirm(true);
   };
 
-  const handleNeverShowAgain = () => {
-    setShowNeverShowConfirm(true);
+  const handleReadLater = () => {
+    setShowReadLaterConfirm(true);
   };
 
-  // Gestionnaire pour la confirmation "Ne plus revoir"
-  const handleConfirmNeverShow = () => {
-    setCookie('welcome_modal_never_show', 'true', 365); // 1 an
+  // Gestionnaire pour la confirmation "Lire plus tard"
+  const handleConfirmReadLater = () => {
+    // Reporter le modal de 1 heure
+    const postponeUntil = new Date().getTime() + (60 * 60 * 1000); // 1 heure
+    setCookie('welcome_modal_postponed_until', postponeUntil.toString(), 1);
     setIsOpen(false);
-    setShowNeverShowConfirm(false);
+    setShowReadLaterConfirm(false);
   };
 
-  const handleCancelNeverShow = () => {
+  const handleCancelReadLater = () => {
     // Fermer seulement le pop-up de confirmation, garder le modal principal ouvert
-    setShowNeverShowConfirm(false);
+    setShowReadLaterConfirm(false);
   };
 
   // Gestionnaire pour la confirmation "Fermer"
   const handleConfirmClose = () => {
-    // Reporter le modal de 1-2 jours (générer aléatoirement entre 1 et 2 jours)
-    const randomDays = Math.random() < 0.5 ? 1 : 2;
-    const postponeUntil = new Date().getTime() + (randomDays * 24 * 60 * 60 * 1000);
-    setCookie('welcome_modal_postponed_until', postponeUntil.toString(), randomDays);
+    // Reporter le modal de 1 jour
+    const postponeUntil = new Date().getTime() + (24 * 60 * 60 * 1000); // 1 jour
+    setCookie('welcome_modal_postponed_until', postponeUntil.toString(), 1);
     setIsOpen(false);
     setShowCloseConfirm(false);
   };
@@ -94,7 +95,7 @@ const PresidentWelcomeModal = () => {
               
               {/* Fixed buttons at bottom */}
               <ModalButtons 
-                onNeverShowAgain={handleNeverShowAgain}
+                onReadLater={handleReadLater}
                 onClose={handleClose}
               />
             </div>
@@ -103,13 +104,13 @@ const PresidentWelcomeModal = () => {
       </Dialog>
 
       <ConfirmationDialogs 
-        showNeverShowConfirm={showNeverShowConfirm}
+        showReadLaterConfirm={showReadLaterConfirm}
         showCloseConfirm={showCloseConfirm}
-        onConfirmNeverShow={handleConfirmNeverShow}
-        onCancelNeverShow={handleCancelNeverShow}
+        onConfirmReadLater={handleConfirmReadLater}
+        onCancelReadLater={handleCancelReadLater}
         onConfirmClose={handleConfirmClose}
         onCancelClose={handleCancelClose}
-        setShowNeverShowConfirm={setShowNeverShowConfirm}
+        setShowReadLaterConfirm={setShowReadLaterConfirm}
         setShowCloseConfirm={setShowCloseConfirm}
       />
     </>
