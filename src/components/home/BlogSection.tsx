@@ -141,11 +141,15 @@ const BlogSection = () => {
                           </div>
                         )}
                          <CardContent className="p-4 md:p-6">
-                           {article.category && (
-                             <Badge variant="secondary" className="mb-2 text-xs">
-                               {article.category}
-                             </Badge>
-                           )}
+                           <div className="flex justify-between items-center mb-3">
+                             <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                               {article.category || 'Non catégorisé'}
+                             </span>
+                             <div className="flex items-center text-xs text-gray-500">
+                               <Calendar className="w-3 h-3 mr-1" />
+                               {new Date(article.published_date).toLocaleDateString('fr-FR')}
+                             </div>
+                           </div>
                            <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
                              {article.title}
                            </h3>
@@ -158,10 +162,6 @@ const BlogSection = () => {
                                <span className="truncate">
                                  {article.author_name || 'Auteur anonyme'}
                                </span>
-                             </div>
-                             <div className="flex items-center">
-                               <Calendar className="w-3 h-3 mr-1" />
-                               {new Date(article.published_date).toLocaleDateString('fr-FR')}
                              </div>
                            </div>
                         </CardContent>
@@ -195,11 +195,15 @@ const BlogSection = () => {
                     </div>
                   )}
                    <CardContent className="p-5">
-                     {article.category && (
-                       <Badge variant="secondary" className="mb-3 text-xs">
-                         {article.category}
-                       </Badge>
-                     )}
+                     <div className="flex justify-between items-center mb-3">
+                       <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                         {article.category || 'Non catégorisé'}
+                       </span>
+                       <div className="flex items-center text-xs text-gray-500">
+                         <Calendar className="w-3 h-3 mr-1" />
+                         {new Date(article.published_date).toLocaleDateString('fr-FR')}
+                       </div>
+                     </div>
                      <h3 className={`font-semibold text-primary mb-3 line-clamp-2 ${getCardTitleSize()}`}>
                        {article.title}
                      </h3>
@@ -212,10 +216,6 @@ const BlogSection = () => {
                          <span className="truncate">
                            {article.author_name || 'Auteur anonyme'}
                          </span>
-                       </div>
-                       <div className="flex items-center">
-                         <Calendar className="w-3 h-3 mr-1" />
-                         {new Date(article.published_date).toLocaleDateString('fr-FR')}
                        </div>
                      </div>
                   </CardContent>
@@ -237,11 +237,15 @@ const BlogSection = () => {
                     </div>
                   )}
                    <CardContent className="p-4 md:p-6">
-                     {article.category && (
-                       <Badge variant="secondary" className="mb-2 text-xs">
-                         {article.category}
-                       </Badge>
-                     )}
+                     <div className="flex justify-between items-center mb-3">
+                       <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                         {article.category || 'Non catégorisé'}
+                       </span>
+                       <div className="flex items-center text-xs text-gray-500">
+                         <Calendar className="w-3 h-3 mr-1" />
+                         {new Date(article.published_date).toLocaleDateString('fr-FR')}
+                       </div>
+                     </div>
                      <h3 className={`font-semibold text-primary mb-2 md:mb-3 line-clamp-2 ${getCardTitleSize()}`}>
                        {article.title}
                      </h3>
@@ -254,10 +258,6 @@ const BlogSection = () => {
                          <span className="truncate">
                            {article.author_name || 'Auteur anonyme'}
                          </span>
-                       </div>
-                       <div className="flex items-center">
-                         <Calendar className="w-3 h-3 mr-1" />
-                         {new Date(article.published_date).toLocaleDateString('fr-FR')}
                        </div>
                      </div>
                   </CardContent>
