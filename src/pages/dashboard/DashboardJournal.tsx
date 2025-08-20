@@ -70,7 +70,8 @@ const DashboardJournal = () => {
       const { data, error } = await supabase
         .from('journal_editions')
         .select('*')
-        .order('publish_date', { ascending: false });
+        .order('publish_date', { ascending: false })
+        .order('created_at', { ascending: false });
       
       if (error) throw error;
       
