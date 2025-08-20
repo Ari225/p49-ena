@@ -185,37 +185,63 @@ const EditorDashboardBlog = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {posts.length === 0 ? (
                   <p className="text-center text-gray-500 py-8 text-sm">
                     Aucun article créé
                   </p>
                 ) : (
                   posts.map((post) => (
-                    <div key={post.id} className="p-4 bg-gray-50 rounded-lg">
-                      <div className="mb-3">
-                        <h3 className="font-medium text-sm">{post.title}</h3>
-                        <p className="text-xs text-gray-600 mt-1">
-                          Créé le {new Date(post.created_at).toLocaleDateString('fr-FR')}
-                        </p>
-                        {post.summary && (
-                          <p className="text-xs text-gray-700 mt-2 line-clamp-2">{post.summary}</p>
+                    <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                      <div className="md:flex">
+                        {post.image_url && (
+                          <div className="md:w-48 h-48 md:h-auto">
+                            <img 
+                              src={post.image_url} 
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         )}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        {getStatusBadge(post.status)}
-                        <div className="flex space-x-1">
-                          <Button variant="outline" size="sm">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          {post.status !== 'valide' && (
+                        <div className="flex-1 p-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              {post.category && (
+                                <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full mb-2">
+                                  {post.category}
+                                </span>
+                              )}
+                              <h3 className="font-semibold text-sm mb-2 line-clamp-2">{post.title}</h3>
+                              {post.summary && (
+                                <p className="text-xs text-gray-600 mb-3 line-clamp-2">{post.summary}</p>
+                              )}
+                              <div className="flex items-center justify-between text-xs text-gray-500">
+                                <div>
+                                  <span>Par {post.author}</span>
+                                  <span className="mx-2">•</span>
+                                  <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
+                                  {post.reading_time && (
+                                    <>
+                                      <span className="mx-2">•</span>
+                                      <span>{post.reading_time} min de lecture</span>
+                                    </>
+                                  )}
+                                </div>
+                                {getStatusBadge(post.status)}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-end space-x-2 mt-3">
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
                             <Button variant="outline" size="sm">
                               <Edit className="h-4 w-4" />
                             </Button>
-                          )}
-                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -264,36 +290,64 @@ const EditorDashboardBlog = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {posts.length === 0 ? (
                   <p className="text-center text-gray-500 py-8">
                     Aucun article créé
                   </p>
                 ) : (
                   posts.map((post) => (
-                    <div key={post.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <h3 className="font-medium">{post.title}</h3>
-                        <p className="text-sm text-gray-600">
-                          Créé le {new Date(post.created_at).toLocaleDateString('fr-FR')}
-                        </p>
-                        {post.summary && (
-                          <p className="text-sm text-gray-700 mt-1">{post.summary}</p>
+                    <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                      <div className="md:flex">
+                        {post.image_url && (
+                          <div className="md:w-48 h-48 md:h-auto">
+                            <img 
+                              src={post.image_url} 
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         )}
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {getStatusBadge(post.status)}
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        {post.status !== 'valide' && (
-                          <Button variant="outline" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        )}
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <div className="flex-1 p-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              {post.category && (
+                                <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-2">
+                                  {post.category}
+                                </span>
+                              )}
+                              <h3 className="font-semibold text-base mb-2 line-clamp-2">{post.title}</h3>
+                              {post.summary && (
+                                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{post.summary}</p>
+                              )}
+                              <div className="flex items-center justify-between text-sm text-gray-500">
+                                <div>
+                                  <span>Par {post.author}</span>
+                                  <span className="mx-2">•</span>
+                                  <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
+                                  {post.reading_time && (
+                                    <>
+                                      <span className="mx-2">•</span>
+                                      <span>{post.reading_time} min de lecture</span>
+                                    </>
+                                  )}
+                                </div>
+                                {getStatusBadge(post.status)}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-end space-x-2 mt-3">
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -343,36 +397,64 @@ const EditorDashboardBlog = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {posts.length === 0 ? (
                   <p className="text-center text-gray-500 py-8">
                     Aucun article créé
                   </p>
                 ) : (
                   posts.map((post) => (
-                    <div key={post.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <h3 className="font-medium">{post.title}</h3>
-                        <p className="text-sm text-gray-600">
-                          Créé le {new Date(post.created_at).toLocaleDateString('fr-FR')}
-                        </p>
-                        {post.summary && (
-                          <p className="text-sm text-gray-700 mt-1">{post.summary}</p>
+                    <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                      <div className="md:flex">
+                        {post.image_url && (
+                          <div className="md:w-64 h-48 md:h-auto">
+                            <img 
+                              src={post.image_url} 
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         )}
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        {getStatusBadge(post.status)}
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        {post.status !== 'valide' && (
-                          <Button variant="outline" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        )}
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <div className="flex-1 p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                              {post.category && (
+                                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-3">
+                                  {post.category}
+                                </span>
+                              )}
+                              <h3 className="font-semibold text-lg mb-3 line-clamp-2">{post.title}</h3>
+                              {post.summary && (
+                                <p className="text-gray-600 mb-4 line-clamp-2">{post.summary}</p>
+                              )}
+                              <div className="flex items-center justify-between text-sm text-gray-500">
+                                <div>
+                                  <span>Par {post.author}</span>
+                                  <span className="mx-2">•</span>
+                                  <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
+                                  {post.reading_time && (
+                                    <>
+                                      <span className="mx-2">•</span>
+                                      <span>{post.reading_time} min de lecture</span>
+                                    </>
+                                  )}
+                                </div>
+                                {getStatusBadge(post.status)}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-end space-x-2">
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))
