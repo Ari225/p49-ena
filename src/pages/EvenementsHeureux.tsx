@@ -9,17 +9,12 @@ import { supabase } from '@/integrations/supabase/client';
 interface HappyEvent {
   id: string;
   title: string;
-  description: string;
   event_date: string;
   location: string | null;
   category: string;
-  member_name: string;
-  message: string | null;
+  masked_member_name: string;
+  general_message: string | null;
   image_url: string | null;
-  created_at: string;
-  updated_at: string;
-  created_by: string | null;
-  custom_category: string | null;
 }
 
 const EvenementsHeureux = () => {
@@ -31,10 +26,7 @@ const EvenementsHeureux = () => {
   useEffect(() => {
     const fetchHappyEvents = async () => {
       try {
-        const { data, error } = await supabase
-          .from('happy_events')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const { data, error } = await supabase.rpc('get_public_happy_events');
 
         if (error) {
           console.error('Error fetching happy events:', error);
@@ -145,20 +137,19 @@ const EvenementsHeureux = () => {
                             </div>}
                           <div className="flex items-center">
                             <Users className="w-4 h-4 mr-2" />
-                            {event.member_name}
+                            {event.masked_member_name}
                           </div>
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p className={`text-gray-700 ${isMobile ? 'text-sm' : 'text-base'} mb-3`}>{event.description}</p>
                         <div className="space-y-2 mb-4">
                           <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
                         </div>
-                        {event.message && (
+                        {event.general_message && (
                           <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                             <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
                               <Heart className="h-3 w-3 inline mr-1" />
-                              {event.message}
+                              {event.general_message}
                             </p>
                           </div>
                         )}
@@ -221,13 +212,12 @@ const EvenementsHeureux = () => {
                   </div>
                   <div className="text-sm text-gray-700">
                     <div className="flex items-center mb-2">
-                      <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
+                      <Users className="w-4 h-4 mr-2" /> {previewEvent.masked_member_name}
                     </div>
-                    <p className="mb-3">{previewEvent.description}</p>
-                    {previewEvent.message && (
+                    {previewEvent.general_message && (
                       <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                         <p className="italic text-green-800">
-                          <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.message}
+                          <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.general_message}
                         </p>
                       </div>
                     )}

@@ -10,13 +10,10 @@ const DifficultEventsSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch initial data
+    // Fetch initial data using secure function
     const fetchDifficultEvents = async () => {
       try {
-        const { data, error } = await supabase
-          .from('difficult_events')
-          .select('*')
-          .order('event_date', { ascending: false });
+        const { data, error } = await supabase.rpc('get_public_difficult_events');
 
         if (error) {
           console.error('Error fetching difficult events:', error);
@@ -139,31 +136,21 @@ const DifficultEventsSection = () => {
                       </div>
                       <div className="flex items-center">
                         <Users className="w-4 h-4 mr-2" />
-                        {event.member_name}
+                        {event.masked_member_name}
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    {event.description && (
-                      <p className={`text-gray-700 ${isMobile ? 'text-xs' : 'text-sm'} mb-3`}>
-                        {event.description}
-                      </p>
-                    )}
                     <div className="space-y-2 mb-4">
                       <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
                         <strong>Catégorie:</strong> {event.category}
                       </p>
-                      {event.custom_category && (
-                        <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}>
-                          <strong>Catégorie personnalisée:</strong> {event.custom_category}
-                        </p>
-                      )}
                     </div>
-                    {event.family_support_message && (
+                    {event.general_message && (
                       <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-200">
                         <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-700 italic`}>
                           <Heart className="h-3 w-3 inline mr-1" />
-                          {event.family_support_message}
+                          {event.general_message}
                         </p>
                       </div>
                     )}

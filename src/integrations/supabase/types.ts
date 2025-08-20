@@ -783,6 +783,31 @@ export type Database = {
           subscribed_at: string
         }[]
       }
+      get_public_difficult_events: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          category: string
+          event_date: string
+          general_message: string
+          id: string
+          image_url: string
+          masked_member_name: string
+          title: string
+        }[]
+      }
+      get_public_happy_events: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          category: string
+          event_date: string
+          general_message: string
+          id: string
+          image_url: string
+          location: string
+          masked_member_name: string
+          title: string
+        }[]
+      }
       get_public_member_directory: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -796,6 +821,18 @@ export type Database = {
           nom_famille_masque: string
           prenoms_masque: string
           region: string
+        }[]
+      }
+      get_public_retirement_departures: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          category: string
+          general_tribute: string
+          id: string
+          image_url: string
+          masked_member_name: string
+          retirement_date: string
+          years_of_service: number
         }[]
       }
       get_secure_member_details: {

@@ -19,10 +19,7 @@ const DepartsRetraite = () => {
     // Fetch initial data
     const fetchRetirementEvents = async () => {
       try {
-        const { data, error } = await supabase
-          .from('retirement_departures')
-          .select('*')
-          .order('retirement_date', { ascending: false });
+        const { data, error } = await supabase.rpc('get_public_retirement_departures');
 
         if (error) {
           console.error('Error fetching retirement events:', error);
@@ -125,15 +122,15 @@ const DepartsRetraite = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {retraiteEvents.map(event => (
                   <Card key={event.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-blue-500 bg-blue-50">
-                    {event.image_url && (
-                      <div className="aspect-video overflow-hidden">
-                        <img src={event.image_url} alt={`Départ en retraite de ${event.member_name}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                      </div>
-                    )}
+                      {event.image_url && (
+                        <div className="aspect-video overflow-hidden">
+                          <img src={event.image_url} alt={`Départ en retraite de ${event.masked_member_name}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                        </div>
+                      )}
                     <CardHeader>
                       <CardTitle className={`text-blue-800 ${isMobile ? 'text-base' : 'text-xl'} flex items-center`}>
                         <Trophy className="w-5 h-5 mr-2" />
-                        Départ en retraite de {event.member_name}
+                        Départ en retraite de {event.masked_member_name}
                       </CardTitle>
                       <div className="space-y-2 text-sm text-gray-600">
                         <div className="flex items-center">
@@ -152,7 +149,7 @@ const DepartsRetraite = () => {
                         )}
                         <div className="flex items-center">
                           <Users className="w-4 h-4 mr-2" />
-                          {event.member_name}
+                          {event.masked_member_name}
                         </div>
                         <div className="flex items-center">
                           <Clock className="w-4 h-4 mr-2" />
@@ -161,19 +158,16 @@ const DepartsRetraite = () => {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      {event.tribute_message && (
+                      {event.general_tribute && (
                         <div className="bg-blue-100 p-3 rounded-lg border-l-2 border-blue-300 mb-4">
                           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-blue-800 italic`}>
                             <Heart className="h-3 w-3 inline mr-1" />
-                            {event.tribute_message}
+                            {event.general_tribute}
                           </p>
                         </div>
                       )}
                       <div className="space-y-2">
                         <p className="text-sm"><strong>Catégorie:</strong> {event.category || 'Retraite'}</p>
-                        {event.position && (
-                          <p className="text-sm"><strong>Fonction:</strong> {event.position}</p>
-                        )}
                         <p className="text-sm"><strong>Années de service:</strong> {formatYearsOfService(event.years_of_service)}</p>
                       </div>
                     </CardContent>
