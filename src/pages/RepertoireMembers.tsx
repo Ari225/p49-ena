@@ -57,6 +57,7 @@ const RepertoireMembers = () => {
         const formattedMembers: Member[] = (data || [])
           .map((member: any) => ({
             id: member.id,
+            // Utiliser les noms depuis la fonction sécurisée
             firstName: member.prenoms || '',
             lastName: member.nom_famille || '',
             position: member.emploi_fonction_publique || '',
@@ -70,7 +71,12 @@ const RepertoireMembers = () => {
               linkedin: member.has_linkedin ? 'true' : null
             }
           }))
-          .filter(member => member.firstName.trim() || member.lastName.trim()) // Filter out empty names
+          .filter(member => 
+            // Filtrer les membres avec des noms vides ou masqués incomplets
+            member.firstName && member.firstName.trim() && 
+            member.lastName && member.lastName.trim() &&
+            !member.firstName.includes('***') && !member.lastName.includes('***')
+          )
           .sort((a, b) => {
             // Sort alphabetically by lastName first, then firstName
             const lastNameComparison = a.lastName.localeCompare(b.lastName, 'fr', { sensitivity: 'base' });
@@ -78,6 +84,7 @@ const RepertoireMembers = () => {
             return a.firstName.localeCompare(b.firstName, 'fr', { sensitivity: 'base' });
           });
         
+        console.log('Formatted members:', formattedMembers);
         setAllMembers(formattedMembers);
       } catch (error) {
         console.error('Error loading members:', error);
