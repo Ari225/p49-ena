@@ -88,12 +88,12 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
         }`}>
           {item.summary}
         </p>
-        <div className={`flex ${variant === 'mobile' ? 'flex-col space-y-2' : 'flex-wrap gap-2'}`}>
+        <div className="flex flex-wrap gap-2">
           {onToggleVisibility && (
             <Button 
               variant="outline" 
               size="sm" 
-              className={`${variant === 'mobile' ? 'w-full' : ''} ${
+               className={`${
                 item.is_visible 
                   ? 'text-orange-600 hover:text-white hover:bg-orange-600' 
                   : 'text-green-600 hover:text-white hover:bg-green-600'
@@ -117,7 +117,7 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
             <Button 
               variant="outline" 
               size="sm" 
-              className={`${variant === 'mobile' ? 'w-full' : ''} text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-300`}
+              className="text-blue-600 hover:text-white hover:bg-blue-600 transition-all duration-300"
               onClick={onEdit}
             >
               <Edit className="h-4 w-4 mr-2" />
@@ -128,7 +128,7 @@ const NewsCardDashboard: React.FC<NewsCardDashboardProps> = ({
             <Button 
               variant="outline" 
               size="sm" 
-              className={`${variant === 'mobile' ? 'w-full' : ''} text-red-600 hover:text-white hover:bg-red-600 transition-all duration-300`}
+              className="text-red-600 hover:text-white hover:bg-red-600 transition-all duration-300"
               onClick={onDelete}
             >
               <Trash2 className="h-4 w-4 mr-2" />
