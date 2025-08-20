@@ -1,18 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
-import AdminSidebar from '@/components/AdminSidebar';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye, Trash2 } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
-import { isAdmin } from '@/utils/roleUtils';
 import BlogFormDialog from '@/components/blog/BlogFormDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import EditorDashboardBlog from './EditorDashboardBlog';
 
 interface BlogPost {
   id: string;
@@ -29,9 +25,10 @@ interface BlogPost {
   published_date?: string;
   status: string;
   validated_by?: string;
+  matricule?: string;
 }
 
-const DashboardBlog = () => {
+const EditorDashboardBlog = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -42,11 +39,6 @@ const DashboardBlog = () => {
 
   if (!user) {
     return <div>Non autorisé</div>;
-  }
-
-  // Si l'utilisateur n'est pas admin, afficher le dashboard rédacteur
-  if (!isAdmin(user)) {
-    return <EditorDashboardBlog />;
   }
 
   useEffect(() => {
@@ -62,7 +54,8 @@ const DashboardBlog = () => {
           *,
           app_users!author_id(first_name, last_name)
         `)
-        .order('created_at', { ascending: false }); // Admin voit tous les articles
+        .eq('author_id', user.id) // Filtrer par auteur
+        .order('created_at', { ascending: false });
 
       if (error) {
         throw error;
@@ -125,7 +118,7 @@ const DashboardBlog = () => {
         throw error;
       }
 
-      toast.success('Article créé avec succès');
+      toast.success('Article créé avec succès et soumis pour validation');
       setIsFormOpen(false);
       fetchPosts();
     } catch (error) {
@@ -151,12 +144,12 @@ const DashboardBlog = () => {
     return (
       <Layout>
         <div className={isMobile ? "px-[25px] py-[50px] pb-20" : isTablet ? "px-[30px] py-[40px] pb-20" : "flex"}>
-          {!isMobile && !isTablet && <AdminSidebar />}
+          {!isMobile && !isTablet && <EditorSidebar />}
           <div className={isMobile ? "" : isTablet ? "" : "flex-1 ml-64 p-8"}>
             <div className="text-center">Chargement...</div>
           </div>
         </div>
-        {(isMobile || isTablet) && <AdminSidebar />}
+        {(isMobile || isTablet) && <EditorSidebar />}
       </Layout>
     );
   }
@@ -166,8 +159,8 @@ const DashboardBlog = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion des<br />Articles de Blog</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer tous les articles de blog (Admin)</p>
+            <h1 className="text-2xl font-bold text-primary">Mes Articles<br />de Blog</h1>
+            <p className="text-gray-600 mt-1 text-sm">Gérer vos articles de blog</p>
           </div>
 
           <div className="mb-4">
@@ -184,14 +177,14 @@ const DashboardBlog = () => {
             <CardHeader>
               <CardTitle className="flex items-center text-lg">
                 <FileText className="mr-2 h-5 w-5" />
-                Tous les Articles
+                Mes Articles
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {posts.length === 0 ? (
                   <p className="text-center text-gray-500 py-8 text-sm">
-                    Aucun article de blog soumis
+                    Aucun article créé
                   </p>
                 ) : (
                   posts.map((post) => (
@@ -199,7 +192,7 @@ const DashboardBlog = () => {
                       <div className="mb-3">
                         <h3 className="font-medium text-sm">{post.title}</h3>
                         <p className="text-xs text-gray-600 mt-1">
-                          Par {post.author} - Publié le {new Date(post.published_date).toLocaleDateString('fr-FR')}
+                          Créé le {new Date(post.created_at).toLocaleDateString('fr-FR')}
                         </p>
                         {post.summary && (
                           <p className="text-xs text-gray-700 mt-2 line-clamp-2">{post.summary}</p>
@@ -211,9 +204,11 @@ const DashboardBlog = () => {
                           <Button variant="outline" size="sm">
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                          {post.status !== 'valide' && (
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          )}
                           <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -226,7 +221,7 @@ const DashboardBlog = () => {
             </CardContent>
           </Card>
         </div>
-        <AdminSidebar />
+        <EditorSidebar />
         
         <BlogFormDialog
           isOpen={isFormOpen}
@@ -243,8 +238,8 @@ const DashboardBlog = () => {
       <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
-            <p className="text-gray-600 mt-2">Gérer les articles du blog</p>
+            <h1 className="text-3xl font-bold text-primary">Mes Articles de Blog</h1>
+            <p className="text-gray-600 mt-2">Gérer vos articles de blog</p>
           </div>
 
           <div className="mb-6">
@@ -261,14 +256,14 @@ const DashboardBlog = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="mr-2 h-5 w-5" />
-                Articles du Blog
+                Mes Articles
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {posts.length === 0 ? (
                   <p className="text-center text-gray-500 py-8">
-                    Aucun article de blog créé
+                    Aucun article créé
                   </p>
                 ) : (
                   posts.map((post) => (
@@ -276,7 +271,7 @@ const DashboardBlog = () => {
                       <div className="flex-1">
                         <h3 className="font-medium">{post.title}</h3>
                         <p className="text-sm text-gray-600">
-                          Par {post.author} - Publié le {new Date(post.published_date).toLocaleDateString('fr-FR')}
+                          Créé le {new Date(post.created_at).toLocaleDateString('fr-FR')}
                         </p>
                         {post.summary && (
                           <p className="text-sm text-gray-700 mt-1">{post.summary}</p>
@@ -287,9 +282,11 @@ const DashboardBlog = () => {
                         <Button variant="outline" size="sm">
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
+                        {post.status !== 'valide' && (
+                          <Button variant="outline" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
                         <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -301,7 +298,7 @@ const DashboardBlog = () => {
             </CardContent>
           </Card>
         </div>
-        <AdminSidebar />
+        <EditorSidebar />
         
         <BlogFormDialog
           isOpen={isFormOpen}
@@ -316,12 +313,12 @@ const DashboardBlog = () => {
   return (
     <Layout>
       <div className="flex">
-        <AdminSidebar />
+        <EditorSidebar />
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
-            <p className="text-gray-600 mt-2">Gérer les articles du blog</p>
+            <h1 className="text-3xl font-bold text-primary">Mes Articles de Blog</h1>
+            <p className="text-gray-600 mt-2">Gérer vos articles de blog</p>
           </div>
 
           <div className="mb-6">
@@ -338,14 +335,14 @@ const DashboardBlog = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="mr-2 h-5 w-5" />
-                Articles du Blog
+                Mes Articles
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {posts.length === 0 ? (
                   <p className="text-center text-gray-500 py-8">
-                    Aucun article de blog créé
+                    Aucun article créé
                   </p>
                 ) : (
                   posts.map((post) => (
@@ -353,7 +350,7 @@ const DashboardBlog = () => {
                       <div className="flex-1">
                         <h3 className="font-medium">{post.title}</h3>
                         <p className="text-sm text-gray-600">
-                          Par {post.author} - Publié le {new Date(post.published_date).toLocaleDateString('fr-FR')}
+                          Créé le {new Date(post.created_at).toLocaleDateString('fr-FR')}
                         </p>
                         {post.summary && (
                           <p className="text-sm text-gray-700 mt-1">{post.summary}</p>
@@ -364,9 +361,11 @@ const DashboardBlog = () => {
                         <Button variant="outline" size="sm">
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
+                        {post.status !== 'valide' && (
+                          <Button variant="outline" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        )}
                         <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -390,4 +389,4 @@ const DashboardBlog = () => {
   );
 };
 
-export default DashboardBlog;
+export default EditorDashboardBlog;
