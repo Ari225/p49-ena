@@ -47,7 +47,11 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
 
   const handleWhatsAppClick = () => {
     if (whatsapp) {
-      const whatsappUrl = `https://wa.me/${whatsapp}`;
+      // Nettoyer le numéro : enlever les espaces, tirets et autres caractères
+      const cleanNumber = whatsapp.toString().replace(/[^\d+]/g, '');
+      // Si le numéro ne commence pas par +, on considère que c'est un numéro français
+      const formattedNumber = cleanNumber.startsWith('+') ? cleanNumber : `+33${cleanNumber}`;
+      const whatsappUrl = `https://wa.me/${formattedNumber}`;
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     }
   };

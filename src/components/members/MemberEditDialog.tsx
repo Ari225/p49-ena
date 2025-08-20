@@ -227,7 +227,7 @@ const MemberEditDialog: React.FC<MemberEditDialogProps> = ({
 
       {/* Dialog principal d'édition */}
       <Dialog open={isOpen && isVerified && !isVerificationOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl mx-auto my-auto">
           <DialogHeader>
             <DialogTitle>Modifier mes informations</DialogTitle>
           </DialogHeader>
