@@ -4,19 +4,21 @@ import Layout from '@/components/Layout';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye, Trash2 } from 'lucide-react';
+import { FileText, Plus, Edit, Eye, Trash2, X } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import BlogFormDialog from '@/components/blog/BlogFormDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 interface BlogPost {
   id: string;
   title: string;
   summary: string;
-  content?: string;
-  category?: string;
-  reading_time?: number;
+  content: string;
+  category: string;
+  reading_time: number;
   image_url?: string;
   author_id?: string;
   author?: string;
@@ -25,7 +27,7 @@ interface BlogPost {
   published_date?: string;
   status: string;
   validated_by?: string;
-  matricule?: string;
+  matricule: string;
 }
 
 const EditorDashboardBlog = () => {
@@ -35,7 +37,10 @@ const EditorDashboardBlog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingArticle, setEditingArticle] = useState(null);
+  const [editingArticle, setEditingArticle] = useState<BlogPost | null>(null);
+  const [viewingArticle, setViewingArticle] = useState<BlogPost | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
 
   if (!user) {
     return <div>Non autorisé</div>;
@@ -64,7 +69,7 @@ const EditorDashboardBlog = () => {
       // Transform data to match BlogPost interface
       const transformedPosts = (data || []).map(post => ({
         ...post,
-        author: post.app_users ? `${post.app_users.first_name} ${post.app_users.last_name}` : 'Auteur inconnu',
+        author: post.author_name || (post.app_users ? `${post.app_users.first_name} ${post.app_users.last_name}` : `${user.firstName} ${user.lastName}`),
         published_date: post.published_date || post.created_at
       }));
 
@@ -77,9 +82,47 @@ const EditorDashboardBlog = () => {
     }
   };
 
-  const handleCreateArticle = async (articleData: any) => {
+  const handleViewArticle = (article: BlogPost) => {
+    setViewingArticle(article);
+  };
+
+  const handleEditArticle = (article: BlogPost) => {
+    setEditingArticle(article);
+    setIsFormOpen(true);
+  };
+
+  const handleDeleteArticle = (articleId: string) => {
+    setArticleToDelete(articleId);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteArticle = async () => {
+    if (!articleToDelete) return;
+
     try {
-      let imageUrl = null;
+      const { error } = await supabase
+        .from('blog_articles')
+        .delete()
+        .eq('id', articleToDelete);
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success('Article supprimé avec succès');
+      fetchPosts();
+    } catch (error) {
+      console.error('Error deleting article:', error);
+      toast.error('Erreur lors de la suppression de l\'article');
+    } finally {
+      setDeleteDialogOpen(false);
+      setArticleToDelete(null);
+    }
+  };
+
+  const handleCreateOrUpdateArticle = async (articleData: any) => {
+    try {
+      let imageUrl = editingArticle?.image_url || null;
 
       // Upload image if selected
       if (articleData.selectedImage) {
@@ -100,34 +143,53 @@ const EditorDashboardBlog = () => {
         imageUrl = urlData.publicUrl;
       }
 
-      const { error } = await supabase
-        .from('blog_articles')
-        .insert({
-          title: articleData.title,
-          summary: articleData.summary,
-          content: articleData.content,
-          category: articleData.category,
-          reading_time: articleData.reading_time,
-          matricule: articleData.matricule,
-          author_name: articleData.authorData?.name,
-          author_function: articleData.authorData?.function,
-          author_image: articleData.authorData?.image,
-          image_url: imageUrl,
-          author_id: user?.id,
-          status: 'valide',
-          published_date: new Date().toISOString().split('T')[0]
-        });
+      const articlePayload = {
+        title: articleData.title,
+        summary: articleData.summary,
+        content: articleData.content,
+        category: articleData.category,
+        reading_time: articleData.reading_time,
+        matricule: articleData.matricule,
+        author_name: articleData.authorData?.name,
+        author_function: articleData.authorData?.function,
+        author_image: articleData.authorData?.image,
+        image_url: imageUrl,
+        author_id: user?.id,
+        status: 'valide' as const,
+        published_date: new Date().toISOString().split('T')[0]
+      };
 
-      if (error) {
-        throw error;
+      if (editingArticle) {
+        // Update existing article
+        const { error } = await supabase
+          .from('blog_articles')
+          .update(articlePayload)
+          .eq('id', editingArticle.id);
+
+        if (error) {
+          throw error;
+        }
+
+        toast.success('Article mis à jour avec succès');
+      } else {
+        // Create new article
+        const { error } = await supabase
+          .from('blog_articles')
+          .insert(articlePayload);
+
+        if (error) {
+          throw error;
+        }
+
+        toast.success('Article créé et publié avec succès');
       }
 
-      toast.success('Article créé et publié avec succès');
       setIsFormOpen(false);
+      setEditingArticle(null);
       fetchPosts();
     } catch (error) {
-      console.error('Error creating article:', error);
-      toast.error('Erreur lors de la création de l\'article');
+      console.error('Error saving article:', error);
+      toast.error('Erreur lors de l\'enregistrement de l\'article');
     }
   };
 
@@ -232,13 +294,13 @@ const EditorDashboardBlog = () => {
                             </div>
                           </div>
                           <div className="flex justify-end space-x-2 mt-3">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -255,10 +317,69 @@ const EditorDashboardBlog = () => {
         
         <BlogFormDialog
           isOpen={isFormOpen}
-          onClose={() => setIsFormOpen(false)}
-          onSubmit={handleCreateArticle}
+          onClose={() => {
+            setIsFormOpen(false);
+            setEditingArticle(null);
+          }}
+          onSubmit={handleCreateOrUpdateArticle}
           editingArticle={editingArticle}
         />
+
+        <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center justify-between">
+                {viewingArticle?.title}
+                <Button variant="ghost" size="sm" onClick={() => setViewingArticle(null)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </DialogTitle>
+            </DialogHeader>
+            {viewingArticle && (
+              <div className="space-y-4">
+                {viewingArticle.image_url && (
+                  <img 
+                    src={viewingArticle.image_url} 
+                    alt={viewingArticle.title}
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                )}
+                <div className="text-sm text-gray-600">
+                  <span>Par {viewingArticle.author}</span>
+                  <span className="mx-2">•</span>
+                  <span>{new Date(viewingArticle.created_at).toLocaleDateString('fr-FR')}</span>
+                  {viewingArticle.reading_time && (
+                    <>
+                      <span className="mx-2">•</span>
+                      <span>{viewingArticle.reading_time} min de lecture</span>
+                    </>
+                  )}
+                </div>
+                {viewingArticle.summary && (
+                  <p className="text-gray-600 italic">{viewingArticle.summary}</p>
+                )}
+                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} />
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+              <AlertDialogDescription>
+                Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDeleteArticle} className="bg-red-600 hover:bg-red-700">
+                Supprimer
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </Layout>
     );
   }
@@ -337,13 +458,13 @@ const EditorDashboardBlog = () => {
                             </div>
                           </div>
                           <div className="flex justify-end space-x-2 mt-3">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -360,10 +481,69 @@ const EditorDashboardBlog = () => {
         
         <BlogFormDialog
           isOpen={isFormOpen}
-          onClose={() => setIsFormOpen(false)}
-          onSubmit={handleCreateArticle}
+          onClose={() => {
+            setIsFormOpen(false);
+            setEditingArticle(null);
+          }}
+          onSubmit={handleCreateOrUpdateArticle}
           editingArticle={editingArticle}
         />
+
+        <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center justify-between">
+                {viewingArticle?.title}
+                <Button variant="ghost" size="sm" onClick={() => setViewingArticle(null)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </DialogTitle>
+            </DialogHeader>
+            {viewingArticle && (
+              <div className="space-y-4">
+                {viewingArticle.image_url && (
+                  <img 
+                    src={viewingArticle.image_url} 
+                    alt={viewingArticle.title}
+                    className="w-full h-64 object-cover rounded-lg"
+                  />
+                )}
+                <div className="text-sm text-gray-600">
+                  <span>Par {viewingArticle.author}</span>
+                  <span className="mx-2">•</span>
+                  <span>{new Date(viewingArticle.created_at).toLocaleDateString('fr-FR')}</span>
+                  {viewingArticle.reading_time && (
+                    <>
+                      <span className="mx-2">•</span>
+                      <span>{viewingArticle.reading_time} min de lecture</span>
+                    </>
+                  )}
+                </div>
+                {viewingArticle.summary && (
+                  <p className="text-gray-600 italic">{viewingArticle.summary}</p>
+                )}
+                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} />
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+              <AlertDialogDescription>
+                Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDeleteArticle} className="bg-red-600 hover:bg-red-700">
+                Supprimer
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </Layout>
     );
   }
@@ -444,13 +624,13 @@ const EditorDashboardBlog = () => {
                             </div>
                           </div>
                           <div className="flex justify-end space-x-2">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -467,10 +647,69 @@ const EditorDashboardBlog = () => {
       
       <BlogFormDialog
         isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleCreateArticle}
+        onClose={() => {
+          setIsFormOpen(false);
+          setEditingArticle(null);
+        }}
+        onSubmit={handleCreateOrUpdateArticle}
         editingArticle={editingArticle}
       />
+
+      <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center justify-between">
+              {viewingArticle?.title}
+              <Button variant="ghost" size="sm" onClick={() => setViewingArticle(null)}>
+                <X className="h-4 w-4" />
+              </Button>
+            </DialogTitle>
+          </DialogHeader>
+          {viewingArticle && (
+            <div className="space-y-4">
+              {viewingArticle.image_url && (
+                <img 
+                  src={viewingArticle.image_url} 
+                  alt={viewingArticle.title}
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+              )}
+              <div className="text-sm text-gray-600">
+                <span>Par {viewingArticle.author}</span>
+                <span className="mx-2">•</span>
+                <span>{new Date(viewingArticle.created_at).toLocaleDateString('fr-FR')}</span>
+                {viewingArticle.reading_time && (
+                  <>
+                    <span className="mx-2">•</span>
+                    <span>{viewingArticle.reading_time} min de lecture</span>
+                  </>
+                )}
+              </div>
+              {viewingArticle.summary && (
+                <p className="text-gray-600 italic">{viewingArticle.summary}</p>
+              )}
+              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: viewingArticle.content || '' }} />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteArticle} className="bg-red-600 hover:bg-red-700">
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
