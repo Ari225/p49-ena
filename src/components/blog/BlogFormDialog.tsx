@@ -202,22 +202,24 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
     }
 
     try {
+      // Utiliser la fonction sécurisée get_member_details au lieu d'accéder directement à la table
       const { data, error } = await supabase
-        .from('members')
-        .select('"Pr�noms", "Nom de famille", "Emploi fonction publique", "Photo"')
-        .eq('Matricule', matricule)
-        .maybeSingle();
+        .rpc('get_member_details', {
+          member_matricule: matricule,
+          verification_matricule: matricule
+        });
 
-      if (error || !data) {
+      if (error || !data || data.length === 0) {
         setMatriculeError('Matricule non trouvé dans la base de données');
         setMemberData(null);
         return;
       }
 
+      const member = data[0];
       const memberInfo = {
-        name: `${data['Pr�noms']} ${data['Nom de famille']}`,
-        function: data['Emploi fonction publique'] || 'Fonction non spécifiée',
-        image: data['Photo'] || ''
+        name: `${member.prenoms} ${member.nom_famille}`,
+        function: member.emploi_fonction_publique || 'Fonction non spécifiée',
+        image: member.photo || ''
       };
 
       setMemberData(memberInfo);
