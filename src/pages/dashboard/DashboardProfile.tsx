@@ -1,18 +1,28 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { User, Edit } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { isAdmin } from '@/utils/roleUtils';
+import ProfileEditDialog from '@/components/users/ProfileEditDialog';
+import { AuthUser } from '@/types/user';
 
 const DashboardProfile = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const isMobile = useIsMobile();
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+  const handleProfileUpdate = (updatedUser: AuthUser) => {
+    if (setUser) {
+      setUser(updatedUser);
+    }
+  };
 
   if (!user) {
     return <div>Non autorisé</div>;
@@ -45,9 +55,19 @@ const DashboardProfile = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center text-lg">
-                <User className="mr-2 h-5 w-5" />
-                Informations personnelles
+              <CardTitle className="flex items-center justify-between text-lg">
+                <div className="flex items-center">
+                  <User className="mr-2 h-5 w-5" />
+                  Informations personnelles
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditDialogOpen(true)}
+                >
+                  <Edit className="mr-1 h-4 w-4" />
+                  Modifier
+                </Button>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -79,6 +99,13 @@ const DashboardProfile = () => {
           </Card>
         </div>
         <SidebarComponent />
+        
+        <ProfileEditDialog
+          user={user}
+          isOpen={isEditDialogOpen}
+          onClose={() => setIsEditDialogOpen(false)}
+          onSave={handleProfileUpdate}
+        />
       </Layout>
     );
   }
@@ -96,9 +123,19 @@ const DashboardProfile = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <User className="mr-2 h-5 w-5" />
-                Informations personnelles
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <User className="mr-2 h-5 w-5" />
+                  Informations personnelles
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditDialogOpen(true)}
+                >
+                  <Edit className="mr-1 h-4 w-4" />
+                  Modifier
+                </Button>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -130,6 +167,13 @@ const DashboardProfile = () => {
           </Card>
         </div>
       </div>
+      
+      <ProfileEditDialog
+        user={user}
+        isOpen={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        onSave={handleProfileUpdate}
+      />
     </Layout>
   );
 };

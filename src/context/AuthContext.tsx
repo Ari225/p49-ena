@@ -19,6 +19,7 @@ export type User = AuthUser;
 interface AuthContextType {
   user: AuthUser | null;
   session: Session | null;
+  setUser: (user: AuthUser | null) => void;
   signUp: (email: string, password: string, userData: { username: string; firstName: string; lastName: string; role?: string }) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -185,6 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <AuthContext.Provider value={{ 
       user, 
       session,
+      setUser,
       signUp, 
       signIn, 
       signOut, 
