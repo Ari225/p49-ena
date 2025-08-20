@@ -114,14 +114,15 @@ const EditorDashboardBlog = () => {
           author_image: articleData.authorData?.image,
           image_url: imageUrl,
           author_id: user?.id,
-          status: 'en_attente'
+          status: 'valide',
+          published_date: new Date().toISOString().split('T')[0]
         });
 
       if (error) {
         throw error;
       }
 
-      toast.success('Article créé avec succès et soumis pour validation');
+      toast.success('Article créé et publié avec succès');
       setIsFormOpen(false);
       fetchPosts();
     } catch (error) {
