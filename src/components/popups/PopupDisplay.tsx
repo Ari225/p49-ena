@@ -46,7 +46,7 @@ const PopupDisplay = () => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={() => {}}>
-        <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : isTablet ? 'max-w-[calc(100vw-80px)] max-h-[calc(100vh-80px)]' : 'max-w-[calc(100vw-200px)] max-h-[calc(100vh-100px)]'}`} hideCloseButton>
+        <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[90vw] max-h-[85vh] mx-auto' : isTablet ? 'max-w-[80vw] max-h-[80vh]' : 'max-w-[70vw] max-h-[75vh]'}`} hideCloseButton>
           <div className={`flex w-full h-full rounded-lg overflow-hidden ${isMobile || isTablet || !currentPopup.message ? 'flex-col' : 'flex-row md:flex-row'}`}>
             
             {/* Image Section */}
@@ -73,10 +73,10 @@ const PopupDisplay = () => {
               currentPopup.image_url 
                 ? (isMobile || isTablet || !currentPopup.message ? 'flex-1' : 'md:w-2/3') 
                 : 'w-full'
-            } ${isMobile ? 'max-h-[calc(100vh-350px)]' : isTablet ? 'max-h-[calc(100vh-480px)]' : 'max-h-[calc(100vh-160px)]'}`}>
+            } ${isMobile ? 'max-h-[70vh]' : isTablet ? 'max-h-[65vh]' : 'max-h-[60vh]'}`}>
               
               {/* Content Header and Body */}
-              <div className={`flex-1 overflow-y-auto p-4 md:p-8 space-y-4 bg-white ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-base'}`}>
+              <div className={`flex-1 overflow-y-auto p-3 md:p-6 space-y-3 bg-white ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-base'}`}>
                 
                 {/* Type Badge */}
                 <div className="mb-4">
@@ -87,15 +87,15 @@ const PopupDisplay = () => {
                 </div>
 
                 {/* Title */}
-                <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-lg leading-tight' : isTablet ? 'text-xl leading-tight' : 'text-2xl leading-tight'}`}>
+                <h2 className={`font-bold text-primary mb-3 ${isMobile ? 'text-lg leading-tight' : isTablet ? 'text-xl leading-tight' : 'text-xl leading-tight'}`}>
                   {currentPopup.title}
                 </h2>
 
                 {/* Message */}
                 {currentPopup.message && (
-                  <div className={`space-y-4 text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-base'}`}>
+                  <div className={`space-y-3 text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : isTablet ? 'text-sm' : 'text-base'}`}>
                     {currentPopup.message.split('\n').map((paragraph, index) => (
-                      <p key={index} className="mb-3">
+                      <p key={index} className="mb-2">
                         {paragraph}
                       </p>
                     ))}
@@ -104,7 +104,7 @@ const PopupDisplay = () => {
 
                 {/* Author and Position */}
                 {(currentPopup.author || currentPopup.position) && (
-                  <div className={`mt-6 pt-4 border-t border-gray-200 ${isMobile ? 'text-sm' : 'text-base'} text-gray-800`}>
+                  <div className={`mt-4 pt-3 border-t border-gray-200 ${isMobile ? 'text-sm' : 'text-sm'} text-gray-800`}>
                     {currentPopup.author && <div className="font-semibold text-primary">{currentPopup.author}</div>}
                     {currentPopup.position && <div className="text-gray-600 mt-1">{currentPopup.position}</div>}
                   </div>
