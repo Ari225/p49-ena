@@ -147,6 +147,16 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
             </div>
           </div>
         </DialogContent>
+        
+        {/* Dialog d'édition Mobile */}
+        <MemberEditDialog
+          member={member}
+          isOpen={isEditDialogOpen}
+          onClose={() => setIsEditDialogOpen(false)}
+          onUpdate={() => {
+            setIsEditDialogOpen(false);
+          }}
+        />
       </Dialog>
     );
   }
@@ -156,97 +166,109 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   // ===========================================
   if (isTablet) {
     return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="w-[calc(100%-100px)] max-w-md mx-auto">
-          <div className="p-5">
-            {/* Photo Tablette */}
-            <div className="flex justify-center mb-5">
-              <Avatar className="h-20 w-20 ring-4 ring-primary/20">
-                <AvatarImage 
-                  src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
-                  alt={`${firstName} ${lastName}`}
-                  className="object-cover"
-                />
-                <AvatarFallback className="bg-primary text-white text-sm font-semibold">
-                  {getInitials()}
-                </AvatarFallback>
-              </Avatar>
-            </div>
+      <>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+          <DialogContent className="w-[calc(100%-100px)] max-w-md mx-auto">
+            <div className="p-5">
+              {/* Photo Tablette */}
+              <div className="flex justify-center mb-5">
+                <Avatar className="h-20 w-20 ring-4 ring-primary/20">
+                  <AvatarImage 
+                    src={photo || "/lovable-uploads/05411ed6-4981-4ab2-a67d-bffd14b29202.png"}
+                    alt={`${firstName} ${lastName}`}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="bg-primary text-white text-sm font-semibold">
+                    {getInitials()}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
 
-            {/* Name Tablette */}
-            <div className="text-center mb-4">
-              <h2 className="text-lg font-bold text-gray-900 text-primary">
-                {firstName} {lastName}
-              </h2>
-            </div>
+              {/* Name Tablette */}
+              <div className="text-center mb-4">
+                <h2 className="text-lg font-bold text-gray-900 text-primary">
+                  {firstName} {lastName}
+                </h2>
+              </div>
 
-            {/* Position Tablette */}
-            <div className="flex items-center justify-center mb-3 text-gray-600">
-              <Briefcase className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
-              <span className="text-sm font-medium text-center">{position}</span>
-            </div>
+              {/* Position Tablette */}
+              <div className="flex items-center justify-center mb-3 text-gray-600">
+                <Briefcase className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
+                <span className="text-sm font-medium text-center">{position}</span>
+              </div>
 
-            {/* Location Tablette */}
-            <div className="flex items-center justify-center mb-5 text-gray-600">
-              <MapPin className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
-              <span className="text-sm">{locality}</span>
-            </div>
+              {/* Location Tablette */}
+              <div className="flex items-center justify-center mb-5 text-gray-600">
+                <MapPin className="h-5 w-5 mr-3 flex-shrink-0 text-gray-600" />
+                <span className="text-sm">{locality}</span>
+              </div>
 
-            {/* Contact Icons Tablette */}
-            <div className="flex justify-center space-x-4 mb-5">
-              {/* WhatsApp Icon */}
-              {whatsapp && (
+              {/* Contact Icons Tablette */}
+              <div className="flex justify-center space-x-4 mb-5">
+                {/* WhatsApp Icon */}
+                {whatsapp && (
+                  <button
+                    onClick={handleWhatsAppClick}
+                    className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                    title="WhatsApp"
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                  </button>
+                )}
+
+                {/* Social Media Icons */}
+                {socialMedia.facebook && (
+                  <button
+                    onClick={() => handleSocialClick(socialMedia.facebook!)}
+                    className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                    title="Facebook"
+                  >
+                    <Facebook className="h-5 w-5" />
+                  </button>
+                )}
+                {socialMedia.instagram && (
+                  <button
+                    onClick={() => handleSocialClick(socialMedia.instagram!)}
+                    className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                    title="Instagram"
+                  >
+                    <Instagram className="h-5 w-5" />
+                  </button>
+                )}
+                {socialMedia.linkedin && (
+                  <button
+                    onClick={() => handleSocialClick(socialMedia.linkedin!)}
+                    className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
+                    title="LinkedIn"
+                  >
+                    <Linkedin className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Edit Button Tablette */}
+              <div className="flex justify-center">
                 <button
-                  onClick={handleWhatsAppClick}
-                  className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-                  title="WhatsApp"
+                  onClick={() => setIsEditDialogOpen(true)}
+                  className="px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
                 >
-                  <MessageCircle className="h-5 w-5" />
+                  Modifier mes informations
                 </button>
-              )}
-
-              {/* Social Media Icons */}
-              {socialMedia.facebook && (
-                <button
-                  onClick={() => handleSocialClick(socialMedia.facebook!)}
-                  className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-                  title="Facebook"
-                >
-                  <Facebook className="h-5 w-5" />
-                </button>
-              )}
-              {socialMedia.instagram && (
-                <button
-                  onClick={() => handleSocialClick(socialMedia.instagram!)}
-                  className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-                  title="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </button>
-              )}
-              {socialMedia.linkedin && (
-                <button
-                  onClick={() => handleSocialClick(socialMedia.linkedin!)}
-                  className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
-                  title="LinkedIn"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </button>
-              )}
+              </div>
             </div>
+          </DialogContent>
+        </Dialog>
 
-            {/* Edit Button Tablette */}
-            <div className="flex justify-center">
-              <button
-                onClick={() => setIsEditDialogOpen(true)}
-                className="px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
-              >
-                Modifier mes informations
-              </button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+        {/* Dialog d'édition Tablette */}
+        <MemberEditDialog
+          member={member}
+          isOpen={isEditDialogOpen}
+          onClose={() => setIsEditDialogOpen(false)}
+          onUpdate={() => {
+            setIsEditDialogOpen(false);
+          }}
+        />
+      </>
     );
   }
 
