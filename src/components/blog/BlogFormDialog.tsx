@@ -204,7 +204,7 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
     try {
       const { data, error } = await supabase
         .from('members')
-        .select('"Prénoms", "Nom de famille", "Emploi fonction publique", "Photo"')
+        .select('"Pr�noms", "Nom de famille", "Emploi fonction publique", "Photo"')
         .eq('Matricule', matricule)
         .maybeSingle();
 
@@ -215,7 +215,7 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
       }
 
       const memberInfo = {
-        name: `${data['Prénoms']} ${data['Nom de famille']}`,
+        name: `${data['Pr�noms']} ${data['Nom de famille']}`,
         function: data['Emploi fonction publique'] || 'Fonction non spécifiée',
         image: data['Photo'] || ''
       };
