@@ -38,62 +38,45 @@ const RepertoireMembers = () => {
     const fetchMembers = async () => {
       try {
         setLoading(true);
-        console.log('Fetching members from Supabase...');
         
         // Utiliser la fonction RPC sécurisée pour les membres
         const { data, error } = await supabase
           .rpc('get_member_directory');
-        
-        console.log('Raw data from Supabase:', data);
-        console.log('Error from Supabase:', error);
-        console.log('Data type:', typeof data);
-        console.log('Data length:', data?.length);
-        if (data && data.length > 0) {
-          console.log('First member example:', data[0]);
-          console.log('All keys in first member:', Object.keys(data[0]));
-        }
         
         if (error) {
           console.error('Error fetching members:', error);
           return;
         }
         
-        console.log('Number of records returned:', data?.length || 0);
-        
         const formattedMembers: Member[] = (data || [])
-          .map((member: any) => {
-            console.log('Processing member:', member);
-            return {
-              id: member.id,
-              // Utiliser les noms depuis la fonction sécurisée, même s'ils sont masqués
-              firstName: member.prenoms || member.prenoms_masque || '',
-              lastName: member.nom_famille || member.nom_famille_masque || '',
-              position: member.emploi_fonction_publique || '',
-              locality: member.lieu_exercice || '',
-              photo: member.photo || '',
-              whatsapp: member.has_whatsapp ? 'true' : null,
-              matricule: member.matricule || '',
-              socialMedia: {
-                facebook: member.has_facebook ? 'true' : null,
-                instagram: member.has_instagram ? 'true' : null,
-                linkedin: member.has_linkedin ? 'true' : null
-              }
-            };
-          })
+          .map((member: any) => ({
+            id: member.id,
+            // Utiliser les vrais noms de colonnes retournés par la fonction sécurisée
+            firstName: member.prenoms || '',
+            lastName: member.nom_famille || '',
+            position: member.emploi_fonction_publique || '',
+            locality: member.lieu_exercice || '',
+            photo: member.photo || '',
+            whatsapp: member.has_whatsapp ? 'true' : null,
+            matricule: member.matricule || '',
+            socialMedia: {
+              facebook: member.has_facebook ? 'true' : null,
+              instagram: member.has_instagram ? 'true' : null,
+              linkedin: member.has_linkedin ? 'true' : null
+            }
+          }))
           .filter(member => 
-            // Garder les membres même avec des noms masqués
+            // Garder tous les membres qui ont des noms (même masqués pour la sécurité)
             member.firstName && member.firstName.trim() && 
             member.lastName && member.lastName.trim()
           )
           .sort((a, b) => {
-            // Sort alphabetically by lastName first, then firstName
+            // Tri alphabétique par nom de famille puis prénom
             const lastNameComparison = a.lastName.localeCompare(b.lastName, 'fr', { sensitivity: 'base' });
             if (lastNameComparison !== 0) return lastNameComparison;
             return a.firstName.localeCompare(b.firstName, 'fr', { sensitivity: 'base' });
           });
         
-        console.log('Formatted members:', formattedMembers);
-        console.log('Number of formatted members:', formattedMembers.length);
         setAllMembers(formattedMembers);
       } catch (error) {
         console.error('Error loading members:', error);
