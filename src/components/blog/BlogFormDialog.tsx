@@ -17,7 +17,8 @@ const formSchema = z.object({
   category: z.string().min(1, 'La catégorie est requise'),
   reading_time: z.number().min(1, 'Le temps de lecture est requis'),
   summary: z.string().min(1, 'Le résumé est requis'),
-  content: z.string().min(1, 'Le contenu de l\'article est requis')
+  content: z.string().min(1, 'Le contenu de l\'article est requis'),
+  matricule: z.string().min(1, 'Le matricule est requis')
 });
 
 interface BlogArticle {
@@ -27,6 +28,7 @@ interface BlogArticle {
   content: string;
   category: string;
   reading_time: number;
+  matricule: string;
   image_url?: string;
   author_id?: string;
   published_date?: string;
@@ -63,7 +65,8 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
       summary: '',
       content: '',
       category: '',
-      reading_time: 5
+      reading_time: 5,
+      matricule: ''
     }
   });
 
@@ -76,7 +79,8 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
         summary: editingArticle.summary,
         content: editingArticle.content || '',
         category: isCustomCategory ? 'Autre' : editingArticle.category,
-        reading_time: editingArticle.reading_time || 5
+        reading_time: editingArticle.reading_time || 5,
+        matricule: editingArticle.matricule || ''
       });
       
       if (isCustomCategory) {
@@ -97,7 +101,8 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
         summary: '',
         content: '',
         category: '',
-        reading_time: 5
+        reading_time: 5,
+        matricule: ''
       });
       setContentText('');
       setSelectedImage(null);
@@ -275,7 +280,7 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
               {imageError && <p className="text-sm text-red-600">{imageError}</p>}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Titre */}
               <FormField
                 control={form.control}
@@ -285,6 +290,21 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
                     <FormLabel>Titre *</FormLabel>
                     <FormControl>
                       <Input placeholder="Titre de l'article" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Matricule */}
+              <FormField
+                control={form.control}
+                name="matricule"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Matricule *</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Votre matricule" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -108,6 +108,7 @@ const DashboardBlog = () => {
           content: articleData.content,
           category: articleData.category,
           reading_time: articleData.reading_time,
+          matricule: articleData.matricule,
           image_url: imageUrl,
           author_id: user?.id,
           status: 'en_attente'

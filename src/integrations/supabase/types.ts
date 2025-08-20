@@ -128,6 +128,7 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
+          matricule: string | null
           published_date: string | null
           status: Database["public"]["Enums"]["article_status"]
           summary: string | null
@@ -141,6 +142,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          matricule?: string | null
           published_date?: string | null
           status?: Database["public"]["Enums"]["article_status"]
           summary?: string | null
@@ -154,6 +156,7 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
+          matricule?: string | null
           published_date?: string | null
           status?: Database["public"]["Enums"]["article_status"]
           summary?: string | null
