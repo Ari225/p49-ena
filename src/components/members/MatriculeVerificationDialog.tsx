@@ -44,7 +44,7 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
     try {
       if (verificationMode === 'edit' && memberId) {
         // Mode modification : vérifier que le matricule correspond exactement au membre à modifier
-        const { data: memberDirectory, error: memberError } = await supabase.rpc('get_member_directory');
+        const { data: memberDirectory, error: memberError } = await supabase.rpc('get_all_members_public');
 
         if (memberError) {
           console.error('Error fetching member directory:', memberError);
@@ -72,7 +72,7 @@ const MatriculeVerificationDialog: React.FC<MatriculeVerificationDialogProps> = 
         }
       } else {
         // Mode aperçu : vérifier que le matricule existe dans la base de données
-        const { data: memberDirectory, error: memberError } = await supabase.rpc('get_member_directory');
+        const { data: memberDirectory, error: memberError } = await supabase.rpc('get_all_members_public');
 
         if (memberError) {
           console.error('Error fetching member directory:', memberError);
