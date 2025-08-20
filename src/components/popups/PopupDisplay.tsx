@@ -79,14 +79,6 @@ const PopupDisplay = () => {
                   {currentPopup.title}
                 </h2>
 
-                {/* Author and Position */}
-                {(currentPopup.author || currentPopup.position) && (
-                  <div className={`mb-4 ${isMobile ? 'text-xs' : 'text-sm'} text-gray-600`}>
-                    {currentPopup.author && <div className="font-medium">{currentPopup.author}</div>}
-                    {currentPopup.position && <div className="italic">{currentPopup.position}</div>}
-                  </div>
-                )}
-
                 {/* Message */}
                 {currentPopup.message && (
                   <div className={`space-y-4 text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-base'}`}>
@@ -95,6 +87,14 @@ const PopupDisplay = () => {
                         {paragraph}
                       </p>
                     ))}
+                  </div>
+                )}
+
+                {/* Author and Position */}
+                {(currentPopup.author || currentPopup.position) && (
+                  <div className={`mt-6 pt-4 border-t border-gray-200 ${isMobile ? 'text-sm' : 'text-base'} text-gray-800`}>
+                    {currentPopup.author && <div className="font-semibold text-primary">{currentPopup.author}</div>}
+                    {currentPopup.position && <div className="text-gray-600 mt-1">{currentPopup.position}</div>}
                   </div>
                 )}
 
