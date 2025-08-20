@@ -77,7 +77,8 @@ const JournalEditionDialog = ({
         pdf_url: pdfUrl,
         publish_date: new Date().toISOString().split('T')[0],
         // Auto-set to today
-        status: 'publie'
+        status: 'publie',
+        created_by: (await supabase.auth.getUser()).data.user?.id
       });
       if (insertError) throw insertError;
       toast.success('Édition créée avec succès !');
