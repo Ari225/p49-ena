@@ -6,9 +6,11 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Plus, Edit, Eye, Download, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import JournalEditionDialog from '@/components/journal/JournalEditionDialog';
 
 interface JournalEdition {
   id: string;
@@ -26,6 +28,7 @@ const DashboardJournal = () => {
   const isMobile = useIsMobile();
   const [editions, setEditions] = useState<JournalEdition[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
@@ -38,22 +41,17 @@ const DashboardJournal = () => {
   const fetchEditions = async () => {
     try {
       setLoading(true);
-      // Mock data instead of Supabase
-      const mockEditions: JournalEdition[] = [
-        {
-          id: '1',
-          title: 'Perspectives 49 - Janvier 2024',
-          summary: 'Édition de janvier 2024 du journal Perspectives 49',
-          cover_image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          pdf_url: '/lovable-uploads/sample.pdf',
-          publish_date: '2024-01-15',
-          page_count: 24,
-          status: 'published'
-        }
-      ];
-      setEditions(mockEditions);
+      const { data, error } = await supabase
+        .from('journal_editions')
+        .select('*')
+        .order('publish_date', { ascending: false });
+      
+      if (error) throw error;
+      
+      setEditions(data || []);
     } catch (error) {
       console.error('Error fetching journal editions:', error);
+      toast.error('Erreur lors du chargement des éditions');
     } finally {
       setLoading(false);
     }
@@ -61,13 +59,17 @@ const DashboardJournal = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'published':
+      case 'publie':
         return <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">Publié</span>;
-      case 'draft':
+      case 'brouillon':
         return <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">Brouillon</span>;
       default:
         return <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-sm">{status}</span>;
     }
+  };
+
+  const handleDialogSuccess = () => {
+    fetchEditions();
   };
 
   if (loading) {
@@ -106,11 +108,12 @@ const DashboardJournal = () => {
           </div>
 
           <div className="mb-6">
-            <Button asChild className="bg-primary hover:bg-primary/90 w-full">
-              <Link to="/dashboard/add-journal">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvelle édition
-              </Link>
+            <Button 
+              onClick={() => setDialogOpen(true)}
+              className="bg-primary hover:bg-primary/90 w-full"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvelle édition
             </Button>
           </div>
 
@@ -138,9 +141,9 @@ const DashboardJournal = () => {
                         />
                         <div className="flex-1 min-w-0">
                           <h3 className="font-medium text-sm">{edition.title}</h3>
-                          <p className="text-xs text-gray-600 mt-1">
-                            {edition.page_count} pages - Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}
-                          </p>
+                           <p className="text-xs text-gray-600 mt-1">
+                             Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}
+                           </p>
                           {edition.summary && (
                             <p className="text-xs text-gray-700 mt-2">{edition.summary}</p>
                           )}
@@ -191,11 +194,12 @@ const DashboardJournal = () => {
           </div>
 
           <div className="mb-6">
-            <Button asChild className="bg-primary hover:bg-primary/90">
-              <Link to="/dashboard/add-journal">
-                <Plus className="mr-2 h-4 w-4" />
-                Nouvelle édition
-              </Link>
+            <Button 
+              onClick={() => setDialogOpen(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvelle édition
             </Button>
           </div>
 
@@ -223,9 +227,9 @@ const DashboardJournal = () => {
                         />
                         <div className="flex-1">
                           <h3 className="font-medium">{edition.title}</h3>
-                          <p className="text-sm text-gray-600">
-                            {edition.page_count} pages - Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}
-                          </p>
+                           <p className="text-sm text-gray-600">
+                             Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}
+                           </p>
                           {edition.summary && (
                             <p className="text-sm text-gray-700 mt-1">{edition.summary}</p>
                           )}
@@ -254,6 +258,12 @@ const DashboardJournal = () => {
           </Card>
         </div>
       </div>
+
+      <JournalEditionDialog 
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onSuccess={handleDialogSuccess}
+      />
     </Layout>
   );
 };
