@@ -127,12 +127,14 @@ export type Database = {
           author_id: string | null
           author_image: string | null
           author_name: string | null
+          category: string | null
           content: string
           created_at: string
           id: string
           image_url: string | null
           matricule: string | null
           published_date: string | null
+          reading_time: number | null
           status: Database["public"]["Enums"]["article_status"]
           summary: string | null
           title: string
@@ -144,12 +146,14 @@ export type Database = {
           author_id?: string | null
           author_image?: string | null
           author_name?: string | null
+          category?: string | null
           content: string
           created_at?: string
           id?: string
           image_url?: string | null
           matricule?: string | null
           published_date?: string | null
+          reading_time?: number | null
           status?: Database["public"]["Enums"]["article_status"]
           summary?: string | null
           title: string
@@ -161,12 +165,14 @@ export type Database = {
           author_id?: string | null
           author_image?: string | null
           author_name?: string | null
+          category?: string | null
           content?: string
           created_at?: string
           id?: string
           image_url?: string | null
           matricule?: string | null
           published_date?: string | null
+          reading_time?: number | null
           status?: Database["public"]["Enums"]["article_status"]
           summary?: string | null
           title?: string
