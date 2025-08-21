@@ -21,7 +21,7 @@ export const CookieBanner = () => {
     setCookie('cookies_functional', 'true', 365);
     setCookie('cookies_analytics', 'true', 365);
     setCookie('cookies_marketing', 'true', 365);
-    setIsVisible(false);
+    setTimeout(() => setIsVisible(false), 100);
   };
 
   const handleAcceptEssential = () => {
@@ -29,7 +29,7 @@ export const CookieBanner = () => {
     setCookie('cookies_functional', 'false', 365);
     setCookie('cookies_analytics', 'false', 365);
     setCookie('cookies_marketing', 'false', 365);
-    setIsVisible(false);
+    setTimeout(() => setIsVisible(false), 100);
   };
 
   const handleCustomize = () => {
@@ -45,7 +45,7 @@ export const CookieBanner = () => {
     setCookie('cookies_functional', functional ? 'true' : 'false', 365);
     setCookie('cookies_analytics', analytics ? 'true' : 'false', 365);
     setCookie('cookies_marketing', marketing ? 'true' : 'false', 365);
-    setIsVisible(false);
+    setTimeout(() => setIsVisible(false), 100);
   };
 
   if (!isVisible) return null;
