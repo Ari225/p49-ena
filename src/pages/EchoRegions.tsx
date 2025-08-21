@@ -117,7 +117,7 @@ const EchoRegions = () => {
       <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
         <div className="absolute inset-0">
           <img 
-            src="/lovable-uploads/92f8a2dc-a96b-43e9-93dd-b8dec8af0527.png" 
+            src="/lovable-uploads/archives.webp" 
             alt="Background écho régions" 
             className="w-full h-full object-cover" 
           />
@@ -126,10 +126,10 @@ const EchoRegions = () => {
         
         <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
           <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
-            Écho des Régions
+            Écho des régions
           </h1>
           <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
-            Découvrez les activités et initiatives de nos membres dans toutes les régions de Côte d'Ivoire
+            Plongez dans le train des délégations régionales de la P49
           </p>
         </div>
       </section>
