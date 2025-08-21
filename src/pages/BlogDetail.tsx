@@ -161,23 +161,13 @@ const BlogDetail = () => {
       let authorName = '';
       let authorRole = 'Visiteur';
 
-      // Si l'utilisateur est connecté, récupérer ses informations
+      // Si l'utilisateur est connecté, utiliser son display name de l'authentification
       if (user.user) {
-        const { data: userData, error } = await supabase
-          .from('app_users')
-          .select('first_name, last_name, role')
-          .eq('id', user.user.id)
-          .maybeSingle();
-
-        if (userData && !error) {
-          authorName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
-          authorRole = userData.role === 'admin_principal' ? 'Administrateur' : 
-                      userData.role === 'admin_secondaire' ? 'Administrateur' :
-                      userData.role === 'redacteur' ? 'Rédacteur' : 'Visiteur';
-        } else {
-          // Si pas de données utilisateur trouvées
-          authorName = 'Utilisateur';
-        }
+        authorName = user.user.user_metadata?.display_name || 
+                    user.user.user_metadata?.full_name || 
+                    `${user.user.user_metadata?.first_name || ''} ${user.user.user_metadata?.last_name || ''}`.trim() ||
+                    'Utilisateur';
+        authorRole = 'Membre connecté';
       } else {
         // Pour les visiteurs non connectés, utiliser le nom saisi
         authorName = commenterName.trim();
