@@ -88,7 +88,7 @@ const Blog = () => {
         } flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
-              src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+              src="/lovable-uploads/archives.webp" 
               alt="Background blog" 
               className="w-full h-full object-cover" 
             />
@@ -112,7 +112,7 @@ const Blog = () => {
               isTablet ? 'text-base' : 
               'text-lg md:text-lg'
             }`}>
-              Analyses, réflexions et témoignages de notre communauté
+              Analyses et réflexions de nos experts
             </p>
           </div>
         </section>
