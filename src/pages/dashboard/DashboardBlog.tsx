@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { FileText, Edit, Eye, Trash2 } from 'lucide-react';
+import { FileText, Edit, Eye, Trash2, Calendar, User } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import BlogFormDialog from '@/components/blog/BlogFormDialog';
@@ -110,30 +110,68 @@ const DashboardBlog = () => {
         imageUrl = urlData.publicUrl;
       }
 
-      const { error } = await supabase
-        .from('blog_articles')
-        .insert({
+      if (editingArticle) {
+        // Mise à jour de l'article existant
+        const updateData: any = {
           title: articleData.title,
           summary: articleData.summary,
           content: articleData.content,
           category: articleData.category,
           reading_time: articleData.reading_time,
           matricule: articleData.matricule,
-          image_url: imageUrl,
-          author_id: user?.id,
-          status: 'en_attente'
-        });
+          author_name: articleData.authorData?.name,
+          author_function: articleData.authorData?.function,
+          author_image: articleData.authorData?.image,
+          updated_at: new Date().toISOString()
+        };
 
-      if (error) {
-        throw error;
+        // Ne mettre à jour l'image que si une nouvelle image est fournie
+        if (imageUrl) {
+          updateData.image_url = imageUrl;
+        }
+
+        const { error } = await supabase
+          .from('blog_articles')
+          .update(updateData)
+          .eq('id', editingArticle.id);
+
+        if (error) {
+          throw error;
+        }
+
+        toast.success('Article modifié avec succès');
+      } else {
+        // Création d'un nouvel article
+        const { error } = await supabase
+          .from('blog_articles')
+          .insert({
+            title: articleData.title,
+            summary: articleData.summary,
+            content: articleData.content,
+            category: articleData.category,
+            reading_time: articleData.reading_time,
+            matricule: articleData.matricule,
+            author_name: articleData.authorData?.name,
+            author_function: articleData.authorData?.function,
+            author_image: articleData.authorData?.image,
+            image_url: imageUrl,
+            author_id: user?.id,
+            status: 'en_attente'
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        toast.success('Article créé avec succès');
       }
 
-      toast.success('Article créé avec succès');
       setIsFormOpen(false);
+      setEditingArticle(null);
       fetchPosts();
     } catch (error) {
-      console.error('Error creating article:', error);
-      toast.error('Erreur lors de la création de l\'article');
+      console.error('Error saving article:', error);
+      toast.error(editingArticle ? 'Erreur lors de la modification de l\'article' : 'Erreur lors de la création de l\'article');
     }
   };
 
@@ -172,12 +210,12 @@ const DashboardBlog = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'valide':
-        return <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">Validé</span>;
       case 'en_attente':
         return <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">En attente</span>;
       case 'refuse':
         return <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-sm">Refusé</span>;
+      case 'publie':
+        return <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Publié</span>;
       default:
         return <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-sm">{status}</span>;
     }
@@ -221,47 +259,50 @@ const DashboardBlog = () => {
                   </p>
                 ) : (
                   posts.map((post) => (
-                    <div key={post.id} className="bg-white rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200">
-                      <div className="flex gap-4 p-4">
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={post.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'} 
-                            alt={post.title}
-                            className="w-20 h-20 object-cover rounded-lg"
-                          />
+                    <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                      {post.image_url && (
+                        <div className="h-32">
+                          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
-                                  {post.category || 'Général'}
-                                </span>
-                                {getStatusBadge(post.status)}
-                              </div>
-                              <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 mb-1">{post.title}</h3>
-                              <p className="text-xs text-gray-600 mb-2">
-                                Par <span className="font-medium text-primary">{post.author}</span> - {new Date(post.published_date).toLocaleDateString('fr-FR')}
-                              </p>
-                              {post.summary && (
-                                <p className="text-xs text-gray-700 line-clamp-2">{post.summary}</p>
-                              )}
-                            </div>
-                            <div className="flex space-x-1 ml-2">
-                              <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
-                                <Eye className="h-3 w-3" />
-                              </Button>
-                              <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                                <Edit className="h-3 w-3" />
-                              </Button>
-                              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
-                            </div>
+                      )}
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                            {post.category || 'Non catégorisé'}
+                          </span>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {new Date(post.published_date).toLocaleDateString('fr-FR')}
                           </div>
                         </div>
-                      </div>
-                    </div>
+                        <h3 className="font-semibold text-lg text-primary mb-2 line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 mb-2">
+                          Par <span className="font-medium text-primary">{post.author}</span>
+                        </p>
+                        {post.summary && (
+                          <p className="text-xs text-gray-700 mb-3 line-clamp-3">{post.summary}</p>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <User className="w-3 h-3 mr-1 text-gray-500" />
+                            {getStatusBadge(post.status)}
+                          </div>
+                          <div className="flex space-x-1">
+                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
+                              <Eye className="h-3 w-3" />
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
+                              <Edit className="h-3 w-3" />
+                            </Button>
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))
                 )}
               </div>
@@ -304,50 +345,53 @@ const DashboardBlog = () => {
                   </p>
                 ) : (
                   posts.map((post) => (
-                    <div key={post.id} className="bg-white rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200">
-                      <div className="flex gap-6 p-6">
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={post.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'} 
-                            alt={post.title}
-                            className="w-24 h-24 object-cover rounded-lg"
-                          />
+                    <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                      {post.image_url && (
+                        <div className="h-25">
+                          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
-                                <span className="bg-primary text-white px-3 py-1 rounded text-sm font-medium">
-                                  {post.category || 'Général'}
-                                </span>
-                                {getStatusBadge(post.status)}
-                              </div>
-                              <h3 className="font-semibold text-lg text-gray-900 mb-2">{post.title}</h3>
-                              <p className="text-sm text-gray-600 mb-3">
-                                Par <span className="font-medium text-primary">{post.author}</span> - Publié le {new Date(post.published_date).toLocaleDateString('fr-FR')}
-                              </p>
-                              {post.summary && (
-                                <p className="text-sm text-gray-700 line-clamp-2">{post.summary}</p>
-                              )}
-                            </div>
-                            <div className="flex items-center space-x-2 ml-4">
-                              <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
-                                <Eye className="h-4 w-4 mr-1" />
-                                Voir
-                              </Button>
-                              <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                                <Edit className="h-4 w-4 mr-1" />
-                                Modifier
-                              </Button>
-                              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
-                                <Trash2 className="h-4 w-4 mr-1" />
-                                Supprimer
-                              </Button>
-                            </div>
+                      )}
+                      <CardContent className="p-5">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                            {post.category || 'Non catégorisé'}
+                          </span>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {new Date(post.published_date).toLocaleDateString('fr-FR')}
                           </div>
                         </div>
-                      </div>
-                    </div>
+                        <h3 className="font-semibold text-xl text-primary mb-3 line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Par <span className="font-medium text-primary">{post.author}</span>
+                        </p>
+                        {post.summary && (
+                          <p className="text-sm text-gray-600 mb-4 line-clamp-3">{post.summary}</p>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <User className="w-3 h-3 mr-1 text-gray-500" />
+                            {getStatusBadge(post.status)}
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
+                              <Eye className="h-4 w-4 mr-1" />
+                              Voir
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
+                              <Edit className="h-4 w-4 mr-1" />
+                              Modifier
+                            </Button>
+                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Supprimer
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))
                 )}
               </div>
@@ -392,50 +436,53 @@ const DashboardBlog = () => {
                   </p>
                 ) : (
                   posts.map((post) => (
-                    <div key={post.id} className="bg-white rounded-lg border shadow-sm hover:shadow-lg transition-all duration-200">
-                      <div className="flex gap-6 p-6">
-                        <div className="flex-shrink-0">
-                          <img 
-                            src={post.image_url || '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg'} 
-                            alt={post.title}
-                            className="w-32 h-32 object-cover rounded-lg shadow-sm"
-                          />
+                    <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                      {post.image_url && (
+                        <div className="h-32 md:h-48">
+                          <img src={post.image_url} alt={post.title} className="w-full h-full object-cover" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-3">
-                                <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
-                                  {post.category || 'Général'}
-                                </span>
-                                {getStatusBadge(post.status)}
-                              </div>
-                              <h3 className="font-semibold text-xl text-gray-900 mb-3 line-clamp-2">{post.title}</h3>
-                              <p className="text-base text-gray-600 mb-4">
-                                Par <span className="font-semibold text-primary">{post.author}</span> - Publié le {new Date(post.published_date).toLocaleDateString('fr-FR')}
-                              </p>
-                              {post.summary && (
-                                <p className="text-gray-700 line-clamp-3 text-base leading-relaxed">{post.summary}</p>
-                              )}
-                            </div>
-                            <div className="flex items-center space-x-3 ml-6">
-                              <Button variant="outline" size="default" onClick={() => handleViewArticle(post)} className="flex items-center gap-2">
-                                <Eye className="h-4 w-4" />
-                                Voir
-                              </Button>
-                              <Button variant="outline" size="default" onClick={() => handleEditArticle(post)} className="flex items-center gap-2">
-                                <Edit className="h-4 w-4" />
-                                Modifier
-                              </Button>
-                              <Button variant="outline" size="default" className="text-red-600 hover:text-red-700 flex items-center gap-2" onClick={() => handleDeleteArticle(post)}>
-                                <Trash2 className="h-4 w-4" />
-                                Supprimer
-                              </Button>
-                            </div>
+                      )}
+                      <CardContent className="p-4 md:p-6">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
+                            {post.category || 'Non catégorisé'}
+                          </span>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {new Date(post.published_date).toLocaleDateString('fr-FR')}
                           </div>
                         </div>
-                      </div>
-                    </div>
+                        <h3 className="font-semibold text-xl text-primary mb-2 md:mb-3 line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Par <span className="font-medium text-primary">{post.author}</span>
+                        </p>
+                        {post.summary && (
+                          <p className="text-gray-600 mb-3 md:mb-4 line-clamp-3 text-sm md:text-base">{post.summary}</p>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <User className="w-3 h-3 mr-1 text-gray-500" />
+                            {getStatusBadge(post.status)}
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button variant="outline" size="default" onClick={() => handleViewArticle(post)} className="flex items-center gap-2">
+                              <Eye className="h-4 w-4" />
+                              Voir
+                            </Button>
+                            <Button variant="outline" size="default" onClick={() => handleEditArticle(post)} className="flex items-center gap-2">
+                              <Edit className="h-4 w-4" />
+                              Modifier
+                            </Button>
+                            <Button variant="outline" size="default" className="text-red-600 hover:text-red-700 flex items-center gap-2" onClick={() => handleDeleteArticle(post)}>
+                              <Trash2 className="h-4 w-4" />
+                              Supprimer
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))
                 )}
               </div>
