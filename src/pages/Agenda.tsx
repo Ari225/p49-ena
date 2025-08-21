@@ -263,100 +263,97 @@ const Agenda = () => {
 
             {/* Activités à venir - Design épuré */}
             <div className="mb-16">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <CardHeader className="bg-gray-50/50 border-b border-gray-100">
-                  <CardTitle className="text-xl font-medium text-gray-900 flex items-center">
-                    <span className="w-1 h-6 bg-primary rounded-full mr-3"></span>
-                    Activités à venir
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6">
-                  {upcomingActivities.length > 0 ? (
-                    <div className={`grid ${getGridClasses()}`}>
-                      {upcomingActivities.map(activity => {
-                        const currentStatus = getActivityStatus(activity);
-                        const isPast = currentStatus === 'Terminé';
-                        
-                        return (
-                          <Card key={activity.id} className={`hover:shadow-lg transition-shadow duration-300 ${isPast ? 'opacity-80' : ''}`}>
-                            {(activity.image || activity.image_url) && (
-                              <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                                <img 
-                                  src={activity.image || activity.image_url} 
-                                  alt={activity.title} 
-                                  className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`} 
-                                />
-                              </div>
-                            )}
-                            <CardContent className="p-4 md:p-6">
-                              <div className="flex justify-between items-start mb-3">
-                                <span className={`px-2 py-1 rounded text-xs font-medium ${isPast ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
-                                  {activity.other_category || activity.category}
-                                </span>
-                                <span className={`px-2 py-1 rounded text-xs font-medium ${currentStatus === 'À venir' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-                                  {currentStatus}
-                                </span>
-                              </div>
-                              
-                              <h4 className={`font-semibold mb-3 ${isPast ? 'text-gray-600' : 'text-primary'} ${isMobile ? 'text-lg' : isTablet ? 'text-lg' : 'text-xl md:text-xl'}`}>
-                                {activity.title}
-                              </h4>
-                              
-                              <div className={`space-y-2 mb-4 ${isPast ? 'text-gray-500' : 'text-gray-700'} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}>
-                                <div className="flex items-center">
-                                  <Calendar className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-                                  <span>{new Date(activity.date).toLocaleDateString('fr-FR', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric'
-                                  })}</span>
-                                </div>
-                                <div className="flex items-center">
-                                  <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-                                  <span>
-                                    {activity.start_time}
-                                    {activity.end_time && ` - ${activity.end_time}`}
-                                  </span>
-                                </div>
-                                <div className="flex items-center">
-                                  <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-                                  <span>{activity.location}</span>
-                                </div>
-                              </div>
-
-                              <div className="flex gap-2">
-                                <Button 
-                                  size="sm" 
-                                  variant="outline" 
-                                  className={`flex-1 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
-                                  onClick={() => handleViewDetails(activity.id)}
-                                >
-                                  Détails
-                                </Button>
-                                {!isPast && (
-                                  <Button 
-                                    size="sm" 
-                                    className={`bg-green-600 hover:bg-green-700 text-white ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
-                                    onClick={() => handleAddToCalendar(activity)}
-                                  >
-                                    <Calendar className="w-4 h-4 mr-1" />
-                                    Ajouter
-                                  </Button>
-                                )}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      <Calendar className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                      <p>Aucune activité à venir</p>
-                    </div>
-                  )}
-                </CardContent>
+              <div className="bg-gray-50/50 border-b border-gray-100 mb-6 pb-4">
+                <div className="text-xl font-medium text-gray-900 flex items-center">
+                  <span className="w-1 h-6 bg-primary rounded-full mr-3"></span>
+                  Activités à venir
+                </div>
               </div>
+              
+              {upcomingActivities.length > 0 ? (
+                <div className={`grid ${getGridClasses()}`}>
+                  {upcomingActivities.map(activity => {
+                    const currentStatus = getActivityStatus(activity);
+                    const isPast = currentStatus === 'Terminé';
+                    
+                    return (
+                      <Card key={activity.id} className={`hover:shadow-lg transition-shadow duration-300 ${isPast ? 'opacity-80' : ''}`}>
+                        {(activity.image || activity.image_url) && (
+                          <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                            <img 
+                              src={activity.image || activity.image_url} 
+                              alt={activity.title} 
+                              className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`} 
+                            />
+                          </div>
+                        )}
+                        <CardContent className="p-4 md:p-6">
+                          <div className="flex justify-between items-start mb-3">
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${isPast ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
+                              {activity.other_category || activity.category}
+                            </span>
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${currentStatus === 'À venir' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                              {currentStatus}
+                            </span>
+                          </div>
+                          
+                          <h4 className={`font-semibold mb-3 ${isPast ? 'text-gray-600' : 'text-primary'} ${isMobile ? 'text-lg' : isTablet ? 'text-lg' : 'text-xl md:text-xl'}`}>
+                            {activity.title}
+                          </h4>
+                          
+                          <div className={`space-y-2 mb-4 ${isPast ? 'text-gray-500' : 'text-gray-700'} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}>
+                            <div className="flex items-center">
+                              <Calendar className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
+                              <span>{new Date(activity.date).toLocaleDateString('fr-FR', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric'
+                              })}</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
+                              <span>
+                                {activity.start_time}
+                                {activity.end_time && ` - ${activity.end_time}`}
+                              </span>
+                            </div>
+                            <div className="flex items-center">
+                              <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
+                              <span>{activity.location}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className={`flex-1 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
+                              onClick={() => handleViewDetails(activity.id)}
+                            >
+                              Détails
+                            </Button>
+                            {!isPast && (
+                              <Button 
+                                size="sm" 
+                                className={`bg-green-600 hover:bg-green-700 text-white ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}
+                                onClick={() => handleAddToCalendar(activity)}
+                              >
+                                <Calendar className="w-4 h-4 mr-1" />
+                                Ajouter
+                              </Button>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <Calendar className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                  <p>Aucune activité à venir</p>
+                </div>
+              )}
             </div>
 
             {/* Activités récentes */}
