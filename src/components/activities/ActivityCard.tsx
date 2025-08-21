@@ -101,7 +101,6 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             className={`flex-1 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`} 
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Edit button clicked for activity:', activity.id);
               onEdit?.(activity);
             }}
           >
@@ -114,7 +113,6 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             className={`text-red-600 hover:text-red-700 hover:border-red-600 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`} 
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Delete button clicked for activity:', activity.id);
               onDelete?.(activity);
             }}
           >
