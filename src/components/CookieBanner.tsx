@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { X, Cookie, Settings } from 'lucide-react';
+import { Cookie, Settings } from 'lucide-react';
 import { useCookieManager } from '@/hooks/useCookieManager';
 
 export const CookieBanner = () => {
@@ -128,14 +128,6 @@ export const CookieBanner = () => {
                 )}
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsVisible(false)}
-              className="mt-1"
-            >
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </div>
       </Card>
