@@ -183,7 +183,7 @@ const DifficultEventsSection = () => {
         if (!open) setPreviewEvent(null);
       }}>
         <DialogContent
-          className="mx-4 sm:mx-6 md:mx-8 w-[calc(100vw-2rem)] sm:w-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto"
+          className={`${isMobile ? 'mx-2 w-[calc(100vw-1rem)] max-w-[95vw]' : 'mx-4 sm:mx-6 md:mx-8 w-[calc(100vw-2rem)] sm:w-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl'} p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto`}
         >
           {previewEvent && (
             <>
