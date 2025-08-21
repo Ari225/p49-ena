@@ -5,6 +5,7 @@ import { ThumbsUp, ThumbsDown, MessageCircle, Edit, Trash2, Check, X, Reply } fr
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import CommentForm from './CommentForm';
+import { getRelativeTime } from '@/utils/timeUtils';
 
 interface CommentProps {
   comment: any;
@@ -180,13 +181,7 @@ const Comment = ({ comment, userAuth, onCommentUpdated, level = 0 }: CommentProp
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">
-            {new Date(comment.created_at).toLocaleDateString('fr-FR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            })}
+            {getRelativeTime(comment.created_at)}
           </span>
           {canEditOrDeleteComment(comment) && (
             <div className="flex gap-1">
