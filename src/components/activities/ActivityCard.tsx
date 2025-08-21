@@ -95,11 +95,29 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
         </div>
 
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" className={`flex-1 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`} onClick={() => onEdit?.(activity)}>
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className={`flex-1 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`} 
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log('Edit button clicked for activity:', activity.id);
+              onEdit?.(activity);
+            }}
+          >
             <Edit className="w-4 h-4 mr-2" />
             Modifier
           </Button>
-          <Button size="sm" variant="outline" className={`text-red-600 hover:text-red-700 hover:border-red-600 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`} onClick={() => onDelete?.(activity)}>
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className={`text-red-600 hover:text-red-700 hover:border-red-600 ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`} 
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log('Delete button clicked for activity:', activity.id);
+              onDelete?.(activity);
+            }}
+          >
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>

@@ -46,13 +46,20 @@ const DashboardActivites = () => {
   };
 
   const handleEditActivity = (activity: Activity) => {
+    console.log('handleEditActivity called with:', activity.id);
     setSelectedActivity(activity);
     setShowEditForm(true);
   };
 
   const handleDeleteActivity = async (activity: Activity) => {
+    console.log('handleDeleteActivity called with:', activity.id);
     if (confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')) {
-      await deleteActivity(activity.id);
+      try {
+        await deleteActivity(activity.id);
+        console.log('Activity deleted successfully:', activity.id);
+      } catch (error) {
+        console.error('Error deleting activity:', error);
+      }
     }
   };
 
