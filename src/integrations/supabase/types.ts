@@ -129,6 +129,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          parent_comment_id: string | null
           updated_at: string
           user_id: string | null
         }
@@ -139,6 +140,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          parent_comment_id?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -149,6 +151,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          parent_comment_id?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -158,6 +161,13 @@ export type Database = {
             columns: ["article_id"]
             isOneToOne: false
             referencedRelation: "blog_articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_article_comments_parent_comment_id_fkey"
+            columns: ["parent_comment_id"]
+            isOneToOne: false
+            referencedRelation: "blog_article_comments"
             referencedColumns: ["id"]
           },
         ]
@@ -268,6 +278,41 @@ export type Database = {
             columns: ["validated_by"]
             isOneToOne: false
             referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          like_type: string
+          user_id: string | null
+          visitor_ip: string | null
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          like_type: string
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          like_type?: string
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "blog_article_comments"
             referencedColumns: ["id"]
           },
         ]

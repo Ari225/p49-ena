@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight, ThumbsUp, ThumbsDown, MessageCircle, Send, Edit, Trash2, Check, X } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { toast } from 'sonner';
+import CommentsList from '@/components/blog/CommentsList';
 const BlogDetail = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
@@ -18,36 +17,14 @@ const BlogDetail = () => {
   const [loading, setLoading] = useState(true);
   const [likes, setLikes] = useState({ likes: 0, dislikes: 0 });
   const [userLike, setUserLike] = useState<string | null>(null);
-  const [comments, setComments] = useState<any[]>([]);
-  const [newComment, setNewComment] = useState('');
-  const [commenterName, setCommenterName] = useState('');
-  const [userAuth, setUserAuth] = useState<any>(null);
-  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
-  const [editingContent, setEditingContent] = useState('');
 
-  useEffect(() => {
-    // Récupérer les informations utilisateur au chargement
-    const getUserAuth = async () => {
-      const { data: user } = await supabase.auth.getUser();
-      if (user.user) {
-        const { data: userData } = await supabase
-          .from('app_users')
-          .select('role')
-          .eq('id', user.user.id)
-          .single();
-        setUserAuth({ user: user.user, userData });
-      } else {
-        setUserAuth(user);
-      }
-    };
-    getUserAuth();
-  }, []);
   useEffect(() => {
     if (id) {
       fetchBlogData();
-      fetchLikesAndComments();
+      fetchLikes();
     }
   }, [id]);
+  
   const fetchBlogData = async () => {
     try {
       const {
@@ -65,7 +42,8 @@ const BlogDetail = () => {
       setLoading(false);
     }
   };
-  const fetchLikesAndComments = async () => {
+  
+  const fetchLikes = async () => {
     try {
       // Récupérer les likes
       const { data: likesData } = await supabase
@@ -79,26 +57,16 @@ const BlogDetail = () => {
         setLikes({ likes: likesCount, dislikes: dislikesCount });
 
         // Vérifier si l'utilisateur a déjà liké
+        const { data: user } = await supabase.auth.getUser();
         const userLikeData = likesData.find(like => 
-          like.user_id === userAuth?.user?.id
+          like.user_id === user.user?.id
         );
         if (userLikeData) {
           setUserLike(userLikeData.like_type);
         }
       }
-
-      // Récupérer les commentaires
-      const { data: commentsData } = await supabase
-        .from('blog_article_comments')
-        .select('*')
-        .eq('article_id', id)
-        .order('created_at', { ascending: true });
-
-      if (commentsData) {
-        setComments(commentsData);
-      }
     } catch (error) {
-      console.error('Erreur lors de la récupération des likes et commentaires:', error);
+      console.error('Erreur lors de la récupération des likes:', error);
     }
   };
   const formatContent = (content: string) => {
@@ -140,121 +108,11 @@ const BlogDetail = () => {
         setUserLike(null);
       }
 
-      fetchLikesAndComments();
+      fetchLikes();
     } catch (error) {
       console.error('Erreur lors du like:', error);
       toast.error('Erreur lors de l\'enregistrement de votre réaction');
     }
-  };
-
-  const handleAddComment = async () => {
-    if (!newComment.trim()) return;
-
-    // Vérification du nom obligatoire pour les visiteurs non connectés
-    if (!userAuth?.user && !commenterName.trim()) {
-      toast.error('Veuillez saisir votre nom');
-      return;
-    }
-
-    try {
-      const { data: user } = await supabase.auth.getUser();
-      let authorName = '';
-      let authorRole = 'Visiteur';
-
-      // Si l'utilisateur est connecté, utiliser son display name de l'authentification
-      if (user.user) {
-        authorName = user.user.user_metadata?.display_name || 
-                    user.user.user_metadata?.full_name || 
-                    `${user.user.user_metadata?.first_name || ''} ${user.user.user_metadata?.last_name || ''}`.trim() ||
-                    'Utilisateur';
-        authorRole = 'Membre connecté';
-      } else {
-        // Pour les visiteurs non connectés, utiliser le nom saisi
-        authorName = commenterName.trim();
-      }
-
-      const { error } = await supabase
-        .from('blog_article_comments')
-        .insert({
-          article_id: id,
-          user_id: user.user?.id,
-          author_name: authorName,
-          author_role: authorRole,
-          content: newComment
-        });
-
-      if (error) throw error;
-
-      setNewComment('');
-      setCommenterName('');
-      fetchLikesAndComments();
-      toast.success('Commentaire ajouté avec succès');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du commentaire:', error);
-      toast.error('Erreur lors de l\'ajout du commentaire');
-    }
-  };
-
-  const handleEditComment = async (commentId: string) => {
-    if (!editingContent.trim()) return;
-
-    try {
-      const { error } = await supabase
-        .from('blog_article_comments')
-        .update({ content: editingContent })
-        .eq('id', commentId);
-
-      if (error) throw error;
-
-      setEditingCommentId(null);
-      setEditingContent('');
-      fetchLikesAndComments();
-      toast.success('Commentaire modifié avec succès');
-    } catch (error) {
-      console.error('Erreur lors de la modification du commentaire:', error);
-      toast.error('Erreur lors de la modification du commentaire');
-    }
-  };
-
-  const handleDeleteComment = async (commentId: string) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('blog_article_comments')
-        .delete()
-        .eq('id', commentId);
-
-      if (error) throw error;
-
-      fetchLikesAndComments();
-      toast.success('Commentaire supprimé avec succès');
-    } catch (error) {
-      console.error('Erreur lors de la suppression du commentaire:', error);
-      toast.error('Erreur lors de la suppression du commentaire');
-    }
-  };
-
-  const startEditComment = (comment: any) => {
-    setEditingCommentId(comment.id);
-    setEditingContent(comment.content);
-  };
-
-  const cancelEdit = () => {
-    setEditingCommentId(null);
-    setEditingContent('');
-  };
-
-  const canEditOrDeleteComment = (comment: any) => {
-    // L'utilisateur peut modifier/supprimer son propre commentaire
-    if (userAuth?.user && comment.user_id === userAuth.user.id) {
-      return true;
-    }
-    // L'administrateur peut supprimer n'importe quel commentaire
-    return userAuth?.user && userAuth.userData?.role && 
-           ['admin_principal', 'admin_secondaire'].includes(userAuth.userData.role);
   };
 
   const handleShare = async () => {
@@ -403,115 +261,7 @@ const BlogDetail = () => {
             </div>
 
             {/* Comments Section */}
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <MessageCircle className="h-5 w-5 mr-2" />
-                Commentaires ({comments.length})
-              </h3>
-
-              {/* Add Comment */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <Textarea
-                  placeholder="Écrivez votre commentaire..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  className="mb-3"
-                />
-                {!userAuth?.user && (
-                  <Input
-                    placeholder="Votre nom *"
-                    value={commenterName}
-                    onChange={(e) => setCommenterName(e.target.value)}
-                    className="mb-3"
-                    required
-                  />
-                )}
-                <Button onClick={handleAddComment} size="sm" className="flex items-center gap-2">
-                  <Send className="h-4 w-4" />
-                  Publier le commentaire
-                </Button>
-              </div>
-
-              {/* Comments List */}
-              <div className="space-y-4">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-gray-900">{comment.author_name}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">
-                          {new Date(comment.created_at).toLocaleDateString('fr-FR', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </span>
-                        {canEditOrDeleteComment(comment) && (
-                          <div className="flex gap-1">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => startEditComment(comment)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleDeleteComment(comment.id)}
-                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {editingCommentId === comment.id ? (
-                      <div className="space-y-2">
-                        <Textarea
-                          value={editingContent}
-                          onChange={(e) => setEditingContent(e.target.value)}
-                          className="min-h-[80px]"
-                        />
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            onClick={() => handleEditComment(comment.id)}
-                            className="flex items-center gap-2"
-                          >
-                            <Check className="h-4 w-4" />
-                            Sauvegarder
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={cancelEdit}
-                            className="flex items-center gap-2"
-                          >
-                            <X className="h-4 w-4" />
-                            Annuler
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <p className="text-gray-700">{comment.content}</p>
-                    )}
-                  </div>
-                ))}
-                {comments.length === 0 && (
-                  <p className="text-gray-500 text-center py-8">
-                    Aucun commentaire pour le moment. Soyez le premier à commenter !
-                  </p>
-                )}
-              </div>
-            </div>
+            <CommentsList articleId={id} />
           </div>
         </div>
       </div>
