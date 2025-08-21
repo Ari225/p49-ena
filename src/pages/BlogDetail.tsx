@@ -170,44 +170,42 @@ const BlogDetail = () => {
 
         {/* Content Section */}
         <div className="max-w-4xl mx-auto px-6 py-12">
-          <article className="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
-            {/* Tags */}
-            {blog.tags && <div className="flex flex-wrap gap-2 mb-8">
-                {blog.tags.map((tag, index) => <span key={index} className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full font-medium border border-primary/20">
-                    #{tag}
-                  </span>)}
-              </div>}
+          {/* Tags */}
+          {blog.tags && <div className="flex flex-wrap gap-2 mb-8">
+              {blog.tags.map((tag, index) => <span key={index} className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full font-medium border border-primary/20">
+                  #{tag}
+                </span>)}
+            </div>}
 
-            {/* Article Content */}
-            <div className="prose prose-lg max-w-none">
-              <div className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-bold [&>h3]:text-2xl [&>h3]:mb-4 [&>h3]:mt-8 [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-6 [&>p]:leading-relaxed [&>ul>li]:mb-2 [&>blockquote]:my-8 [&>blockquote]:p-6 [&>blockquote]:bg-gray-50 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-gray-700 [&>blockquote]:rounded-r-lg" dangerouslySetInnerHTML={{
-              __html: formatContent(blog.content)
-            }} />
-            </div>
+          {/* Article Content */}
+          <div className="prose prose-lg max-w-none">
+            <div className="text-gray-700 leading-relaxed [&>h3]:text-gray-900 [&>h3]:font-bold [&>h3]:text-2xl [&>h3]:mb-4 [&>h3]:mt-8 [&>ul]:text-gray-700 [&>p]:text-gray-700 [&>p]:mb-6 [&>p]:leading-relaxed [&>ul>li]:mb-2 [&>blockquote]:my-8 [&>blockquote]:p-6 [&>blockquote]:bg-gray-50 [&>blockquote]:border-l-4 [&>blockquote]:border-primary [&>blockquote]:italic [&>blockquote]:text-gray-700 [&>blockquote]:rounded-r-lg" dangerouslySetInnerHTML={{
+            __html: formatContent(blog.content)
+          }} />
+          </div>
 
-            {/* Author Section */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-lg">
-                  {blog.author_image ? <img src={blog.author_image} alt={blog.author_name || 'Auteur'} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                      <User className="h-8 w-8 text-white" />
-                    </div>}
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {blog.author_name || 'Auteur anonyme'}
-                  </h3>
-                  <p className="text-gray-600 mb-4">
-                    {blog.author_function || 'Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.'}
-                  </p>
-                  <Button variant="outline" size="sm" onClick={handleShare} className="text-gray-600 border-gray-300 hover:bg-gray-50">
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Partager cet article
-                  </Button>
-                </div>
+          {/* Author Section */}
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <div className="flex items-start space-x-6">
+              <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-lg">
+                {blog.author_image ? <img src={blog.author_image} alt={blog.author_name || 'Auteur'} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+                    <User className="h-8 w-8 text-white" />
+                  </div>}
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {blog.author_name || 'Auteur anonyme'}
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  {blog.author_function || 'Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.'}
+                </p>
+                <Button variant="outline" size="sm" onClick={handleShare} className="text-gray-600 border-gray-300 hover:bg-gray-50">
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Partager cet article
+                </Button>
               </div>
             </div>
-          </article>
+          </div>
         </div>
 
         {/* Related Articles */}
