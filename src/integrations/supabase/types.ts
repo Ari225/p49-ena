@@ -677,6 +677,51 @@ export type Database = {
           },
         ]
       }
+      suggestions: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string
+          email: string
+          id: string
+          name: string
+          phone: string | null
+          priority: string
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description: string
+          email: string
+          id?: string
+          name: string
+          phone?: string | null
+          priority?: string
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          email?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          priority?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           content: string

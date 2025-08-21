@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Lightbulb, Send, MessageSquare, BookOpen, Newspaper } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 const Suggestions = () => {
   const isMobile = useIsMobile();
@@ -58,8 +59,19 @@ const Suggestions = () => {
     }
 
     try {
-      // Ici vous pourrez ajouter l'intégration avec Supabase pour enregistrer les suggestions
-      console.log('Suggestion soumise:', formData);
+      const { error } = await supabase
+        .from('suggestions')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          category: formData.category,
+          subject: formData.subject,
+          description: formData.description,
+          priority: formData.priority
+        });
+
+      if (error) throw error;
       
       toast({
         title: "Suggestion envoyée !",
@@ -111,30 +123,22 @@ const Suggestions = () => {
           </div>
         </section>
 
-        {/* Introduction */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        {/* Categories Overview */}
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-gradient-to-br from-accent/5 to-primary/5`}>
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-primary mb-6">Votre Voix Compte</h2>
-                <p className="text-gray-700 leading-relaxed text-lg">
-                  Vous avez des idées d'articles, de sujets à traiter ou de thématiques à développer ? 
-                  Partagez vos suggestions avec notre équipe éditoriale. Ensemble, construisons un contenu 
-                  qui répond aux attentes et besoins de notre communauté.
-                </p>
-              </div>
-
-              {/* Categories */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {categories.slice(0, 3).map((category) => (
-                  <Card key={category.value} className="text-center p-4 border-2 border-accent/20 hover:border-primary/30 transition-colors">
-                    <CardContent className="p-4">
-                      <category.icon className="h-12 w-12 text-primary mx-auto mb-4" />
-                      <h3 className="font-semibold text-primary mb-2">{category.label}</h3>
-                      <p className="text-sm text-gray-600">
-                        {category.value === 'blog' && "Proposez des thèmes d'articles de blog"}
-                        {category.value === 'journal' && "Suggérez des sujets pour notre journal"}
-                        {category.value === 'actualites' && "Signalez des actualités importantes"}
+                  <Card key={category.value} className="text-center p-6 border-2 border-accent/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg bg-white/80 backdrop-blur-sm">
+                    <CardContent className="p-6">
+                      <div className="bg-primary/10 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                        <category.icon className="h-10 w-10 text-primary" />
+                      </div>
+                      <h3 className="font-bold text-xl text-primary mb-3">{category.label}</h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {category.value === 'blog' && "Proposez des thèmes d'articles de blog innovants et pertinents"}
+                        {category.value === 'journal' && "Suggérez des sujets pour enrichir notre journal institutionnel"}
+                        {category.value === 'actualites' && "Signalez des actualités importantes à traiter"}
                       </p>
                     </CardContent>
                   </Card>
@@ -145,12 +149,20 @@ const Suggestions = () => {
         </section>
 
         {/* Suggestion Form */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
-            <div className="max-w-2xl mx-auto">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl text-primary text-center">
+            <div className="max-w-3xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold text-primary mb-4">Partagez vos Idées</h2>
+                <p className="text-gray-600 text-lg">
+                  Votre contribution est précieuse pour enrichir notre contenu éditorial
+                </p>
+              </div>
+              
+              <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
+                <CardHeader className="pb-8">
+                  <CardTitle className="text-2xl text-primary text-center flex items-center justify-center gap-3">
+                    <Lightbulb className="h-6 w-6" />
                     Formulaire de Suggestion
                   </CardTitle>
                 </CardHeader>
@@ -277,17 +289,22 @@ const Suggestions = () => {
         </section>
 
         {/* Contact Information */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-gradient-to-r from-primary to-primary/80`}>
           <div className="container mx-auto px-4">
-            <div className="bg-primary text-white rounded-lg p-8 text-center">
-              <h2 className="text-2xl font-bold mb-4">Autres Moyens de Contact</h2>
-              <p className="mb-6 opacity-90">
-                Vous pouvez également nous contacter directement par email ou téléphone
+            <div className="max-w-4xl mx-auto text-center text-white">
+              <h2 className="text-3xl font-bold mb-6">Restons en Contact</h2>
+              <p className="text-xl mb-8 opacity-90">
+                D'autres moyens pour nous faire parvenir vos suggestions
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <div>Email : suggestions@perspectives49.ci</div>
-                <div>|</div>
-                <div>Tél : +225 XX XX XX XX XX</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <h3 className="text-lg font-semibold mb-2">Par Email</h3>
+                  <p className="opacity-90">suggestions@perspectives49.ci</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <h3 className="text-lg font-semibold mb-2">Par Téléphone</h3>
+                  <p className="opacity-90">+225 XX XX XX XX XX</p>
+                </div>
               </div>
             </div>
           </div>
