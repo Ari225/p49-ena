@@ -19,6 +19,9 @@ const DashboardActivites = () => {
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+
+  // Debug: Log state changes
+  console.log('Component render - showEditForm:', showEditForm, 'selectedActivity:', selectedActivity?.id);
   const { activities, loading, error, refetch, deleteActivity } = useActivities();
 
   if (!user || !isAdmin(user)) {
@@ -47,19 +50,29 @@ const DashboardActivites = () => {
 
   const handleEditActivity = (activity: Activity) => {
     console.log('handleEditActivity called with:', activity.id);
+    console.log('Setting selectedActivity to:', activity);
     setSelectedActivity(activity);
+    console.log('Setting showEditForm to true');
     setShowEditForm(true);
+    console.log('showEditForm state should now be:', true);
   };
 
   const handleDeleteActivity = async (activity: Activity) => {
     console.log('handleDeleteActivity called with:', activity.id);
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')) {
+    console.log('Showing confirmation dialog');
+    const confirmed = confirm('Êtes-vous sûr de vouloir supprimer cette activité ?');
+    console.log('Confirmation result:', confirmed);
+    
+    if (confirmed) {
       try {
+        console.log('Calling deleteActivity for:', activity.id);
         await deleteActivity(activity.id);
         console.log('Activity deleted successfully:', activity.id);
       } catch (error) {
         console.error('Error deleting activity:', error);
       }
+    } else {
+      console.log('Deletion cancelled by user');
     }
   };
 
