@@ -12,12 +12,7 @@ const Archives = () => {
     loading,
     searchTerm,
     setSearchTerm,
-    selectedMonth,
-    setSelectedMonth,
-    selectedYear,
-    setSelectedYear,
-    clearFilters,
-    availableYears
+    clearFilters
   } = useArchivesData();
 
   if (loading) {
@@ -38,11 +33,6 @@ const Archives = () => {
         <ArchivesFilters
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          selectedMonth={selectedMonth}
-          setSelectedMonth={setSelectedMonth}
-          selectedYear={selectedYear}
-          setSelectedYear={setSelectedYear}
-          availableYears={availableYears}
           clearFilters={clearFilters}
           filteredCount={filteredJournals.length}
         />

@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface Archive {
   id: string;
@@ -32,40 +33,31 @@ export const useArchivesData = () => {
   const fetchArchives = async () => {
     try {
       setLoading(true);
-      // Mock data instead of Supabase
-      const mockArchives: Archive[] = [
-        {
-          id: '1',
-          title: 'Perspectives 49 - Janvier 2024',
-          year: 2024,
-          month: 'Janvier',
-          category: 'Revue mensuelle',
-          file_url: '/lovable-uploads/sample.pdf',
-          cover_image_url: '/lovable-uploads/564fd51c-6433-44ea-8ab6-64d196e0a996.jpg',
-          description: 'Édition de janvier 2024 du journal Perspectives 49',
-          summary: 'Édition de janvier 2024 du journal Perspectives 49',
-          pdf_url: '/lovable-uploads/sample.pdf',
-          publish_date: '2024-01-15',
-          page_count: 32,
-          status: 'published'
-        },
-        {
-          id: '2',
-          title: 'Perspectives 49 - Décembre 2023',
-          year: 2023,
-          month: 'Décembre',
-          category: 'Revue mensuelle',
-          file_url: '/lovable-uploads/sample.pdf',
-          cover_image_url: '/lovable-uploads/59b7fe65-b4e7-41e4-b1fd-0f9cb602d47d.jpg',
-          description: 'Édition de décembre 2023 du journal Perspectives 49',
-          summary: 'Édition de décembre 2023 du journal Perspectives 49',
-          pdf_url: '/lovable-uploads/sample.pdf',
-          publish_date: '2023-12-15',
-          page_count: 28,
-          status: 'published'
-        }
-      ];
-      setArchives(mockArchives);
+      const { data, error } = await supabase
+        .from('journal_editions')
+        .select('*')
+        .eq('status', 'archive')
+        .order('publish_date', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedArchives: Archive[] = (data || []).map(edition => ({
+        id: edition.id,
+        title: edition.title,
+        year: new Date(edition.publish_date).getFullYear(),
+        month: new Date(edition.publish_date).toLocaleDateString('fr-FR', { month: 'long' }),
+        category: 'Journal archivé',
+        file_url: edition.pdf_url || '',
+        cover_image_url: edition.cover_image_url,
+        description: edition.summary,
+        summary: edition.summary || '',
+        pdf_url: edition.pdf_url || '',
+        publish_date: edition.publish_date,
+        page_count: edition.page_count || 0,
+        status: edition.status
+      }));
+
+      setArchives(formattedArchives);
     } catch (err) {
       setError('Erreur lors du chargement des archives');
     } finally {
@@ -79,12 +71,9 @@ export const useArchivesData = () => {
         archive.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         archive.description?.toLowerCase().includes(searchTerm.toLowerCase());
       
-      const matchesMonth = selectedMonth === '' || archive.month === selectedMonth;
-      const matchesYear = selectedYear === '' || archive.year.toString() === selectedYear;
-      
-      return matchesSearch && matchesMonth && matchesYear;
+      return matchesSearch;
     });
-  }, [archives, searchTerm, selectedMonth, selectedYear]);
+  }, [archives, searchTerm]);
 
   const availableYears = useMemo(() => {
     const years = [...new Set(archives.map(archive => archive.year.toString()))];
@@ -93,8 +82,6 @@ export const useArchivesData = () => {
 
   const clearFilters = () => {
     setSearchTerm('');
-    setSelectedMonth('');
-    setSelectedYear('');
   };
 
   return { 
@@ -104,11 +91,7 @@ export const useArchivesData = () => {
     filteredJournals,
     searchTerm,
     setSearchTerm,
-    selectedMonth,
-    setSelectedMonth,
-    selectedYear,
-    setSelectedYear,
     clearFilters,
-    availableYears
+    availableYears: []
   };
 };

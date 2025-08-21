@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Eye, Calendar } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import PDFViewer from '@/components/PDFViewer';
+import { toast } from 'sonner';
 
 interface JournalEdition {
   id: string;
@@ -22,6 +24,33 @@ interface JournalCardProps {
 
 const JournalCard = ({ journal }: JournalCardProps) => {
   const isMobile = useIsMobile();
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (!journal.pdf_url) {
+      toast.error('Document PDF non disponible');
+      return;
+    }
+
+    try {
+      setIsDownloading(true);
+      const response = await fetch(journal.pdf_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${journal.title}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      toast.success('Téléchargement réussi');
+    } catch (error) {
+      toast.error('Erreur lors du téléchargement');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
   
   return (
     <Card className={`hover:shadow-lg transition-shadow duration-300 ${isMobile ? 'mb-4' : ''}`}>
@@ -53,26 +82,35 @@ const JournalCard = ({ journal }: JournalCardProps) => {
         )}
         
         <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-          {journal.page_count && (
+          {journal.page_count > 0 && (
             <span>{journal.page_count} pages</span>
           )}
         </div>
 
         <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'space-x-2'}`}>
-          <Button 
-            size={isMobile ? "sm" : "sm"} 
-            className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full justify-center' : 'flex-1'}`}
-          >
-            <Eye className="h-3 w-3 mr-1" />
-            Lire
-          </Button>
+          <PDFViewer
+            pdfUrl={journal.pdf_url}
+            title={journal.title}
+            triggerButton={
+              <Button 
+                size={isMobile ? "sm" : "sm"} 
+                className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full justify-center' : 'flex-1'}`}
+                disabled={!journal.pdf_url}
+              >
+                <Eye className="h-3 w-3 mr-1" />
+                Lire
+              </Button>
+            }
+          />
           <Button 
             size={isMobile ? "sm" : "sm"} 
             variant="outline" 
             className={`border-primary text-primary hover:bg-primary hover:text-white ${isMobile ? 'w-full justify-center' : 'flex-1'}`}
+            onClick={handleDownload}
+            disabled={!journal.pdf_url || isDownloading}
           >
             <Download className="h-3 w-3 mr-1" />
-            PDF
+            {isDownloading ? 'Téléchargement...' : 'PDF'}
           </Button>
         </div>
       </CardContent>
