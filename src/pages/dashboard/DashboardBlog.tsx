@@ -6,7 +6,9 @@ import AdminSidebar from '@/components/AdminSidebar';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye, Trash2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { FileText, Edit, Eye, Trash2 } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import BlogFormDialog from '@/components/blog/BlogFormDialog';
@@ -39,6 +41,8 @@ const DashboardBlog = () => {
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
+  const [viewingArticle, setViewingArticle] = useState<BlogPost | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; article: BlogPost | null }>({ isOpen: false, article: null });
 
   if (!user) {
     return <div>Non autorisé</div>;
@@ -134,6 +138,39 @@ const DashboardBlog = () => {
     }
   };
 
+  const handleViewArticle = (post: BlogPost) => {
+    setViewingArticle(post);
+  };
+
+  const handleEditArticle = (post: BlogPost) => {
+    setEditingArticle(post);
+    setIsFormOpen(true);
+  };
+
+  const handleDeleteArticle = (post: BlogPost) => {
+    setDeleteConfirm({ isOpen: true, article: post });
+  };
+
+  const confirmDeleteArticle = async () => {
+    if (!deleteConfirm.article) return;
+
+    try {
+      const { error } = await supabase
+        .from('blog_articles')
+        .delete()
+        .eq('id', deleteConfirm.article.id);
+
+      if (error) throw error;
+
+      toast.success('Article supprimé avec succès');
+      setDeleteConfirm({ isOpen: false, article: null });
+      fetchPosts();
+    } catch (error) {
+      console.error('Error deleting article:', error);
+      toast.error('Erreur lors de la suppression de l\'article');
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'valide':
@@ -167,17 +204,7 @@ const DashboardBlog = () => {
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">Gestion des<br />Articles de Blog</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer tous les articles de blog (Admin)</p>
-          </div>
-
-          <div className="mb-4">
-            <Button 
-              className="bg-primary hover:bg-primary/90 w-full"
-              onClick={() => setIsFormOpen(true)}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvel article
-            </Button>
+            <p className="text-gray-600 mt-1 text-sm">Tous les articles de blog des rédacteurs</p>
           </div>
 
           <Card>
@@ -208,13 +235,13 @@ const DashboardBlog = () => {
                       <div className="flex items-center justify-between">
                         {getStatusBadge(post.status)}
                         <div className="flex space-x-1">
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -244,17 +271,7 @@ const DashboardBlog = () => {
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
-            <p className="text-gray-600 mt-2">Gérer les articles du blog</p>
-          </div>
-
-          <div className="mb-6">
-            <Button 
-              className="bg-primary hover:bg-primary/90"
-              onClick={() => setIsFormOpen(true)}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvel article
-            </Button>
+            <p className="text-gray-600 mt-2">Tous les articles de blog des rédacteurs</p>
           </div>
 
           <Card>
@@ -284,13 +301,13 @@ const DashboardBlog = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         {getStatusBadge(post.status)}
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -321,17 +338,7 @@ const DashboardBlog = () => {
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
-            <p className="text-gray-600 mt-2">Gérer les articles du blog</p>
-          </div>
-
-          <div className="mb-6">
-            <Button 
-              className="bg-primary hover:bg-primary/90"
-              onClick={() => setIsFormOpen(true)}
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvel article
-            </Button>
+            <p className="text-gray-600 mt-2">Tous les articles de blog des rédacteurs</p>
           </div>
 
           <Card>
@@ -361,13 +368,13 @@ const DashboardBlog = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         {getStatusBadge(post.status)}
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -382,10 +389,54 @@ const DashboardBlog = () => {
       
       <BlogFormDialog
         isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
+        onClose={() => {
+          setIsFormOpen(false);
+          setEditingArticle(null);
+        }}
         onSubmit={handleCreateArticle}
         editingArticle={editingArticle}
       />
+
+      {/* Dialog pour voir un article */}
+      <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{viewingArticle?.title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <span>Par {viewingArticle?.author}</span>
+              <span>{viewingArticle?.published_date && new Date(viewingArticle.published_date).toLocaleDateString('fr-FR')}</span>
+              {getStatusBadge(viewingArticle?.status || '')}
+            </div>
+            {viewingArticle?.image_url && (
+              <img src={viewingArticle.image_url} alt={viewingArticle.title} className="w-full h-64 object-cover rounded-lg" />
+            )}
+            <div className="prose max-w-none">
+              <p className="text-lg text-muted-foreground">{viewingArticle?.summary}</p>
+              <div dangerouslySetInnerHTML={{ __html: viewingArticle?.content || '' }} />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog de confirmation de suppression */}
+      <AlertDialog open={deleteConfirm.isOpen} onOpenChange={(isOpen) => !isOpen && setDeleteConfirm({ isOpen: false, article: null })}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir supprimer l'article "{deleteConfirm.article?.title}" ? Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteConfirm({ isOpen: false, article: null })}>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteArticle} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
