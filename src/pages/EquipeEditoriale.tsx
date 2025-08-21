@@ -1,62 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mail, Phone, Briefcase } from 'lucide-react';
+import { Mail, Briefcase, Crown, Shield, Edit } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
+import { AppUser } from '@/types/user';
 
 const EquipeEditoriale = () => {
   const isMobile = useIsMobile();
-  
-  const editorialTeam = [
-    {
-      name: "Dr. Marie KOUAME",
-      role: "Rédactrice en Chef",
-      bio: "Docteure en Sciences Politiques, spécialisée en administration publique. Plus de 15 ans d'expérience dans le journalisme institutionnel.",
-      email: "marie.kouame@p49.ci",
-      phone: "+225 07 xx xx xx xx",
-      image: "/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-    },
-    {
-      name: "Jean-Baptiste ASSI",
-      role: "Rédacteur en Chef Adjoint",
-      bio: "Journaliste professionnel, ancien correspondant de presse. Expert en communication institutionnelle et relations publiques.",
-      email: "jb.assi@p49.ci",
-      phone: "+225 05 xx xx xx xx",
-      image: "/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-    },
-    {
-      name: "Fatou DIABATE",
-      role: "Responsable Editorial",
-      bio: "Spécialiste en communication digitale et gestion de contenu. Coordonne la production éditoriale et supervise la ligne éditoriale.",
-      email: "fatou.diabate@p49.ci",
-      phone: "+225 01 xx xx xx xx",
-      image: "/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-    },
-    {
-      name: "Kouadio MENSAH",
-      role: "Rédacteur Senior",
-      bio: "Ancien fonctionnaire, expert en administration publique. Spécialisé dans les articles sur les réformes et modernisation de l'État.",
-      email: "kouadio.mensah@p49.ci",
-      phone: "+225 09 xx xx xx xx",
-      image: "/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-    },
-    {
-      name: "Aminata TRAORE",
-      role: "Rédactrice",
-      bio: "Journaliste spécialisée dans les questions sociales et de développement. Couvre les actualités relatives aux politiques publiques.",
-      email: "aminata.traore@p49.ci",
-      phone: "+225 03 xx xx xx xx",
-      image: "/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
-    },
-    {
-      name: "Pascal KONE",
-      role: "Photographe & Designer",
-      bio: "Responsable de l'identité visuelle du journal. Conception graphique et photographies officielles des événements du réseau.",
-      email: "pascal.kone@p49.ci",
-      phone: "+225 02 xx xx xx xx",
-      image: "/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png"
+  const [editorialTeam, setEditorialTeam] = useState<AppUser[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEditorialTeam = async () => {
+      try {
+        const { data, error } = await supabase.rpc('get_users_list');
+        
+        if (error) {
+          console.error('Erreur lors de la récupération des utilisateurs:', error);
+          return;
+        }
+        
+        // Filtrer pour garder seulement les administrateurs et rédacteurs
+        const team = data?.filter((user: AppUser) => 
+          user.role === 'admin_principal' || 
+          user.role === 'admin_secondaire' || 
+          user.role === 'redacteur'
+        ) || [];
+        
+        setEditorialTeam(team);
+      } catch (error) {
+        console.error('Erreur:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEditorialTeam();
+  }, []);
+
+  const getRoleIcon = (role: string) => {
+    switch (role) {
+      case 'admin_principal':
+        return <Crown className="h-5 w-5" />;
+      case 'admin_secondaire':
+        return <Shield className="h-5 w-5" />;
+      case 'redacteur':
+        return <Edit className="h-5 w-5" />;
+      default:
+        return <Edit className="h-5 w-5" />;
     }
-  ];
+  };
+
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'admin_principal':
+        return 'Administrateur Principal';
+      case 'admin_secondaire':
+        return 'Administrateur Secondaire';
+      case 'redacteur':
+        return 'Rédacteur';
+      default:
+        return 'Rédacteur';
+    }
+  };
+
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'admin_principal':
+        return 'text-purple-700';
+      case 'admin_secondaire':
+        return 'text-red-700';
+      case 'redacteur':
+        return 'text-blue-700';
+      default:
+        return 'text-blue-700';
+    }
+  };
 
   return (
     <Layout>
@@ -101,36 +121,58 @@ const EquipeEditoriale = () => {
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-primary mb-12 text-center">Nos Membres</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {editorialTeam.map((member, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-                  <CardContent className="p-6">
-                    <div className="text-center mb-4">
-                      <img 
-                        src={member.image} 
-                        alt={member.name}
-                        className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-primary/20"
-                      />
-                      <h3 className="text-xl font-bold text-primary mb-1">{member.name}</h3>
-                      <p className="text-secondary font-semibold mb-3">{member.role}</p>
-                    </div>
-                    
-                    <p className="text-gray-700 text-sm leading-relaxed mb-4">{member.bio}</p>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Mail className="h-4 w-4 mr-2 text-primary" />
-                        <span>{member.email}</span>
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-4 text-gray-600">Chargement de l'équipe...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {editorialTeam.map((member) => (
+                  <Card key={member.id} className="hover:shadow-lg transition-shadow duration-300">
+                    <CardContent className="p-6">
+                      <div className="text-center mb-4">
+                        <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl font-bold border-4 border-primary/20">
+                          {member.image_url ? (
+                            <img 
+                              src={member.image_url} 
+                              alt={`${member.first_name} ${member.last_name}`}
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          ) : (
+                            `${member.first_name?.[0] || ''}${member.last_name?.[0] || ''}`
+                          )}
+                        </div>
+                        <h3 className="text-xl font-bold text-primary mb-1">
+                          {member.first_name} {member.last_name}
+                        </h3>
+                        <div className={`flex items-center justify-center gap-2 mb-2 ${getRoleColor(member.role)} font-semibold`}>
+                          {getRoleIcon(member.role)}
+                          <span>{getRoleLabel(member.role)}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="h-4 w-4 mr-2 text-primary" />
-                        <span>{member.phone}</span>
+                      
+                      <div className="space-y-3">
+                        <div className="flex items-center text-sm text-gray-600 justify-center">
+                          <Mail className="h-4 w-4 mr-2 text-primary" />
+                          <span className="truncate">{member.email}</span>
+                        </div>
+                        <div className="text-center">
+                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                            @{member.username}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                {editorialTeam.length === 0 && (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-600">Aucun membre de l'équipe éditoriale trouvé.</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </section>
 
