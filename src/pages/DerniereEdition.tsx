@@ -65,25 +65,40 @@ const DerniereEdition = () => {
                   />
                 </div>
                 
-                {/* Action Buttons */}
-                <div className="flex space-x-4 justify-center">
-                  <PDFViewer pdfUrl={currentEdition.pdf_url} title={currentEdition.title} />
-                  <Button 
-                    variant="outline" 
-                    className="border-primary text-primary hover:bg-primary hover:text-white flex items-center space-x-2"
-                    onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = currentEdition.pdf_url;
-                      link.download = `${currentEdition.title}.pdf`;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                    }}
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Télécharger PDF</span>
-                  </Button>
-                </div>
+                {/* Action Buttons - Mobile Only */}
+                {isMobile && (
+                  <div className="flex space-x-2">
+                    <PDFViewer 
+                      pdfUrl={currentEdition.pdf_url} 
+                      title={currentEdition.title}
+                      triggerButton={
+                        <Button 
+                          size="sm" 
+                          className="bg-primary hover:bg-primary/90 flex-1"
+                        >
+                          <Eye className="h-3 w-3 mr-1" />
+                          Lire
+                        </Button>
+                      }
+                    />
+                    <Button 
+                      size="sm"
+                      variant="outline" 
+                      className="border-primary text-primary hover:bg-primary hover:text-white flex-1"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = currentEdition.pdf_url;
+                        link.download = `${currentEdition.title}.pdf`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                    >
+                      <Download className="h-3 w-3 mr-1" />
+                      PDF
+                    </Button>
+                  </div>
+                )}
               </div>
 
               {/* Journal Info */}
@@ -106,6 +121,41 @@ const DerniereEdition = () => {
                   <h3 className="text-xl font-semibold text-primary mb-4">Résumé</h3>
                   <p className="text-gray-700 leading-relaxed">{currentEdition.summary}</p>
                 </div>
+
+                {/* Action Buttons - Desktop Only */}
+                {!isMobile && (
+                  <div className="flex space-x-2">
+                    <PDFViewer 
+                      pdfUrl={currentEdition.pdf_url} 
+                      title={currentEdition.title}
+                      triggerButton={
+                        <Button 
+                          size="sm" 
+                          className="bg-primary hover:bg-primary/90 flex-1"
+                        >
+                          <Eye className="h-3 w-3 mr-1" />
+                          Lire
+                        </Button>
+                      }
+                    />
+                    <Button 
+                      size="sm"
+                      variant="outline" 
+                      className="border-primary text-primary hover:bg-primary hover:text-white flex-1"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = currentEdition.pdf_url;
+                        link.download = `${currentEdition.title}.pdf`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                    >
+                      <Download className="h-3 w-3 mr-1" />
+                      PDF
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -144,7 +194,10 @@ const DerniereEdition = () => {
                           pdfUrl={journal.pdf_url} 
                           title={journal.title} 
                           triggerButton={
-                            <Button size="sm" variant="outline">
+                            <Button 
+                              size="sm" 
+                              className="bg-primary hover:bg-primary/90 flex-1"
+                            >
                               <Eye className="h-3 w-3 mr-1" />
                               Lire
                             </Button>
@@ -153,6 +206,7 @@ const DerniereEdition = () => {
                         <Button 
                           size="sm" 
                           variant="outline"
+                          className="border-primary text-primary hover:bg-primary hover:text-white flex-1"
                           onClick={() => {
                             const link = document.createElement('a');
                             link.href = journal.pdf_url;
@@ -163,7 +217,7 @@ const DerniereEdition = () => {
                           }}
                         >
                           <Download className="h-3 w-3 mr-1" />
-                          Télécharger
+                          PDF
                         </Button>
                       </div>
                     </CardContent>
