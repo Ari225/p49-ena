@@ -859,6 +859,19 @@ export type Database = {
           member_position: string
         }[]
       }
+      get_editorial_team: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          image_url: string
+          last_name: string
+          role: Database["public"]["Enums"]["user_role"]
+          username: string
+        }[]
+      }
       get_member_details: {
         Args: { member_matricule: string; verification_matricule: string }
         Returns: {

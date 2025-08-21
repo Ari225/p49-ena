@@ -14,21 +14,14 @@ const EquipeEditoriale = () => {
   useEffect(() => {
     const fetchEditorialTeam = async () => {
       try {
-        const { data, error } = await supabase.rpc('get_users_list');
+        const { data, error } = await supabase.rpc('get_editorial_team');
         
         if (error) {
-          console.error('Erreur lors de la récupération des utilisateurs:', error);
+          console.error('Erreur lors de la récupération de l\'équipe éditoriale:', error);
           return;
         }
         
-        // Filtrer pour garder seulement les administrateurs et rédacteurs
-        const team = data?.filter((user: AppUser) => 
-          user.role === 'admin_principal' || 
-          user.role === 'admin_secondaire' || 
-          user.role === 'redacteur'
-        ) || [];
-        
-        setEditorialTeam(team);
+        setEditorialTeam(data || []);
       } catch (error) {
         console.error('Erreur:', error);
       } finally {
