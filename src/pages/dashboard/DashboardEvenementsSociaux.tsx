@@ -13,6 +13,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
+import { compressMediaFile } from '@/utils/mediaCompression';
 
 interface SocialEvent {
   id: string;
@@ -314,12 +315,15 @@ const DashboardEvenementsSociaux = () => {
 
       // Upload image if provided
       if (formData.image) {
-        const fileExt = formData.image.name.split('.').pop();
+        // Compresser l'image avant l'upload
+        const compressedImage = await compressMediaFile(formData.image);
+        
+        const fileExt = compressedImage.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
         
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from('media-files')
-          .upload(`events/${fileName}`, formData.image);
+          .upload(`events/${fileName}`, compressedImage);
 
         if (uploadError) {
           throw new Error(`Erreur lors du téléchargement de l'image: ${uploadError.message}`);
