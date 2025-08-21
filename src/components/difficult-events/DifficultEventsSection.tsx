@@ -10,10 +10,13 @@ const DifficultEventsSection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch initial data using secure function
+    // Fetch initial data directly from table
     const fetchDifficultEvents = async () => {
       try {
-        const { data, error } = await supabase.rpc('get_public_difficult_events');
+        const { data, error } = await supabase
+          .from('difficult_events')
+          .select('*')
+          .order('event_date', { ascending: false });
 
         if (error) {
           console.error('Error fetching difficult events:', error);
@@ -136,7 +139,7 @@ const DifficultEventsSection = () => {
                       </div>
                       <div className="flex items-center">
                         <Users className="w-4 h-4 mr-2" />
-                        {event.masked_member_name}
+                        {event.member_name}
                       </div>
                     </div>
                   </CardHeader>
@@ -146,11 +149,11 @@ const DifficultEventsSection = () => {
                         <strong>Catégorie:</strong> {event.category}
                       </p>
                     </div>
-                    {event.general_message && (
+                    {event.family_support_message && (
                       <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-200">
                         <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-700 italic`}>
                           <Heart className="h-3 w-3 inline mr-1" />
-                          {event.general_message}
+                          {event.family_support_message}
                         </p>
                       </div>
                     )}
