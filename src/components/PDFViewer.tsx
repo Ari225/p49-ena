@@ -21,6 +21,8 @@ const PDFViewer = ({
   const [scale, setScale] = useState(1.2);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pdfDocRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   const defaultTrigger = (
     <Button className="bg-primary hover:bg-primary/90 flex items-center space-x-2">
@@ -85,12 +87,17 @@ const PDFViewer = ({
     if (!pdf) return;
     
     try {
+      setHasError(false); // Reset error state before rendering
       const page = await pdf.getPage(pageNumber);
       const context = canvas.getContext('2d');
+      if (!context) return;
       
       const viewport = page.getViewport({ scale });
       canvas.height = viewport.height;
       canvas.width = viewport.width;
+      
+      // Clear canvas before rendering
+      context.clearRect(0, 0, canvas.width, canvas.height);
       
       await page.render({
         canvasContext: context,
@@ -112,13 +119,38 @@ const PDFViewer = ({
   const zoomIn = () => {
     const newScale = Math.min(scale + 0.2, 3);
     setScale(newScale);
-    renderPage(currentPage);
   };
 
   const zoomOut = () => {
     const newScale = Math.max(scale - 0.2, 0.5);
     setScale(newScale);
-    renderPage(currentPage);
+  };
+
+  // Touch handlers for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+
+    // Only consider horizontal swipes and ignore small movements
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (deltaX > 0 && currentPage > 1) {
+        // Swipe right - previous page
+        goToPage(currentPage - 1);
+      } else if (deltaX < 0 && currentPage < totalPages) {
+        // Swipe left - next page
+        goToPage(currentPage + 1);
+      }
+    }
+
+    touchStartRef.current = null;
   };
 
   useEffect(() => {
@@ -132,9 +164,7 @@ const PDFViewer = ({
       </DialogTrigger>
       <DialogContent className="w-[95%] max-w-4xl h-[80vh] flex flex-col rounded-lg mx-auto">
         <DialogHeader className="flex flex-row items-center justify-between">
-          <DialogTitle className="text-lg font-semibold text-primary">
-            {title}
-          </DialogTitle>
+          <div></div>
           <div className="flex items-center space-x-2">
             {totalPages > 0 && (
               <>
@@ -169,7 +199,12 @@ const PDFViewer = ({
             </Button>
           </div>
         </DialogHeader>
-        <div className="flex-1 w-full overflow-auto flex justify-center">
+        <div 
+          ref={containerRef}
+          className="flex-1 w-full overflow-auto flex justify-center"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           {isLoading && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
