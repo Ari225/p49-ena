@@ -14,7 +14,7 @@ import { isAdmin } from '@/utils/roleUtils';
 import { useActivities } from '@/hooks/useActivities';
 
 const DashboardActivites = () => {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -46,14 +46,25 @@ const DashboardActivites = () => {
   };
 
   const handleEditActivity = (activity: Activity) => {
+    console.log('Edit function called');
+    console.log('Current user:', user);
+    console.log('Current session:', session);
+    console.log('Setting selected activity:', activity.id);
     setSelectedActivity(activity);
     setShowEditForm(true);
+    console.log('Edit form should open now');
   };
 
   const handleDeleteActivity = async (activity: Activity) => {
+    console.log('Delete function called');
+    console.log('Current user:', user);
+    console.log('Current session:', session);
+    
     if (confirm('Êtes-vous sûr de vouloir supprimer cette activité ?')) {
       try {
+        console.log('Attempting to delete activity:', activity.id);
         await deleteActivity(activity.id);
+        console.log('Delete successful');
       } catch (error) {
         console.error('Error deleting activity:', error);
       }
