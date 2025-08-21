@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { ActivityFormData } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
+import { compressMediaFile } from '@/utils/mediaCompression';
 
 export const useActivityForm = () => {
   const { user } = useAuth();
@@ -65,13 +66,16 @@ export const useActivityForm = () => {
       
       // Upload image if selected
       if (selectedImage) {
-        const fileExt = selectedImage.name.split('.').pop();
+        // Compresser l'image avant l'upload
+        const compressedImage = await compressMediaFile(selectedImage);
+        
+        const fileExt = compressedImage.name.split('.').pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `activities/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
           .from('media-files')
-          .upload(filePath, selectedImage);
+          .upload(filePath, compressedImage);
 
         if (uploadError) {
           console.error('Error uploading image:', uploadError);
