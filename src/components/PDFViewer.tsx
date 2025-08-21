@@ -17,7 +17,7 @@ const PDFViewer = ({
   const [iframeError, setIframeError] = useState(false);
   const defaultTrigger = <Button className="bg-primary hover:bg-primary/90 flex items-center space-x-2">
       <Eye className="h-4 w-4" />
-      <span>Lire en ligne</span>
+      <span>Lire</span>
     </Button>;
   const handleOpenInNewTab = () => {
     window.open(pdfUrl, '_blank', 'noopener,noreferrer');
