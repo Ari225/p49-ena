@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { SupabaseProvider } from "@/context/SupabaseContext";
+import { CookieBanner } from "@/components/CookieBanner";
 
 // Pages
 import Index from "./pages/Index";
@@ -150,6 +151,7 @@ const App = () => (
               {/* 404 - Must be last */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <CookieBanner />
           </BrowserRouter>
         </TooltipProvider>
         </LanguageProvider>
