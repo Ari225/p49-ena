@@ -25,16 +25,8 @@ export const CookieBanner = () => {
     setCookie('cookies_analytics', 'true', 365);
     setCookie('cookies_marketing', 'true', 365);
     
-    // Wait a bit longer and verify cookies were set
-    setTimeout(() => {
-      const consent = getCookie('cookie_consent');
-      console.log('Verification after accept all:', consent);
-      if (consent) {
-        setIsVisible(false);
-      } else {
-        console.error('Cookies were not properly set!');
-      }
-    }, 200);
+    // Close immediately since we're using localStorage as backup
+    setIsVisible(false);
   };
 
   const handleAcceptEssential = () => {
@@ -44,16 +36,8 @@ export const CookieBanner = () => {
     setCookie('cookies_analytics', 'false', 365);
     setCookie('cookies_marketing', 'false', 365);
     
-    // Wait a bit longer and verify cookies were set
-    setTimeout(() => {
-      const consent = getCookie('cookie_consent');
-      console.log('Verification after accept essential:', consent);
-      if (consent) {
-        setIsVisible(false);
-      } else {
-        console.error('Cookies were not properly set!');
-      }
-    }, 200);
+    // Close immediately since we're using localStorage as backup
+    setIsVisible(false);
   };
 
   const handleCustomize = () => {
@@ -73,16 +57,8 @@ export const CookieBanner = () => {
     setCookie('cookies_analytics', analytics ? 'true' : 'false', 365);
     setCookie('cookies_marketing', marketing ? 'true' : 'false', 365);
     
-    // Wait a bit longer and verify cookies were set
-    setTimeout(() => {
-      const consent = getCookie('cookie_consent');
-      console.log('Verification after save preferences:', consent);
-      if (consent) {
-        setIsVisible(false);
-      } else {
-        console.error('Cookies were not properly set!');
-      }
-    }, 200);
+    // Close immediately since we're using localStorage as backup
+    setIsVisible(false);
   };
 
   if (!isVisible) return null;
