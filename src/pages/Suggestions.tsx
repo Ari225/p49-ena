@@ -101,7 +101,6 @@ const Suggestions = () => {
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
             <div className="flex items-center justify-center mb-4">
-              <Lightbulb className="h-10 w-10 mr-4" />
               <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold animate-fade-in`}>
                 Faire des Suggestions
               </h1>
