@@ -167,98 +167,96 @@ const Agenda = () => {
           <div className="container mx-auto px-0">
             {/* Section calendrier et événements du jour */}
             <div className="mb-16">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-300">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <CalendarSection 
-                    selectedDate={selectedDate} 
-                    onSelectDate={setSelectedDate} 
-                    hasEvents={hasEvents} 
-                  />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <CalendarSection 
+                  selectedDate={selectedDate} 
+                  onSelectDate={setSelectedDate} 
+                  hasEvents={hasEvents} 
+                />
+                
+                {/* Événements du jour sélectionné */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <CalendarIcon className="h-5 w-5 mr-2" />
+                    {selectedDate ? formatDate(selectedDate) : 'Sélectionnez une date'}
+                  </h3>
                   
-                  {/* Événements du jour sélectionné */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                      <CalendarIcon className="h-5 w-5 mr-2" />
-                      {selectedDate ? formatDate(selectedDate) : 'Sélectionnez une date'}
-                    </h3>
-                    
-                    {selectedDateEvents.length > 0 ? (
-                      <div className="space-y-3 max-h-96 overflow-y-auto">
-                        {selectedDateEvents.map(activity => {
-                          const currentStatus = getActivityStatus(activity);
-                          const isPast = currentStatus === 'Terminé';
-                          
-                          return (
-                            <Card key={activity.id} className={`hover:shadow-md transition-shadow ${isPast ? 'opacity-80' : ''}`}>
-                              {(activity.image || activity.image_url) && (
-                                <div className="w-full h-32 overflow-hidden rounded-t-lg">
-                                  <img 
-                                    src={activity.image || activity.image_url} 
-                                    alt={activity.title} 
-                                    className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`} 
-                                  />
-                                </div>
-                              )}
-                              <CardContent className="p-4">
-                                <div className="flex justify-between items-start mb-2">
-                                  <span className={`px-2 py-1 rounded text-xs font-medium ${isPast ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
-                                    {activity.other_category || activity.category}
+                  {selectedDateEvents.length > 0 ? (
+                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                      {selectedDateEvents.map(activity => {
+                        const currentStatus = getActivityStatus(activity);
+                        const isPast = currentStatus === 'Terminé';
+                        
+                        return (
+                          <Card key={activity.id} className={`hover:shadow-md transition-shadow ${isPast ? 'opacity-80' : ''}`}>
+                            {(activity.image || activity.image_url) && (
+                              <div className="w-full h-32 overflow-hidden rounded-t-lg">
+                                <img 
+                                  src={activity.image || activity.image_url} 
+                                  alt={activity.title} 
+                                  className={`w-full h-full object-cover ${isPast ? 'grayscale' : ''}`} 
+                                />
+                              </div>
+                            )}
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-start mb-2">
+                                <span className={`px-2 py-1 rounded text-xs font-medium ${isPast ? 'bg-gray-500 text-white' : 'bg-primary text-white'}`}>
+                                  {activity.other_category || activity.category}
+                                </span>
+                                <span className={`px-2 py-1 rounded text-xs font-medium ${currentStatus === 'À venir' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                                  {currentStatus}
+                                </span>
+                              </div>
+                              
+                              <h4 className={`font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                                {activity.title}
+                              </h4>
+                              
+                              <div className={`space-y-1 text-sm mb-3 ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
+                                <div className="flex items-center">
+                                  <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
+                                  <span>
+                                    {activity.start_time}
+                                    {activity.end_time && ` - ${activity.end_time}`}
                                   </span>
-                                  <span className={`px-2 py-1 rounded text-xs font-medium ${currentStatus === 'À venir' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
-                                    {currentStatus}
-                                  </span>
                                 </div>
-                                
-                                <h4 className={`font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
-                                  {activity.title}
-                                </h4>
-                                
-                                <div className={`space-y-1 text-sm mb-3 ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
-                                  <div className="flex items-center">
-                                    <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-                                    <span>
-                                      {activity.start_time}
-                                      {activity.end_time && ` - ${activity.end_time}`}
-                                    </span>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-                                    <span>{activity.location}</span>
-                                  </div>
+                                <div className="flex items-center">
+                                  <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
+                                  <span>{activity.location}</span>
                                 </div>
+                              </div>
 
-                                <div className="flex gap-2">
-                                  <Button 
-                                    size="sm" 
-                                    variant="outline" 
-                                    className="flex-1 text-xs"
-                                    onClick={() => handleViewDetails(activity.id)}
-                                  >
-                                    Détails
-                                  </Button>
-                                   {!isPast && (
-                                     <Button 
-                                       size="sm" 
-                                       className="text-xs bg-green-600 hover:bg-green-700 text-white"
-                                       onClick={() => handleAddToCalendar(activity)}
-                                     >
-                                       <Calendar className="w-3 h-3 mr-1" />
-                                       Ajouter
-                                     </Button>
-                                   )}
-                                </div>
-                              </CardContent>
-                            </Card>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-gray-500">
-                        <CalendarIcon className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                        <p>Aucune activité prévue pour cette date</p>
-                      </div>
-                    )}
-                  </div>
+                              <div className="flex gap-2">
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="flex-1 text-xs"
+                                  onClick={() => handleViewDetails(activity.id)}
+                                >
+                                  Détails
+                                </Button>
+                                 {!isPast && (
+                                   <Button 
+                                     size="sm" 
+                                     className="text-xs bg-green-600 hover:bg-green-700 text-white"
+                                     onClick={() => handleAddToCalendar(activity)}
+                                   >
+                                     <Calendar className="w-3 h-3 mr-1" />
+                                     Ajouter
+                                   </Button>
+                                 )}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      <CalendarIcon className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                      <p>Aucune activité prévue pour cette date</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
