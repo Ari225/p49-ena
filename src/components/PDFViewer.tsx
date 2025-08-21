@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Eye, X, ExternalLink, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { Eye, X, ExternalLink, Download } from 'lucide-react';
 import { toast } from 'sonner';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
-
-// Configuration pour react-pdf
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 interface PDFViewerProps {
   pdfUrl: string;
   title: string;
@@ -20,47 +14,44 @@ const PDFViewer = ({
   triggerButton
 }: PDFViewerProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [scale, setScale] = useState(1.0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const defaultTrigger = <Button className="bg-primary hover:bg-primary/90 flex items-center space-x-2">
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  const defaultTrigger = (
+    <Button className="bg-primary hover:bg-primary/90 flex items-center space-x-2">
       <Eye className="h-4 w-4" />
       <span>Lire</span>
-    </Button>;
+    </Button>
+  );
+
   const handleOpenInNewTab = () => {
     window.open(pdfUrl, '_blank', 'noopener,noreferrer');
     toast.success('Document ouvert dans un nouvel onglet');
     setIsOpen(false);
   };
 
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setLoading(false);
-    setError(null);
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = `${title}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Téléchargement du document commencé');
   };
 
-  const onDocumentLoadError = () => {
-    setError('Erreur lors du chargement du PDF');
-    setLoading(false);
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
   };
 
-  const goToPrevPage = () => {
-    setPageNumber(prev => Math.max(prev - 1, 1));
+  const handleIframeError = () => {
+    setIsLoading(false);
+    setHasError(true);
   };
 
-  const goToNextPage = () => {
-    setPageNumber(prev => Math.min(prev + 1, numPages || 1));
-  };
-
-  const zoomIn = () => {
-    setScale(prev => Math.min(prev + 0.2, 3.0));
-  };
-
-  const zoomOut = () => {
-    setScale(prev => Math.max(prev - 0.2, 0.5));
-  };
+  // Créer une URL avec des paramètres pour forcer l'affichage en ligne
+  const viewerUrl = `${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1&page=1&view=FitH`;
   return <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {triggerButton || defaultTrigger}
@@ -71,32 +62,32 @@ const PDFViewer = ({
             {title}
           </DialogTitle>
           <div className="flex items-center space-x-2">
-            {numPages && (
-              <>
-                <Button variant="ghost" size="sm" onClick={zoomOut} disabled={scale <= 0.5}>
-                  <ZoomOut className="h-4 w-4" />
-                </Button>
-                <span className="text-sm">{Math.round(scale * 100)}%</span>
-                <Button variant="ghost" size="sm" onClick={zoomIn} disabled={scale >= 3.0}>
-                  <ZoomIn className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm" onClick={goToPrevPage} disabled={pageNumber <= 1}>
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <span className="text-sm">{pageNumber} / {numPages}</span>
-                <Button variant="ghost" size="sm" onClick={goToNextPage} disabled={pageNumber >= numPages}>
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </>
-            )}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleDownload}
+              className="flex items-center space-x-1"
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Télécharger</span>
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleOpenInNewTab}
+              className="flex items-center space-x-1"
+            >
+              <ExternalLink className="h-4 w-4" />
+              <span className="hidden sm:inline">Nouvel onglet</span>
+            </Button>
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-6 w-6">
               <X className="h-4 w-4" />
             </Button>
           </div>
         </DialogHeader>
-        <div className="flex-1 w-full overflow-auto flex justify-center">
-          {loading && (
-            <div className="flex items-center justify-center h-full">
+        <div className="flex-1 w-full relative">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-10">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
                 <p>Chargement du document...</p>
@@ -104,32 +95,43 @@ const PDFViewer = ({
             </div>
           )}
           
-          {error ? (
+          {hasError ? (
             <div className="flex flex-col items-center justify-center h-full space-y-4 text-center">
               <div className="text-gray-600">
-                <p className="text-lg mb-2">Impossible d'afficher le PDF</p>
-                <p className="text-sm text-gray-500">{error}</p>
+                <p className="text-lg mb-2">Impossible d'afficher le PDF dans cette fenêtre</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Votre navigateur bloque l'affichage des PDFs intégrés.
+                </p>
               </div>
-              <Button onClick={handleOpenInNewTab} className="bg-primary hover:bg-primary/90">
-                <ExternalLink className="h-4 w-4 mr-2" />
-                Ouvrir dans un nouvel onglet
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button onClick={handleOpenInNewTab} className="bg-primary hover:bg-primary/90">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Ouvrir dans un nouvel onglet
+                </Button>
+                <Button variant="outline" onClick={handleDownload}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Télécharger le PDF
+                </Button>
+              </div>
             </div>
           ) : (
-            <Document
-              file={pdfUrl}
-              onLoadSuccess={onDocumentLoadSuccess}
-              onLoadError={onDocumentLoadError}
-              loading=""
-              className="flex justify-center"
-            >
-              <Page 
-                pageNumber={pageNumber} 
-                scale={scale}
-                renderTextLayer={true}
-                renderAnnotationLayer={true}
+            <>
+              <iframe
+                src={viewerUrl}
+                className="w-full h-full border-0 rounded"
+                title={title}
+                onLoad={handleIframeLoad}
+                onError={handleIframeError}
+                style={{ minHeight: '60vh' }}
               />
-            </Document>
+              {/* Fallback avec embed si iframe échoue */}
+              <embed
+                src={viewerUrl}
+                type="application/pdf"
+                className="w-full h-full border-0 rounded hidden"
+                style={{ minHeight: '60vh' }}
+              />
+            </>
           )}
         </div>
       </DialogContent>
