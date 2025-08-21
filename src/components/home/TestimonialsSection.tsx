@@ -98,7 +98,7 @@ const TestimonialsSection = () => {
         <div className="relative">
           <Carousel
             opts={getCarouselOptions()}
-            plugins={[autoplayPlugin.current]}
+            plugins={[autoplayPlugin.current as any]}
             className="w-full"
             onMouseEnter={() => autoplayPlugin.current.stop()}
             onMouseLeave={() => autoplayPlugin.current.play()}
