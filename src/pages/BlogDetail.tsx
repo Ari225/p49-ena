@@ -446,9 +446,6 @@ const BlogDetail = () => {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-gray-900">{comment.author_name}</span>
-                        <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
-                          {comment.author_role}
-                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-500">
