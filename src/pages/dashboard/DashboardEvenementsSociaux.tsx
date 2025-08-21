@@ -299,9 +299,21 @@ const DashboardEvenementsSociaux = () => {
       return;
     }
 
+    // Image is required for new events (not when editing)
+    if (!editingEvent && !formData.image) {
+      toast.error('L\'image est obligatoire');
+      return;
+    }
+
     // Validate custom category if "autre" is selected
     if (formData.category === 'autre' && !formData.customCategory) {
       toast.error('Veuillez préciser la catégorie personnalisée');
+      return;
+    }
+
+    // For retirement events, years of service is required
+    if (formData.eventType === 'Retraite' && !formData.yearsOfService) {
+      toast.error('Le nombre d\'années de service est obligatoire pour les retraites');
       return;
     }
 
