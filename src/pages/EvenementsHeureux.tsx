@@ -12,8 +12,8 @@ interface HappyEvent {
   event_date: string;
   location: string | null;
   category: string;
-  masked_member_name: string;
-  general_message: string | null;
+  member_name: string;
+  message: string | null;
   image_url: string | null;
 }
 
@@ -26,7 +26,10 @@ const EvenementsHeureux = () => {
   useEffect(() => {
     const fetchHappyEvents = async () => {
       try {
-        const { data, error } = await supabase.rpc('get_public_happy_events');
+        const { data, error } = await supabase
+          .from('happy_events')
+          .select('*')
+          .order('created_at', { ascending: false });
 
         if (error) {
           console.error('Error fetching happy events:', error);
@@ -137,7 +140,7 @@ const EvenementsHeureux = () => {
                             </div>}
                           <div className="flex items-center">
                             <Users className="w-4 h-4 mr-2" />
-                            {event.masked_member_name}
+                            {event.member_name}
                           </div>
                         </div>
                       </CardHeader>
@@ -145,11 +148,11 @@ const EvenementsHeureux = () => {
                         <div className="space-y-2 mb-4">
                           <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
                         </div>
-                        {event.general_message && (
+                        {event.message && (
                           <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                             <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
                               <Heart className="h-3 w-3 inline mr-1" />
-                              {event.general_message}
+                              {event.message}
                             </p>
                           </div>
                         )}
@@ -212,12 +215,12 @@ const EvenementsHeureux = () => {
                   </div>
                   <div className="text-sm text-gray-700">
                     <div className="flex items-center mb-2">
-                      <Users className="w-4 h-4 mr-2" /> {previewEvent.masked_member_name}
+                      <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
                     </div>
-                    {previewEvent.general_message && (
+                    {previewEvent.message && (
                       <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                         <p className="italic text-green-800">
-                          <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.general_message}
+                          <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.message}
                         </p>
                       </div>
                     )}
