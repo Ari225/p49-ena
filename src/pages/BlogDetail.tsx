@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight, ThumbsUp, ThumbsDown, MessageCircle, Send } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight, ThumbsUp, ThumbsDown, MessageCircle, Send, Edit, Trash2, Check, X } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { marked } from 'marked';
@@ -22,12 +22,23 @@ const BlogDetail = () => {
   const [newComment, setNewComment] = useState('');
   const [commenterName, setCommenterName] = useState('');
   const [userAuth, setUserAuth] = useState<any>(null);
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
+  const [editingContent, setEditingContent] = useState('');
 
   useEffect(() => {
     // Récupérer les informations utilisateur au chargement
     const getUserAuth = async () => {
       const { data: user } = await supabase.auth.getUser();
-      setUserAuth(user);
+      if (user.user) {
+        const { data: userData } = await supabase
+          .from('app_users')
+          .select('role')
+          .eq('id', user.user.id)
+          .single();
+        setUserAuth({ user: user.user, userData });
+      } else {
+        setUserAuth(user);
+      }
     };
     getUserAuth();
   }, []);
@@ -185,6 +196,68 @@ const BlogDetail = () => {
       console.error('Erreur lors de l\'ajout du commentaire:', error);
       toast.error('Erreur lors de l\'ajout du commentaire');
     }
+  };
+
+  const handleEditComment = async (commentId: string) => {
+    if (!editingContent.trim()) return;
+
+    try {
+      const { error } = await supabase
+        .from('blog_article_comments')
+        .update({ content: editingContent })
+        .eq('id', commentId);
+
+      if (error) throw error;
+
+      setEditingCommentId(null);
+      setEditingContent('');
+      fetchLikesAndComments();
+      toast.success('Commentaire modifié avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la modification du commentaire:', error);
+      toast.error('Erreur lors de la modification du commentaire');
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('blog_article_comments')
+        .delete()
+        .eq('id', commentId);
+
+      if (error) throw error;
+
+      fetchLikesAndComments();
+      toast.success('Commentaire supprimé avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la suppression du commentaire:', error);
+      toast.error('Erreur lors de la suppression du commentaire');
+    }
+  };
+
+  const startEditComment = (comment: any) => {
+    setEditingCommentId(comment.id);
+    setEditingContent(comment.content);
+  };
+
+  const cancelEdit = () => {
+    setEditingCommentId(null);
+    setEditingContent('');
+  };
+
+  const canEditOrDeleteComment = (comment: any) => {
+    // L'utilisateur peut modifier/supprimer son propre commentaire
+    if (userAuth?.user && comment.user_id === userAuth.user.id) {
+      return true;
+    }
+    // L'administrateur peut supprimer n'importe quel commentaire
+    return userAuth?.user && userAuth.userData?.role && 
+           ['admin_principal', 'admin_secondaire'].includes(userAuth.userData.role);
   };
 
   const handleShare = async () => {
@@ -372,17 +445,69 @@ const BlogDetail = () => {
                           {comment.author_role}
                         </span>
                       </div>
-                      <span className="text-sm text-gray-500">
-                        {new Date(comment.created_at).toLocaleDateString('fr-FR', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-500">
+                          {new Date(comment.created_at).toLocaleDateString('fr-FR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                        {canEditOrDeleteComment(comment) && (
+                          <div className="flex gap-1">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => startEditComment(comment)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteComment(comment.id)}
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-gray-700">{comment.content}</p>
+                    
+                    {editingCommentId === comment.id ? (
+                      <div className="space-y-2">
+                        <Textarea
+                          value={editingContent}
+                          onChange={(e) => setEditingContent(e.target.value)}
+                          className="min-h-[80px]"
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleEditComment(comment.id)}
+                            className="flex items-center gap-2"
+                          >
+                            <Check className="h-4 w-4" />
+                            Sauvegarder
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={cancelEdit}
+                            className="flex items-center gap-2"
+                          >
+                            <X className="h-4 w-4" />
+                            Annuler
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-gray-700">{comment.content}</p>
+                    )}
                   </div>
                 ))}
                 {comments.length === 0 && (
