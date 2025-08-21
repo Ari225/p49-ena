@@ -87,14 +87,14 @@ const JournalCard = ({ journal }: JournalCardProps) => {
           )}
         </div>
 
-        <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'space-x-2'}`}>
+        <div className="flex space-x-2">
           <PDFViewer
             pdfUrl={journal.pdf_url}
             title={journal.title}
             triggerButton={
               <Button 
-                size={isMobile ? "sm" : "sm"} 
-                className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full justify-center' : 'flex-1'}`}
+                size="sm" 
+                className="bg-primary hover:bg-primary/90 flex-1"
                 disabled={!journal.pdf_url}
               >
                 <Eye className="h-3 w-3 mr-1" />
@@ -103,9 +103,9 @@ const JournalCard = ({ journal }: JournalCardProps) => {
             }
           />
           <Button 
-            size={isMobile ? "sm" : "sm"} 
+            size="sm" 
             variant="outline" 
-            className={`border-primary text-primary hover:bg-primary hover:text-white ${isMobile ? 'w-full justify-center' : 'flex-1'}`}
+            className="border-primary text-primary hover:bg-primary hover:text-white flex-1"
             onClick={handleDownload}
             disabled={!journal.pdf_url || isDownloading}
           >

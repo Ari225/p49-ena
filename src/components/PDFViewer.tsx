@@ -78,11 +78,10 @@ const PDFViewer = ({ pdfUrl, title, triggerButton }: PDFViewerProps) => {
             </div>
           ) : (
             <iframe
-              src={`${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1`}
+              src={pdfUrl}
               className="w-full h-full border-0 rounded"
               title={title}
               onError={handleIframeError}
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
             />
           )}
         </div>
