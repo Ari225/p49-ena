@@ -158,26 +158,29 @@ const BlogDetail = () => {
 
     try {
       const { data: user } = await supabase.auth.getUser();
-      let authorName = commenterName.trim();
+      let authorName = '';
       let authorRole = 'Visiteur';
 
       // Si l'utilisateur est connecté, récupérer ses informations
       if (user.user) {
-        const { data: userData } = await supabase
+        const { data: userData, error } = await supabase
           .from('app_users')
           .select('first_name, last_name, role')
           .eq('id', user.user.id)
           .single();
 
-        if (userData) {
-          authorName = `${userData.first_name} ${userData.last_name}`;
+        if (userData && !error) {
+          authorName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
           authorRole = userData.role === 'admin_principal' ? 'Administrateur' : 
                       userData.role === 'admin_secondaire' ? 'Administrateur' :
                       userData.role === 'redacteur' ? 'Rédacteur' : 'Visiteur';
+        } else {
+          // Fallback au nom d'utilisateur ou email si pas de first_name/last_name
+          authorName = user.user.user_metadata?.full_name || user.user.email || 'Utilisateur';
         }
       } else {
         // Pour les visiteurs non connectés, utiliser le nom saisi
-        authorRole = authorName; // Le nom remplace le statut "Visiteur"
+        authorName = commenterName.trim();
       }
 
       const { error } = await supabase
