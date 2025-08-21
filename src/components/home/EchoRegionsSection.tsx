@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { useSwipe } from '@/hooks/useSwipe';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Clock } from 'lucide-react';
 
@@ -60,10 +61,17 @@ const EchoRegionsSection = () => {
     setCurrentIndex(prevIndex => prevIndex === 0 ? regionalNews.length - 1 : prevIndex - 1);
   };
 
+  // ===== SWIPE HOOK =====
+  const swipeHandlers = useSwipe({
+    onSwipeLeft: nextSlide,
+    onSwipeRight: prevSlide,
+    threshold: 50
+  });
+
   const RegionalNewsCard = ({ item, variant = 'mobile' }) => {
     return (
       <Link to={`/echo-region/${item.id}`}>
-        <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-transparent h-full">
+        <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-200 h-full">
           <div className="aspect-[16/10] overflow-hidden relative">
             <img 
               src={item.image_url} 
@@ -124,7 +132,10 @@ const EchoRegionsSection = () => {
         {/* MOBILE VERSION */}
         {isMobile && (
           <div className="relative">
-            <div className="overflow-hidden">
+            <div 
+              className="overflow-hidden"
+              {...swipeHandlers}
+            >
               <div className="flex transition-transform duration-300 ease-in-out" style={{
                 transform: `translateX(-${currentIndex * 100}%)`
               }}>
