@@ -129,31 +129,7 @@ const DerniereEdition = () => {
         </section>
 
         {/* Archives Section */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-primary mb-8">Archives</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {archivedJournals.map((journal, index) => <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-                  <CardContent className="p-4">
-                    <div className="flex items-start space-x-3 mb-3">
-                      <img src={journal.coverImage} alt={journal.title} className="w-12 h-16 object-cover rounded" />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-primary text-sm">{journal.title}</h3>
-                        <p className="text-xs text-gray-600">{journal.date}</p>
-                      </div>
-                    </div>
-                    <p className="text-gray-700 text-sm mb-3">{journal.summary}</p>
-                    <div className="flex space-x-1">
-                      <PDFViewer pdfUrl={journal.pdfUrl} title={journal.title} triggerButton={<Button size="sm" variant="outline" className="text-xs">
-                            <FileText className="h-3 w-3 mr-1" />
-                            Consulter
-                          </Button>} />
-                    </div>
-                  </CardContent>
-                </Card>)}
-            </div>
-          </div>
-        </section>
+        
       </div>
     </Layout>;
 };
