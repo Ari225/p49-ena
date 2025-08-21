@@ -167,7 +167,7 @@ const BlogDetail = () => {
           .from('app_users')
           .select('first_name, last_name, role')
           .eq('id', user.user.id)
-          .single();
+          .maybeSingle();
 
         if (userData && !error) {
           authorName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
@@ -175,8 +175,8 @@ const BlogDetail = () => {
                       userData.role === 'admin_secondaire' ? 'Administrateur' :
                       userData.role === 'redacteur' ? 'Rédacteur' : 'Visiteur';
         } else {
-          // Fallback au nom d'utilisateur ou email si pas de first_name/last_name
-          authorName = user.user.user_metadata?.full_name || user.user.email || 'Utilisateur';
+          // Si pas de données utilisateur trouvées
+          authorName = 'Utilisateur';
         }
       } else {
         // Pour les visiteurs non connectés, utiliser le nom saisi
