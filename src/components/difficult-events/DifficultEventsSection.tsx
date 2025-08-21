@@ -179,17 +179,17 @@ const DifficultEventsSection = () => {
       </div>
 
       {/* Preview Dialog */}
-      <Dialog open={!!previewEvent} onOpenChange={open => {
+      <Dialog open={!!previewEvent} onOpenChange={(open) => {
         if (!open) setPreviewEvent(null);
       }}>
-        <DialogContent
-          className={`${isMobile ? 'fixed inset-x-2 top-[10%] w-auto max-w-[calc(100vw-1rem)] mx-auto' : 'mx-4 sm:mx-6 md:mx-8 w-[calc(100vw-2rem)] sm:w-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl'} p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[80vh] overflow-y-auto`}
-        >
+        <DialogContent className="w-[95vw] max-w-md mx-auto p-6 rounded-lg max-h-[85vh] overflow-y-auto">
           {previewEvent && (
             <>
-              <DialogHeader>
-                <DialogTitle>{previewEvent.title}</DialogTitle>
-                <DialogDescription>
+              <DialogHeader className="text-center pb-4">
+                <DialogTitle className="text-lg font-semibold text-gray-900">
+                  {previewEvent.title}
+                </DialogTitle>
+                <DialogDescription className="text-sm text-gray-600 mt-2">
                   {previewEvent.category} • {new Date(previewEvent.event_date).toLocaleDateString('fr-FR', {
                     year: 'numeric',
                     month: 'long', 
@@ -197,30 +197,34 @@ const DifficultEventsSection = () => {
                   })}
                 </DialogDescription>
               </DialogHeader>
+              
               <div className="space-y-4">
                 {previewEvent.image_url && (
-                  <div className="overflow-hidden rounded-md">
+                  <div className="w-full overflow-hidden rounded-lg">
                     <img 
                       src={previewEvent.image_url} 
                       alt={previewEvent.title} 
-                      className="w-full h-auto max-h-[70vh] object-contain grayscale" 
+                      className="w-full h-auto max-h-[50vh] object-cover grayscale" 
                     />
                   </div>
                 )}
-                <div className="text-sm text-gray-700">
-                  <div className="flex items-center mb-2">
-                    <Users className="w-4 h-4 mr-2" /> 
-                    {previewEvent.member_name}
+                
+                <div className="space-y-3">
+                  <div className="flex items-center text-sm text-gray-700">
+                    <Users className="w-4 h-4 mr-2 flex-shrink-0" /> 
+                    <span>{previewEvent.member_name}</span>
                   </div>
+                  
                   {previewEvent.description && (
-                    <div className="mb-3">
-                      <p className="text-gray-700">{previewEvent.description}</p>
+                    <div className="text-sm text-gray-700 leading-relaxed">
+                      <p>{previewEvent.description}</p>
                     </div>
                   )}
+                  
                   {previewEvent.family_support_message && (
-                    <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-200">
-                      <p className="italic text-blue-800">
-                        <Heart className="h-3 w-3 inline mr-1" /> 
+                    <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-300">
+                      <p className="text-sm italic text-blue-800 flex items-start">
+                        <Heart className="w-3 h-3 mr-2 mt-0.5 flex-shrink-0" /> 
                         {previewEvent.family_support_message}
                       </p>
                     </div>
