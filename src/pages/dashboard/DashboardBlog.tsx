@@ -62,32 +62,22 @@ const DashboardBlog = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('blog_articles')
-        .select(`
-          *,
-          author:app_users!author_id(first_name, last_name)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
         throw error;
       }
 
-      console.log('Blog articles data:', data);
-
       // Transform data to match BlogPost interface
       const transformedPosts = (data || []).map(post => {
-        const authorName = post.author?.first_name && post.author?.last_name 
-          ? `${post.author.first_name} ${post.author.last_name}`
-          : 'Auteur inconnu';
-        
         return {
           ...post,
-          author: authorName,
+          author: post.author_name || 'Auteur inconnu',
           published_date: post.published_date || post.created_at
         };
       });
 
-      console.log('Transformed posts:', transformedPosts);
       setPosts(transformedPosts);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
