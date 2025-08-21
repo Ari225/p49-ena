@@ -11,25 +11,49 @@ export const CookieBanner = () => {
 
   useEffect(() => {
     const consent = getCookie('cookie_consent');
+    console.log('Checking cookie consent on mount:', consent);
+    console.log('All cookies:', document.cookie);
     if (!consent) {
       setIsVisible(true);
     }
   }, [getCookie]);
 
   const handleAcceptAll = () => {
+    console.log('Accepting all cookies');
     setCookie('cookie_consent', 'all', 365);
     setCookie('cookies_functional', 'true', 365);
     setCookie('cookies_analytics', 'true', 365);
     setCookie('cookies_marketing', 'true', 365);
-    setTimeout(() => setIsVisible(false), 100);
+    
+    // Wait a bit longer and verify cookies were set
+    setTimeout(() => {
+      const consent = getCookie('cookie_consent');
+      console.log('Verification after accept all:', consent);
+      if (consent) {
+        setIsVisible(false);
+      } else {
+        console.error('Cookies were not properly set!');
+      }
+    }, 200);
   };
 
   const handleAcceptEssential = () => {
+    console.log('Accepting essential cookies only');
     setCookie('cookie_consent', 'essential', 365);
     setCookie('cookies_functional', 'false', 365);
     setCookie('cookies_analytics', 'false', 365);
     setCookie('cookies_marketing', 'false', 365);
-    setTimeout(() => setIsVisible(false), 100);
+    
+    // Wait a bit longer and verify cookies were set
+    setTimeout(() => {
+      const consent = getCookie('cookie_consent');
+      console.log('Verification after accept essential:', consent);
+      if (consent) {
+        setIsVisible(false);
+      } else {
+        console.error('Cookies were not properly set!');
+      }
+    }, 200);
   };
 
   const handleCustomize = () => {
@@ -37,15 +61,28 @@ export const CookieBanner = () => {
   };
 
   const handleSavePreferences = () => {
+    console.log('Saving custom preferences');
     const functional = (document.getElementById('functional') as HTMLInputElement)?.checked;
     const analytics = (document.getElementById('analytics') as HTMLInputElement)?.checked;
     const marketing = (document.getElementById('marketing') as HTMLInputElement)?.checked;
+
+    console.log('Custom preferences:', { functional, analytics, marketing });
 
     setCookie('cookie_consent', 'custom', 365);
     setCookie('cookies_functional', functional ? 'true' : 'false', 365);
     setCookie('cookies_analytics', analytics ? 'true' : 'false', 365);
     setCookie('cookies_marketing', marketing ? 'true' : 'false', 365);
-    setTimeout(() => setIsVisible(false), 100);
+    
+    // Wait a bit longer and verify cookies were set
+    setTimeout(() => {
+      const consent = getCookie('cookie_consent');
+      console.log('Verification after save preferences:', consent);
+      if (consent) {
+        setIsVisible(false);
+      } else {
+        console.error('Cookies were not properly set!');
+      }
+    }, 200);
   };
 
   if (!isVisible) return null;
