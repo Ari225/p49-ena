@@ -2,25 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Calendar, Clock, ArrowLeft, Share2, User, Tag, ChevronRight, ThumbsUp, ThumbsDown, MessageCircle, Send } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { toast } from 'sonner';
 const BlogDetail = () => {
-  const {
-    id
-  } = useParams();
+  const { id } = useParams();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [blog, setBlog] = useState<any>(null);
-  const [relatedArticles, setRelatedArticles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [likes, setLikes] = useState({ likes: 0, dislikes: 0 });
+  const [userLike, setUserLike] = useState<string | null>(null);
+  const [comments, setComments] = useState<any[]>([]);
+  const [newComment, setNewComment] = useState('');
+  const [commenterName, setCommenterName] = useState('');
+  const [userAuth, setUserAuth] = useState<any>(null);
+
+  useEffect(() => {
+    // Récupérer les informations utilisateur au chargement
+    const getUserAuth = async () => {
+      const { data: user } = await supabase.auth.getUser();
+      setUserAuth(user);
+    };
+    getUserAuth();
+  }, []);
   useEffect(() => {
     if (id) {
       fetchBlogData();
-      fetchRelatedArticles();
+      fetchLikesAndComments();
     }
   }, [id]);
   const fetchBlogData = async () => {
@@ -40,21 +54,40 @@ const BlogDetail = () => {
       setLoading(false);
     }
   };
-  const fetchRelatedArticles = async () => {
+  const fetchLikesAndComments = async () => {
     try {
-      const {
-        data,
-        error
-      } = await supabase.from('blog_articles').select('id, title, summary, image_url, published_date, author_name, reading_time, category').eq('status', 'valide').neq('id', id).order('published_date', {
-        ascending: false
-      }).limit(3);
-      if (error) {
-        console.error('Erreur lors de la récupération des articles connexes:', error);
-        return;
+      // Récupérer les likes
+      const { data: likesData } = await supabase
+        .from('blog_article_likes')
+        .select('like_type, user_id, visitor_ip')
+        .eq('article_id', id);
+
+      if (likesData) {
+        const likesCount = likesData.filter(like => like.like_type === 'like').length;
+        const dislikesCount = likesData.filter(like => like.like_type === 'dislike').length;
+        setLikes({ likes: likesCount, dislikes: dislikesCount });
+
+        // Vérifier si l'utilisateur a déjà liké
+        const userLikeData = likesData.find(like => 
+          like.user_id === userAuth?.user?.id
+        );
+        if (userLikeData) {
+          setUserLike(userLikeData.like_type);
+        }
       }
-      setRelatedArticles(data || []);
+
+      // Récupérer les commentaires
+      const { data: commentsData } = await supabase
+        .from('blog_article_comments')
+        .select('*')
+        .eq('article_id', id)
+        .order('created_at', { ascending: true });
+
+      if (commentsData) {
+        setComments(commentsData);
+      }
     } catch (error) {
-      console.error('Erreur lors de la récupération des articles connexes:', error);
+      console.error('Erreur lors de la récupération des likes et commentaires:', error);
     }
   };
   const formatContent = (content: string) => {
@@ -66,6 +99,94 @@ const BlogDetail = () => {
     const htmlContent = marked.parse(content);
     return DOMPurify.sanitize(htmlContent as string);
   };
+  const handleLike = async (likeType: 'like' | 'dislike') => {
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      
+      // Supprimer le like précédent s'il existe
+      if (userLike) {
+        await supabase
+          .from('blog_article_likes')
+          .delete()
+          .eq('article_id', id)
+          .eq(user.user ? 'user_id' : 'visitor_ip', user.user?.id || 'visitor');
+      }
+
+      // Ajouter le nouveau like seulement s'il est différent
+      if (userLike !== likeType) {
+        const { error } = await supabase
+          .from('blog_article_likes')
+          .insert({
+            article_id: id,
+            user_id: user.user?.id,
+            visitor_ip: user.user ? null : 'visitor',
+            like_type: likeType
+          });
+
+        if (error) throw error;
+        setUserLike(likeType);
+      } else {
+        setUserLike(null);
+      }
+
+      fetchLikesAndComments();
+    } catch (error) {
+      console.error('Erreur lors du like:', error);
+      toast.error('Erreur lors de l\'enregistrement de votre réaction');
+    }
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      const { data: user } = await supabase.auth.getUser();
+      let authorName = commenterName.trim();
+      let authorRole = 'Visiteur';
+
+      // Si l'utilisateur est connecté, récupérer ses informations
+      if (user.user) {
+        const { data: userData } = await supabase
+          .from('app_users')
+          .select('first_name, last_name, role')
+          .eq('id', user.user.id)
+          .single();
+
+        if (userData) {
+          authorName = `${userData.first_name} ${userData.last_name}`;
+          authorRole = userData.role === 'admin_principal' ? 'Administrateur' : 
+                      userData.role === 'admin_secondaire' ? 'Administrateur' :
+                      userData.role === 'redacteur' ? 'Rédacteur' : 'Visiteur';
+        }
+      }
+
+      // Si pas d'utilisateur connecté et pas de nom fourni
+      if (!user.user && !authorName) {
+        authorName = 'Visiteur';
+      }
+
+      const { error } = await supabase
+        .from('blog_article_comments')
+        .insert({
+          article_id: id,
+          user_id: user.user?.id,
+          author_name: authorName,
+          author_role: authorRole,
+          content: newComment
+        });
+
+      if (error) throw error;
+
+      setNewComment('');
+      setCommenterName('');
+      fetchLikesAndComments();
+      toast.success('Commentaire ajouté avec succès');
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du commentaire:', error);
+      toast.error('Erreur lors de l\'ajout du commentaire');
+    }
+  };
+
   const handleShare = async () => {
     const shareData = {
       title: blog?.title || 'Article du blog P49',
@@ -136,8 +257,7 @@ const BlogDetail = () => {
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <div className="max-w-4xl mx-auto">
               <div className="mb-4">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/90 text-white backdrop-blur-sm">
-                  <Tag className="h-3 w-3 mr-2" />
+                <span className="px-2 py-1 rounded text-xs font-medium bg-primary text-white">
                   {blog.category}
                 </span>
               </div>
@@ -184,69 +304,96 @@ const BlogDetail = () => {
           }} />
           </div>
 
-          {/* Author Section */}
+          {/* Likes and Comments Section */}
           <div className="mt-12 pt-8 border-t border-gray-200">
-            <div className="flex items-start space-x-6">
-              <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 shadow-lg">
-                {blog.author_image ? <img src={blog.author_image} alt={blog.author_name || 'Auteur'} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
-                    <User className="h-8 w-8 text-white" />
-                  </div>}
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {blog.author_name || 'Auteur anonyme'}
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  {blog.author_function || 'Membre éminent de la Promotion 49, expert en administration publique et réformes institutionnelles.'}
-                </p>
-                <Button variant="outline" size="sm" onClick={handleShare} className="text-gray-600 border-gray-300 hover:bg-gray-50">
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Partager cet article
+            {/* Likes */}
+            <div className="flex items-center gap-4 mb-8">
+              <Button
+                variant={userLike === 'like' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => handleLike('like')}
+                className="flex items-center gap-2"
+              >
+                <ThumbsUp className="h-4 w-4" />
+                {likes.likes}
+              </Button>
+              <Button
+                variant={userLike === 'dislike' ? 'destructive' : 'outline'}
+                size="sm"
+                onClick={() => handleLike('dislike')}
+                className="flex items-center gap-2"
+              >
+                <ThumbsDown className="h-4 w-4" />
+                {likes.dislikes}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleShare} className="ml-auto">
+                <Share2 className="h-4 w-4 mr-2" />
+                Partager
+              </Button>
+            </div>
+
+            {/* Comments Section */}
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <MessageCircle className="h-5 w-5 mr-2" />
+                Commentaires ({comments.length})
+              </h3>
+
+              {/* Add Comment */}
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                {!userAuth?.user && (
+                  <Input
+                    placeholder="Votre nom (optionnel)"
+                    value={commenterName}
+                    onChange={(e) => setCommenterName(e.target.value)}
+                    className="mb-3"
+                  />
+                )}
+                <Textarea
+                  placeholder="Écrivez votre commentaire..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  className="mb-3"
+                />
+                <Button onClick={handleAddComment} size="sm" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Publier le commentaire
                 </Button>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Related Articles */}
-        <div className="bg-gray-50 py-16">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Articles connexes
-              </h2>
-              <p className="text-lg text-gray-600">
-                Découvrez d'autres réflexions de nos membres
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedArticles.length > 0 ? relatedArticles.map(article => <Link key={article.id} to={`/blog/${article.id}`} className="block">
-                  <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer">
-                    <div className="w-full h-32 mb-4 rounded-lg overflow-hidden">
-                      {article.image_url ? <img src={article.image_url} alt={article.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg"></div>}
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{article.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">{article.summary}</p>
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      <span>
-                        {new Date(article.published_date).toLocaleDateString('fr-FR')}
+              {/* Comments List */}
+              <div className="space-y-4">
+                {comments.map((comment) => (
+                  <div key={comment.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-gray-900">{comment.author_name}</span>
+                        <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
+                          {comment.author_role}
+                        </span>
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {new Date(comment.created_at).toLocaleDateString('fr-FR', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
                       </span>
-                      <span className="mx-2">•</span>
-                      <Clock className="h-3 w-3 mr-1" />
-                      <span>{article.reading_time || 5} min</span>
                     </div>
+                    <p className="text-gray-700">{comment.content}</p>
                   </div>
-                </Link>) : <div className="col-span-full text-center text-gray-500">
-                  <p>Aucun article connexe trouvé</p>
-                </div>}
+                ))}
+                {comments.length === 0 && (
+                  <p className="text-gray-500 text-center py-8">
+                    Aucun commentaire pour le moment. Soyez le premier à commenter !
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* CTA Section */}
-        
       </div>
     </Layout>;
 };

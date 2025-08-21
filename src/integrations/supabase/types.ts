@@ -121,6 +121,82 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_article_comments: {
+        Row: {
+          article_id: string
+          author_name: string
+          author_role: string | null
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          article_id: string
+          author_name: string
+          author_role?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          article_id?: string
+          author_name?: string
+          author_role?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_article_comments_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "blog_articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_article_likes: {
+        Row: {
+          article_id: string
+          created_at: string
+          id: string
+          like_type: string
+          user_id: string | null
+          visitor_ip: string | null
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          id?: string
+          like_type: string
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          id?: string
+          like_type?: string
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_article_likes_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "blog_articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_articles: {
         Row: {
           author_function: string | null
