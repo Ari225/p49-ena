@@ -150,6 +150,12 @@ const BlogDetail = () => {
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
 
+    // Vérification du nom obligatoire pour les visiteurs non connectés
+    if (!userAuth?.user && !commenterName.trim()) {
+      toast.error('Veuillez saisir votre nom');
+      return;
+    }
+
     try {
       const { data: user } = await supabase.auth.getUser();
       let authorName = commenterName.trim();
@@ -169,11 +175,9 @@ const BlogDetail = () => {
                       userData.role === 'admin_secondaire' ? 'Administrateur' :
                       userData.role === 'redacteur' ? 'Rédacteur' : 'Visiteur';
         }
-      }
-
-      // Si pas d'utilisateur connecté et pas de nom fourni
-      if (!user.user && !authorName) {
-        authorName = 'Visiteur';
+      } else {
+        // Pour les visiteurs non connectés, utiliser le nom saisi
+        authorRole = authorName; // Le nom remplace le statut "Visiteur"
       }
 
       const { error } = await supabase
@@ -414,20 +418,21 @@ const BlogDetail = () => {
 
               {/* Add Comment */}
               <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                {!userAuth?.user && (
-                  <Input
-                    placeholder="Votre nom (optionnel)"
-                    value={commenterName}
-                    onChange={(e) => setCommenterName(e.target.value)}
-                    className="mb-3"
-                  />
-                )}
                 <Textarea
                   placeholder="Écrivez votre commentaire..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   className="mb-3"
                 />
+                {!userAuth?.user && (
+                  <Input
+                    placeholder="Votre nom *"
+                    value={commenterName}
+                    onChange={(e) => setCommenterName(e.target.value)}
+                    className="mb-3"
+                    required
+                  />
+                )}
                 <Button onClick={handleAddComment} size="sm" className="flex items-center gap-2">
                   <Send className="h-4 w-4" />
                   Publier le commentaire
