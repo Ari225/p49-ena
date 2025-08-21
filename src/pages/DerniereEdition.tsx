@@ -37,7 +37,7 @@ const DerniereEdition = () => {
         {/* Header Section */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img src="/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png" alt="Background dernière édition" className="w-full h-full object-cover" />
+            <img src="/lovable-uploads/archives.webp" alt="Background dernière édition" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
