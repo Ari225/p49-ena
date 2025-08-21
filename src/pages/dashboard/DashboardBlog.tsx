@@ -89,6 +89,9 @@ const DashboardBlog = () => {
 
   const handleCreateArticle = async (articleData: any) => {
     try {
+      console.log('Saving article data:', articleData);
+      console.log('Editing article:', editingArticle);
+      
       let imageUrl = null;
 
       // Upload image if selected
@@ -118,10 +121,6 @@ const DashboardBlog = () => {
           content: articleData.content,
           category: articleData.category,
           reading_time: articleData.reading_time,
-          matricule: articleData.matricule,
-          author_name: articleData.authorData?.name,
-          author_function: articleData.authorData?.function,
-          author_image: articleData.authorData?.image,
           updated_at: new Date().toISOString()
         };
 
@@ -130,39 +129,45 @@ const DashboardBlog = () => {
           updateData.image_url = imageUrl;
         }
 
+        console.log('Updating article with data:', updateData);
+        
         const { error } = await supabase
           .from('blog_articles')
           .update(updateData)
           .eq('id', editingArticle.id);
 
         if (error) {
+          console.error('Update error:', error);
           throw error;
         }
 
+        console.log('Article updated successfully');
         toast.success('Article modifié avec succès');
       } else {
         // Création d'un nouvel article
+        const insertData = {
+          title: articleData.title,
+          summary: articleData.summary,
+          content: articleData.content,
+          category: articleData.category,
+          reading_time: articleData.reading_time,
+          image_url: imageUrl,
+          author_id: user?.id,
+          status: 'en_attente' as const
+        };
+
+        console.log('Creating article with data:', insertData);
+        
         const { error } = await supabase
           .from('blog_articles')
-          .insert({
-            title: articleData.title,
-            summary: articleData.summary,
-            content: articleData.content,
-            category: articleData.category,
-            reading_time: articleData.reading_time,
-            matricule: articleData.matricule,
-            author_name: articleData.authorData?.name,
-            author_function: articleData.authorData?.function,
-            author_image: articleData.authorData?.image,
-            image_url: imageUrl,
-            author_id: user?.id,
-            status: 'en_attente'
-          });
+          .insert(insertData);
 
         if (error) {
+          console.error('Insert error:', error);
           throw error;
         }
 
+        console.log('Article created successfully');
         toast.success('Article créé avec succès');
       }
 
@@ -217,7 +222,7 @@ const DashboardBlog = () => {
       case 'publie':
         return <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Publié</span>;
       default:
-        return <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-sm">{status}</span>;
+        return null;
     }
   };
 
@@ -286,7 +291,6 @@ const DashboardBlog = () => {
                         )}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <User className="w-3 h-3 mr-1 text-gray-500" />
                             {getStatusBadge(post.status)}
                           </div>
                           <div className="flex space-x-1">
@@ -372,7 +376,6 @@ const DashboardBlog = () => {
                         )}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <User className="w-3 h-3 mr-1 text-gray-500" />
                             {getStatusBadge(post.status)}
                           </div>
                           <div className="flex space-x-2">
@@ -463,7 +466,6 @@ const DashboardBlog = () => {
                         )}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <User className="w-3 h-3 mr-1 text-gray-500" />
                             {getStatusBadge(post.status)}
                           </div>
                           <div className="flex space-x-2">
