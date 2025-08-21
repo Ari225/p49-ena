@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Calendar, MapPin, Users, Heart, AlertCircle, Stethoscope, Car } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 
+interface DifficultEvent {
+  id: string;
+  title: string;
+  event_date: string;
+  category: string;
+  member_name: string;
+  family_support_message: string | null;
+  image_url: string | null;
+  description: string | null;
+}
+
 const DifficultEventsSection = () => {
   const isMobile = useIsMobile();
-  const [malheureuxEvents, setMalheureuxEvents] = useState([]);
+  const [malheureuxEvents, setMalheureuxEvents] = useState<DifficultEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [previewEvent, setPreviewEvent] = useState<DifficultEvent | null>(null);
 
   useEffect(() => {
     // Fetch initial data directly from table
@@ -113,7 +126,7 @@ const DifficultEventsSection = () => {
             {malheureuxEvents.map(event => {
               const IconComponent = getCategoryIcon(event.category);
               return (
-                <Card key={event.id} className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)}`}>
+                <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-lg transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
                   {event.image_url && (
                     <div className="aspect-video overflow-hidden">
                       <img 
@@ -164,6 +177,60 @@ const DifficultEventsSection = () => {
           </div>
         )}
       </div>
+
+      {/* Preview Dialog */}
+      <Dialog open={!!previewEvent} onOpenChange={open => {
+        if (!open) setPreviewEvent(null);
+      }}>
+        <DialogContent
+          className="mx-4 sm:mx-6 md:mx-8 w-[calc(100vw-2rem)] sm:w-auto max-w-[95vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto"
+        >
+          {previewEvent && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{previewEvent.title}</DialogTitle>
+                <DialogDescription>
+                  {previewEvent.category} • {new Date(previewEvent.event_date).toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: 'long', 
+                    day: 'numeric'
+                  })}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                {previewEvent.image_url && (
+                  <div className="overflow-hidden rounded-md">
+                    <img 
+                      src={previewEvent.image_url} 
+                      alt={previewEvent.title} 
+                      className="w-full h-auto max-h-[70vh] object-contain grayscale" 
+                    />
+                  </div>
+                )}
+                <div className="text-sm text-gray-700">
+                  <div className="flex items-center mb-2">
+                    <Users className="w-4 h-4 mr-2" /> 
+                    {previewEvent.member_name}
+                  </div>
+                  {previewEvent.description && (
+                    <div className="mb-3">
+                      <p className="text-gray-700">{previewEvent.description}</p>
+                    </div>
+                  )}
+                  {previewEvent.family_support_message && (
+                    <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-200">
+                      <p className="italic text-blue-800">
+                        <Heart className="h-3 w-3 inline mr-1" /> 
+                        {previewEvent.family_support_message}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
