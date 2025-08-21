@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PenTool, Calendar, User, ChevronRight, ChevronLeft, Tag } from 'lucide-react';
 import { useIsMobile, useIsTablet, useIsDesktop } from '@/hooks/use-mobile';
+import { useSwipe } from '@/hooks/useSwipe';
 import { supabase } from '@/integrations/supabase/client';
 
 interface BlogArticle {
@@ -63,6 +64,13 @@ const BlogSection = () => {
   const prevSlide = () => {
     setCurrentSlideIndex(prevIndex => prevIndex === 0 ? articles.length - 1 : prevIndex - 1);
   };
+
+  // ===== SWIPE HOOK =====
+  const swipeHandlers = useSwipe({
+    onSwipeLeft: nextSlide,
+    onSwipeRight: prevSlide,
+    threshold: 50
+  });
 
   // ===== RESPONSIVE FUNCTIONS =====
   const getSectionPadding = () => {
@@ -127,7 +135,10 @@ const BlogSection = () => {
         {/* ===== MOBILE VERSION ===== */}
         {isMobile && (
           <div className="relative">
-            <div className="overflow-hidden">
+            <div 
+              className="overflow-hidden"
+              {...swipeHandlers}
+            >
               <div className="flex transition-transform duration-300 ease-in-out" style={{
                 transform: `translateX(-${currentSlideIndex * 100}%)`
               }}>
