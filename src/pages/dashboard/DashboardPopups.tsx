@@ -106,6 +106,12 @@ const DashboardPopups = () => {
             </Dialog>
           </div>
 
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-2">
+              Liste des pop-ups ({popups.length})
+            </h2>
+          </div>
+
           <div className="space-y-4">
             {loading ? (
               <div className="flex justify-center items-center py-8">
@@ -182,6 +188,12 @@ const DashboardPopups = () => {
                 <PopupForm onSubmit={handleFormSubmit} isMobile={false} />
               </DialogContent>
             </Dialog>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-foreground mb-2">
+              Liste des pop-ups ({popups.length})
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
