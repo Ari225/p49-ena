@@ -3,10 +3,11 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserCheck, MessageCircle, Target, Calendar } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 const CoachingMentorat = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
 
   const services = [
     {
@@ -43,7 +44,11 @@ const CoachingMentorat = () => {
     <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section with Background Image */}
-        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+        <section className={`relative ${
+          isMobile ? 'h-[30vh]' : 
+          isTablet ? 'h-[45vh]' : 
+          'h-[60vh]'
+        } flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
               src="/lovable-uploads/renforcement-capacites-bg.jpg" 
@@ -53,11 +58,23 @@ const CoachingMentorat = () => {
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
+          <div className={`relative z-10 text-center ${
+            isMobile ? 'px-[25px]' : 
+            isTablet ? 'px-[50px]' : 
+            'px-8 lg:px-[100px]'
+          }`}>
+            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
+              isMobile ? 'text-2xl' : 
+              isTablet ? 'text-4xl' : 
+              'text-6xl md:text-6xl lg:text-6xl'
+            }`}>
               Coaching & Mentorat
             </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
+              isMobile ? 'text-sm' : 
+              isTablet ? 'text-base' : 
+              'text-lg md:text-lg'
+            }`}>
               Accompagnement personnalisé pour développer votre potentiel et accélérer votre carrière
             </p>
           </div>
