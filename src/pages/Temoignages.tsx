@@ -63,7 +63,7 @@ const Temoignages = () => {
         <TemoignagesHero />
 
         {/* Search and Actions Section */}
-        <section className="py-8 px-6 lg:px-[100px] bg-accent/20">
+        <section className="py-8 px-6 lg:px-[100px] bg-white">
           <div className="max-w-none mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="w-full max-w-md mx-auto md:mx-0 relative flex-1">
