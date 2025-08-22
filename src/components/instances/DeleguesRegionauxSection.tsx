@@ -2,15 +2,34 @@
 import React from 'react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import MemberOrganigramCard from './MemberOrganigramCard';
+import { useDeleguesRegionaux } from '@/hooks/useDeleguesRegionaux';
 
 const DeleguesRegionauxSection = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  
-  const delegues = [
-    { name: "SORO Thima", position: "Délégué Régional Sud-Ouest", phone: "0506727271" },
-    { name: "SILUE Kiyala", position: "Délégué Régional Nord-Est", phone: "0708767676" }
-  ];
+  const { delegues, organizedRows, loading, error } = useDeleguesRegionaux();
+
+  if (loading) {
+    return (
+      <section className="py-6">
+        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+          Délégués Régionaux
+        </h2>
+        <div className="text-center">Chargement...</div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-6">
+        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+          Délégués Régionaux
+        </h2>
+        <div className="text-center text-red-600">Erreur: {error}</div>
+      </section>
+    );
+  }
 
   // Mobile Version
   if (isMobile) {
@@ -20,12 +39,12 @@ const DeleguesRegionauxSection = () => {
           Délégués Régionaux
         </h2>
         <div className="grid grid-cols-1 gap-5 max-w-sm mx-auto">
-          {delegues.map((member, index) => (
+          {delegues.map((delegue) => (
             <MemberOrganigramCard
-              key={index}
-              name={member.name}
-              position={member.position}
-              phone={member.phone}
+              key={delegue.id}
+              name={delegue.name}
+              position={delegue.position}
+              phone=""
             />
           ))}
         </div>
@@ -33,21 +52,25 @@ const DeleguesRegionauxSection = () => {
     );
   }
 
-  // Tablet Version - Uniformisation avec max-w-[280px] sur une seule ligne
+  // Tablet Version - 3 par ligne
   if (isTablet) {
     return (
       <section className="py-4">
         <h2 className="text-2xl font-bold text-center mb-[30px] md:mb-[30px] text-primary">
           Délégués Régionaux
         </h2>
-        <div className="grid grid-cols-2 gap-5 max-w-2xl mx-auto">
-          {delegues.map((member, index) => (
-            <div key={index} className="max-w-[280px] mx-auto w-full">
-              <MemberOrganigramCard
-                name={member.name}
-                position={member.position}
-                phone={member.phone}
-              />
+        <div className="space-y-5 max-w-4xl mx-auto">
+          {organizedRows.map((row, rowIndex) => (
+            <div key={rowIndex} className="grid grid-cols-3 gap-5">
+              {row.map((delegue) => (
+                <div key={delegue.id} className="max-w-[280px] mx-auto w-full">
+                  <MemberOrganigramCard
+                    name={delegue.name}
+                    position={delegue.position}
+                    phone=""
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -55,20 +78,24 @@ const DeleguesRegionauxSection = () => {
     );
   }
 
-  // Desktop Version
+  // Desktop Version - 3 par ligne
   return (
     <section className="py-6">
       <h2 className="text-3xl font-bold text-center mb-[35px] md:mb-[35px] text-primary">
         Délégués Régionaux
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
-        {delegues.map((member, index) => (
-          <MemberOrganigramCard
-            key={index}
-            name={member.name}
-            position={member.position}
-            phone={member.phone}
-          />
+      <div className="space-y-5 max-w-6xl mx-auto">
+        {organizedRows.map((row, rowIndex) => (
+          <div key={rowIndex} className="grid grid-cols-3 gap-5 justify-items-center">
+            {row.map((delegue) => (
+              <MemberOrganigramCard
+                key={delegue.id}
+                name={delegue.name}
+                position={delegue.position}
+                phone=""
+              />
+            ))}
+          </div>
         ))}
       </div>
     </section>
