@@ -110,29 +110,15 @@ const Suggestions = () => {
   return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section with Background Image */}
-        <section className={`relative ${
-          isMobile ? 'h-[30vh]' : 'h-[60vh]'
-        } flex items-center justify-center text-white overflow-hidden`}>
+        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/archives.webp" 
-              alt="Background suggestions" 
-              className="w-full h-full object-cover" 
-            />
+            <img src="/lovable-uploads/archives.webp" alt="Background suggestions" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${
-            isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'
-          }`}>
-            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
-              isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'
-            }`}>
-              Faire des Suggestions
-            </h1>
-            <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
-              isMobile ? 'text-sm' : 'text-lg md:text-lg'
-            }`}>
+          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'}`}>Faire des suggestions</h1>
+            <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${isMobile ? 'text-sm' : 'text-lg md:text-lg'}`}>
               Proposez vos idées pour enrichir notre contenu éditorial
             </p>
           </div>
@@ -143,8 +129,7 @@ const Suggestions = () => {
           <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                {categories.slice(0, 3).map(category => 
-                  <div key={category.value} className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm rounded-lg h-[200px] w-full max-w-[300px] mx-auto">
+                {categories.slice(0, 3).map(category => <div key={category.value} className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm rounded-lg h-[200px] w-full max-w-[300px] mx-auto">
                     <div className="p-6 h-full flex flex-col justify-center">
                       <div className="text-center space-y-2">
                         <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors leading-tight">
@@ -157,8 +142,7 @@ const Suggestions = () => {
                         </p>
                       </div>
                     </div>
-                  </div>
-                )}
+                  </div>)}
               </div>
             </div>
           </div>
