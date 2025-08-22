@@ -103,8 +103,10 @@ const DashboardBlog = () => {
   };
   const handleCreateArticle = async (articleData: any) => {
     try {
-      console.log('Saving article data:', articleData);
-      console.log('Editing article:', editingArticle);
+      console.log('=== DEBUT SAUVEGARDE ===');
+      console.log('Données reçues:', JSON.stringify(articleData, null, 2));
+      console.log('Article en cours de modification:', JSON.stringify(editingArticle, null, 2));
+      console.log('========================');
       let imageUrl = null;
 
       // Upload image if selected
@@ -135,7 +137,7 @@ const DashboardBlog = () => {
         };
 
         // Mettre à jour les informations de l'auteur si elles sont fournies
-        if (articleData.authorData) {
+        if (articleData.authorData && articleData.matricule) {
           updateData.matricule = articleData.matricule;
           updateData.author_name = articleData.authorData.name;
           updateData.author_function = articleData.authorData.function;
