@@ -1,4 +1,5 @@
 // Utility functions for media compression
+import { PDFDocument } from 'pdf-lib';
 
 export const compressImage = async (file: File, maxSizeMB: number = 5): Promise<File> => {
   return new Promise((resolve, reject) => {
@@ -63,6 +64,38 @@ export const compressImage = async (file: File, maxSizeMB: number = 5): Promise<
   });
 };
 
+export const compressPDF = async (file: File, maxSizeMB: number = 10): Promise<File> => {
+  const sizeInMB = file.size / (1024 * 1024);
+  
+  if (sizeInMB <= maxSizeMB) {
+    return file; // No compression needed
+  }
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdfDoc = await PDFDocument.load(arrayBuffer);
+    
+    // Optimize the PDF by removing metadata and compressing
+    const pdfBytes = await pdfDoc.save({
+      useObjectStreams: false,
+      addDefaultPage: false,
+    });
+    
+    const compressedFile = new File([pdfBytes], file.name, {
+      type: 'application/pdf',
+      lastModified: Date.now(),
+    });
+    
+    const compressedSizeInMB = compressedFile.size / (1024 * 1024);
+    console.log(`PDF compressed from ${sizeInMB.toFixed(2)}MB to ${compressedSizeInMB.toFixed(2)}MB`);
+    
+    return compressedFile;
+  } catch (error) {
+    console.warn(`Failed to compress PDF ${file.name}:`, error);
+    return file; // Return original if compression fails
+  }
+};
+
 export const compressVideo = async (file: File, maxSizeMB: number = 20): Promise<File> => {
   // For video compression, we'll use a simpler approach
   // In a real application, you might want to use FFmpeg.wasm for proper video compression
@@ -83,6 +116,8 @@ export const compressMediaFile = async (file: File): Promise<File> => {
     return compressImage(file, 5); // 5MB limit for images
   } else if (file.type.startsWith('video/')) {
     return compressVideo(file, 20); // 20MB limit for videos
+  } else if (file.type === 'application/pdf') {
+    return compressPDF(file, 10); // 10MB limit for PDFs
   }
   
   return file; // Return as-is for other file types
