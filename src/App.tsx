@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { SupabaseProvider } from "@/context/SupabaseContext";
+import { VisitorTrackingProvider } from "@/context/VisitorTrackingContext";
 import { CookieBanner } from "@/components/CookieBanner";
 
 // Pages
@@ -62,10 +63,11 @@ const App = () => (
     <SupabaseProvider>
       <AuthProvider>
         <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+          <VisitorTrackingProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
             <Routes>
               {/* Main Routes */}
               <Route path="/" element={<Index />} />
@@ -151,9 +153,10 @@ const App = () => (
               {/* 404 - Must be last */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <CookieBanner />
-          </BrowserRouter>
-        </TooltipProvider>
+              <CookieBanner />
+            </BrowserRouter>
+          </TooltipProvider>
+          </VisitorTrackingProvider>
         </LanguageProvider>
       </AuthProvider>
     </SupabaseProvider>
