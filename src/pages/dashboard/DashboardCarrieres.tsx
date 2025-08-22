@@ -64,7 +64,7 @@ const DashboardCarrieres = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion<br />Carrières+</h1>
+            <h1 className="text-2xl font-bold text-primary whitespace-nowrap">Gestion Carrières+</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer les offres d'emploi</p>
           </div>
 
