@@ -116,7 +116,7 @@ const Auth = () => {
           case 'admin_secondaire':
             return '/dashboard';
           case 'redacteur':
-            return '/dashboard/my-articles';
+            return '/dashboard';
           default:
             return '/dashboard';
         }

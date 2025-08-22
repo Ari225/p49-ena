@@ -13,7 +13,7 @@ import DashboardNotifications from '@/pages/dashboard/DashboardNotifications';
 import DashboardPopups from '@/pages/dashboard/DashboardPopups';
 import DashboardProfile from '@/pages/dashboard/DashboardProfile';
 import DashboardSubmitted from '@/pages/dashboard/DashboardSubmitted';
-import DashboardMyArticles from '@/pages/dashboard/DashboardMyArticles';
+
 import DashboardNewArticle from '@/pages/dashboard/DashboardNewArticle';
 import DashboardJournalArticles from '@/pages/dashboard/DashboardJournalArticles';
 import DashboardAddNews from '@/pages/dashboard/DashboardAddNews';
@@ -51,7 +51,7 @@ const DashboardRoutes = () => {
       <Route path="/popups" element={<DashboardPopups />} />
       <Route path="/profile" element={<DashboardProfile />} />
       <Route path="/submitted" element={<DashboardSubmitted />} />
-      <Route path="/my-articles" element={<DashboardMyArticles />} />
+      
       <Route path="/new-article" element={<DashboardNewArticle />} />
       <Route path="/journal-articles" element={<DashboardJournalArticles />} />
       <Route path="/add-news" element={<DashboardAddNews />} />
