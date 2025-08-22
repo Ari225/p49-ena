@@ -72,7 +72,7 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
   );
 
   return (
-    <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-xl transition-all duration-500 bg-background/50 backdrop-blur-sm">
+    <Card className="group overflow-hidden border border-border/60 shadow-sm hover:shadow-xl transition-all duration-500 bg-background/80 backdrop-blur-sm">
       {/* Aperçu Image */}
       {previewImage && (
         <div className="relative h-48 overflow-hidden">
