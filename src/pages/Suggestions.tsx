@@ -142,17 +142,23 @@ const Suggestions = () => {
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-white`}>
           <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {categories.slice(0, 3).map(category => <Card key={category.value} className="text-center p-6 border-2 border-accent/40 hover:border-primary/60 transition-all duration-300 hover:shadow-lg bg-white/80 backdrop-blur-sm">
-                    <CardContent className="p-6">
-                      <h3 className="font-bold text-xl text-primary mb-3">{category.label}</h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {category.value === 'blog' && "Proposez des thèmes d'articles de blog innovants et pertinents"}
-                        {category.value === 'journal' && "Suggérez des sujets pour enrichir notre journal institutionnel"}
-                        {category.value === 'actualites' && "Signalez des actualités importantes à traiter"}
-                      </p>
-                    </CardContent>
-                  </Card>)}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                {categories.slice(0, 3).map(category => 
+                  <div key={category.value} className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm rounded-lg h-[200px] w-full max-w-[300px] mx-auto">
+                    <div className="p-6 h-full flex flex-col justify-center">
+                      <div className="text-center space-y-2">
+                        <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors leading-tight">
+                          {category.label}
+                        </h3>
+                        <p className="text-sm text-gray-600 font-medium leading-snug px-1">
+                          {category.value === 'blog' && "Proposez des thèmes d'articles de blog innovants et pertinents"}
+                          {category.value === 'journal' && "Suggérez des sujets pour enrichir notre journal institutionnel"}
+                          {category.value === 'actualites' && "Signalez des actualités importantes à traiter"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
