@@ -252,7 +252,7 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
       if (!isOpen) resetForm();
     }}>
       <DialogTrigger asChild>
-        <Button className="bg-primary hover:bg-primary/90">
+        <Button className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full' : ''}`}>
           <Plus className="mr-2 h-4 w-4" />
           Nouveau média
         </Button>
