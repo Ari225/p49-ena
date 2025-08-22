@@ -47,7 +47,7 @@ const JournalPreviewDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-4xl max-h-[35vh] overflow-y-auto rounded-2xl mx-auto my-auto">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl mx-auto my-auto">
         <DialogHeader>
           <DialogTitle>Aperçu de l'édition</DialogTitle>
         </DialogHeader>

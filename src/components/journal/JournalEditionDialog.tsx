@@ -110,7 +110,7 @@ const JournalEditionDialog = ({
   };
   const isSubmitting = loading || imageUploading;
   return <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl max-h-[30vh] overflow-y-auto rounded-2xl mx-auto my-auto">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl mx-auto my-auto">
         <DialogHeader>
           <DialogTitle>Nouvelle Édition du Journal</DialogTitle>
           
