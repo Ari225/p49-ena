@@ -9,7 +9,14 @@ const DeleguesRegionauxSection = () => {
   const isTablet = useIsTablet();
   const { delegues, organizedRows, loading, error } = useDeleguesRegionaux();
   
-  console.log('DeleguesRegionauxSection - État:', { delegues, organizedRows, loading, error });
+  console.log('🎯 DeleguesRegionauxSection rendu - État:', { 
+    deleguesCount: delegues.length, 
+    organizedRowsCount: organizedRows.length,
+    loading, 
+    error,
+    isMobile,
+    isTablet 
+  });
 
   if (loading) {
     return (

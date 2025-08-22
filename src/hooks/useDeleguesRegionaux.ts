@@ -16,31 +16,45 @@ export const useDeleguesRegionaux = () => {
     const fetchDeleguesRegionaux = async () => {
       try {
         setLoading(true);
-        console.log('Début de la récupération des délégués régionaux...');
+        console.log('🔍 Début récupération délégués régionaux...');
         
         const { data, error } = await supabase
           .from('instances_dir')
-          .select('id, "Nom et Prénoms", "Poste"')
+          .select('*')
           .eq('Position', 'delegues_regionaux')
           .order('id');
 
-        console.log('Réponse Supabase délégués:', { data, error });
+        console.log('📊 Réponse brute Supabase:', { data, error });
 
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Erreur Supabase:', error);
+          throw error;
+        }
 
-        const formattedDelegues: DelegueRegional[] = (data as any[])?.map((delegue: any) => ({
-          id: delegue.id,
-          name: delegue["Nom et Prénoms"],
-          position: delegue["Poste"]
-        })) || [];
+        if (!data) {
+          console.warn('⚠️ Aucune donnée retournée');
+          setDelegues([]);
+          return;
+        }
 
-        console.log('Délégués formatés:', formattedDelegues);
+        const formattedDelegues: DelegueRegional[] = data.map((delegue: any) => {
+          console.log('🔄 Traitement délégué:', delegue);
+          return {
+            id: delegue.id,
+            name: delegue["Nom et Prénoms"] || 'Nom non défini',
+            position: delegue["Poste"] || 'Poste non défini'
+          };
+        });
+
+        console.log('✅ Délégués formatés:', formattedDelegues);
         setDelegues(formattedDelegues);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
-        console.error('Erreur lors du chargement des délégués régionaux:', err);
+        const errorMessage = err instanceof Error ? err.message : 'Erreur lors du chargement';
+        console.error('💥 Erreur complète:', err);
+        setError(errorMessage);
       } finally {
         setLoading(false);
+        console.log('🏁 Fin du chargement des délégués');
       }
     };
 
