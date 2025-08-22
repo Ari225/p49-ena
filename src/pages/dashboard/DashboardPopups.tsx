@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, MessageSquare } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import PopupForm from '@/components/popups/PopupForm';
 import PopupCard from '@/components/popups/PopupCard';
@@ -107,7 +107,8 @@ const DashboardPopups = () => {
           </div>
 
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-foreground mb-2">
+            <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" />
               Liste des pop-ups ({popups.length})
             </h2>
           </div>
@@ -191,7 +192,8 @@ const DashboardPopups = () => {
           </div>
 
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-foreground mb-2">
+            <h2 className="text-xl font-semibold text-foreground mb-2 flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" />
               Liste des pop-ups ({popups.length})
             </h2>
           </div>
