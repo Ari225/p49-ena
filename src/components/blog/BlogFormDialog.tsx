@@ -278,7 +278,7 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl mx-auto ${isMobile ? 'mx-4 my-4' : 'my-8'}`}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-primary">
             {editingArticle ? 'Modifier l\'article' : 'Nouvel article de blog'}
