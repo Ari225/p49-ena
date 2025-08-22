@@ -170,7 +170,7 @@ const DashboardTextesOfficiels = () => {
                   Nouveau document
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-full max-w-md mx-auto">
+              <DialogContent className="w-[calc(100vw-50px)] max-w-md mx-auto rounded-xl">
                 <DialogHeader>
                   <DialogTitle>Ajouter un document</DialogTitle>
                 </DialogHeader>
