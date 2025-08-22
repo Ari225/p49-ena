@@ -242,6 +242,13 @@ const DashboardCommuniques = () => {
             </Button>
           </div>
 
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-primary flex items-center">
+              <Calendar className="mr-2 h-5 w-5" />
+              Liste des communiqués ({communiques.length})
+            </h2>
+          </div>
+
           {loading ? (
             <div className="text-center py-8">Chargement...</div>
           ) : (
@@ -279,16 +286,14 @@ const DashboardCommuniques = () => {
                       variant="outline"
                       onClick={() => handleViewDetail(communique)}
                     >
-                      <Eye className="h-4 w-4 mr-1" />
-                      Voir
+                      <Eye className="h-4 w-4" />
                     </Button>
                     <Button 
                       size="sm" 
                       variant="outline"
                       onClick={() => handleEdit(communique)}
                     >
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
+                      <Edit className="h-4 w-4" />
                     </Button>
                     <Button 
                       size="sm" 
@@ -296,8 +301,7 @@ const DashboardCommuniques = () => {
                       className="text-red-600"
                       onClick={() => handleDelete(communique)}
                     >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </CardContent>
@@ -359,6 +363,13 @@ const DashboardCommuniques = () => {
               <Plus className="mr-2 h-4 w-4" />
               Nouveau communiqué
             </Button>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <Calendar className="mr-2 h-5 w-5" />
+              Liste des communiqués ({communiques.length})
+            </h2>
           </div>
 
           {loading ? (
