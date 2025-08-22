@@ -37,9 +37,12 @@ const BureauExecutifSection = () => {
   const renderLevel = (level: any[], levelIndex: number) => {
     const memberCount = level.length;
     
-    // Déterminer la classe grid en fonction du nombre de membres
+    // Déterminer la classe grid en fonction du nombre de membres et de la taille d'écran
     let gridClass = '';
-    if (memberCount === 1) {
+    if (isMobile) {
+      // En mobile, toujours une seule colonne avec largeur fixe
+      gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
+    } else if (memberCount === 1) {
       gridClass = 'grid grid-cols-1 justify-items-center';
     } else if (memberCount === 2) {
       gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 justify-items-center max-w-2xl mx-auto';
@@ -50,12 +53,13 @@ const BureauExecutifSection = () => {
     return (
       <div key={levelIndex} className={`${gridClass} ${levelIndex > 0 ? 'mt-6 md:mt-8' : ''}`}>
         {level.map((member) => (
-          <MemberOrganigramCard
-            key={member.id}
-            name={member.name}
-            position={member.position}
-            phone=""
-          />
+          <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
+            <MemberOrganigramCard
+              name={member.name}
+              position={member.position}
+              phone=""
+            />
+          </div>
         ))}
       </div>
     );
