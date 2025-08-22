@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { X, Plus, Image, Video } from 'lucide-react';
 
@@ -38,6 +39,7 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
   });
   const [customCategory, setCustomCategory] = useState('');
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (media) {
@@ -199,7 +201,7 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[calc(100vw-16px)] max-w-2xl max-h-[85vh] overflow-y-auto rounded-xl border-0 shadow-2xl !mx-2 !my-4 sm:mx-0 sm:my-0 sm:w-full">
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
         <DialogHeader>
           <DialogTitle>Modifier le média</DialogTitle>
         </DialogHeader>
