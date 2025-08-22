@@ -41,7 +41,7 @@ const DashboardMediatheque = () => {
       const { data, error } = await supabase
         .from('media_items')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('date', { ascending: false });
 
       if (error) {
         console.error('Supabase error:', error);
@@ -106,14 +106,26 @@ const DashboardMediatheque = () => {
   };
 
   const handleDelete = async (id: string) => {
+    // Confirmation avant suppression
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce média ? Cette action est irréversible.')) {
+      return;
+    }
+
     try {
+      console.log('Attempting to delete media with id:', id);
+      
       const { error } = await supabase
         .from('media_items')
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase delete error:', error);
+        throw error;
+      }
 
+      console.log('Media deleted successfully');
+      
       toast({
         title: "Média supprimé",
         description: "Le média a été supprimé avec succès.",
@@ -124,7 +136,7 @@ const DashboardMediatheque = () => {
       console.error('Error deleting media:', error);
       toast({
         title: "Erreur",
-        description: "Impossible de supprimer le média.",
+        description: "Impossible de supprimer le média. Vérifiez vos permissions.",
         variant: "destructive"
       });
     }
