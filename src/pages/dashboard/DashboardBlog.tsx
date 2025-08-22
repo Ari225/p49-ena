@@ -156,6 +156,10 @@ const DashboardBlog = () => {
         }
         console.log('Article updated successfully');
         toast.success('Article modifié avec succès');
+        // Forcer un refresh immédiat
+        setTimeout(() => {
+          fetchPosts();
+        }, 100);
       } else {
         // Création d'un nouvel article
         const insertData = {
