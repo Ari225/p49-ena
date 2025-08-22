@@ -34,9 +34,7 @@ const DepartsRetraite = () => {
     const fetchRetirementEvents = async () => {
       try {
         const { data, error } = await supabase
-          .from('retirement_departures')
-          .select('*')
-          .order('retirement_date', { ascending: false });
+          .rpc('get_public_retirement_departures');
 
         if (error) {
           console.error('Error fetching retirement events:', error);
