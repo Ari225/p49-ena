@@ -107,7 +107,7 @@ const EchoRegions = () => {
       {/* Régions Section */}
       <section className={`bg-accent/30 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
         <div className="container mx-auto px-0">
-          <h2 className="text-3xl font-bold text-center text-primary mb-12">Nos Régions</h2>
+          <h2 className="text-3xl font-bold text-center text-primary mb-12">Délégations régionales</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {regions.map((region, index) => <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
                 <div className="aspect-video overflow-hidden rounded-t-lg">
