@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Testimonial } from '@/hooks/useTestimonials';
 
 interface TestimonialEditDialogProps {
@@ -15,6 +16,7 @@ interface TestimonialEditDialogProps {
 const TestimonialEditDialog = ({ testimonial, open, onOpenChange, onSave }: TestimonialEditDialogProps) => {
   const [content, setContent] = useState('');
   const [saving, setSaving] = useState(false);
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     if (testimonial) {
@@ -38,7 +40,7 @@ const TestimonialEditDialog = ({ testimonial, open, onOpenChange, onSave }: Test
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-2xl rounded-xl border-0 shadow-2xl'}`}>
         <DialogHeader>
           <DialogTitle>Modifier le témoignage</DialogTitle>
         </DialogHeader>
