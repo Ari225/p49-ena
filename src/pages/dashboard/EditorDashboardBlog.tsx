@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye, Trash2, X } from 'lucide-react';
+import { FileText, Plus, Edit, Eye, Trash2, X, CheckCircle, XCircle } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import BlogFormDialog from '@/components/blog/BlogFormDialog';
 import { supabase } from '@/integrations/supabase/client';
@@ -112,13 +112,50 @@ const EditorDashboardBlog = () => {
       }
 
       toast.success('Article supprimé avec succès');
-      fetchPosts();
+      fetchPosts(); // Actualiser la liste après suppression
     } catch (error) {
       console.error('Error deleting article:', error);
       toast.error('Erreur lors de la suppression de l\'article');
     } finally {
       setDeleteDialogOpen(false);
       setArticleToDelete(null);
+    }
+  };
+
+  const handleToggleStatus = async (post: BlogPost) => {
+    try {
+      let newStatus: 'en_attente' | 'valide' | 'refuse';
+      switch (post.status) {
+        case 'en_attente':
+          newStatus = 'valide';
+          break;
+        case 'valide':
+          newStatus = 'en_attente';
+          break;
+        case 'refuse':
+          newStatus = 'valide';
+          break;
+        default:
+          newStatus = 'en_attente';
+      }
+
+      const { error } = await supabase
+        .from('blog_articles')
+        .update({ 
+          status: newStatus,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', post.id);
+
+      if (error) throw error;
+
+      const statusText = newStatus === 'valide' ? 'publié' : 
+                        newStatus === 'en_attente' ? 'mis en attente' : 'refusé';
+      toast.success(`Article ${statusText} avec succès`);
+      fetchPosts(); // Actualiser la liste après changement de statut
+    } catch (error) {
+      console.error('Error toggling article status:', error);
+      toast.error('Erreur lors du changement de statut de l\'article');
     }
   };
 
@@ -157,7 +194,7 @@ const EditorDashboardBlog = () => {
         author_image: articleData.authorData?.image,
         image_url: imageUrl,
         author_id: user?.id,
-        status: 'valide' as const,
+        status: (editingArticle ? editingArticle.status : 'en_attente') as 'en_attente' | 'valide' | 'refuse',
         published_date: new Date().toISOString().split('T')[0]
       };
 
@@ -198,13 +235,28 @@ const EditorDashboardBlog = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'valide':
-        return <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">Validé</span>;
+      case 'publie':
+        return <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">Publié</span>;
       case 'en_attente':
         return <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">En attente</span>;
       case 'refuse':
         return <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-sm">Refusé</span>;
       default:
-        return <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded text-sm">{status}</span>;
+        return null;
+    }
+  };
+
+  const getToggleButtonText = (status: string) => {
+    switch (status) {
+      case 'en_attente':
+        return 'Publier';
+      case 'valide':
+      case 'publie':
+        return 'Dépublier';
+      case 'refuse':
+        return 'Publier';
+      default:
+        return 'Publier';
     }
   };
 
@@ -317,6 +369,14 @@ const EditorDashboardBlog = () => {
                             </Button>
                             <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleToggleStatus(post)}
+                              className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                            >
+                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                             </Button>
                             <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
                               <Trash2 className="h-4 w-4" />
@@ -484,6 +544,14 @@ const EditorDashboardBlog = () => {
                             </Button>
                             <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleToggleStatus(post)}
+                              className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                            >
+                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                             </Button>
                             <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
                               <Trash2 className="h-4 w-4" />
@@ -653,6 +721,14 @@ const EditorDashboardBlog = () => {
                             </Button>
                             <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleToggleStatus(post)}
+                              className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                            >
+                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                             </Button>
                             <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
                               <Trash2 className="h-4 w-4" />
