@@ -133,11 +133,11 @@ const EquipeEditoriale = () => {
                     } else if (memberCount === 1) {
                       gridClass = 'grid grid-cols-1 justify-items-center';
                     } else if (memberCount === 2) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 justify-items-center max-w-2xl mx-auto';
+                      gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-x-1 gap-y-4 md:gap-x-2 md:gap-y-6 justify-items-center max-w-2xl mx-auto';
                     } else if (memberCount === 3) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center max-w-4xl mx-auto';
+                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-x-2 md:gap-y-6 justify-items-center max-w-4xl mx-auto';
                     } else {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center max-w-6xl mx-auto';
+                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-x-2 md:gap-y-6 justify-items-center max-w-6xl mx-auto';
                     }
 
                     return (
@@ -181,11 +181,11 @@ const EquipeEditoriale = () => {
                     } else if (memberCount === 1) {
                       gridClass = 'grid grid-cols-1 justify-items-center';
                     } else if (memberCount === 2) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 justify-items-center max-w-2xl mx-auto';
+                      gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-x-1 gap-y-4 md:gap-x-2 md:gap-y-6 justify-items-center max-w-2xl mx-auto';
                     } else if (memberCount === 3) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center max-w-4xl mx-auto';
+                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-x-2 md:gap-y-6 justify-items-center max-w-4xl mx-auto';
                     } else {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 justify-items-center max-w-6xl mx-auto';
+                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-x-2 md:gap-y-6 justify-items-center max-w-6xl mx-auto';
                     }
 
                     return (
