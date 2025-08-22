@@ -30,7 +30,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
 }) => {
   return (
     <Link to={`/actualite/${item.id}`}>
-      <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-transparent h-full">
+      <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-300 h-full">
         <div className="aspect-[16/10] overflow-hidden relative">
           <LazyImage 
             src={item.image_url} 
