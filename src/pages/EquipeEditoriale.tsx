@@ -120,41 +120,17 @@ const EquipeEditoriale = () => {
                 <p className="mt-4 text-gray-600">Chargement de l'équipe...</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="flex flex-wrap justify-center gap-6">
                 {editorialTeam.map((member) => (
-                  <Card key={member.id} className="hover:shadow-lg transition-shadow duration-300">
-                    <CardContent className="p-6">
-                      <div className="text-center mb-4">
-                        <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl font-bold border-4 border-primary/20">
-                          {member.image_url ? (
-                            <img 
-                              src={member.image_url} 
-                              alt={`${member.first_name} ${member.last_name}`}
-                              className="w-full h-full rounded-full object-cover"
-                            />
-                          ) : (
-                            `${member.first_name?.[0] || ''}${member.last_name?.[0] || ''}`
-                          )}
-                        </div>
-                        <h3 className="text-xl font-bold text-primary mb-1">
+                  <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                    <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
+                      <div className="text-center space-y-2">
+                        <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
                           {member.first_name} {member.last_name}
                         </h3>
-                        <div className={`flex items-center justify-center gap-2 mb-2 ${getRoleColor(member.role)} font-semibold`}>
-                          {getRoleIcon(member.role)}
-                          <span>{getRoleLabel(member.role)}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-center text-sm text-gray-600 justify-center">
-                          <Mail className="h-4 w-4 mr-2 text-primary" />
-                          <span className="truncate">{member.email}</span>
-                        </div>
-                        <div className="text-center">
-                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                            @{member.username}
-                          </span>
-                        </div>
+                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-1`}>
+                          {getRoleLabel(member.role)}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
@@ -166,29 +142,6 @@ const EquipeEditoriale = () => {
                 )}
               </div>
             )}
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
-            <div className="bg-primary text-white rounded-lg p-8 text-center">
-              <h2 className="text-2xl font-bold mb-4">Rejoignez Notre Équipe</h2>
-              <p className="mb-6 opacity-90">
-                Vous souhaitez contribuer à Perspectives 49 ? Nous recherchons constamment 
-                des talents passionnés pour enrichir notre équipe éditoriale.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <div className="flex items-center">
-                  <Mail className="h-5 w-5 mr-2" />
-                  <span>redaction@perspectives49.ci</span>
-                </div>
-                <div className="flex items-center">
-                  <Briefcase className="h-5 w-5 mr-2" />
-                  <span>Candidatures ouvertes</span>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
       </div>
