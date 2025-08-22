@@ -242,12 +242,21 @@ const BlogFormDialog: React.FC<BlogFormDialogProps> = ({
       return;
     }
 
-    const finalCategory = data.category === 'Autre' ? customCategory : data.category;
+    // Validation de la catégorie
+    if (!data.category) {
+      return; // Le form validation gère déjà ce cas
+    }
+
+    if (data.category === 'Autre' && !customCategory.trim()) {
+      return; // La validation du customCategory se fait dans le rendu
+    }
+
+    const finalCategory = data.category === 'Autre' ? customCategory.trim() : data.category;
     
     const submitData = {
       ...data,
       category: finalCategory,
-      content: contentText,
+      content: contentText.trim(),
       selectedImage: selectedImage,
       authorData: memberData
     };
