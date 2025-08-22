@@ -113,33 +113,68 @@ const EquipeEditoriale = () => {
         {/* Team Members */}
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-primary mb-12 text-center">Nos Membres</h2>
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
                 <p className="mt-4 text-gray-600">Chargement de l'équipe...</p>
               </div>
             ) : (
-              <div className="flex flex-wrap justify-center gap-6">
-                {editorialTeam.map((member) => (
-                  <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
-                    <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
-                      <div className="text-center space-y-2">
-                        <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
-                          {member.first_name} {member.last_name}
-                        </h3>
-                        <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-1`}>
-                          {getRoleLabel(member.role)}
-                        </p>
+              <div className="space-y-16">
+                {/* Administrateurs */}
+                <div>
+                  <h2 className="text-3xl font-bold text-primary mb-12 text-center">Administrateurs</h2>
+                  <div className="flex flex-wrap justify-center gap-6">
+                    {editorialTeam
+                      .filter((member) => member.role === 'admin_principal' || member.role === 'admin_secondaire')
+                      .map((member) => (
+                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                          <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
+                            <div className="text-center space-y-2">
+                              <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
+                                {member.first_name} {member.last_name}
+                              </h3>
+                              <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-1`}>
+                                {getRoleLabel(member.role)}
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    {editorialTeam.filter((member) => member.role === 'admin_principal' || member.role === 'admin_secondaire').length === 0 && (
+                      <div className="text-center py-12">
+                        <p className="text-gray-600">Aucun administrateur trouvé.</p>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-                {editorialTeam.length === 0 && (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-gray-600">Aucun membre de l'équipe éditoriale trouvé.</p>
+                    )}
                   </div>
-                )}
+                </div>
+
+                {/* Rédacteurs */}
+                <div>
+                  <h2 className="text-3xl font-bold text-primary mb-12 text-center">Rédacteurs</h2>
+                  <div className="flex flex-wrap justify-center gap-6">
+                    {editorialTeam
+                      .filter((member) => member.role === 'redacteur')
+                      .map((member) => (
+                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                          <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
+                            <div className="text-center space-y-2">
+                              <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
+                                {member.first_name} {member.last_name}
+                              </h3>
+                              <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-gray-600 font-medium leading-snug px-1`}>
+                                {getRoleLabel(member.role)}
+                              </p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    {editorialTeam.filter((member) => member.role === 'redacteur').length === 0 && (
+                      <div className="text-center py-12">
+                        <p className="text-gray-600">Aucun rédacteur trouvé.</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
