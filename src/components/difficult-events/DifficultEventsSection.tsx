@@ -23,18 +23,21 @@ const DifficultEventsSection = () => {
   const [previewEvent, setPreviewEvent] = useState<DifficultEvent | null>(null);
 
   useEffect(() => {
-    // Fetch initial data directly from table
+    // Fetch initial data using public function
     const fetchDifficultEvents = async () => {
       try {
         const { data, error } = await supabase
-          .from('difficult_events')
-          .select('*')
-          .order('event_date', { ascending: false });
+          .rpc('get_public_difficult_events');
 
         if (error) {
           console.error('Error fetching difficult events:', error);
         } else {
-          setMalheureuxEvents(data || []);
+          // Transform date to string for compatibility
+          const transformedData = (data || []).map(event => ({
+            ...event,
+            event_date: event.event_date.toString()
+          }));
+          setMalheureuxEvents(transformedData);
         }
       } catch (error) {
         console.error('Error:', error);

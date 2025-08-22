@@ -1107,11 +1107,12 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: {
           category: string
+          description: string
           event_date: string
-          general_message: string
+          family_support_message: string
           id: string
           image_url: string
-          masked_member_name: string
+          member_name: string
           title: string
         }[]
       }
