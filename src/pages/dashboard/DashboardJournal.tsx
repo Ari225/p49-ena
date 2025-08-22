@@ -6,7 +6,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { FileText, Plus, Edit, Eye, Download, Trash2, Calendar } from 'lucide-react';
+import { FileText, Plus, Edit, Eye, Download, Trash2, Calendar, BookOpen } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
@@ -188,7 +188,7 @@ const DashboardJournal = () => {
 
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-primary flex items-center">
-              <FileText className="mr-2 h-5 w-5" />
+              <BookOpen className="mr-2 h-5 w-5" />
               Éditions du journal ({editions.length})
             </h2>
           </div>
@@ -318,7 +318,7 @@ const DashboardJournal = () => {
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
-              <FileText className="mr-2 h-5 w-5" />
+              <BookOpen className="mr-2 h-5 w-5" />
               Éditions du journal ({editions.length})
             </h2>
           </div>
