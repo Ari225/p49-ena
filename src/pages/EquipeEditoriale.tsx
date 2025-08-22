@@ -131,13 +131,13 @@ const EquipeEditoriale = () => {
                     if (isMobile) {
                       gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
                     } else if (memberCount === 1) {
-                      gridClass = 'grid grid-cols-1 justify-items-center';
+                      gridClass = 'flex justify-center';
                     } else if (memberCount === 2) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-x-1 gap-y-4 md:gap-y-6 justify-items-center max-w-lg mx-auto';
+                      gridClass = 'flex justify-center items-center gap-1 max-w-lg mx-auto';
                     } else if (memberCount === 3) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-y-6 justify-items-center max-w-2xl mx-auto';
+                      gridClass = 'flex justify-center items-center gap-1 max-w-2xl mx-auto';
                     } else {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-y-6 justify-items-center max-w-3xl mx-auto';
+                      gridClass = 'flex justify-center items-center gap-1 max-w-3xl mx-auto';
                     }
 
                     return (
@@ -179,13 +179,13 @@ const EquipeEditoriale = () => {
                     if (isMobile) {
                       gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
                     } else if (memberCount === 1) {
-                      gridClass = 'grid grid-cols-1 justify-items-center';
+                      gridClass = 'flex justify-center';
                     } else if (memberCount === 2) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 gap-x-1 gap-y-4 md:gap-y-6 justify-items-center max-w-lg mx-auto';
+                      gridClass = 'flex justify-center items-center gap-1 max-w-lg mx-auto';
                     } else if (memberCount === 3) {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-y-6 justify-items-center max-w-2xl mx-auto';
+                      gridClass = 'flex justify-center items-center gap-1 max-w-2xl mx-auto';
                     } else {
-                      gridClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-1 gap-y-4 md:gap-y-6 justify-items-center max-w-3xl mx-auto';
+                      gridClass = 'flex justify-center items-center gap-1 max-w-3xl mx-auto';
                     }
 
                     return (
