@@ -317,9 +317,7 @@ const DashboardBlog = () => {
                             <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
                               <Edit className="h-3 w-3" />
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleToggleStatus(post)} className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}>
-                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-3 w-3" /> : <CheckCircle className="h-3 w-3" />}
-                            </Button>
+                            
                             <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
                               <Trash2 className="h-3 w-3" />
                             </Button>
