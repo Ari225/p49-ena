@@ -4,12 +4,12 @@ import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, Activity } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ActivityForm from '@/components/activities/ActivityForm';
 import ActivityEditForm from '@/components/activities/ActivityEditForm';
 import ActivityCard from '@/components/activities/ActivityCard';
-import { Activity } from '@/types/activity';
+import { Activity as ActivityType } from '@/types/activity';
 import { isAdmin } from '@/utils/roleUtils';
 import { useActivities } from '@/hooks/useActivities';
 
@@ -18,7 +18,7 @@ const DashboardActivites = () => {
   const isMobile = useIsMobile();
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState<ActivityType | null>(null);
   const { activities, loading, error, refetch, deleteActivity } = useActivities();
 
   if (!user || !isAdmin(user)) {
@@ -45,7 +45,7 @@ const DashboardActivites = () => {
     setSelectedActivity(null);
   };
 
-  const handleEditActivity = (activity: Activity) => {
+  const handleEditActivity = (activity: ActivityType) => {
     console.log('Edit function called');
     console.log('Current user:', user);
     console.log('Current session:', session);
@@ -55,7 +55,7 @@ const DashboardActivites = () => {
     console.log('Edit form should open now');
   };
 
-  const handleDeleteActivity = async (activity: Activity) => {
+  const handleDeleteActivity = async (activity: ActivityType) => {
     console.log('Delete function called');
     console.log('Current user:', user);
     console.log('Current session:', session);
@@ -115,6 +115,13 @@ const DashboardActivites = () => {
               )}
             </DialogContent>
           </Dialog>
+
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Activity className="h-5 w-5" />
+              Liste des activités ({activities.length})
+            </h2>
+          </div>
 
           <div className="space-y-4">
             {loading ? (
@@ -189,6 +196,13 @@ const DashboardActivites = () => {
               )}
             </DialogContent>
           </Dialog>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Activity className="h-5 w-5" />
+              Liste des activités ({activities.length})
+            </h2>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (
