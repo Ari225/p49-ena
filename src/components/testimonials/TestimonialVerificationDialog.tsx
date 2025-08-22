@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Loader } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 interface TestimonialVerificationDialogProps {
   isOpen: boolean;
@@ -32,13 +33,10 @@ const TestimonialVerificationDialog = ({ isOpen, onClose, onVerified }: Testimon
 
     try {
       // Vérifier si le matricule existe en appelant la fonction de vérification
-      const { data, error: supabaseError } = await import('@/integrations/supabase/client')
-        .then(({ supabase }) => 
-          supabase.rpc('get_member_details', {
-            member_matricule: matricule.trim(),
-            verification_matricule: matricule.trim()
-          })
-        );
+      const { data, error: supabaseError } = await supabase.rpc('get_member_details_public', {
+        member_matricule: matricule.trim(),
+        verification_matricule: matricule.trim()
+      });
 
       if (supabaseError || !data || data.length === 0) {
         setError('Matricule non trouvé. Veuillez vérifier et réessayer.');
