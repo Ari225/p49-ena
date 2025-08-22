@@ -2,7 +2,6 @@ import React from 'react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useBureauExecutif } from '@/hooks/useBureauExecutif';
 import MemberOrganigramCard from './MemberOrganigramCard';
-import OrganigramConnectionLine from './OrganigramConnectionLine';
 
 const BureauExecutifSection = () => {
   const isMobile = useIsMobile();
@@ -52,31 +51,16 @@ const BureauExecutifSection = () => {
     }
 
     return (
-      <div key={levelIndex} className="relative w-full">
-        {/* Ligne de connexion vers le niveau suivant */}
-        {!isMobile && levelIndex < organizedLevels.length - 1 && (
-          <OrganigramConnectionLine
-            fromLevel={levelIndex}
-            toLevel={levelIndex + 1}
-            fromIndex={0}
-            toIndex={0}
-            organigramLevels={organizedLevels}
-            isMobile={isMobile}
-            isTablet={isTablet}
-          />
-        )}
-        
-        <div className={`${gridClass} ${levelIndex > 0 ? 'mt-6 md:mt-8' : ''} relative z-10`}>
-          {level.map((member) => (
-            <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
-              <MemberOrganigramCard
-                name={member.name}
-                position={member.position}
-                phone=""
-              />
-            </div>
-          ))}
-        </div>
+      <div key={levelIndex} className={`${gridClass} ${levelIndex > 0 ? 'mt-6 md:mt-8' : ''}`}>
+        {level.map((member) => (
+          <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
+            <MemberOrganigramCard
+              name={member.name}
+              position={member.position}
+              phone=""
+            />
+          </div>
+        ))}
       </div>
     );
   };
