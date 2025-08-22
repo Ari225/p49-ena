@@ -39,74 +39,42 @@ const RenforcementCapacites = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-gray-50">
-        {/* Header Section with Background Image - Mobile */}
-        {isMobile && (
-          <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <img 
-                src="/lovable-uploads/renforcement-capacites-bg.jpg" 
-                alt="Background renforcement capacités" 
-                className="w-full h-full object-cover" 
-              />
-              <div className="absolute inset-0 bg-primary/80"></div>
-            </div>
-            
-            <div className="relative z-10 text-center px-[25px]">
-              <h1 className="text-3xl font-bold mb-4 animate-fade-in">
-                Renforcement des Capacités
-              </h1>
-              <p className="text-base mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Programmes personnalisés pour développer vos compétences et améliorer vos performances
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* Header Section with Background Image - Tablet */}
-        {isTab && (
-          <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <img 
-                src="/lovable-uploads/renforcement-capacites-bg.jpg" 
-                alt="Background renforcement capacités" 
-                className="w-full h-full object-cover" 
-              />
-              <div className="absolute inset-0 bg-primary/80"></div>
-            </div>
-            
-            <div className="relative z-10 text-center px-[50px]">
-              <h1 className="text-4xl font-bold mb-5 animate-fade-in">
-                Renforcement des Capacités
-              </h1>
-              <p className="text-lg mb-7 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Programmes personnalisés pour développer vos compétences et améliorer vos performances
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* Header Section with Background Image - Desktop */}
-        {!isMobile && !isTab && (
-          <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <img 
-                src="/lovable-uploads/renforcement-capacites-bg.jpg" 
-                alt="Background renforcement capacités" 
-                className="w-full h-full object-cover" 
-              />
-              <div className="absolute inset-0 bg-primary/80"></div>
-            </div>
-            
-            <div className="relative z-10 text-center px-8 lg:px-[100px]">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 animate-fade-in">
-                Renforcement des Capacités
-              </h1>
-              <p className="text-lg md:text-xl italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                Programmes personnalisés pour développer vos compétences et améliorer vos performances
-              </p>
-            </div>
-          </section>
-        )}
+        {/* Header Section with Background Image */}
+        <section className={`relative ${
+          isMobile ? 'h-[30vh]' : 
+          isTab ? 'h-[45vh]' : 
+          'h-[60vh]'
+        } flex items-center justify-center text-white overflow-hidden`}>
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/renforcement-capacites-bg.jpg" 
+              alt="Background renforcement capacités" 
+              className="w-full h-full object-cover" 
+            />
+            <div className="absolute inset-0 bg-primary/80"></div>
+          </div>
+          
+          <div className={`relative z-10 text-center ${
+            isMobile ? 'px-[25px]' : 
+            isTab ? 'px-[50px]' : 
+            'px-8 lg:px-[100px]'
+          }`}>
+            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
+              isMobile ? 'text-2xl' : 
+              isTab ? 'text-4xl' : 
+              'text-6xl md:text-6xl lg:text-6xl'
+            }`}>
+              Renforcement des Capacités
+            </h1>
+            <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
+              isMobile ? 'text-sm' : 
+              isTab ? 'text-base' : 
+              'text-lg md:text-lg'
+            }`}>
+              Programmes personnalisés pour développer vos compétences et améliorer vos performances
+            </p>
+          </div>
+        </section>
 
         {/* Content Section - Mobile */}
         {isMobile && (
