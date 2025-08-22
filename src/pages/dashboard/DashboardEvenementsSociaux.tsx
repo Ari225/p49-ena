@@ -675,6 +675,13 @@ const DashboardEvenementsSociaux = () => {
             </Dialog>
           </div>
 
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+              <PartyPopper className="h-5 w-5" />
+              Liste des évènements sociaux ({events.length})
+            </h2>
+          </div>
+
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
@@ -997,6 +1004,13 @@ const DashboardEvenementsSociaux = () => {
                 </form>
               </DialogContent>
             </Dialog>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-foreground mb-2 flex items-center gap-2">
+              <PartyPopper className="h-5 w-5" />
+              Liste des évènements sociaux ({events.length})
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
