@@ -127,7 +127,7 @@ const EquipeEditoriale = () => {
                     {editorialTeam
                       .filter((member) => member.role === 'admin_principal' || member.role === 'admin_secondaire')
                       .map((member) => (
-                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? 'w-full' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
                           <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
                             <div className="text-center space-y-2">
                               <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
@@ -155,7 +155,7 @@ const EquipeEditoriale = () => {
                     {editorialTeam
                       .filter((member) => member.role === 'redacteur')
                       .map((member) => (
-                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? 'w-full' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
                           <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
                             <div className="text-center space-y-2">
                               <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
