@@ -16,14 +16,19 @@ export const useCommissaires = () => {
     const fetchCommissaires = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase.rpc('get_commissaires_members');
+        // Requête directe pour récupérer les commissaires (id 22 et 23)
+        const { data, error } = await supabase
+          .from('instances_dir')
+          .select('id, "Nom et Prénoms", "Poste"')
+          .in('id', [22, 23])
+          .order('id', { ascending: true });
 
         if (error) throw error;
 
-        const formattedCommissaires: Commissaire[] = (data as any[])?.map((member: any) => ({
+        const formattedCommissaires: Commissaire[] = data?.map(member => ({
           id: member.id,
-          name: member.nom_prenoms,
-          position: member.poste
+          name: member["Nom et Prénoms"],
+          position: member["Poste"]
         })) || [];
 
         setCommissaires(formattedCommissaires);
