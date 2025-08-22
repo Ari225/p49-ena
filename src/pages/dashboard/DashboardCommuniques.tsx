@@ -5,7 +5,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Calendar, Eye } from 'lucide-react';
+import { Plus, Edit, Trash2, Calendar, Eye, MessageSquare } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import CommuniqueFormDialog from '@/components/communiques/CommuniqueFormDialog';
 import CommuniqueDetailPopup from '@/components/communiques/CommuniqueDetailPopup';
@@ -244,7 +244,7 @@ const DashboardCommuniques = () => {
 
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-primary flex items-center">
-              <Calendar className="mr-2 h-5 w-5" />
+              <MessageSquare className="mr-2 h-5 w-5" />
               Liste des communiqués ({communiques.length})
             </h2>
           </div>
@@ -367,7 +367,7 @@ const DashboardCommuniques = () => {
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
-              <Calendar className="mr-2 h-5 w-5" />
+              <MessageSquare className="mr-2 h-5 w-5" />
               Liste des communiqués ({communiques.length})
             </h2>
           </div>
