@@ -23,11 +23,8 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
   const isTablet = useIsTablet();
 
   const handleCardClick = () => {
-    if (isVerified) {
-      setIsDetailDialogOpen(true);
-    } else {
-      setIsMatriculeDialogOpen(true);
-    }
+    // Accès direct sans vérification
+    setIsDetailDialogOpen(true);
   };
 
   const handleMatriculeVerified = () => {
@@ -82,13 +79,6 @@ const MemberOrganigramCard: React.FC<MemberOrganigramCardProps> = ({
         member={memberData}
         isOpen={isDetailDialogOpen}
         onClose={() => setIsDetailDialogOpen(false)}
-      />
-
-      <MatriculeVerificationDialog
-        isOpen={isMatriculeDialogOpen}
-        onClose={() => setIsMatriculeDialogOpen(false)}
-        onVerified={handleMatriculeVerified}
-        verificationMode="view"
       />
     </>
   );
