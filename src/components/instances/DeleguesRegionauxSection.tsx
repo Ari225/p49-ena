@@ -8,6 +8,8 @@ const DeleguesRegionauxSection = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const { delegues, organizedRows, loading, error } = useDeleguesRegionaux();
+  
+  console.log('DeleguesRegionauxSection - État:', { delegues, organizedRows, loading, error });
 
   if (loading) {
     return (
@@ -15,7 +17,7 @@ const DeleguesRegionauxSection = () => {
         <h2 className="text-3xl font-bold text-center mb-8 text-primary">
           Délégués Régionaux
         </h2>
-        <div className="text-center">Chargement...</div>
+        <div className="text-center">Chargement des délégués...</div>
       </section>
     );
   }
@@ -27,6 +29,17 @@ const DeleguesRegionauxSection = () => {
           Délégués Régionaux
         </h2>
         <div className="text-center text-red-600">Erreur: {error}</div>
+      </section>
+    );
+  }
+
+  if (delegues.length === 0) {
+    return (
+      <section className="py-6">
+        <h2 className="text-3xl font-bold text-center mb-8 text-primary">
+          Délégués Régionaux
+        </h2>
+        <div className="text-center">Aucun délégué régional trouvé.</div>
       </section>
     );
   }

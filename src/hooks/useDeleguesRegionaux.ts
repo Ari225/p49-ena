@@ -16,11 +16,15 @@ export const useDeleguesRegionaux = () => {
     const fetchDeleguesRegionaux = async () => {
       try {
         setLoading(true);
+        console.log('Début de la récupération des délégués régionaux...');
+        
         const { data, error } = await supabase
           .from('instances_dir')
           .select('id, "Nom et Prénoms", "Poste"')
           .eq('Position', 'delegues_regionaux')
           .order('id');
+
+        console.log('Réponse Supabase délégués:', { data, error });
 
         if (error) throw error;
 
@@ -30,6 +34,7 @@ export const useDeleguesRegionaux = () => {
           position: delegue["Poste"]
         })) || [];
 
+        console.log('Délégués formatés:', formattedDelegues);
         setDelegues(formattedDelegues);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur lors du chargement');
