@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
-import { organigramLevels } from './organigramData';
-import OrganigramLevel from './OrganigramLevel';
+import { useBureauExecutif } from '@/hooks/useBureauExecutif';
+import MemberOrganigramCard from './MemberOrganigramCard';
 
 const BureauExecutifSection = () => {
   const isMobile = useIsMobile();
