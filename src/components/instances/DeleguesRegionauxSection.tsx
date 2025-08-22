@@ -81,9 +81,9 @@ const DeleguesRegionauxSection = () => {
         </h2>
         <div className="space-y-5 max-w-4xl mx-auto">
           {organizedRows.map((row, rowIndex) => (
-            <div key={rowIndex} className="grid grid-cols-3 gap-2">
+            <div key={rowIndex} className="flex justify-center items-center gap-1">
               {row.map((delegue) => (
-                <div key={delegue.id} className="max-w-[280px] mx-auto w-full">
+                <div key={delegue.id} className="max-w-[280px] w-full">
                   <MemberOrganigramCard
                     name={delegue.name}
                     position={delegue.position}
@@ -106,7 +106,7 @@ const DeleguesRegionauxSection = () => {
       </h2>
       <div className="space-y-5 max-w-6xl mx-auto">
         {organizedRows.map((row, rowIndex) => (
-          <div key={rowIndex} className="grid grid-cols-3 gap-2 justify-items-center">
+          <div key={rowIndex} className="flex justify-center items-center gap-1">
             {row.map((delegue) => (
               <MemberOrganigramCard
                 key={delegue.id}
