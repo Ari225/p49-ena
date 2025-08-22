@@ -129,15 +129,12 @@ const Suggestions = () => {
         </section>
 
         {/* Categories Overview */}
-        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-gradient-to-br from-accent/5 to-primary/5`}>
+        <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-white`}>
           <div className="container mx-auto px-0">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {categories.slice(0, 3).map(category => <Card key={category.value} className="text-center p-6 border-2 border-accent/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg bg-white/80 backdrop-blur-sm">
+                {categories.slice(0, 3).map(category => <Card key={category.value} className="text-center p-6 border-2 border-accent/40 hover:border-primary/60 transition-all duration-300 hover:shadow-lg bg-white/80 backdrop-blur-sm">
                     <CardContent className="p-6">
-                      <div className="bg-primary/10 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-                        <category.icon className="h-10 w-10 text-primary" />
-                      </div>
                       <h3 className="font-bold text-xl text-primary mb-3">{category.label}</h3>
                       <p className="text-gray-600 leading-relaxed">
                         {category.value === 'blog' && "Proposez des thèmes d'articles de blog innovants et pertinents"}
