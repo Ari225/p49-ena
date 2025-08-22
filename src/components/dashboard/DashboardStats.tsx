@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, FileText, Calendar, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useVisitorTracking } from '@/hooks/useVisitorTracking';
 
 interface DashboardStatsProps {
   isMobile?: boolean;
 }
 
 const DashboardStats: React.FC<DashboardStatsProps> = ({ isMobile = false }) => {
+  const { monthlyVisitors, isTracking } = useVisitorTracking();
   const [stats, setStats] = useState([
     {
       title: 'Articles Publiés',
@@ -61,10 +63,6 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ isMobile = false }) => 
 
         const totalEvents = (happyEventsCount || 0) + (difficultEventsCount || 0);
 
-        // Visiteurs mensuels - pour l'instant simulation, à remplacer par une vraie solution analytics
-        const currentMonth = new Date().getMonth();
-        const visitorsCount = Math.floor(Math.random() * 1000) + 500; // Simulation temporaire
-
         setStats([
           {
             title: 'Articles Publiés',
@@ -85,10 +83,10 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ isMobile = false }) => 
             color: 'text-purple-600'
           },
           {
-            title: 'Visiteurs Mensuels',
-            value: visitorsCount.toLocaleString(),
+            title: isTracking ? 'Visiteurs Mensuels' : 'Visiteurs (Tracking désactivé)',
+            value: isTracking ? monthlyVisitors.toLocaleString() : 'Non suivi',
             icon: Eye,
-            color: 'text-orange-600'
+            color: isTracking ? 'text-orange-600' : 'text-gray-400'
           }
         ]);
 
@@ -98,7 +96,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ isMobile = false }) => 
     };
 
     fetchStats();
-  }, []);
+  }, [monthlyVisitors, isTracking]);
 
   if (isMobile) {
     return (
