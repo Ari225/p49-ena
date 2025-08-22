@@ -13,7 +13,7 @@ const TemoignagesHero = () => {
     } flex items-center justify-center text-white overflow-hidden`}>
       <div className="absolute inset-0">
         <img 
-          src="/lovable-uploads/bonheur.jpg" 
+          src="/lovable-uploads/temoignage.webp" 
           alt="Background témoignages" 
           className="w-full h-full object-cover" 
         />
@@ -37,7 +37,7 @@ const TemoignagesHero = () => {
           isTablet ? 'text-base' : 
           'text-lg md:text-lg'
         }`}>
-          Découvrez ce que nos membres disent de leur expérience au sein de la P49
+          Nos membres parlent de leur appartenance à la P49
         </p>
       </div>
     </section>
