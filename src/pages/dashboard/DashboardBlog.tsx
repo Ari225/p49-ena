@@ -134,6 +134,14 @@ const DashboardBlog = () => {
           updated_at: new Date().toISOString()
         };
 
+        // Mettre à jour les informations de l'auteur si elles sont fournies
+        if (articleData.authorData) {
+          updateData.matricule = articleData.matricule;
+          updateData.author_name = articleData.authorData.name;
+          updateData.author_function = articleData.authorData.function;
+          updateData.author_image = articleData.authorData.image;
+        }
+
         // Ne mettre à jour l'image que si une nouvelle image est fournie
         if (imageUrl) {
           updateData.image_url = imageUrl;
