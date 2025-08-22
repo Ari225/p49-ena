@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PopupItem, PopupFormData } from '@/types/popup';
 import { useImageUploadWithPreview } from '@/hooks/useImageUploadWithPreview';
+import { useIsMobile } from '@/hooks/use-mobile';
 import PopupImageUpload from './PopupImageUpload';
 
 interface PopupEditDialogProps {
@@ -31,6 +32,8 @@ const PopupEditDialog: React.FC<PopupEditDialogProps> = ({
     author: '',
     position: ''
   });
+
+  const isMobile = useIsMobile();
 
   const { 
     selectedImage, 
@@ -78,7 +81,7 @@ const PopupEditDialog: React.FC<PopupEditDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
         <DialogHeader>
           <DialogTitle>Modifier le Pop-up</DialogTitle>
         </DialogHeader>
