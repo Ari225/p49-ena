@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
+import { getRelativeTime } from '@/utils/timeUtils';
 interface RecentActivityProps {
   isMobile?: boolean;
 }
@@ -31,10 +32,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (articles) {
           articles.forEach(article => {
-            const timeAgo = Math.floor((Date.now() - new Date(article.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(article.created_at);
             recentActivities.push({
               title: 'Nouvel article créé',
-              description: `Article "${article.title}" créé il y a ${timeAgo}h`,
+              description: `Article "${article.title}" créé ${timeAgo}`,
               color: 'bg-green-500',
               timestamp: new Date(article.created_at).getTime()
             });
@@ -50,12 +51,12 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (users) {
           users.forEach(user => {
-            const timeAgo = Math.floor((Date.now() - new Date(user.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(user.created_at);
             const roleLabel = user.role === 'admin_principal' ? 'Admin Principal' : 
                             user.role === 'admin_secondaire' ? 'Admin Secondaire' : 'Rédacteur';
             recentActivities.push({
               title: 'Nouveau membre inscrit',
-              description: `${user.first_name} ${user.last_name} (${roleLabel}) a rejoint il y a ${timeAgo}h`,
+              description: `${user.first_name} ${user.last_name} (${roleLabel}) a rejoint ${timeAgo}`,
               color: 'bg-blue-500',
               timestamp: new Date(user.created_at).getTime()
             });
@@ -71,10 +72,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (happyEvents) {
           happyEvents.forEach(event => {
-            const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(event.created_at);
             recentActivities.push({
               title: 'Nouvel événement heureux créé',
-              description: `Événement "${event.title}" créé il y a ${timeAgo}h`,
+              description: `Événement "${event.title}" créé ${timeAgo}`,
               color: 'bg-purple-500',
               timestamp: new Date(event.created_at).getTime()
             });
@@ -90,10 +91,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (news) {
           news.forEach(newsItem => {
-            const timeAgo = Math.floor((Date.now() - new Date(newsItem.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(newsItem.created_at);
             recentActivities.push({
               title: 'Nouvelle actualité créée',
-              description: `Actualité "${newsItem.title}" créée il y a ${timeAgo}h`,
+              description: `Actualité "${newsItem.title}" créée ${timeAgo}`,
               color: 'bg-orange-500',
               timestamp: new Date(newsItem.created_at).getTime()
             });
@@ -109,10 +110,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (media) {
           media.forEach(mediaItem => {
-            const timeAgo = Math.floor((Date.now() - new Date(mediaItem.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(mediaItem.created_at);
             recentActivities.push({
               title: 'Nouveau média ajouté',
-              description: `Média "${mediaItem.title}" ajouté il y a ${timeAgo}h`,
+              description: `Média "${mediaItem.title}" ajouté ${timeAgo}`,
               color: 'bg-pink-500',
               timestamp: new Date(mediaItem.created_at).getTime()
             });
@@ -128,10 +129,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (journals) {
           journals.forEach(journal => {
-            const timeAgo = Math.floor((Date.now() - new Date(journal.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(journal.created_at);
             recentActivities.push({
               title: 'Nouvelle édition du journal',
-              description: `Journal "${journal.title}" créé il y a ${timeAgo}h`,
+              description: `Journal "${journal.title}" créé ${timeAgo}`,
               color: 'bg-indigo-500',
               timestamp: new Date(journal.created_at).getTime()
             });
@@ -147,10 +148,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (difficultEvents) {
           difficultEvents.forEach(event => {
-            const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(event.created_at);
             recentActivities.push({
               title: 'Événement difficile ajouté',
-              description: `"${event.title}" ajouté il y a ${timeAgo}h`,
+              description: `"${event.title}" ajouté ${timeAgo}`,
               color: 'bg-red-500',
               timestamp: new Date(event.created_at).getTime()
             });
@@ -166,10 +167,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (moreHappyEvents) {
           moreHappyEvents.forEach(event => {
-            const timeAgo = Math.floor((Date.now() - new Date(event.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(event.created_at);
             recentActivities.push({
               title: 'Événement heureux ajouté',
-              description: `"${event.title}" ajouté il y a ${timeAgo}h`,
+              description: `"${event.title}" ajouté ${timeAgo}`,
               color: 'bg-yellow-500',
               timestamp: new Date(event.created_at).getTime()
             });
@@ -185,10 +186,10 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         
         if (retirements) {
           retirements.forEach(retirement => {
-            const timeAgo = Math.floor((Date.now() - new Date(retirement.created_at).getTime()) / (1000 * 60 * 60));
+            const timeAgo = getRelativeTime(retirement.created_at);
             recentActivities.push({
               title: 'Départ à la retraite ajouté',
-              description: `Départ de ${retirement.member_name} ajouté il y a ${timeAgo}h`,
+              description: `Départ de ${retirement.member_name} ajouté ${timeAgo}`,
               color: 'bg-gray-500',
               timestamp: new Date(retirement.created_at).getTime()
             });
@@ -215,16 +216,16 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         <CardHeader className="px-4 py-3">
           <CardTitle className="text-lg">Activité Récente</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
-          <div className="space-y-2 p-4">
-            {activities.map((activity, index) => <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
-                <div className="flex-1">
-                  <p className="font-medium text-sm">{activity.title}</p>
-                  <p className="text-xs text-gray-600">{activity.description}</p>
-                </div>
-              </div>)}
-          </div>
+        <CardContent className="space-y-2 p-4">
+          {activities.map((activity, index) => 
+            <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
+              <div className="flex-1">
+                <p className="font-medium text-sm">{activity.title}</p>
+                <p className="text-xs text-gray-600">{activity.description}</p>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>;
   }
@@ -232,16 +233,16 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
       <CardHeader>
         <CardTitle>Activités récentes</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {activities.map((activity, index) => <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-              <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
-              <div className="flex-1">
-                <p className="font-medium">{activity.title}</p>
-                <p className="text-sm text-gray-600">{activity.description}</p>
-              </div>
-            </div>)}
-        </div>
+      <CardContent className="space-y-4">
+        {activities.map((activity, index) => 
+          <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+            <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
+            <div className="flex-1">
+              <p className="font-medium">{activity.title}</p>
+              <p className="text-sm text-gray-600">{activity.description}</p>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>;
 };
