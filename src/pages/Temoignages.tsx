@@ -63,8 +63,8 @@ const Temoignages = () => {
         <TemoignagesHero />
 
         {/* Search and Actions Section */}
-        <section className="py-8 px-4 md:px-8 lg:px-[100px] bg-accent/20">
-          <div className="container mx-auto">
+        <section className="py-8 px-6 lg:px-[100px] bg-accent/20">
+          <div className="max-w-none mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="w-full max-w-md mx-auto md:mx-0 relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -82,8 +82,8 @@ const Temoignages = () => {
         </section>
 
         {/* Testimonials Grid */}
-        <section className="py-12 px-4 md:px-8 lg:px-[100px]">
-          <div className="container mx-auto">
+        <section className="py-12 px-6 lg:px-[100px]">
+          <div className="max-w-none mx-auto">
             <div className="mb-6">
               <p className="text-gray-600">
                 {filteredTestimonials.length} témoignage{filteredTestimonials.length > 1 ? 's' : ''} trouvé{filteredTestimonials.length > 1 ? 's' : ''}
