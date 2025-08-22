@@ -9,6 +9,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import PDFViewer from '@/components/PDFViewer';
 import PDFThumbnail from '@/components/ui/PDFThumbnail';
+import SimplePDFThumbnail from '@/components/ui/SimplePDFThumbnail';
+
 const TextesOfficiels = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -23,12 +25,15 @@ const TextesOfficiels = () => {
 
   const fetchDocuments = async () => {
     try {
+      console.log('TextesOfficiels: Récupération des documents...');
       const { data, error } = await supabase
         .from('official_documents')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      console.log('TextesOfficiels: Documents récupérés:', data?.length || 0);
+      console.log('TextesOfficiels: Premier document:', data?.[0]);
       setDocuments(data || []);
     } catch (error) {
       console.error('Erreur lors du chargement des documents:', error);
@@ -124,12 +129,10 @@ const TextesOfficiels = () => {
                           title={document.title}
                           triggerButton={
                             <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
-                              <PDFThumbnail
+                              <SimplePDFThumbnail
                                 pdfUrl={document.document_url}
                                 alt={document.title}
-                                className="w-full h-48 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300"
-                                width={300}
-                                height={192}
+                                className="w-full h-48 border shadow-sm group-hover/image:scale-110 transition-transform duration-300"
                               />
                               <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
                                 <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
@@ -246,12 +249,10 @@ const TextesOfficiels = () => {
                           title={document.title}
                           triggerButton={
                             <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
-                              <PDFThumbnail
+                              <SimplePDFThumbnail
                                 pdfUrl={document.document_url}
                                 alt={document.title}
-                                className="w-full h-56 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300"
-                                width={300}
-                                height={224}
+                                className="w-full h-56 border shadow-sm group-hover/image:scale-110 transition-transform duration-300"
                               />
                               <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
                                 <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
@@ -367,12 +368,10 @@ const TextesOfficiels = () => {
                         title={document.title}
                         triggerButton={
                           <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
-                            <PDFThumbnail
+                            <SimplePDFThumbnail
                               pdfUrl={document.document_url}
                               alt={document.title}
-                              className="w-full h-64 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300"
-                              width={350}
-                              height={256}
+                              className="w-full h-64 border shadow-sm group-hover/image:scale-110 transition-transform duration-300"
                             />
                             <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
                               <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
