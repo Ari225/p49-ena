@@ -7,10 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { FileText, Edit, Eye, Trash2, Calendar, User, CheckCircle, XCircle } from 'lucide-react';
+import { FileText, Eye, Trash2, Calendar, User, CheckCircle, XCircle } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
-import BlogFormDialog from '@/components/blog/BlogFormDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import EditorDashboardBlog from './EditorDashboardBlog';
@@ -51,8 +50,6 @@ const DashboardBlog = () => {
   const isTablet = useIsTablet();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingArticle, setEditingArticle] = useState(null);
   const [viewingArticle, setViewingArticle] = useState<BlogPost | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<{
     isOpen: boolean;
@@ -101,108 +98,9 @@ const DashboardBlog = () => {
       setLoading(false);
     }
   };
-  const handleCreateArticle = async (articleData: any) => {
-    try {
-      console.log('=== DEBUT SAUVEGARDE ===');
-      console.log('Données reçues:', JSON.stringify(articleData, null, 2));
-      console.log('Article en cours de modification:', JSON.stringify(editingArticle, null, 2));
-      console.log('========================');
-      let imageUrl = null;
-
-      // Upload image if selected
-      if (articleData.selectedImage) {
-        const fileExt = articleData.selectedImage.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const {
-          data: uploadData,
-          error: uploadError
-        } = await supabase.storage.from('blog-images').upload(fileName, articleData.selectedImage);
-        if (uploadError) {
-          throw uploadError;
-        }
-        const {
-          data: urlData
-        } = supabase.storage.from('blog-images').getPublicUrl(uploadData.path);
-        imageUrl = urlData.publicUrl;
-      }
-      if (editingArticle) {
-        // Mise à jour de l'article existant
-        const updateData: any = {
-          title: articleData.title,
-          summary: articleData.summary,
-          content: articleData.content,
-          category: articleData.category,
-          reading_time: articleData.reading_time,
-          updated_at: new Date().toISOString()
-        };
-
-        // Mettre à jour les informations de l'auteur si elles sont fournies
-        if (articleData.authorData && articleData.matricule) {
-          updateData.matricule = articleData.matricule;
-          updateData.author_name = articleData.authorData.name;
-          updateData.author_function = articleData.authorData.function;
-          updateData.author_image = articleData.authorData.image;
-        }
-
-        // Ne mettre à jour l'image que si une nouvelle image est fournie
-        if (imageUrl) {
-          updateData.image_url = imageUrl;
-        }
-        console.log('Updating article with data:', updateData);
-        const {
-          error
-        } = await supabase
-          .from('blog_articles')
-          .update(updateData)
-          .eq('id', editingArticle.id);
-        
-        if (error) {
-          console.error('Update error:', error);
-          throw error;
-        }
-        console.log('Article updated successfully');
-        toast.success('Article modifié avec succès');
-        // Forcer un refresh immédiat
-        setTimeout(() => {
-          fetchPosts();
-        }, 100);
-      } else {
-        // Création d'un nouvel article
-        const insertData = {
-          title: articleData.title,
-          summary: articleData.summary,
-          content: articleData.content,
-          category: articleData.category,
-          reading_time: articleData.reading_time,
-          image_url: imageUrl,
-          author_id: user?.id,
-          status: 'en_attente' as const
-        };
-        console.log('Creating article with data:', insertData);
-        const {
-          error
-        } = await supabase.from('blog_articles').insert(insertData);
-        if (error) {
-          console.error('Insert error:', error);
-          throw error;
-        }
-        console.log('Article created successfully');
-        toast.success('Article créé avec succès');
-      }
-      setIsFormOpen(false);
-      setEditingArticle(null);
-      fetchPosts();
-    } catch (error) {
-      console.error('Error saving article:', error);
-      toast.error(editingArticle ? 'Erreur lors de la modification de l\'article' : 'Erreur lors de la création de l\'article');
-    }
-  };
+  
   const handleViewArticle = (post: BlogPost) => {
     setViewingArticle(post);
-  };
-  const handleEditArticle = (post: BlogPost) => {
-    setEditingArticle(post);
-    setIsFormOpen(true);
   };
   const handleDeleteArticle = (post: BlogPost) => {
     setDeleteConfirm({
@@ -345,9 +243,6 @@ const DashboardBlog = () => {
                             <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
                               <Eye className="h-3 w-3" />
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                              <Edit className="h-3 w-3" />
-                            </Button>
                             
                             <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post)}>
                               <Trash2 className="h-3 w-3" />
@@ -361,8 +256,6 @@ const DashboardBlog = () => {
           </Card>
         </div>
         <AdminSidebar />
-        
-        <BlogFormDialog isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onSubmit={handleCreateArticle} editingArticle={editingArticle} />
       </Layout>;
   }
   if (isTablet) {
@@ -414,10 +307,6 @@ const DashboardBlog = () => {
                               <Eye className="h-4 w-4 mr-1" />
                               Voir
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                              <Edit className="h-4 w-4 mr-1" />
-                              Modifier
-                            </Button>
                             <Button variant="outline" size="sm" onClick={() => handleToggleStatus(post)} className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}>
                               {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4 mr-1" /> : <CheckCircle className="h-4 w-4 mr-1" />}
                               {getToggleButtonText(post.status)}
@@ -435,8 +324,6 @@ const DashboardBlog = () => {
           </Card>
         </div>
         <AdminSidebar />
-        
-        <BlogFormDialog isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} onSubmit={handleCreateArticle} editingArticle={editingArticle} />
       </Layout>;
   }
   return <Layout>
@@ -490,10 +377,6 @@ const DashboardBlog = () => {
                               <Eye className="h-4 w-4" />
                               Voir
                             </Button>
-                            <Button variant="outline" size="default" onClick={() => handleEditArticle(post)} className="flex items-center gap-2">
-                              <Edit className="h-4 w-4" />
-                              Modifier
-                            </Button>
                             
                             <Button variant="outline" size="default" className="text-red-600 hover:text-red-700 flex items-center gap-2" onClick={() => handleDeleteArticle(post)}>
                               <Trash2 className="h-4 w-4" />
@@ -509,11 +392,6 @@ const DashboardBlog = () => {
         </div>
       </div>
       
-      <BlogFormDialog isOpen={isFormOpen} onClose={() => {
-      setIsFormOpen(false);
-      setEditingArticle(null);
-    }} onSubmit={handleCreateArticle} editingArticle={editingArticle} />
-
       {/* Dialog pour voir un article */}
       <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
