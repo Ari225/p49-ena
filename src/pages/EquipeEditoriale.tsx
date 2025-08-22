@@ -123,11 +123,11 @@ const EquipeEditoriale = () => {
                 {/* Administrateurs */}
                 <div>
                   <h2 className="text-3xl font-bold text-primary mb-12 text-center">Administrateurs</h2>
-                  <div className="flex flex-wrap justify-center gap-6">
+                  <div className={isMobile ? "space-y-3" : "grid grid-cols-3 gap-3 justify-items-center"}>
                     {editorialTeam
                       .filter((member) => member.role === 'admin_principal' || member.role === 'admin_secondaire')
                       .map((member) => (
-                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? 'w-full' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? 'w-full' : 'h-[200px] w-[280px] max-w-[280px]'}`}>
                           <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
                             <div className="text-center space-y-2">
                               <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
@@ -141,7 +141,7 @@ const EquipeEditoriale = () => {
                         </Card>
                       ))}
                     {editorialTeam.filter((member) => member.role === 'admin_principal' || member.role === 'admin_secondaire').length === 0 && (
-                      <div className="text-center py-12">
+                      <div className="col-span-3 text-center py-12">
                         <p className="text-gray-600">Aucun administrateur trouvé.</p>
                       </div>
                     )}
@@ -151,11 +151,11 @@ const EquipeEditoriale = () => {
                 {/* Rédacteurs */}
                 <div>
                   <h2 className="text-3xl font-bold text-primary mb-12 text-center">Rédacteurs</h2>
-                  <div className="flex flex-wrap justify-center gap-6">
+                  <div className={isMobile ? "space-y-3" : "grid grid-cols-3 gap-3 justify-items-center"}>
                     {editorialTeam
                       .filter((member) => member.role === 'redacteur')
                       .map((member) => (
-                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? 'w-full' : 'h-[200px] w-[300px] max-w-[300px]'}`}>
+                        <Card key={member.id} className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? 'w-full' : 'h-[200px] w-[280px] max-w-[280px]'}`}>
                           <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
                             <div className="text-center space-y-2">
                               <h3 className={`font-bold ${isMobile ? 'text-sm' : 'text-lg'} text-gray-900 group-hover:text-primary transition-colors leading-tight`}>
@@ -169,7 +169,7 @@ const EquipeEditoriale = () => {
                         </Card>
                       ))}
                     {editorialTeam.filter((member) => member.role === 'redacteur').length === 0 && (
-                      <div className="text-center py-12">
+                      <div className="col-span-3 text-center py-12">
                         <p className="text-gray-600">Aucun rédacteur trouvé.</p>
                       </div>
                     )}
