@@ -14,6 +14,19 @@ import BlogFormDialog from '@/components/blog/BlogFormDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import EditorDashboardBlog from './EditorDashboardBlog';
+
+// Fonction pour formater le contenu markdown
+const formatContent = (content: string) => {
+  return content
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/<u>(.*?)<\/u>/g, '<u>$1</u>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">$1</a>')
+    .replace(/^• (.+)$/gm, '<li>$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm, '<li>$1. $2</li>')
+    .replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-primary pl-4 italic text-muted-foreground">$1</blockquote>')
+    .replace(/\n/g, '<br/>');
+};
 interface BlogPost {
   id: string;
   title: string;
@@ -498,9 +511,12 @@ const DashboardBlog = () => {
             {viewingArticle?.image_url && <img src={viewingArticle.image_url} alt={viewingArticle.title} className="w-full h-64 object-cover rounded-lg" />}
             <div className="prose max-w-none">
               <p className="text-lg text-muted-foreground">{viewingArticle?.summary}</p>
-              <div dangerouslySetInnerHTML={{
-              __html: viewingArticle?.content || ''
-            }} />
+              <div 
+                className="mt-4"
+                dangerouslySetInnerHTML={{
+                  __html: formatContent(viewingArticle?.content || '')
+                }} 
+              />
             </div>
           </div>
         </DialogContent>
