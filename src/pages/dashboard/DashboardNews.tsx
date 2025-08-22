@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Plus } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
@@ -233,34 +232,31 @@ const DashboardNews = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-lg">
-                <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités ({news.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8">
-                    Aucune actualité créée
-                  </p>
-                ) : (
-                  news.map((item) => (
-                    <NewsCardDashboard 
-                      key={item.id} 
-                      item={item} 
-                      variant="mobile"
-                      onEdit={() => handleEditNews(item)}
-                      onDelete={() => handleDeleteNews(item.id)}
-                      onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
-                    />
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des Actualités ({news.length})
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {news.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">
+                Aucune actualité créée
+              </p>
+            ) : (
+              news.map((item) => (
+                <NewsCardDashboard 
+                  key={item.id} 
+                  item={item} 
+                  variant="mobile"
+                  onEdit={() => handleEditNews(item)}
+                  onDelete={() => handleDeleteNews(item.id)}
+                  onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
+                />
+              ))
+            )}
+          </div>
         </div>
         <AdminSidebar />
         <NewsFormDialog
@@ -289,34 +285,31 @@ const DashboardNews = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8 col-span-full">
-                    Aucune actualité créée
-                  </p>
-                ) : (
-                  news.map((item) => (
-                    <NewsCardDashboard 
-                      key={item.id} 
-                      item={item} 
-                      variant="tablet"
-                      onEdit={() => handleEditNews(item)}
-                      onDelete={() => handleDeleteNews(item.id)}
-                      onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
-                    />
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des Actualités ({news.length})
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {news.length === 0 ? (
+              <p className="text-center text-gray-500 py-8 col-span-full">
+                Aucune actualité créée
+              </p>
+            ) : (
+              news.map((item) => (
+                <NewsCardDashboard 
+                  key={item.id} 
+                  item={item} 
+                  variant="tablet"
+                  onEdit={() => handleEditNews(item)}
+                  onDelete={() => handleDeleteNews(item.id)}
+                  onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
+                />
+              ))
+            )}
+          </div>
         </div>
         <AdminSidebar />
         <NewsFormDialog
@@ -347,34 +340,31 @@ const DashboardNews = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {news.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8 col-span-full">
-                    Aucune actualité créée
-                  </p>
-                ) : (
-                  news.map((item) => (
-                    <NewsCardDashboard 
-                      key={item.id} 
-                      item={item} 
-                      variant="desktop"
-                      onEdit={() => handleEditNews(item)}
-                      onDelete={() => handleDeleteNews(item.id)}
-                      onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
-                    />
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des Actualités ({news.length})
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {news.length === 0 ? (
+              <p className="text-center text-gray-500 py-8 col-span-full">
+                Aucune actualité créée
+              </p>
+            ) : (
+              news.map((item) => (
+                <NewsCardDashboard 
+                  key={item.id} 
+                  item={item} 
+                  variant="desktop"
+                  onEdit={() => handleEditNews(item)}
+                  onDelete={() => handleDeleteNews(item.id)}
+                  onToggleVisibility={() => handleToggleVisibility(item.id, item.is_visible || false)}
+                />
+              ))
+            )}
+          </div>
         </div>
       </div>
       <NewsFormDialog
