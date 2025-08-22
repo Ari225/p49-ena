@@ -20,7 +20,7 @@ export const useBureauExecutif = () => {
 
         if (error) throw error;
 
-        const formattedMembers: BureauExecutifMember[] = data?.map((member: any) => ({
+        const formattedMembers: BureauExecutifMember[] = (data as any[])?.map((member: any) => ({
           id: member.id,
           name: member.nom_prenoms,
           position: member.poste

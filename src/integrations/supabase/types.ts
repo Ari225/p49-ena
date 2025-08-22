@@ -454,6 +454,30 @@ export type Database = {
         }
         Relationships: []
       }
+      instances_dir: {
+        Row: {
+          created_at: string
+          id: number
+          "Nom et Prénoms": string | null
+          Position: Database["public"]["Enums"]["position_member"] | null
+          Poste: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          "Nom et Prénoms"?: string | null
+          Position?: Database["public"]["Enums"]["position_member"] | null
+          Poste?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          "Nom et Prénoms"?: string | null
+          Position?: Database["public"]["Enums"]["position_member"] | null
+          Poste?: string | null
+        }
+        Relationships: []
+      }
       journal_editions: {
         Row: {
           cover_image_url: string | null
@@ -965,6 +989,14 @@ export type Database = {
           whatsapp: number
         }[]
       }
+      get_bureau_executif_members: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: number
+          nom_prenoms: string
+          poste: string
+        }[]
+      }
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1269,6 +1301,7 @@ export type Database = {
     Enums: {
       article_status: "en_attente" | "valide" | "refuse"
       journal_status: "publie" | "archive"
+      position_member: "bureau_executif" | "delegues_regionaux"
       user_role: "admin_principal" | "admin_secondaire" | "redacteur"
     }
     CompositeTypes: {
@@ -1399,6 +1432,7 @@ export const Constants = {
     Enums: {
       article_status: ["en_attente", "valide", "refuse"],
       journal_status: ["publie", "archive"],
+      position_member: ["bureau_executif", "delegues_regionaux"],
       user_role: ["admin_principal", "admin_secondaire", "redacteur"],
     },
   },
