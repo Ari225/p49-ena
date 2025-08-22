@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
+import TemoignagesHero from '@/components/testimonials/TemoignagesHero';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -58,15 +59,8 @@ const Temoignages = () => {
   );
   return <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section */}
-        <section className="bg-primary text-white py-16 px-[100px]">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">Témoignages</h1>
-            <p className="text-xl opacity-90">
-              Découvrez ce que nos membres disent de leur expérience au sein de la P49
-            </p>
-          </div>
-        </section>
+        {/* Hero Section */}
+        <TemoignagesHero />
 
         {/* Search and Actions Section */}
         <section className="py-8 px-[100px] bg-accent/20">
