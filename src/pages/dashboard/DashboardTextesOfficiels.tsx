@@ -11,10 +11,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Plus, Download, Trash2, Calendar } from 'lucide-react';
+import { FileText, Plus, Eye, Trash2, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useImageUpload } from '@/hooks/useImageUpload';
+import PDFViewer from '@/components/PDFViewer';
 
 interface OfficialDocument {
   id: string;
@@ -253,11 +254,15 @@ const DashboardTextesOfficiels = () => {
                         {new Date(doc.created_at).toLocaleDateString()}
                       </span>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={doc.document_url} target="_blank" rel="noopener noreferrer">
-                            <Download className="h-4 w-4" />
-                          </a>
-                        </Button>
+                        <PDFViewer
+                          pdfUrl={doc.document_url}
+                          title={doc.title}
+                          triggerButton={
+                            <Button size="sm" variant="outline">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          }
+                        />
                         <Button 
                           size="sm" 
                           variant="destructive"
@@ -379,11 +384,15 @@ const DashboardTextesOfficiels = () => {
                         {new Date(doc.created_at).toLocaleDateString()}
                       </span>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={doc.document_url} target="_blank" rel="noopener noreferrer">
-                            <Download className="h-4 w-4" />
-                          </a>
-                        </Button>
+                        <PDFViewer
+                          pdfUrl={doc.document_url}
+                          title={doc.title}
+                          triggerButton={
+                            <Button size="sm" variant="outline">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          }
+                        />
                         <Button 
                           size="sm" 
                           variant="destructive"
@@ -515,11 +524,15 @@ const DashboardTextesOfficiels = () => {
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex space-x-2">
-                              <Button size="sm" variant="outline" asChild>
-                                <a href={doc.document_url} target="_blank" rel="noopener noreferrer">
-                                  <Download className="h-4 w-4" />
-                                </a>
-                              </Button>
+                              <PDFViewer
+                                pdfUrl={doc.document_url}
+                                title={doc.title}
+                                triggerButton={
+                                  <Button size="sm" variant="outline">
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                }
+                              />
                               <Button 
                                 size="sm" 
                                 variant="destructive"
