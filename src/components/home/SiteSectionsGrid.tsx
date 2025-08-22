@@ -34,7 +34,7 @@ const SiteSectionsGrid = () => {
       id: "social-events",
       icon: Heart,
       title: t('header.social_events'),
-      content: "Événements heureux, Départs à la retraite et Nécrologie relatifs aux membres de la P49.",
+      content: "Événements heureux et malheureux, Départs à la retraite relatifs aux membres de la P49.",
       link: "/evenements-heureux",
       linkText: "Explorer →"
     },
