@@ -79,7 +79,7 @@ const CommissairesSection = () => {
       <h2 className="text-3xl font-bold text-center mb-[35px] text-primary">
         Commissaires aux Comptes
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+      <div className="flex flex-wrap justify-center gap-5 max-w-4xl mx-auto">
         {commissaires.map((member) => (
           <MemberOrganigramCard
             key={member.id}
