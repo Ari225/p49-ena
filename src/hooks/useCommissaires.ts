@@ -16,20 +16,21 @@ export const useCommissaires = () => {
     const fetchCommissaires = async () => {
       try {
         setLoading(true);
-        // Requête directe pour récupérer les commissaires (id 22 et 23)
-        const { data, error } = await supabase
-          .from('instances_dir')
-          .select('id, "Nom et Prénoms", "Poste"')
-          .in('id', [22, 23])
-          .order('id', { ascending: true });
+        // Utilisation de la même fonction RPC mais filtrage des commissaires
+        const { data, error } = await supabase.rpc('get_bureau_executif_members');
 
         if (error) throw error;
 
-        const formattedCommissaires: Commissaire[] = data?.map(member => ({
+        // Filtrer seulement les commissaires aux comptes (id 22 et 23)
+        const commissairesData = (data as any[])?.filter(member => 
+          [22, 23].includes(member.id)
+        ) || [];
+
+        const formattedCommissaires: Commissaire[] = commissairesData.map(member => ({
           id: member.id,
-          name: member["Nom et Prénoms"],
-          position: member["Poste"]
-        })) || [];
+          name: member.nom_prenoms,
+          position: member.poste
+        }));
 
         setCommissaires(formattedCommissaires);
       } catch (err) {
