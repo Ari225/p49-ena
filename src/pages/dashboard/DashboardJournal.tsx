@@ -323,60 +323,71 @@ const DashboardJournal = () => {
                   </p>
                 ) : (
                   editions.map((edition) => (
-                    <div key={edition.id} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                      <div className="flex items-center space-x-4 flex-1">
-                        {edition.cover_image_url && (
+                    <div key={edition.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                      {/* Image en haut */}
+                      {edition.cover_image_url ? (
+                        <div className="h-48 overflow-hidden">
                           <img 
                             src={edition.cover_image_url} 
                             alt={edition.title}
-                            className="w-16 h-20 object-cover rounded flex-shrink-0"
+                            className="w-full h-full object-cover"
                           />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-semibold text-lg">{edition.title}</h3>
-                            {getStatusBadge(edition.status)}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                            <Calendar className="h-4 w-4" />
-                            <span>Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}</span>
-                          </div>
-                          {edition.summary && (
-                            <p className="text-sm text-gray-600 line-clamp-2">{truncateText(edition.summary, 120)}</p>
-                          )}
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2 ml-4">
-                        <Button variant="outline" size="sm" onClick={() => handleView(edition)} title="Voir">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleDownload(edition)} title="Télécharger">
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => handleEdit(edition)} title="Modifier">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" title="Supprimer">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Êtes-vous sûr de vouloir supprimer "{edition.title}" ? Cette action est irréversible.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Annuler</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(edition)} className="bg-red-600 hover:bg-red-700">
-                                Supprimer
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                      ) : (
+                        <div className="h-48 bg-gray-100 flex items-center justify-center">
+                          <span className="text-gray-400">Aucune image</span>
+                        </div>
+                      )}
+                      
+                      {/* Contenu en dessous */}
+                      <div className="p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="font-semibold text-lg line-clamp-2 flex-1 mr-2">{edition.title}</h3>
+                          {getStatusBadge(edition.status)}
+                        </div>
+                        
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                          <Calendar className="h-4 w-4" />
+                          <span>Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}</span>
+                        </div>
+                        
+                        {edition.summary && (
+                          <p className="text-sm text-gray-600 line-clamp-3 mb-4">{truncateText(edition.summary, 120)}</p>
+                        )}
+                        
+                        {/* Boutons d'action */}
+                        <div className="flex items-center justify-end space-x-2 pt-2 border-t border-gray-100">
+                          <Button variant="outline" size="sm" onClick={() => handleView(edition)} title="Voir">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleDownload(edition)} title="Télécharger">
+                            <Download className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleEdit(edition)} title="Modifier">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" title="Supprimer">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Êtes-vous sûr de vouloir supprimer "{edition.title}" ? Cette action est irréversible.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Annuler</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(edition)} className="bg-red-600 hover:bg-red-700">
+                                  Supprimer
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </div>
                     </div>
                   ))
