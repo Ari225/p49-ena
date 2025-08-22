@@ -483,8 +483,8 @@ const DashboardEvenementsSociaux = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion des Événements Sociaux</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer les événements sociaux des membres</p>
+            <h1 className="text-2xl font-bold text-primary">Gestion évènements sociaux</h1>
+            <p className="text-gray-600 mt-1 text-sm">Gérer les évènements sociaux des membres</p>
           </div>
 
           <div className="mb-4">
@@ -492,7 +492,7 @@ const DashboardEvenementsSociaux = () => {
               <DialogTrigger asChild>
                 <Button className="bg-primary hover:bg-primary/90 w-full">
                   <Plus className="mr-2 h-4 w-4" />
-                  Nouvel événement
+                  Nouvel évènement
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto">
@@ -803,8 +803,8 @@ const DashboardEvenementsSociaux = () => {
 
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des Événements Sociaux</h1>
-            <p className="text-gray-600 mt-2">Gérer les événements sociaux des membres</p>
+            <h1 className="text-3xl font-bold text-primary">Gestion évènements sociaux</h1>
+            <p className="text-gray-600 mt-2">Gérer les évènements sociaux des membres</p>
           </div>
 
           <div className="mb-6">
@@ -812,7 +812,7 @@ const DashboardEvenementsSociaux = () => {
               <DialogTrigger asChild>
                 <Button className="bg-primary hover:bg-primary/90">
                   <Plus className="mr-2 h-4 w-4" />
-                  Nouvel événement
+                  Nouvel évènement
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto">

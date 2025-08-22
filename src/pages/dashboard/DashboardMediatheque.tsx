@@ -148,7 +148,7 @@ const DashboardMediatheque = () => {
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">
-              Gestion de la Médiathèque
+              Gestion médiathèque
             </h1>
             <p className="text-gray-600 mt-2 text-sm">Gérer les photos et vidéos</p>
           </div>
@@ -198,7 +198,7 @@ const DashboardMediatheque = () => {
         
         <div className="flex-1 ml-64 p-6">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion de la Médiathèque</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion médiathèque</h1>
             <p className="text-gray-600 mt-2">Gérer les contenus multimédias (images et vidéos)</p>
           </div>
 

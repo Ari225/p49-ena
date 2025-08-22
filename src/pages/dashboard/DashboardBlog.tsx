@@ -199,14 +199,14 @@ const DashboardBlog = () => {
     return <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion du Blog</h1>
+            <h1 className="text-2xl font-bold text-primary">Gestion du blog</h1>
             <p className="text-gray-600 mt-1 text-sm">Tous les articles de blog des rédacteurs</p>
           </div>
 
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-primary flex items-center">
               <FileText className="mr-2 h-5 w-5" />
-              Liste des articles ({posts.length})
+              Liste des articles de blog ({posts.length})
             </h2>
           </div>
 
@@ -259,14 +259,14 @@ const DashboardBlog = () => {
     return <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion du blog</h1>
             <p className="text-gray-600 mt-2">Tous les articles de blog des rédacteurs</p>
           </div>
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <FileText className="mr-2 h-5 w-5" />
-              Liste des articles ({posts.length})
+              Liste des articles de blog ({posts.length})
             </h2>
           </div>
 
@@ -326,14 +326,14 @@ const DashboardBlog = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion du blog</h1>
             <p className="text-gray-600 mt-2">Tous les articles de blog des rédacteurs</p>
           </div>
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <FileText className="mr-2 h-5 w-5" />
-              Liste des articles ({posts.length})
+              Liste des articles de blog ({posts.length})
             </h2>
           </div>
 

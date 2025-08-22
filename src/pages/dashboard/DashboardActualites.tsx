@@ -220,7 +220,7 @@ const DashboardActualites = () => {
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">
-              Gestion des Actualités
+              Gestion des actualités
             </h1>
             <p className="text-gray-600 mt-2 text-sm">Créer et gérer les actualités du site</p>
           </div>
@@ -236,7 +236,7 @@ const DashboardActualites = () => {
             <CardHeader>
               <CardTitle className="flex items-center text-lg">
                 <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités ({news.length})
+                Liste des actualités ({news.length})
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -277,7 +277,7 @@ const DashboardActualites = () => {
       <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des Actualités</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion des actualités</h1>
             <p className="text-gray-600 mt-2">Créer et gérer les actualités du site</p>
           </div>
 
@@ -292,7 +292,7 @@ const DashboardActualites = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités
+                Liste des actualités
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -335,7 +335,7 @@ const DashboardActualites = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des Actualités</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion des actualités</h1>
             <p className="text-gray-600 mt-2">Créer et gérer les actualités du site</p>
           </div>
 
@@ -350,7 +350,7 @@ const DashboardActualites = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <FileText className="mr-2 h-5 w-5" />
-                Liste des Actualités
+                Liste des actualités
               </CardTitle>
             </CardHeader>
             <CardContent>

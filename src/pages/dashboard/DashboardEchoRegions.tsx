@@ -58,7 +58,7 @@ const DashboardEchoRegions = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary whitespace-nowrap">Gestion Écho des Régions</h1>
+            <h1 className="text-2xl font-bold text-primary whitespace-nowrap">Gestion écho des régions</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer les informations régionales</p>
           </div>
 
@@ -162,7 +162,7 @@ const DashboardEchoRegions = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion Écho des Régions</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion écho des régions</h1>
             <p className="text-gray-600 mt-2">Gérer les informations régionales</p>
           </div>
 

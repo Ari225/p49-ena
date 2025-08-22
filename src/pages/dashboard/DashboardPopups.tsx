@@ -76,7 +76,7 @@ const DashboardPopups = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Gestion des<br />Pop-ups</h1>
+            <h1 className="text-2xl font-bold text-primary">Gestion pop-ups</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer les pop-ups du site</p>
           </div>
 
@@ -154,7 +154,7 @@ const DashboardPopups = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des Pop-ups</h1>
+            <h1 className="text-3xl font-bold text-primary">Gestion pop-ups</h1>
             <p className="text-gray-600 mt-2">Gérer les pop-ups du site</p>
           </div>
 

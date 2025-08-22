@@ -49,7 +49,7 @@ const DashboardProfile = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Mon Profil</h1>
+            <h1 className="text-2xl font-bold text-primary">Mon profil</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer mon profil</p>
           </div>
 
@@ -117,7 +117,7 @@ const DashboardProfile = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Mon Profil</h1>
+            <h1 className="text-3xl font-bold text-primary">Mon profil</h1>
             <p className="text-gray-600 mt-2">Gérer mes informations personnelles</p>
           </div>
 
