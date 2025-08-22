@@ -151,7 +151,11 @@ const DashboardBlog = () => {
         console.log('Updating article with data:', updateData);
         const {
           error
-        } = await supabase.from('blog_articles').update(updateData).eq('id', editingArticle.id);
+        } = await supabase
+          .from('blog_articles')
+          .update(updateData)
+          .eq('id', editingArticle.id);
+        
         if (error) {
           console.error('Update error:', error);
           throw error;
