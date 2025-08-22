@@ -170,8 +170,8 @@ const DashboardJournal = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary leading-tight">
-              Gestion du<br />Journal
+            <h1 className="text-2xl font-bold text-primary leading-tight whitespace-nowrap">
+              Gestion du Journal
             </h1>
             <p className="text-gray-600 mt-2 text-sm">Gérer les éditions du journal Perspectives 49</p>
           </div>
