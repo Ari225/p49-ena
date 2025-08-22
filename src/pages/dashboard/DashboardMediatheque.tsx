@@ -9,6 +9,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { isAdmin } from '@/utils/roleUtils';
+import { PlayCircle } from 'lucide-react';
 
 interface MediaItem {
   id: string;
@@ -157,6 +158,13 @@ const DashboardMediatheque = () => {
             <MediaFormDialog onSubmit={handleSubmit} />
           </div>
 
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+              <PlayCircle className="h-5 w-5" />
+              Liste des médias ({mediaItems.length})
+            </h2>
+          </div>
+
           {loading ? (
             <div className="flex justify-center items-center py-8">
               <div className="text-gray-500">Chargement des médias...</div>
@@ -204,6 +212,13 @@ const DashboardMediatheque = () => {
 
           <div className="mb-6">
             <MediaFormDialog onSubmit={handleSubmit} />
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-foreground mb-2 flex items-center gap-2">
+              <PlayCircle className="h-5 w-5" />
+              Liste des médias ({mediaItems.length})
+            </h2>
           </div>
 
           {loading ? (
