@@ -18,9 +18,9 @@ const AdminSidebar = () => {
       icon: BarChart3
     },
     {
-      title: 'Les Régionales',
-      href: '/regionales',
-      icon: MapPin
+      title: 'Textes officiels',
+      href: '/dashboard/textes-officiels',
+      icon: FileText
     },
     {
       title: 'Actualités',

@@ -715,6 +715,39 @@ export type Database = {
         }
         Relationships: []
       }
+      official_documents: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string
+          document_url: string
+          id: string
+          title: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description: string
+          document_url: string
+          id?: string
+          title: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          document_url?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
       popups: {
         Row: {
           author: string
