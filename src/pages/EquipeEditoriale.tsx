@@ -5,22 +5,21 @@ import { Mail, Briefcase, Crown, Shield, Edit } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { AppUser } from '@/types/user';
-
 const EquipeEditoriale = () => {
   const isMobile = useIsMobile();
   const [editorialTeam, setEditorialTeam] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchEditorialTeam = async () => {
       try {
-        const { data, error } = await supabase.rpc('get_editorial_team');
-        
+        const {
+          data,
+          error
+        } = await supabase.rpc('get_editorial_team');
         if (error) {
           console.error('Erreur lors de la récupération de l\'équipe éditoriale:', error);
           return;
         }
-        
         setEditorialTeam(data || []);
       } catch (error) {
         console.error('Erreur:', error);
@@ -28,10 +27,8 @@ const EquipeEditoriale = () => {
         setLoading(false);
       }
     };
-
     fetchEditorialTeam();
   }, []);
-
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin_principal':
@@ -44,7 +41,6 @@ const EquipeEditoriale = () => {
         return <Edit className="h-5 w-5" />;
     }
   };
-
   const getRoleLabel = (role: string) => {
     switch (role) {
       case 'admin_principal':
@@ -57,7 +53,6 @@ const EquipeEditoriale = () => {
         return 'Rédacteur';
     }
   };
-
   const getRoleColor = (role: string) => {
     switch (role) {
       case 'admin_principal':
@@ -70,18 +65,12 @@ const EquipeEditoriale = () => {
         return 'text-blue-700';
     }
   };
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/archives.webp" 
-              alt="Background équipe éditoriale" 
-              className="w-full h-full object-cover" 
-            />
+            <img src="/lovable-uploads/archives.webp" alt="Background équipe éditoriale" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
@@ -112,38 +101,31 @@ const EquipeEditoriale = () => {
 
         {/* Team Members */}
         <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
-          <div className="container mx-auto px-4">
-            {loading ? (
-              <div className="text-center py-12">
+          <div className="container mx-auto px-0">
+            {loading ? <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
                 <p className="mt-4 text-gray-600">Chargement de l'équipe...</p>
-              </div>
-            ) : (
-              <div className="space-y-16">
+              </div> : <div className="space-y-16">
                 {/* Administrateurs */}
                 <div>
                   <h2 className="text-3xl font-bold text-primary mb-12 text-center">Administrateurs</h2>
                   {(() => {
-                    const admins = editorialTeam.filter((member) => member.role === 'admin_principal' || member.role === 'admin_secondaire');
-                    const memberCount = admins.length;
-                    
-                    let gridClass = '';
-                    if (isMobile) {
-                      gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
-                    } else if (memberCount === 1) {
-                      gridClass = 'flex justify-center';
-                    } else if (memberCount === 2) {
-                      gridClass = 'flex justify-center items-center gap-1 max-w-lg mx-auto';
-                    } else if (memberCount === 3) {
-                      gridClass = 'flex justify-center items-center gap-1 max-w-2xl mx-auto';
-                    } else {
-                      gridClass = 'flex justify-center items-center gap-1 max-w-3xl mx-auto';
-                    }
-
-                    return (
-                      <div className={gridClass}>
-                        {admins.map((member) => (
-                          <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
+                const admins = editorialTeam.filter(member => member.role === 'admin_principal' || member.role === 'admin_secondaire');
+                const memberCount = admins.length;
+                let gridClass = '';
+                if (isMobile) {
+                  gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
+                } else if (memberCount === 1) {
+                  gridClass = 'flex justify-center';
+                } else if (memberCount === 2) {
+                  gridClass = 'flex justify-center items-center gap-1 max-w-lg mx-auto';
+                } else if (memberCount === 3) {
+                  gridClass = 'flex justify-center items-center gap-1 max-w-2xl mx-auto';
+                } else {
+                  gridClass = 'flex justify-center items-center gap-1 max-w-3xl mx-auto';
+                }
+                return <div className={gridClass}>
+                        {admins.map(member => <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
                             <Card className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[280px] max-w-[280px]'}`}>
                               <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
                                 <div className="text-center space-y-2">
@@ -156,42 +138,34 @@ const EquipeEditoriale = () => {
                                 </div>
                               </CardContent>
                             </Card>
-                          </div>
-                        ))}
-                        {admins.length === 0 && (
-                          <div className="col-span-full text-center py-12">
+                          </div>)}
+                        {admins.length === 0 && <div className="col-span-full text-center py-12">
                             <p className="text-gray-600">Aucun administrateur trouvé.</p>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
+                          </div>}
+                      </div>;
+              })()}
                 </div>
 
                 {/* Rédacteurs */}
                 <div>
                   <h2 className="text-3xl font-bold text-primary mb-12 text-center">Rédacteurs</h2>
                   {(() => {
-                    const redacteurs = editorialTeam.filter((member) => member.role === 'redacteur');
-                    const memberCount = redacteurs.length;
-                    
-                    let gridClass = '';
-                    if (isMobile) {
-                      gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
-                    } else if (memberCount === 1) {
-                      gridClass = 'flex justify-center';
-                    } else if (memberCount === 2) {
-                      gridClass = 'flex justify-center items-center gap-1 max-w-lg mx-auto';
-                    } else if (memberCount === 3) {
-                      gridClass = 'flex justify-center items-center gap-1 max-w-2xl mx-auto';
-                    } else {
-                      gridClass = 'flex justify-center items-center gap-1 max-w-3xl mx-auto';
-                    }
-
-                    return (
-                      <div className={gridClass}>
-                        {redacteurs.map((member) => (
-                          <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
+                const redacteurs = editorialTeam.filter(member => member.role === 'redacteur');
+                const memberCount = redacteurs.length;
+                let gridClass = '';
+                if (isMobile) {
+                  gridClass = 'grid grid-cols-1 gap-4 justify-items-center max-w-sm mx-auto';
+                } else if (memberCount === 1) {
+                  gridClass = 'flex justify-center';
+                } else if (memberCount === 2) {
+                  gridClass = 'flex justify-center items-center gap-1 max-w-lg mx-auto';
+                } else if (memberCount === 3) {
+                  gridClass = 'flex justify-center items-center gap-1 max-w-2xl mx-auto';
+                } else {
+                  gridClass = 'flex justify-center items-center gap-1 max-w-3xl mx-auto';
+                }
+                return <div className={gridClass}>
+                        {redacteurs.map(member => <div key={member.id} className={isMobile ? 'w-full max-w-sm' : ''}>
                             <Card className={`group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm ${isMobile ? '' : 'h-[200px] w-[280px] max-w-[280px]'}`}>
                               <CardContent className={`${isMobile ? 'p-3' : 'p-6'} h-full flex flex-col justify-center`}>
                                 <div className="text-center space-y-2">
@@ -204,24 +178,17 @@ const EquipeEditoriale = () => {
                                 </div>
                               </CardContent>
                             </Card>
-                          </div>
-                        ))}
-                        {redacteurs.length === 0 && (
-                          <div className="col-span-full text-center py-12">
+                          </div>)}
+                        {redacteurs.length === 0 && <div className="col-span-full text-center py-12">
                             <p className="text-gray-600">Aucun rédacteur trouvé.</p>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
+                          </div>}
+                      </div>;
+              })()}
                 </div>
-              </div>
-            )}
+              </div>}
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default EquipeEditoriale;
