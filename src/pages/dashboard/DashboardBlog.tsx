@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { FileText, Eye, Trash2, Calendar, User, CheckCircle, XCircle } from 'lucide-react';
+import { FileText, Eye, Trash2, Calendar, User, CheckCircle, XCircle, PenTool } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
@@ -205,7 +205,7 @@ const DashboardBlog = () => {
 
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-primary flex items-center">
-              <FileText className="mr-2 h-5 w-5" />
+              <PenTool className="mr-2 h-5 w-5" />
               Liste des articles de blog ({posts.length})
             </h2>
           </div>
@@ -265,7 +265,7 @@ const DashboardBlog = () => {
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
-              <FileText className="mr-2 h-5 w-5" />
+              <PenTool className="mr-2 h-5 w-5" />
               Liste des articles de blog ({posts.length})
             </h2>
           </div>
@@ -332,7 +332,7 @@ const DashboardBlog = () => {
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
-              <FileText className="mr-2 h-5 w-5" />
+              <PenTool className="mr-2 h-5 w-5" />
               Liste des articles de blog ({posts.length})
             </h2>
           </div>
