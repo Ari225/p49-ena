@@ -24,12 +24,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }> = [];
 
         // Récupérer les articles récents
-        const { data: articles } = await supabase
-          .from('blog_articles')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(3);
-        
+        const {
+          data: articles
+        } = await supabase.from('blog_articles').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(3);
         if (articles) {
           articles.forEach(article => {
             const timeAgo = getRelativeTime(article.created_at);
@@ -43,17 +42,15 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les nouveaux utilisateurs avec leur rôle
-        const { data: users } = await supabase
-          .from('app_users')
-          .select('first_name, last_name, role, created_at')
-          .order('created_at', { ascending: false })
-          .limit(3);
-        
+        const {
+          data: users
+        } = await supabase.from('app_users').select('first_name, last_name, role, created_at').order('created_at', {
+          ascending: false
+        }).limit(3);
         if (users) {
           users.forEach(user => {
             const timeAgo = getRelativeTime(user.created_at);
-            const roleLabel = user.role === 'admin_principal' ? 'Admin Principal' : 
-                            user.role === 'admin_secondaire' ? 'Admin Secondaire' : 'Rédacteur';
+            const roleLabel = user.role === 'admin_principal' ? 'Admin Principal' : user.role === 'admin_secondaire' ? 'Admin Secondaire' : 'Rédacteur';
             recentActivities.push({
               title: 'Nouveau membre inscrit',
               description: `${user.first_name} ${user.last_name} (${roleLabel}) a rejoint ${timeAgo}`,
@@ -64,12 +61,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les événements heureux récents
-        const { data: happyEvents } = await supabase
-          .from('happy_events')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(2);
-        
+        const {
+          data: happyEvents
+        } = await supabase.from('happy_events').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(2);
         if (happyEvents) {
           happyEvents.forEach(event => {
             const timeAgo = getRelativeTime(event.created_at);
@@ -83,12 +79,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les actualités récentes
-        const { data: news } = await supabase
-          .from('news')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(2);
-        
+        const {
+          data: news
+        } = await supabase.from('news').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(2);
         if (news) {
           news.forEach(newsItem => {
             const timeAgo = getRelativeTime(newsItem.created_at);
@@ -102,12 +97,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les médias récents
-        const { data: media } = await supabase
-          .from('media_items')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(2);
-        
+        const {
+          data: media
+        } = await supabase.from('media_items').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(2);
         if (media) {
           media.forEach(mediaItem => {
             const timeAgo = getRelativeTime(mediaItem.created_at);
@@ -121,12 +115,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les éditions de journal récentes
-        const { data: journals } = await supabase
-          .from('journal_editions')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(2);
-        
+        const {
+          data: journals
+        } = await supabase.from('journal_editions').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(2);
         if (journals) {
           journals.forEach(journal => {
             const timeAgo = getRelativeTime(journal.created_at);
@@ -140,12 +133,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les événements difficiles récents
-        const { data: difficultEvents } = await supabase
-          .from('difficult_events')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(1);
-        
+        const {
+          data: difficultEvents
+        } = await supabase.from('difficult_events').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(1);
         if (difficultEvents) {
           difficultEvents.forEach(event => {
             const timeAgo = getRelativeTime(event.created_at);
@@ -159,12 +151,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les événements heureux récents (deuxième appel)
-        const { data: moreHappyEvents } = await supabase
-          .from('happy_events')
-          .select('title, created_at')
-          .order('created_at', { ascending: false })
-          .limit(1);
-        
+        const {
+          data: moreHappyEvents
+        } = await supabase.from('happy_events').select('title, created_at').order('created_at', {
+          ascending: false
+        }).limit(1);
         if (moreHappyEvents) {
           moreHappyEvents.forEach(event => {
             const timeAgo = getRelativeTime(event.created_at);
@@ -178,12 +169,11 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         }
 
         // Récupérer les départs à la retraite récents
-        const { data: retirements } = await supabase
-          .from('retirement_departures')
-          .select('member_name, created_at')
-          .order('created_at', { ascending: false })
-          .limit(1);
-        
+        const {
+          data: retirements
+        } = await supabase.from('retirement_departures').select('member_name, created_at').order('created_at', {
+          ascending: false
+        }).limit(1);
         if (retirements) {
           retirements.forEach(retirement => {
             const timeAgo = getRelativeTime(retirement.created_at);
@@ -214,18 +204,16 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
   if (isMobile) {
     return <Card>
         <CardHeader className="px-4 py-3">
-          <CardTitle className="text-lg">Activité Récente</CardTitle>
+          <CardTitle className="text-lg">Activités récentes</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 p-4">
-          {activities.map((activity, index) => 
-            <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+          {activities.map((activity, index) => <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
               <div className="flex-1">
                 <p className="font-medium text-sm">{activity.title}</p>
                 <p className="text-xs text-gray-600">{activity.description}</p>
               </div>
-            </div>
-          )}
+            </div>)}
         </CardContent>
       </Card>;
   }
@@ -234,15 +222,13 @@ const RecentActivity: React.FC<RecentActivityProps> = ({
         <CardTitle>Activités récentes</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {activities.map((activity, index) => 
-          <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+        {activities.map((activity, index) => <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
             <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
             <div className="flex-1">
               <p className="font-medium">{activity.title}</p>
               <p className="text-sm text-gray-600">{activity.description}</p>
             </div>
-          </div>
-        )}
+          </div>)}
       </CardContent>
     </Card>;
 };
