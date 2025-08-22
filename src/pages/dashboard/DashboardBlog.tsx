@@ -203,6 +203,13 @@ const DashboardBlog = () => {
             <p className="text-gray-600 mt-1 text-sm">Tous les articles de blog des rédacteurs</p>
           </div>
 
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des articles
+            </h2>
+          </div>
+
           <div className="space-y-4">
             {posts.length === 0 ? <p className="text-center text-gray-500 py-8 text-sm">
                 Aucun article de blog soumis
@@ -254,6 +261,13 @@ const DashboardBlog = () => {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
             <p className="text-gray-600 mt-2">Tous les articles de blog des rédacteurs</p>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des articles
+            </h2>
           </div>
 
           <div className="space-y-4">
@@ -314,6 +328,13 @@ const DashboardBlog = () => {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion du Blog</h1>
             <p className="text-gray-600 mt-2">Tous les articles de blog des rédacteurs</p>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des articles
+            </h2>
           </div>
 
           <div className="space-y-6">
