@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Download, Calendar, Search } from 'lucide-react';
@@ -6,45 +6,57 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useLanguage } from '@/context/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
+import PDFViewer from '@/components/PDFViewer';
 const TextesOfficiels = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const {
-    t
-  } = useLanguage();
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
-  const documents = [{
-    id: 1,
-    title: "Acte de Constitution de la P49",
-    description: "Document officiel de création du réseau des énarques de la 49e promotion",
-    date: "2015",
-    imageUrl: "/lovable-uploads/de98936e-ecc5-4568-8c53-32bd57058a99.png",
-    pdfUrl: "#"
-  }, {
-    id: 2,
-    title: "Statuts de l'Association",
-    description: "Statuts officiels régissant le fonctionnement de l'association P49",
-    date: "2015",
-    imageUrl: "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png",
-    pdfUrl: "#"
-  }, {
-    id: 3,
-    title: "Règlement Intérieur",
-    description: "Règlement intérieur définissant les modalités de fonctionnement",
-    date: "2016",
-    imageUrl: "/lovable-uploads/e85e9bf0-20c7-4672-aac9-e32d078db6e6.png",
-    pdfUrl: "#"
-  }, {
-    id: 4,
-    title: "Procès-verbal d'Assemblée Générale Constitutive",
-    description: "PV de l'AG constitutive de l'association",
-    date: "2015",
-    imageUrl: "/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png",
-    pdfUrl: "#"
-  }];
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  const fetchDocuments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('official_documents')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setDocuments(data || []);
+    } catch (error) {
+      console.error('Erreur lors du chargement des documents:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateThumbnail = (document) => {
+    // Pour les PDFs, utiliser une image générique ou détecter s'il y a une image associée
+    return "/lovable-uploads/text_off_bg.webp"; // Image par défaut pour les documents
+  };
+
+  const handleDownload = (documentUrl, title) => {
+    const link = document.createElement('a');
+    link.href = documentUrl;
+    link.download = `${title}.pdf`;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const filteredDocuments = useMemo(() => {
-    return documents.filter(doc => doc.title.toLowerCase().includes(searchTerm.toLowerCase()) || doc.description.toLowerCase().includes(searchTerm.toLowerCase()));
-  }, [searchTerm]);
+    return documents.filter(doc => 
+      doc.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      doc.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [documents, searchTerm]);
 
   // Mobile Version
   if (isMobile) {
@@ -96,7 +108,7 @@ const TextesOfficiels = () => {
                           </CardTitle>
                           <div className="flex items-center text-xs text-primary/70 mb-2">
                             <Calendar className="h-4 w-4 mr-2" />
-                            {document.date}
+                            {document.year}
                           </div>
                           <p className="text-gray-600 text-xs w-full">
                             {document.description}
@@ -110,16 +122,29 @@ const TextesOfficiels = () => {
                     
                     <CardContent className="pt-0">
                       <div className="space-y-4">
-                        <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
-                          <img src={document.imageUrl} alt={document.title} className="w-full h-48 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300" />
-                          <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
-                            <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
-                              <FileText className="h-12 w-12 text-white" />
+                        <PDFViewer
+                          pdfUrl={document.document_url}
+                          title={document.title}
+                          triggerButton={
+                            <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
+                              <img 
+                                src={generateThumbnail(document)} 
+                                alt={document.title} 
+                                className="w-full h-48 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300" 
+                              />
+                              <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                                <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
+                                  <FileText className="h-12 w-12 text-white" />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          }
+                        />
                         
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white text-xs">
+                        <Button 
+                          className="w-full bg-primary hover:bg-primary/90 text-white text-xs"
+                          onClick={() => handleDownload(document.document_url, document.title)}
+                        >
                           <Download className="h-4 w-4 mr-2" />
                           {t('download_document') || 'Télécharger'}
                         </Button>
@@ -203,7 +228,7 @@ const TextesOfficiels = () => {
                           </CardTitle>
                           <div className="flex items-center text-sm text-primary/70 mb-2">
                             <Calendar className="h-4 w-4 mr-2" />
-                            {document.date}
+                            {document.year}
                           </div>
                           <p className="text-gray-600 text-sm w-full">
                             {document.description}
@@ -217,16 +242,29 @@ const TextesOfficiels = () => {
                     
                     <CardContent className="pt-0">
                       <div className="space-y-4">
-                        <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
-                          <img src={document.imageUrl} alt={document.title} className="w-full h-56 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300" />
-                          <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
-                            <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
-                              <FileText className="h-12 w-12 text-white" />
+                        <PDFViewer
+                          pdfUrl={document.document_url}
+                          title={document.title}
+                          triggerButton={
+                            <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
+                              <img 
+                                src={generateThumbnail(document)} 
+                                alt={document.title} 
+                                className="w-full h-56 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300" 
+                              />
+                              <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                                <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
+                                  <FileText className="h-12 w-12 text-white" />
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          }
+                        />
                         
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm">
+                        <Button 
+                          className="w-full bg-primary hover:bg-primary/90 text-white text-sm"
+                          onClick={() => handleDownload(document.document_url, document.title)}
+                        >
                           <Download className="h-4 w-4 mr-2" />
                           {t('download_document') || 'Télécharger'}
                         </Button>
@@ -309,7 +347,7 @@ const TextesOfficiels = () => {
                         </CardTitle>
                         <div className="flex items-center text-sm text-primary/70 mb-2">
                           <Calendar className="h-4 w-4 mr-2" />
-                          {document.date}
+                          {document.year}
                         </div>
                         <p className="text-gray-600 text-sm w-full">
                           {document.description}
@@ -323,16 +361,29 @@ const TextesOfficiels = () => {
                   
                   <CardContent className="pt-0">
                     <div className="space-y-4">
-                      <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
-                        <img src={document.imageUrl} alt={document.title} className="w-full h-64 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300" />
-                        <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
-                          <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
-                            <FileText className="h-12 w-12 text-white" />
+                      <PDFViewer
+                        pdfUrl={document.document_url}
+                        title={document.title}
+                        triggerButton={
+                          <div className="relative group/image cursor-pointer overflow-hidden rounded-lg">
+                            <img 
+                              src={generateThumbnail(document)} 
+                              alt={document.title} 
+                              className="w-full h-64 object-cover border shadow-sm group-hover/image:scale-110 transition-transform duration-300" 
+                            />
+                            <div className="absolute inset-0 bg-primary bg-opacity-0 group-hover/image:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                              <div className="opacity-0 group-hover/image:opacity-100 transition-opacity">
+                                <FileText className="h-12 w-12 text-white" />
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
+                        }
+                      />
                       
-                      <Button className="w-full bg-primary hover:bg-primary/90 text-white text-sm">
+                      <Button 
+                        className="w-full bg-primary hover:bg-primary/90 text-white text-sm"
+                        onClick={() => handleDownload(document.document_url, document.title)}
+                      >
                         <Download className="h-4 w-4 mr-2" />
                         {t('download_document') || 'Télécharger'}
                       </Button>
