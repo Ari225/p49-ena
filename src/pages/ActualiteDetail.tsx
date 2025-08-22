@@ -128,7 +128,7 @@ const ActualiteDetail = () => {
               </div>
               {/* Category Badge */}
               <div className="absolute top-4 left-4">
-                <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
+                <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium inline-flex items-center">
                   <Tag className="h-3 w-3 mr-1.5" />
                   {actualite.category}
                 </span>
