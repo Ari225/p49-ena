@@ -81,56 +81,53 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Info Cards */}
             <div className="space-y-6">
-              <Card className="shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Mail className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-primary text-xl">Email</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <div className="space-y-2">
-                    <a href="mailto:communication@p49-ena.ci" className="block text-gray-700 hover:text-primary transition-colors">
-                      communication@p49-ena.ci
-                    </a>
-                    <a href="mailto:secretariat@p49-ena.ci" className="block text-gray-700 hover:text-primary transition-colors">
-                      secretariat@p49-ena.ci
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Phone className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-primary text-xl">Téléphone</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <div className="space-y-2">
-                    <a href="tel:+22501020304050" className="block text-gray-700 hover:text-primary transition-colors font-normal">
-                      +225 01 02 03 04 05
-                    </a>
-                    <a href="tel:+22506070809000" className="block text-gray-700 hover:text-primary transition-colors">
-                      +225 06 07 08 09 00
-                    </a>
+              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm">
+                <CardContent className="p-6 h-full flex flex-col justify-center">
+                  <div className="text-center space-y-2">
+                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors leading-tight">
+                      Email
+                    </h3>
+                    <div className="space-y-2">
+                      <a href="mailto:communication@p49-ena.ci" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">
+                        communication@p49-ena.ci
+                      </a>
+                      <a href="mailto:secretariat@p49-ena.ci" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">
+                        secretariat@p49-ena.ci
+                      </a>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="shadow-lg hover:shadow-xl transition-shadow">
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MapPin className="h-8 w-8 text-primary" />
+              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm">
+                <CardContent className="p-6 h-full flex flex-col justify-center">
+                  <div className="text-center space-y-2">
+                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors leading-tight">
+                      Téléphone
+                    </h3>
+                    <div className="space-y-2">
+                      <a href="tel:+22501020304050" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">
+                        +225 01 02 03 04 05
+                      </a>
+                      <a href="tel:+22506070809000" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">
+                        +225 06 07 08 09 00
+                      </a>
+                    </div>
                   </div>
-                  <CardTitle className="text-primary text-xl">Localisation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ContactMap />
-                  <p className="text-center text-gray-600 mt-4 text-sm">
-                    Siège de la P49 ENA, Abidjan
-                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-primary/20 hover:border-primary/40 bg-white/95 backdrop-blur-sm">
+                <CardContent className="p-6 h-full flex flex-col justify-center">
+                  <div className="text-center space-y-2">
+                    <h3 className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors leading-tight">
+                      Localisation
+                    </h3>
+                    <ContactMap />
+                    <p className="text-gray-600 text-sm font-medium mt-4">
+                      Siège de la P49 ENA, Abidjan
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </div>
