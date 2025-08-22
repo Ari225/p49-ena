@@ -63,16 +63,16 @@ const Temoignages = () => {
         <TemoignagesHero />
 
         {/* Search and Actions Section */}
-        <section className="py-8 px-[100px] bg-accent/20">
-          <div className="container mx-auto px-4">
+        <section className="py-8 px-4 md:px-8 lg:px-[100px] bg-accent/20">
+          <div className="container mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="max-w-md mx-auto md:mx-0 relative flex-1">
+              <div className="w-full max-w-md mx-auto md:mx-0 relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input type="text" placeholder="Rechercher par nom..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
               </div>
               <Button 
                 onClick={() => setShowVerificationDialog(true)}
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-primary hover:bg-primary/90 text-white w-full md:w-auto"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Ajouter un témoignage
@@ -82,8 +82,8 @@ const Temoignages = () => {
         </section>
 
         {/* Testimonials Grid */}
-        <section className="py-12 px-[100px]">
-          <div className="container mx-auto px-0">
+        <section className="py-12 px-4 md:px-8 lg:px-[100px]">
+          <div className="container mx-auto">
             <div className="mb-6">
               <p className="text-gray-600">
                 {filteredTestimonials.length} témoignage{filteredTestimonials.length > 1 ? 's' : ''} trouvé{filteredTestimonials.length > 1 ? 's' : ''}
