@@ -9,6 +9,7 @@ import TestimonialDeleteDialog from '@/components/testimonials/TestimonialDelete
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { useTestimonials, Testimonial } from '@/hooks/useTestimonials';
+import { Star } from 'lucide-react';
 
 const DashboardTemoignages = () => {
   const { user } = useAuth();
@@ -37,6 +38,13 @@ const DashboardTemoignages = () => {
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">Gestion des témoignages</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer les témoignages des membres</p>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Star className="h-5 w-5" />
+              Liste des témoignages ({testimonials.length})
+            </h2>
           </div>
 
           {loading ? (
@@ -94,6 +102,13 @@ const DashboardTemoignages = () => {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion des témoignages</h1>
             <p className="text-gray-600 mt-2">Gérer les témoignages des membres</p>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-foreground mb-2 flex items-center gap-2">
+              <Star className="h-5 w-5" />
+              Liste des témoignages ({testimonials.length})
+            </h2>
           </div>
 
           {loading ? (
