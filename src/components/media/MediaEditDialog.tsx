@@ -199,7 +199,7 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border-0 shadow-2xl mx-2 sm:mx-0">
+      <DialogContent className="w-[calc(100vw-16px)] max-w-2xl max-h-[85vh] overflow-y-auto rounded-xl border-0 shadow-2xl !mx-2 !my-4 sm:mx-0 sm:my-0 sm:w-full">
         <DialogHeader>
           <DialogTitle>Modifier le média</DialogTitle>
         </DialogHeader>
