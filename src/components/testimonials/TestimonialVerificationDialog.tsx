@@ -92,20 +92,20 @@ const TestimonialVerificationDialog = ({ isOpen, onClose, onVerified }: Testimon
               </Alert>
             )}
 
-            <div className={`flex ${isMobile ? 'flex-col space-y-2' : 'justify-end space-x-2'}`}>
+            <div className="flex justify-end space-x-2">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
                 disabled={isLoading}
-                className={isMobile ? 'w-full' : ''}
+                className={isMobile ? 'flex-1' : ''}
               >
                 Annuler
               </Button>
               <Button
                 type="submit"
                 disabled={isLoading}
-                className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full' : ''}`}
+                className={`bg-primary hover:bg-primary/90 ${isMobile ? 'flex-1' : ''}`}
               >
                 {isLoading ? (
                   <>
