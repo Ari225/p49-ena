@@ -1120,11 +1120,11 @@ export type Database = {
         Returns: {
           category: string
           event_date: string
-          general_message: string
           id: string
           image_url: string
           location: string
-          masked_member_name: string
+          member_name: string
+          message: string
           title: string
         }[]
       }

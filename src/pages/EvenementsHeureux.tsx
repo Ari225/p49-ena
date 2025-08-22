@@ -32,18 +32,8 @@ const EvenementsHeureux = () => {
         if (error) {
           console.error('Error fetching happy events:', error);
         } else {
-          // Transform the data to match our interface
-          const transformedData = (data || []).map((event: any) => ({
-            id: event.id,
-            title: event.title,
-            event_date: event.event_date,
-            location: event.location,
-            category: event.category,
-            member_name: event.masked_member_name,
-            message: event.general_message,
-            image_url: event.image_url
-          }));
-          setHeureuxEvents(transformedData);
+          // Les données sont maintenant directement utilisables sans transformation
+          setHeureuxEvents(data || []);
         }
       } catch (error) {
         console.error('Error fetching happy events:', error);
