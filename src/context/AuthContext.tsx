@@ -157,17 +157,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  // Fonction utilitaire pour nettoyer l'état d'authentification
+  const cleanupAuthState = () => {
+    // Supprimer toutes les clés d'auth Supabase du localStorage
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+        localStorage.removeItem(key);
+      }
+    });
+    
+    // Supprimer du sessionStorage si utilisé
+    Object.keys(sessionStorage || {}).forEach((key) => {
+      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+        sessionStorage.removeItem(key);
+      }
+    });
+  };
+
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // Nettoyer l'état d'authentification d'abord
+      cleanupAuthState();
       
+      // Tentative de déconnexion globale (ignorer les erreurs)
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        // Continuer même si cela échoue
+        console.log('Global signout failed, continuing...');
+      }
+      
+      // Mettre à jour l'état local
       setUser(null);
       setSession(null);
       toast.success('Déconnexion réussie');
+      
+      // Forcer un rafraîchissement complet de la page pour un état propre
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 100);
     } catch (error) {
       console.error('Signout error:', error);
-      toast.error('Erreur lors de la déconnexion');
+      // Même en cas d'erreur, nettoyer l'état local
+      cleanupAuthState();
+      setUser(null);
+      setSession(null);
+      toast.success('Déconnexion effectuée');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 100);
     }
   };
 
