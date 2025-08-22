@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { validatePasswordStrength } from '@/utils/passwordUtils';
 import { AuthUser } from '@/types/user';
@@ -26,6 +27,7 @@ const ProfileEditDialog = ({ user, isOpen, onClose, onSave }: ProfileEditDialogP
   });
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (user) {
@@ -122,7 +124,7 @@ const ProfileEditDialog = ({ user, isOpen, onClose, onSave }: ProfileEditDialogP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'sm:max-w-[425px] rounded-xl border-0 shadow-2xl'}`}>
         <DialogHeader>
           <DialogTitle>Modifier mon profil</DialogTitle>
         </DialogHeader>
