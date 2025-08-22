@@ -206,7 +206,7 @@ const DashboardBlog = () => {
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-primary flex items-center">
               <FileText className="mr-2 h-5 w-5" />
-              Liste des articles
+              Liste des articles ({posts.length})
             </h2>
           </div>
 
@@ -266,7 +266,7 @@ const DashboardBlog = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <FileText className="mr-2 h-5 w-5" />
-              Liste des articles
+              Liste des articles ({posts.length})
             </h2>
           </div>
 
@@ -333,7 +333,7 @@ const DashboardBlog = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <FileText className="mr-2 h-5 w-5" />
-              Liste des articles
+              Liste des articles ({posts.length})
             </h2>
           </div>
 
