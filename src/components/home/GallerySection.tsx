@@ -6,7 +6,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Camera, ChevronRight, Video, Play } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import MediaPopup from '../MediaPopup';
+import LazyImage from '@/components/ui/LazyImage';
 import { supabase } from '@/integrations/supabase/client';
+import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 
 interface MediaItem {
   id: string;
@@ -38,23 +40,26 @@ const GallerySection = () => {
   const [originalMediaItems, setOriginalMediaItems] = useState<MediaItem[]>([]);
   const [allMediaForPopup, setAllMediaForPopup] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { optimizedFetch, preloadResources, measurePerformance } = usePerformanceOptimization();
 
   const fetchMediaItems = async () => {
     try {
-      console.log('Fetching media items from Supabase...');
-      
-      const { data, error } = await supabase
-        .from('media_items')
-        .select('*')
-        .order('date', { ascending: false })
-        .limit(4);
+      const data = await measurePerformance('gallery-fetch', async () => {
+        return await optimizedFetch(
+          'media-items-gallery',
+          async () => {
+            const { data, error } = await supabase
+              .from('media_items')
+              .select('id,title,category,description,media_urls,date,created_at')
+              .order('date', { ascending: false })
+              .limit(4);
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-
-      console.log('Media items fetched:', data);
+            if (error) throw error;
+            return data;
+          },
+          3 * 60 * 1000 // 3 minutes cache
+        );
+      });
 
       const transformedItems: GalleryItem[] = (data || []).map((item: MediaItem, index: number) => {
         const firstMediaUrl = item.media_urls[0] || '';
@@ -71,8 +76,17 @@ const GallerySection = () => {
         };
       });
 
-      console.log('Transformed items:', transformedItems);
-      setOriginalMediaItems(data || []); // Sauvegarder les données originales
+      // Preload first 2 images for better performance
+      const imagesToPreload = transformedItems
+        .filter(item => item.type === 'image')
+        .slice(0, 2)
+        .map(item => item.src);
+      
+      if (imagesToPreload.length > 0) {
+        preloadResources(imagesToPreload);
+      }
+
+      setOriginalMediaItems(data || []);
       setGalleryItems(transformedItems);
     } catch (error) {
       console.error('Error fetching media items:', error);
@@ -221,10 +235,13 @@ const GallerySection = () => {
                     <div className="aspect-square overflow-hidden">
                       {item.type === 'video' ? (
                         <>
-                          <img 
+                          <LazyImage 
                             src={item.thumbnail || item.src} 
                             alt={item.alt}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            width={300}
+                            height={300}
+                            quality={75}
                           />
                           <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                             <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
@@ -233,10 +250,13 @@ const GallerySection = () => {
                           </div>
                         </>
                       ) : (
-                        <img 
+                        <LazyImage 
                           src={item.src} 
                           alt={item.alt}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          width={300}
+                          height={300}
+                          quality={75}
                         />
                       )}
                     </div>

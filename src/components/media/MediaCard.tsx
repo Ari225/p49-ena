@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Image, Video, Calendar } from 'lucide-react';
+import LazyImage from '@/components/ui/LazyImage';
 
 interface MediaItem {
   id: string;
@@ -75,10 +76,13 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
       {/* Aperçu Image */}
       {previewImage && (
         <div className="relative h-48 overflow-hidden">
-          <img 
+          <LazyImage 
             src={previewImage} 
             alt={media.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            width={400}
+            height={192}
+            quality={80}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div className="absolute top-3 left-3 flex gap-2">

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, Eye, ArrowRight } from 'lucide-react';
+import LazyImage from '@/components/ui/LazyImage';
 
 interface NewsItem {
   id: string;
@@ -31,12 +32,15 @@ const NewsCard: React.FC<NewsCardProps> = ({
     <Link to={`/actualite/${item.id}`}>
       <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-transparent h-full">
         <div className="aspect-[16/10] overflow-hidden relative">
-          <img 
+          <LazyImage 
             src={item.image_url} 
             alt={item.title} 
             className={`w-full h-full object-cover transition-transform duration-500 ${
               variant === 'desktop' ? 'group-hover:scale-110' : 'group-hover:scale-105'
-            }`} 
+            }`}
+            width={400}
+            height={250}
+            quality={80}
           />
           <div className="absolute top-4 left-4">
             <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">

@@ -9,6 +9,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { SupabaseProvider } from "@/context/SupabaseContext";
 import { VisitorTrackingProvider } from "@/context/VisitorTrackingContext";
 import { CookieBanner } from "@/components/CookieBanner";
+import { useAppPerformance } from "@/hooks/useAppPerformance";
 
 // Pages
 import Index from "./pages/Index";
@@ -58,6 +59,101 @@ import ActiviteDetail from "./pages/ActiviteDetail";
 
 const queryClient = new QueryClient();
 
+const AppContent = () => {
+  // Initialize performance optimizations globally
+  useAppPerformance();
+  
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Main Routes */}
+        <Route path="/" element={<Index />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/historique" element={<Historique />} />
+        <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
+        
+        {/* Actualités */}
+        <Route path="/actualites" element={<Actualites />} />
+        <Route path="/news" element={<Actualites />} />
+        <Route path="/actualite/:id" element={<ActualiteDetail />} />
+        <Route path="/actualites-concours" element={<ActualitesConcours />} />
+        
+        {/* Agenda */}
+        <Route path="/agenda" element={<Agenda />} />
+        <Route path="/activites/:id" element={<ActiviteDetail />} />
+        
+        {/* Archives */}
+        <Route path="/archives" element={<Archives />} />
+        
+        {/* Assemblées */}
+        <Route path="/assemblees-generales" element={<AssembleesGenerales />} />
+        <Route path="/reunions-constitution" element={<ReunionsConstitution />} />
+        
+        {/* Blog */}
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
+        
+        {/* Carrière */}
+        <Route path="/carriere-plus" element={<CarrierePlus />} />
+        <Route path="/coaching-mentorat" element={<CoachingMentorat />} />
+        <Route path="/formations" element={<Formations />} />
+        <Route path="/renforcement-capacites" element={<RenforcementCapacites />} />
+        
+        {/* Communiqués */}
+        <Route path="/communiques" element={<Communiques />} />
+        <Route path="/communique/:id" element={<CommuniqueDetail />} />
+        
+        {/* Contact */}
+        <Route path="/contact" element={<Contact />} />
+        
+        {/* Echo Régions */}
+        <Route path="/echo-regions" element={<EchoRegions />} />
+        <Route path="/echo-region/:id" element={<EchoRegionDetail />} />
+        <Route path="/regionales" element={<Regionales />} />
+        
+        {/* Événements */}
+        <Route path="/evenements-difficiles" element={<EvenementsDifficiles />} />
+        <Route path="/evenements-sociaux" element={<EvenementsSociaux />} />
+        <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
+        <Route path="/departs-retraite" element={<DepartsRetraite />} />
+        <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
+        
+        {/* Galerie */}
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/galerie" element={<Galerie />} />
+        <Route path="/media/:id" element={<MediaDetail />} />
+        
+        {/* Journal */}
+        <Route path="/journal" element={<Journal />} />
+        <Route path="/derniere-edition" element={<DerniereEdition />} />
+        <Route path="/equipe-editoriale" element={<EquipeEditoriale />} />
+        
+        {/* Répertoire */}
+        <Route path="/repertoire-membres" element={<RepertoireMembers />} />
+        <Route path="/repertoire-members" element={<RepertoireMembers />} />
+        <Route path="/membre/modifier" element={<ModifierMembre />} />
+        
+        {/* Suggestions */}
+        <Route path="/suggestions" element={<Suggestions />} />
+        
+        {/* Témoignages */}
+        <Route path="/temoignages" element={<Temoignages />} />
+        
+        {/* Textes Officiels */}
+        <Route path="/textes-officiels" element={<TextesOfficiels />} />
+        
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/auth" element={<Auth />} />
+        
+        {/* 404 - Must be last */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <CookieBanner />
+    </BrowserRouter>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <SupabaseProvider>
@@ -67,95 +163,8 @@ const App = () => (
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              <BrowserRouter>
-            <Routes>
-              {/* Main Routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/dashboard/*" element={<Dashboard />} />
-              <Route path="/historique" element={<Historique />} />
-              <Route path="/instances-dirigeantes" element={<InstancesDirigeantes />} />
-              
-              {/* Actualités */}
-              <Route path="/actualites" element={<Actualites />} />
-              <Route path="/news" element={<Actualites />} />
-              <Route path="/actualite/:id" element={<ActualiteDetail />} />
-              <Route path="/actualites-concours" element={<ActualitesConcours />} />
-              
-              {/* Agenda */}
-              <Route path="/agenda" element={<Agenda />} />
-              <Route path="/activites/:id" element={<ActiviteDetail />} />
-              
-              {/* Archives */}
-              <Route path="/archives" element={<Archives />} />
-              
-              {/* Assemblées */}
-              <Route path="/assemblees-generales" element={<AssembleesGenerales />} />
-              <Route path="/reunions-constitution" element={<ReunionsConstitution />} />
-              
-              {/* Blog */}
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogDetail />} />
-              
-              {/* Carrière */}
-              <Route path="/carriere-plus" element={<CarrierePlus />} />
-              <Route path="/coaching-mentorat" element={<CoachingMentorat />} />
-              <Route path="/formations" element={<Formations />} />
-              <Route path="/renforcement-capacites" element={<RenforcementCapacites />} />
-              
-              {/* Communiqués */}
-              <Route path="/communiques" element={<Communiques />} />
-              <Route path="/communique/:id" element={<CommuniqueDetail />} />
-              
-              {/* Contact */}
-              <Route path="/contact" element={<Contact />} />
-              
-              {/* Echo Régions */}
-              <Route path="/echo-regions" element={<EchoRegions />} />
-              <Route path="/echo-region/:id" element={<EchoRegionDetail />} />
-              <Route path="/regionales" element={<Regionales />} />
-              
-              {/* Événements */}
-              <Route path="/evenements-difficiles" element={<EvenementsDifficiles />} />
-              <Route path="/evenements-sociaux" element={<EvenementsSociaux />} />
-              <Route path="/evenements-heureux" element={<EvenementsHeureux />} />
-              <Route path="/departs-retraite" element={<DepartsRetraite />} />
-              <Route path="/evenements-malheureux" element={<EvenementsMalheureux />} />
-              
-               {/* Galerie */}
-               <Route path="/gallery" element={<Gallery />} />
-               <Route path="/galerie" element={<Galerie />} />
-               <Route path="/media/:id" element={<MediaDetail />} />
-              
-              {/* Journal */}
-              <Route path="/journal" element={<Journal />} />
-              <Route path="/derniere-edition" element={<DerniereEdition />} />
-              <Route path="/equipe-editoriale" element={<EquipeEditoriale />} />
-              
-              {/* Répertoire */}
-              <Route path="/repertoire-membres" element={<RepertoireMembers />} />
-              <Route path="/repertoire-members" element={<RepertoireMembers />} />
-              <Route path="/membre/modifier" element={<ModifierMembre />} />
-              
-              {/* Suggestions */}
-              <Route path="/suggestions" element={<Suggestions />} />
-              
-              {/* Témoignages */}
-              <Route path="/temoignages" element={<Temoignages />} />
-              
-              {/* Textes Officiels */}
-              <Route path="/textes-officiels" element={<TextesOfficiels />} />
-              
-              {/* Auth */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/auth" element={<Auth />} />
-              
-              
-              {/* 404 - Must be last */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-              <CookieBanner />
-            </BrowserRouter>
-          </TooltipProvider>
+              <AppContent />
+            </TooltipProvider>
           </VisitorTrackingProvider>
         </LanguageProvider>
       </AuthProvider>
