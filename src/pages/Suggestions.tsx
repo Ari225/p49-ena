@@ -7,10 +7,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Lightbulb, Send, MessageSquare, BookOpen, Newspaper } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 const Suggestions = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const {
     toast
   } = useToast();
@@ -153,8 +154,8 @@ const Suggestions = () => {
           <div className="container mx-auto px-0">
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-primary mb-4">Partagez vos Idées</h2>
-                <p className="text-gray-600 text-lg">
+                <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-4xl'}`}>Partagez vos Idées</h2>
+                <p className={`text-gray-600 ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}`}>
                   Votre contribution est précieuse pour enrichir notre contenu éditorial
                 </p>
               </div>
