@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Eye, FileText } from 'lucide-react';
 import PDFViewer from '@/components/PDFViewer';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useCurrentEditionData } from '@/hooks/useCurrentEditionData';
 const DerniereEdition = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const {
     currentEdition,
     recentEditions,
@@ -94,7 +95,11 @@ const DerniereEdition = () => {
                 
                 <div className="bg-accent/20 p-6 rounded-lg">
                   <h3 className="text-xl font-semibold text-primary mb-4">Résumé</h3>
-                  <p className="text-gray-700 leading-relaxed text-xs text-left">{currentEdition.summary}</p>
+                  <p className={`text-gray-700 leading-relaxed text-left ${
+                    isMobile ? 'text-xs' : 
+                    isTablet ? 'text-sm' :
+                    'text-base md:text-base'
+                  }`}>{currentEdition.summary}</p>
                 </div>
 
                 {/* Action Buttons - Desktop Only */}
