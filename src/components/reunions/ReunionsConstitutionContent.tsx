@@ -271,7 +271,7 @@ const ReunionsConstitutionContent = () => {
       <section className="py-8 px-[25px]">
         <div className="container mx-auto px-0">
           <h2 className="text-lg font-bold text-primary mb-4 text-center">
-            Prochaine Réunion de Constitution
+            Prochaine réunion de constitution
           </h2>
           <div className="text-center py-12">
             <p className="text-gray-600">Aucune réunion de constitution prévue pour le moment.</p>
@@ -287,7 +287,7 @@ const ReunionsConstitutionContent = () => {
       <section className="py-8 px-[25px]">
         <div className="container mx-auto px-0">
           <h2 className="text-lg font-bold text-primary mb-4 text-center">
-            Prochaine Réunion de Constitution
+            Prochaine réunion de constitution
           </h2>
           <ActivityCardMobile activity={nextReunionConstitution} />
         </div>
@@ -301,7 +301,7 @@ const ReunionsConstitutionContent = () => {
       <section className="py-12 px-[50px]">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold text-primary mb-6 text-center">
-            Prochaine Réunion de Constitution
+            Prochaine réunion de constitution
           </h2>
           <div className="max-w-2xl mx-auto">
             <ActivityCardTablet activity={nextReunionConstitution} />
@@ -316,7 +316,7 @@ const ReunionsConstitutionContent = () => {
     <section className="py-16 px-[100px]">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold text-primary mb-6 text-center">
-          Prochaine Réunion de Constitution
+          Prochaine réunion de constitution
         </h2>
         <div className="max-w-3xl mx-auto">
           <ActivityCardDesktop activity={nextReunionConstitution} />
