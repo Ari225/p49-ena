@@ -108,7 +108,7 @@ const EquipeEditoriale = () => {
               </div> : <div className="space-y-16">
                 {/* Administrateurs */}
                 <div>
-                  <h2 className="text-3xl font-bold text-primary mb-12 text-center">Administrateurs</h2>
+                  <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-12 text-center`}>Administrateurs</h2>
                   {(() => {
                 const admins = editorialTeam.filter(member => member.role === 'admin_principal' || member.role === 'admin_secondaire');
                 const memberCount = admins.length;
