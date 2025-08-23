@@ -269,13 +269,18 @@ const EditorTextesOfficiels = () => {
 
   const mainContent = (
     <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">Textes officiels</h1>
+        <p className="text-muted-foreground">
+          Textes relatifs à la P49 et l'administration ivoirienne
+        </p>
+      </div>
+
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Textes officiels</h1>
-          <p className="text-muted-foreground">
-            Textes relatifs à la P49 et l'administration ivoirienne
-          </p>
-        </div>
+        <h2 className="text-xl font-semibold flex items-center">
+          <FileText className="mr-2 h-5 w-5" />
+          Liste des textes officiels ({documents.length})
+        </h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-primary hover:bg-primary/90">
@@ -290,13 +295,6 @@ const EditorTextesOfficiels = () => {
             {renderForm()}
           </DialogContent>
         </Dialog>
-      </div>
-
-      <div className="flex items-center">
-        <h2 className="text-xl font-semibold flex items-center">
-          <FileText className="mr-2 h-5 w-5" />
-          Liste des textes officiels ({documents.length})
-        </h2>
       </div>
 
       {documents.length === 0 ? (
