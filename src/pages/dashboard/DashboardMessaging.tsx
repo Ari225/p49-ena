@@ -114,6 +114,8 @@ const DashboardMessaging = () => {
 
     setSendingReply(true);
     try {
+      console.log('Envoi de la réponse pour:', contact.email);
+      
       const { data, error } = await supabase.functions.invoke('send-reply-email', {
         body: {
           to: contact.email,
@@ -124,25 +126,26 @@ const DashboardMessaging = () => {
         }
       });
 
+      console.log('Réponse de la fonction:', { data, error });
+
       if (error) {
-        console.error('Supabase function error:', error);
-        throw error;
+        console.error('Erreur de la fonction Supabase:', error);
+        throw new Error(error.message || 'Erreur de la fonction Edge');
       }
 
-      console.log('Email sent successfully:', data);
-      
       setReplyingTo(null);
       setReplyMessage('');
       
       toast({
         title: "Succès",
-        description: "Réponse envoyée avec succès. Le message reste dans la liste."
+        description: "Réponse envoyée avec succès !"
       });
-    } catch (error) {
-      console.error('Error sending reply:', error);
+      
+    } catch (error: any) {
+      console.error('Erreur complète:', error);
       toast({
         title: "Erreur",
-        description: `Impossible d'envoyer la réponse: ${error.message || 'Erreur inconnue'}`,
+        description: `Erreur: ${error.message || 'Erreur inconnue'}`,
         variant: "destructive"
       });
     } finally {
