@@ -15,6 +15,9 @@ const Regionales = () => {
   
   // Récupérer la dernière activité "Les Régionales"
   const latestRegionale = activities.find(activity => activity.category === 'Les Régionales') || null;
+  
+  // Récupérer toutes les activités "Les Régionales"
+  const allRegionales = activities.filter(activity => activity.category === 'Les Régionales');
   const regionalesPassees = [{
     id: 1,
     titre: "Régionale Sud 2024",
@@ -236,6 +239,207 @@ const Regionales = () => {
           </div>}
       </CardContent>
     </Card>;
+
+  // ======================
+  // MOBILE VERSION - ActivityRegionaleCard
+  // ======================
+  const ActivityRegionaleCardMobile = ({ activity }: { activity: Activity }) => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="relative">
+        <img 
+          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          alt={activity.title} 
+          className="w-full h-32 object-cover" 
+        />
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${
+          activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`}>
+          {activity.status}
+        </Badge>
+      </div>
+      <CardContent className="p-3">
+        <h3 className="text-lg font-semibold text-primary mb-2">{activity.title}</h3>
+        <p className="text-gray-600 text-xs mb-3">{activity.brief_description}</p>
+        
+        <div className="space-y-1 mb-3">
+          <div className="flex items-center text-xs text-gray-600">
+            <Calendar className="h-3 w-3 mr-1" />
+            {new Date(activity.date).toLocaleDateString('fr-FR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
+            {activity.end_date && (
+              <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>
+            )}
+          </div>
+          <div className="flex items-center text-xs text-gray-600">
+            <Clock className="h-3 w-3 mr-1" />
+            {activity.start_time}
+            {activity.end_time && ` - ${activity.end_time}`}
+          </div>
+          <div className="flex items-center text-xs text-gray-600">
+            <MapPin className="h-3 w-3 mr-1" />
+            {activity.location}
+          </div>
+        </div>
+
+        {activity.participation_fees && activity.participation_fees.length > 0 && (
+          <div className="mb-3">
+            <p className="text-xs font-medium text-gray-700 mb-1">
+              Tarifs de participation :
+            </p>
+            <div className="space-y-0.5 text-xs text-gray-600">
+              {activity.participation_fees.map((fee, index) => (
+                <div key={index} className="flex justify-between">
+                  <span>{fee.name}</span>
+                  <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
+  // ======================
+  // TABLET VERSION - ActivityRegionaleCard
+  // ======================
+  const ActivityRegionaleCardTablet = ({ activity }: { activity: Activity }) => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="relative">
+        <img 
+          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          alt={activity.title} 
+          className="w-full h-40 object-cover" 
+        />
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${
+          activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`}>
+          {activity.status}
+        </Badge>
+      </div>
+      <CardContent className="p-4">
+        <h3 className="text-xl font-semibold text-primary mb-2">{activity.title}</h3>
+        <p className="text-gray-600 text-sm mb-3">{activity.brief_description}</p>
+        
+        <div className="space-y-1.5 mb-3">
+          <div className="flex items-center text-sm text-gray-600">
+            <Calendar className="h-3.5 w-3.5 mr-1.5" />
+            {new Date(activity.date).toLocaleDateString('fr-FR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
+            {activity.end_date && (
+              <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>
+            )}
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <Clock className="h-3.5 w-3.5 mr-1.5" />
+            {activity.start_time}
+            {activity.end_time && ` - ${activity.end_time}`}
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <MapPin className="h-3.5 w-3.5 mr-1.5" />
+            {activity.location}
+          </div>
+        </div>
+
+        {activity.participation_fees && activity.participation_fees.length > 0 && (
+          <div className="mb-3">
+            <p className="text-sm font-medium text-gray-700 mb-1.5">
+              Tarifs de participation :
+            </p>
+            <div className="space-y-1 text-sm text-gray-600">
+              {activity.participation_fees.map((fee, index) => (
+                <div key={index} className="flex justify-between">
+                  <span>{fee.name}</span>
+                  <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+
+  // ======================
+  // DESKTOP VERSION - ActivityRegionaleCard
+  // ======================
+  const ActivityRegionaleCardDesktop = ({ activity }: { activity: Activity }) => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="relative">
+        <img 
+          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          alt={activity.title} 
+          className="w-full h-48 object-cover" 
+        />
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${
+          activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+        }`}>
+          {activity.status}
+        </Badge>
+      </div>
+      <CardContent className="p-6">
+        <h3 className="text-xl font-semibold text-primary mb-2">{activity.title}</h3>
+        <p className="text-gray-600 text-sm mb-4">{activity.brief_description}</p>
+        
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center text-sm text-gray-600">
+            <Calendar className="h-4 w-4 mr-2" />
+            {new Date(activity.date).toLocaleDateString('fr-FR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
+            {activity.end_date && (
+              <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>
+            )}
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <Clock className="h-4 w-4 mr-2" />
+            {activity.start_time}
+            {activity.end_time && ` - ${activity.end_time}`}
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            <MapPin className="h-4 w-4 mr-2" />
+            {activity.location}
+          </div>
+        </div>
+
+        {activity.participation_fees && activity.participation_fees.length > 0 && (
+          <div className="mb-4">
+            <p className="text-sm font-medium text-gray-700 mb-2">
+              Tarifs de participation :
+            </p>
+            <div className="space-y-1 text-sm text-gray-600">
+              {activity.participation_fees.map((fee, index) => (
+                <div key={index} className="flex justify-between">
+                  <span>{fee.name}</span>
+                  <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
 
   // ======================
   // MOBILE VERSION - RegionaleFutureCard
@@ -532,9 +736,23 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
-                  <div className="flex justify-center">
+                  <div className="flex justify-center mb-8">
                     <RegionaleFutureCard />
                   </div>
+                  
+                  {/* Toutes les activités "Les Régionales" */}
+                  {allRegionales.length > 0 && (
+                    <div className="mt-8">
+                      <h3 className="text-lg font-semibold text-primary mb-4 text-center">
+                        Toutes les activités "Les Régionales"
+                      </h3>
+                      <div className="grid grid-cols-1 gap-4">
+                        {allRegionales.map(activity => (
+                          <ActivityRegionaleCardMobile key={activity.id} activity={activity} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>}
 
               {selectedTab === 'passees' && <div>
@@ -566,9 +784,23 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
-                  <div className="flex justify-center">
+                  <div className="flex justify-center mb-8">
                     <RegionaleFutureCard />
                   </div>
+                  
+                  {/* Toutes les activités "Les Régionales" */}
+                  {allRegionales.length > 0 && (
+                    <div className="mt-8">
+                      <h3 className="text-xl font-semibold text-primary mb-6 text-center">
+                        Toutes les activités "Les Régionales"
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {allRegionales.map(activity => (
+                          <ActivityRegionaleCardTablet key={activity.id} activity={activity} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>}
 
               {selectedTab === 'passees' && <div>
@@ -600,9 +832,23 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
-                  <div className="flex justify-center">
+                  <div className="flex justify-center mb-8">
                     <RegionaleFutureCard />
                   </div>
+                  
+                  {/* Toutes les activités "Les Régionales" */}
+                  {allRegionales.length > 0 && (
+                    <div className="mt-8">
+                      <h3 className="text-2xl font-semibold text-primary mb-8 text-center">
+                        Toutes les activités "Les Régionales"
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {allRegionales.map(activity => (
+                          <ActivityRegionaleCardDesktop key={activity.id} activity={activity} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>}
 
               {selectedTab === 'passees' && <div>
