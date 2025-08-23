@@ -15,7 +15,12 @@ export interface Activity {
   image?: string;
   image_url?: string;
   created_by?: string;
-  participation_fees?: string[];
+  participation_fees?: ParticipationFee[];
+}
+
+export interface ParticipationFee {
+  name: string;
+  amount: string;
 }
 
 export interface ActivityFormData {
@@ -29,7 +34,7 @@ export interface ActivityFormData {
   location: string;
   brief_description: string;
   description: string;
-  participation_fees: string[];
+  participation_fees: ParticipationFee[];
 }
 
 export const categoryOptions = [

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -135,7 +134,7 @@ export const useActivityForm = () => {
           .insert({
             activity_id: activityData.id,
             end_date: formData.end_date,
-            participation_fees: formData.participation_fees
+            participation_fees: JSON.stringify(formData.participation_fees)
           });
 
         if (regionalesError) {

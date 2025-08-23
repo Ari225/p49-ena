@@ -31,7 +31,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
         e.preventDefault();
         return;
       }
-      if (formData.participation_fees.length === 0 || formData.participation_fees.some(fee => !fee.trim())) {
+      if (formData.participation_fees.length === 0 || formData.participation_fees.some(fee => !fee.name.trim() || !fee.amount.trim())) {
         e.preventDefault();
         return;
       }
@@ -46,7 +46,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
   const addParticipationFee = () => {
     setFormData({
       ...formData,
-      participation_fees: [...formData.participation_fees, '']
+      participation_fees: [...formData.participation_fees, { name: '', amount: '' }]
     });
   };
 
@@ -57,9 +57,9 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
     });
   };
 
-  const updateParticipationFee = (index: number, value: string) => {
+  const updateParticipationFee = (index: number, field: 'name' | 'amount', value: string) => {
     const updatedFees = [...formData.participation_fees];
-    updatedFees[index] = value;
+    updatedFees[index] = { ...updatedFees[index], [field]: value };
     setFormData({
       ...formData,
       participation_fees: updatedFees
@@ -250,27 +250,39 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
               </p>
               
               {formData.participation_fees.map((fee, index) => (
-                <div key={index} className="flex gap-2">
-                  <Input
-                    placeholder="Montant en FCFA (ex: 50000)"
-                    value={fee}
-                    onChange={(e) => updateParticipationFee(index, e.target.value)}
-                    className="flex-1 border-gray-300 focus:border-primary focus:ring-primary"
-                    type="number"
-                    min="0"
-                    required
-                  />
-                  {formData.participation_fees.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => removeParticipationFee(index)}
-                      className="text-red-600 hover:bg-red-50 border-red-300"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  )}
+                <div key={index} className="space-y-3 p-3 border border-gray-200 rounded-lg bg-gray-50/50">
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-sm font-medium text-gray-700">Tarif {index + 1}</h4>
+                    {formData.participation_fees.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeParticipationFee(index)}
+                        className="text-red-600 hover:bg-red-50 border-red-300"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Nom du tarif (ex: Tarif étudiant, Tarif professionnel...)"
+                      value={fee.name}
+                      onChange={(e) => updateParticipationFee(index, 'name', e.target.value)}
+                      className="border-gray-300 focus:border-primary focus:ring-primary"
+                      required
+                    />
+                    <Input
+                      placeholder="Montant en FCFA (ex: 50000)"
+                      value={fee.amount}
+                      onChange={(e) => updateParticipationFee(index, 'amount', e.target.value)}
+                      className="border-gray-300 focus:border-primary focus:ring-primary"
+                      type="number"
+                      min="0"
+                      required
+                    />
+                  </div>
                 </div>
               ))}
               
@@ -288,7 +300,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
               {formData.participation_fees.length === 0 && (
                 <Button
                   type="button"
-                  onClick={() => setFormData({...formData, participation_fees: ['']})}
+                  onClick={() => setFormData({...formData, participation_fees: [{ name: '', amount: '' }]})}
                   className="w-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/30"
                 >
                   Ajouter le premier tarif

@@ -154,7 +154,7 @@ export const useActivityEdit = () => {
             .from('les_regionales')
             .update({
               end_date: formData.end_date,
-              participation_fees: formData.participation_fees
+              participation_fees: JSON.stringify(formData.participation_fees)
             })
             .eq('activity_id', activityId);
 
@@ -168,7 +168,7 @@ export const useActivityEdit = () => {
             .insert({
               activity_id: activityId,
               end_date: formData.end_date,
-              participation_fees: formData.participation_fees
+              participation_fees: JSON.stringify(formData.participation_fees)
             });
 
           if (regionalesError) {
