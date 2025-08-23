@@ -1,8 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -25,13 +23,29 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const { to, subject, replyMessage, originalMessage, senderName }: ReplyEmailRequest = await req.json();
 
+    console.log("=== DEBUG INFO ===");
     console.log("Sending reply email to:", to);
     console.log("RESEND_API_KEY configured:", !!Deno.env.get("RESEND_API_KEY"));
+    console.log("RESEND_API_KEY length:", Deno.env.get("RESEND_API_KEY")?.length || 0);
 
-    if (!Deno.env.get("RESEND_API_KEY")) {
-      throw new Error("RESEND_API_KEY not configured");
+    const apiKey = Deno.env.get("RESEND_API_KEY");
+    if (!apiKey) {
+      console.error("RESEND_API_KEY not found in environment");
+      return new Response(
+        JSON.stringify({ 
+          error: "Configuration error: RESEND_API_KEY not configured",
+          debug: "Please add your Resend API key in the Supabase secrets"
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
+    const resend = new Resend(apiKey);
+
+    console.log("Attempting to send email...");
     const emailResponse = await resend.emails.send({
       from: "P49 <onboarding@resend.dev>",
       to: [to],
@@ -60,25 +74,46 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("Email response:", emailResponse);
 
     if (emailResponse.error) {
-      console.error("Resend error:", emailResponse.error);
-      throw new Error(`Resend error: ${emailResponse.error.message}`);
+      console.error("Resend API error:", emailResponse.error);
+      return new Response(
+        JSON.stringify({ 
+          error: `Email send failed: ${emailResponse.error.message}`,
+          details: emailResponse.error
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
-    return new Response(JSON.stringify(emailResponse), {
+    console.log("Email sent successfully with ID:", emailResponse.data?.id);
+
+    return new Response(JSON.stringify({
+      success: true,
+      emailId: emailResponse.data?.id,
+      message: "Email sent successfully"
+    }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
         ...corsHeaders,
       },
     });
+
   } catch (error: any) {
-    console.error("Error in send-reply-email function:", error);
+    console.error("=== CRITICAL ERROR ===");
+    console.error("Error type:", error.constructor.name);
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
+    
     return new Response(
       JSON.stringify({ 
-        error: error.message,
+        error: `Server error: ${error.message}`,
+        type: error.constructor.name,
         details: error.stack || 'No stack trace available'
       }),
       {

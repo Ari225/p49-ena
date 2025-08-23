@@ -116,7 +116,7 @@ const DashboardMessaging = () => {
     try {
       console.log('Envoi de la réponse pour:', contact.email);
       
-      const { data, error } = await supabase.functions.invoke('send-reply-email', {
+      const response = await supabase.functions.invoke('send-reply-email', {
         body: {
           to: contact.email,
           subject: contact.subject,
@@ -126,13 +126,23 @@ const DashboardMessaging = () => {
         }
       });
 
-      console.log('Réponse de la fonction:', { data, error });
+      console.log('Réponse complète de la fonction:', response);
 
-      if (error) {
-        console.error('Erreur de la fonction Supabase:', error);
-        throw new Error(error.message || 'Erreur de la fonction Edge');
+      // Si la fonction retourne une erreur HTTP
+      if (!response.data && response.error) {
+        console.error('Erreur HTTP de la fonction:', response.error);
+        throw new Error(`Erreur de la fonction: ${response.error.message}`);
       }
 
+      // Si la fonction retourne des données mais avec une erreur dans les données
+      if (response.data && response.data.error) {
+        console.error('Erreur dans la réponse:', response.data.error);
+        throw new Error(response.data.error);
+      }
+
+      // Succès
+      console.log('Email envoyé avec succès:', response.data);
+      
       setReplyingTo(null);
       setReplyMessage('');
       
@@ -143,9 +153,23 @@ const DashboardMessaging = () => {
       
     } catch (error: any) {
       console.error('Erreur complète:', error);
+      
+      // Afficher un message d'erreur plus détaillé
+      let errorMessage = 'Erreur inconnue';
+      
+      if (error.message.includes('RESEND_API_KEY not configured')) {
+        errorMessage = 'Configuration manquante: La clé API Resend n\'est pas configurée. Veuillez contacter l\'administrateur.';
+      } else if (error.message.includes('Domain not verified')) {
+        errorMessage = 'Le domaine email n\'est pas vérifié. Veuillez vérifier la configuration Resend.';
+      } else if (error.message.includes('Invalid API key')) {
+        errorMessage = 'Clé API Resend invalide. Veuillez vérifier la configuration.';
+      } else {
+        errorMessage = `Erreur: ${error.message}`;
+      }
+      
       toast({
-        title: "Erreur",
-        description: `Erreur: ${error.message || 'Erreur inconnue'}`,
+        title: "Erreur d'envoi",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
