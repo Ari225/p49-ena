@@ -119,14 +119,14 @@ const Contact = () => {
       <div className={`py-16 bg-white ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
         <div className={`${isMobile ? 'mx-0 px-0' : 'container mx-auto px-4'}`}>
           {/* Service Info */}
-          <div className="flex items-center justify-center space-x-8 mb-12 pb-8 border-b border-gray-200">
+          <div className={`flex items-center justify-center ${isMobile ? 'space-x-4' : 'space-x-8'} mb-12 pb-8 border-b border-gray-200`}>
             <div className="flex items-center text-primary">
-              <Clock className="h-6 w-6 mr-3" />
-              <span className="text-lg font-medium">Réponse sous 24h</span>
+              <Clock className={`${isMobile ? 'h-4 w-4 mr-2' : 'h-6 w-6 mr-3'}`} />
+              <span className={`${isMobile ? 'text-sm' : 'text-lg'} font-medium`}>Réponse sous 24h</span>
             </div>
             <div className="flex items-center text-primary">
-              <Users className="h-6 w-6 mr-3" />
-              <span className="text-lg font-medium">Support dédié</span>
+              <Users className={`${isMobile ? 'h-4 w-4 mr-2' : 'h-6 w-6 mr-3'}`} />
+              <span className={`${isMobile ? 'text-sm' : 'text-lg'} font-medium`}>Support dédié</span>
             </div>
           </div>
 
