@@ -70,7 +70,7 @@ const AssembleesGenerales = () => {
                 </div>}
 
               {selectedTab === 'passees' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
+                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
                   <div className="grid grid-cols-1 gap-6">
                     {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
                   </div>
