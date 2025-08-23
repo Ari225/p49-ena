@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { useActivityForm } from '@/hooks/useActivityForm';
 import ImageUpload from './ImageUpload';
 import { categoryOptions } from '@/types/activity';
-import { Calendar, Clock, MapPin, FileText, Tag } from 'lucide-react';
+import { Calendar, Clock, MapPin, FileText, Tag, Plus, X, DollarSign } from 'lucide-react';
 
 interface ActivityFormProps {
   onSuccess: () => void;
@@ -25,10 +25,45 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
   } = useActivityForm();
 
   const onSubmit = async (e: React.FormEvent) => {
+    // Validation spéciale pour Les Régionales
+    if (formData.category === 'Les Régionales') {
+      if (!formData.end_date) {
+        e.preventDefault();
+        return;
+      }
+      if (formData.participation_fees.length === 0 || formData.participation_fees.some(fee => !fee.trim())) {
+        e.preventDefault();
+        return;
+      }
+    }
+    
     const success = await handleSubmit(e);
     if (success) {
       onSuccess();
     }
+  };
+
+  const addParticipationFee = () => {
+    setFormData({
+      ...formData,
+      participation_fees: [...formData.participation_fees, '']
+    });
+  };
+
+  const removeParticipationFee = (index: number) => {
+    setFormData({
+      ...formData,
+      participation_fees: formData.participation_fees.filter((_, i) => i !== index)
+    });
+  };
+
+  const updateParticipationFee = (index: number, value: string) => {
+    const updatedFees = [...formData.participation_fees];
+    updatedFees[index] = value;
+    setFormData({
+      ...formData,
+      participation_fees: updatedFees
+    });
   };
 
   return (
@@ -89,7 +124,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
         <div className="space-y-2">
           <Label htmlFor="date" className="text-sm font-medium text-gray-700 flex items-center">
             <Calendar className="w-4 h-4 mr-2 text-primary" />
-            Date *
+            Date de début *
           </Label>
           <Input
             id="date"
@@ -98,6 +133,22 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
             onChange={(e) => setFormData({...formData, date: e.target.value})}
             className="border-gray-300 focus:border-primary focus:ring-primary"
             required
+          />
+        </div>
+
+        {/* Date de fin - Obligatoire pour Les Régionales */}
+        <div className="space-y-2">
+          <Label htmlFor="end_date" className="text-sm font-medium text-gray-700 flex items-center">
+            <Calendar className="w-4 h-4 mr-2 text-primary" />
+            Date de fin {formData.category === 'Les Régionales' && '*'}
+          </Label>
+          <Input
+            id="end_date"
+            type="date"
+            value={formData.end_date}
+            onChange={(e) => setFormData({...formData, end_date: e.target.value})}
+            className="border-gray-300 focus:border-primary focus:ring-primary"
+            required={formData.category === 'Les Régionales'}
           />
         </div>
 
@@ -185,6 +236,67 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           imagePreview={imagePreview}
           setImagePreview={setImagePreview}
         />
+
+        {/* Champs spécifiques aux Régionales */}
+        {formData.category === 'Les Régionales' && (
+          <div className="space-y-4 p-4 border border-primary/20 rounded-lg bg-primary/5">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium text-gray-700 flex items-center">
+                <DollarSign className="w-4 h-4 mr-2 text-primary" />
+                Tarifs de participation (en FCFA) *
+              </Label>
+              <p className="text-xs text-gray-500">
+                Ajoutez un ou plusieurs tarifs pour cette activité régionale
+              </p>
+              
+              {formData.participation_fees.map((fee, index) => (
+                <div key={index} className="flex gap-2">
+                  <Input
+                    placeholder="Montant en FCFA (ex: 50000)"
+                    value={fee}
+                    onChange={(e) => updateParticipationFee(index, e.target.value)}
+                    className="flex-1 border-gray-300 focus:border-primary focus:ring-primary"
+                    type="number"
+                    min="0"
+                    required
+                  />
+                  {formData.participation_fees.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeParticipationFee(index)}
+                      className="text-red-600 hover:bg-red-50 border-red-300"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addParticipationFee}
+                className="flex items-center gap-2 text-primary border-primary hover:bg-primary/5"
+              >
+                <Plus className="w-4 h-4" />
+                Ajouter un tarif
+              </Button>
+              
+              {formData.participation_fees.length === 0 && (
+                <Button
+                  type="button"
+                  onClick={() => setFormData({...formData, participation_fees: ['']})}
+                  className="w-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/30"
+                >
+                  Ajouter le premier tarif
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Boutons d'action */}
         <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">

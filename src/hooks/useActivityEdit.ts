@@ -15,11 +15,13 @@ export const useActivityEdit = () => {
     category: '',
     other_category: '',
     date: '',
+    end_date: '',
     start_time: '',
     end_time: '',
     location: '',
     brief_description: '',
-    description: ''
+    description: '',
+    participation_fees: []
   });
 
   const initializeForm = (activity: Activity) => {
@@ -28,11 +30,13 @@ export const useActivityEdit = () => {
       category: activity.category,
       other_category: activity.other_category || '',
       date: activity.date,
+      end_date: activity.end_date || '',
       start_time: activity.start_time || '',
       end_time: activity.end_time || '',
       location: activity.location,
       brief_description: activity.brief_description,
-      description: activity.description
+      description: activity.description,
+      participation_fees: activity.participation_fees || []
     });
     setCurrentImageUrl(activity.image_url || null);
     setImagePreview(activity.image_url || null);
@@ -44,11 +48,13 @@ export const useActivityEdit = () => {
       category: '',
       other_category: '',
       date: '',
+      end_date: '',
       start_time: '',
       end_time: '',
       location: '',
       brief_description: '',
-      description: ''
+      description: '',
+      participation_fees: []
     });
     setSelectedImage(null);
     setImagePreview(null);
@@ -113,6 +119,7 @@ export const useActivityEdit = () => {
           category: formData.category,
           other_category: formData.category === 'Autre' ? formData.other_category : null,
           date: formData.date,
+          end_date: formData.category === 'Les Régionales' ? formData.end_date : null,
           start_time: formData.start_time,
           end_time: formData.end_time || null,
           location: formData.location,
@@ -130,6 +137,50 @@ export const useActivityEdit = () => {
           variant: "destructive"
         });
         return false;
+      }
+
+      // Gérer les données spécifiques aux Régionales
+      if (formData.category === 'Les Régionales') {
+        // Vérifier si un enregistrement existe déjà
+        const { data: existingRegionales } = await supabase
+          .from('les_regionales')
+          .select('id')
+          .eq('activity_id', activityId)
+          .single();
+
+        if (existingRegionales) {
+          // Mettre à jour l'enregistrement existant
+          const { error: regionalesError } = await supabase
+            .from('les_regionales')
+            .update({
+              end_date: formData.end_date,
+              participation_fees: formData.participation_fees
+            })
+            .eq('activity_id', activityId);
+
+          if (regionalesError) {
+            console.error('Error updating regionales data:', regionalesError);
+          }
+        } else {
+          // Créer un nouvel enregistrement
+          const { error: regionalesError } = await supabase
+            .from('les_regionales')
+            .insert({
+              activity_id: activityId,
+              end_date: formData.end_date,
+              participation_fees: formData.participation_fees
+            });
+
+          if (regionalesError) {
+            console.error('Error creating regionales data:', regionalesError);
+          }
+        }
+      } else {
+        // Si la catégorie n'est plus "Les Régionales", supprimer les données existantes
+        await supabase
+          .from('les_regionales')
+          .delete()
+          .eq('activity_id', activityId);
       }
       
       toast({

@@ -2,9 +2,10 @@
 export interface Activity {
   id: string;
   title: string;
-  category: 'Formation' | 'Conférence' | 'Réunion' | 'Assemblée générale' | 'Autre';
+  category: 'Formation' | 'Conférence' | 'Réunion' | 'Assemblée générale' | 'Les Régionales' | 'Autre';
   other_category?: string;
   date: string;
+  end_date?: string;
   start_time: string;
   end_time: string;
   location: string;
@@ -14,6 +15,7 @@ export interface Activity {
   image?: string;
   image_url?: string;
   created_by?: string;
+  participation_fees?: string[];
 }
 
 export interface ActivityFormData {
@@ -21,11 +23,13 @@ export interface ActivityFormData {
   category: string;
   other_category: string;
   date: string;
+  end_date: string;
   start_time: string;
   end_time: string;
   location: string;
   brief_description: string;
   description: string;
+  participation_fees: string[];
 }
 
 export const categoryOptions = [
@@ -33,5 +37,6 @@ export const categoryOptions = [
   'Conférence',
   'Réunion',
   'Assemblée générale',
+  'Les Régionales',
   'Autre'
 ] as const;

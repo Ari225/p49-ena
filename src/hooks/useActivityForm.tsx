@@ -16,11 +16,13 @@ export const useActivityForm = () => {
     category: '',
     other_category: '',
     date: '',
+    end_date: '',
     start_time: '',
     end_time: '',
     location: '',
     brief_description: '',
-    description: ''
+    description: '',
+    participation_fees: []
   });
 
   const resetForm = () => {
@@ -29,11 +31,13 @@ export const useActivityForm = () => {
       category: '',
       other_category: '',
       date: '',
+      end_date: '',
       start_time: '',
       end_time: '',
       location: '',
       brief_description: '',
-      description: ''
+      description: '',
+      participation_fees: []
     });
     setSelectedImage(null);
     setImagePreview(null);
@@ -95,13 +99,14 @@ export const useActivityForm = () => {
       }
 
       // Insert activity into database
-      const { error } = await supabase
+      const { data: activityData, error } = await supabase
         .from('activities')
         .insert({
           title: formData.title,
           category: formData.category,
           other_category: formData.category === 'Autre' ? formData.other_category : null,
           date: formData.date,
+          end_date: formData.category === 'Les Régionales' ? formData.end_date : null,
           start_time: formData.start_time,
           end_time: formData.end_time || null,
           location: formData.location,
@@ -109,7 +114,9 @@ export const useActivityForm = () => {
           description: formData.description,
           image_url: imageUrl,
           created_by: user.id
-        });
+        })
+        .select()
+        .single();
 
       if (error) {
         console.error('Error creating activity:', error);
@@ -119,6 +126,27 @@ export const useActivityForm = () => {
           variant: "destructive"
         });
         return false;
+      }
+
+      // Si c'est une activité "Les Régionales", sauvegarder les données supplémentaires
+      if (formData.category === 'Les Régionales' && activityData) {
+        const { error: regionalesError } = await supabase
+          .from('les_regionales')
+          .insert({
+            activity_id: activityData.id,
+            end_date: formData.end_date,
+            participation_fees: formData.participation_fees
+          });
+
+        if (regionalesError) {
+          console.error('Error creating regionales data:', regionalesError);
+          toast({
+            title: "Erreur",
+            description: "Impossible de sauvegarder les données des Régionales.",
+            variant: "destructive"
+          });
+          return false;
+        }
       }
       
       toast({

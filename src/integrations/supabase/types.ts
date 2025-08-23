@@ -576,6 +576,41 @@ export type Database = {
           },
         ]
       }
+      les_regionales: {
+        Row: {
+          activity_id: string
+          created_at: string
+          end_date: string
+          id: string
+          participation_fees: Json
+          updated_at: string
+        }
+        Insert: {
+          activity_id: string
+          created_at?: string
+          end_date: string
+          id?: string
+          participation_fees?: Json
+          updated_at?: string
+        }
+        Update: {
+          activity_id?: string
+          created_at?: string
+          end_date?: string
+          id?: string
+          participation_fees?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_les_regionales_activity"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media_items: {
         Row: {
           category: string
