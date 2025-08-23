@@ -537,7 +537,7 @@ const Regionales = () => {
 
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
+                  <h2 className="text-lg font-bold text-primary mb-4 text-center">Prochaines régionales</h2>
                   <div className="flex justify-center">
                     <RegionaleFutureCard />
                   </div>
@@ -580,7 +580,7 @@ const Regionales = () => {
 
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
+                  <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
                   <div className="flex justify-center">
                     <RegionaleFutureCard />
                   </div>
@@ -623,7 +623,7 @@ const Regionales = () => {
 
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
-                  <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines régionales</h2>
+                  <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
                   <div className="flex justify-center">
                     <RegionaleFutureCard />
                   </div>
