@@ -37,9 +37,11 @@ const ReunionsConstitutionContent = () => {
     });
   };
 
-  const formatTime = (timeStr?: string) => {
-    if (!timeStr) return '';
-    return timeStr;
+  const formatTimeRange = (startTime?: string, endTime?: string) => {
+    if (!startTime && !endTime) return 'Heure à définir';
+    if (!startTime) return endTime || '';
+    if (!endTime) return startTime;
+    return `${startTime} - ${endTime}`;
   };
 
   // Composant de carte de réunion - Version Mobile
@@ -71,7 +73,7 @@ const ReunionsConstitutionContent = () => {
           )}
           <div className="flex items-center text-xs text-gray-600">
             <Clock className="h-3 w-3 mr-1" />
-            {formatTime(activity.start_time)} - {formatTime(activity.end_time)}
+            {formatTimeRange(activity.start_time, activity.end_time)}
           </div>
         </div>
 
@@ -141,7 +143,7 @@ const ReunionsConstitutionContent = () => {
           )}
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-4 w-4 mr-2" />
-            {formatTime(activity.start_time)} - {formatTime(activity.end_time)}
+            {formatTimeRange(activity.start_time, activity.end_time)}
           </div>
         </div>
 
@@ -208,7 +210,7 @@ const ReunionsConstitutionContent = () => {
           )}
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-4 w-4 mr-2" />
-            Horaires : {formatTime(activity.start_time)} - {formatTime(activity.end_time)}
+            Heure : {formatTimeRange(activity.start_time, activity.end_time)}
           </div>
         </div>
 
