@@ -74,7 +74,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
             <div className="flex items-center text-xs text-gray-600">
               <Clock className="h-3 w-3 mr-2" />
-              Durée : {assemblee.duree}
+              Heure : {assemblee.duree}
             </div>
             <div className="flex items-center text-xs text-gray-600">
               <Users className="h-3 w-3 mr-2" />
@@ -152,7 +152,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
             <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2" />
-              Durée : {assemblee.duree}
+              Heure : {assemblee.duree}
             </div>
             <div className="flex items-center text-sm text-gray-600">
               <Users className="h-4 w-4 mr-2" />
@@ -229,7 +229,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-4 w-4 mr-2" />
-            Durée : {assemblee.duree}
+            Heure : {assemblee.duree}
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <Users className="h-4 w-4 mr-2" />
