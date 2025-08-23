@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Layout from '@/components/Layout';
 import EditorSidebar from '@/components/EditorSidebar';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Plus, Eye, Trash2, Calendar, Loader2 } from 'lucide-react';
+import { FileText, Plus, Eye, Trash2, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useImageUpload } from '@/hooks/useImageUpload';
@@ -126,7 +127,7 @@ const EditorTextesOfficiels = () => {
   };
 
   const handleDelete = async (id: string, createdBy: string) => {
-    // Vérifier si l'utilisateur peut supprimer le document
+    // Vérifier si l'utilisateur peut supprimer le document (éditeurs peuvent supprimer leurs propres documents)
     if (createdBy !== user?.id) {
       toast({
         title: 'Erreur',
@@ -161,178 +162,412 @@ const EditorTextesOfficiels = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen">
-        {!isMobile && <EditorSidebar />}
-        <div className={`flex-1 ${!isMobile ? 'ml-64' : ''}`}>
-          <div className="flex items-center justify-center min-h-screen">
-            <Loader2 className="h-8 w-8 animate-spin" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const renderForm = () => (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="title">Titre *</Label>
-        <Input
-          id="title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="year">Année *</Label>
-        <Input
-          id="year"
-          type="number"
-          value={formData.year}
-          onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="description">Description *</Label>
-        <Textarea
-          id="description"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          required
-        />
-      </div>
-      <div>
-        <Label htmlFor="document">Document PDF *</Label>
-        <Input
-          id="document"
-          type="file"
-          accept=".pdf"
-          onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
-          required
-        />
-      </div>
-      <Button type="submit" disabled={uploading} className="w-full">
-        {uploading ? 'Téléchargement...' : 'Ajouter'}
-      </Button>
-    </form>
-  );
-
-  const renderDocumentCard = (doc: OfficialDocument) => {
-    const canDelete = doc.created_by === user?.id;
-    
-    return (
-      <Card key={doc.id}>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg flex items-center justify-between">
-            <span className="flex items-center">
-              <FileText className="mr-2 h-5 w-5" />
-              {doc.title}
-            </span>
-            <Badge variant="secondary">{doc.year}</Badge>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-gray-500 flex items-center">
-              <Calendar className="mr-1 h-3 w-3" />
-              {new Date(doc.created_at).toLocaleDateString()}
-            </span>
-            <div className="flex space-x-2">
-              <PDFViewer
-                pdfUrl={doc.document_url}
-                title={doc.title}
-                triggerButton={
-                  <Button size="sm" variant="outline">
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                }
-              />
-              {canDelete && (
-                <Button 
-                  size="sm" 
-                  variant="destructive"
-                  onClick={() => handleDelete(doc.id, doc.created_by)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
-
-  const mainContent = (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Textes officiels</h1>
-        <p className="text-muted-foreground">
-          Textes relatifs à la P49 et l'administration ivoirienne
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold flex items-center">
-          <FileText className="mr-2 h-5 w-5" />
-          Liste des textes officiels ({documents.length})
-        </h2>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90">
-              <Plus className="mr-2 h-4 w-4" />
-              Nouveau document
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Ajouter un document</DialogTitle>
-            </DialogHeader>
-            {renderForm()}
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {documents.length === 0 ? (
-        <div className="text-center py-12">
-          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Aucun document</h3>
-          <p className="text-muted-foreground">
-            Aucun document officiel n'a été publié pour le moment.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {documents.map(renderDocumentCard)}
-        </div>
-      )}
-    </div>
-  );
-
+  // Render mobile layout
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-6 pb-20">
-          {mainContent}
+      <Layout>
+        <div className="px-[25px] py-[50px] pb-20">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-primary">
+              Gestion des textes officiels
+            </h1>
+            <p className="text-gray-600 mt-2 text-sm">Textes relatifs à la P49 et l'administration ivoirienne</p>
+          </div>
+
+          <div className="mb-4">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full bg-primary hover:bg-primary/90">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouveau document
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-[calc(100vw-50px)] max-w-md mx-auto rounded-xl">
+                <DialogHeader>
+                  <DialogTitle>Ajouter un document</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Titre *</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="year">Année *</Label>
+                    <Input
+                      id="year"
+                      type="number"
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description *</Label>
+                    <Textarea
+                      id="description"
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="document">Document PDF *</Label>
+                    <Input
+                      id="document"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" disabled={uploading} className="w-full">
+                    {uploading ? 'Téléchargement...' : 'Ajouter'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des textes officiels ({documents.length})
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {loading ? (
+              <div>Chargement...</div>
+            ) : documents.length === 0 ? (
+              <p className="text-gray-500 text-center py-8">Aucun document trouvé</p>
+            ) : (
+              documents.map((doc) => {
+                const canDelete = doc.created_by === user?.id;
+                return (
+                  <Card key={doc.id}>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center justify-between">
+                        <span className="flex items-center">
+                          <FileText className="mr-2 h-5 w-5" />
+                          {doc.title}
+                        </span>
+                        <Badge variant="secondary">{doc.year}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-500 flex items-center">
+                          <Calendar className="mr-1 h-3 w-3" />
+                          {new Date(doc.created_at).toLocaleDateString()}
+                        </span>
+                        <div className="flex space-x-2">
+                          <PDFViewer
+                            pdfUrl={doc.document_url}
+                            title={doc.title}
+                            triggerButton={
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            }
+                          />
+                          {canDelete && (
+                            <Button 
+                              size="sm" 
+                              variant="destructive"
+                              onClick={() => handleDelete(doc.id, doc.created_by)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })
+            )}
+          </div>
         </div>
         <EditorSidebar />
-      </div>
+      </Layout>
     );
   }
 
-  return (
-    <div className="flex min-h-screen bg-background">
-      <EditorSidebar />
-      <main className="flex-1 ml-64">
-        <div className="container mx-auto px-6 py-8">
-          {mainContent}
+  // Render tablet layout
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Gestion des textes officiels</h1>
+            <p className="text-gray-600 mt-2">Textes relatifs à la P49 et l'administration ivoirienne</p>
+          </div>
+
+          <div className="mb-6">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouveau document
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Ajouter un document</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Titre *</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="year">Année *</Label>
+                    <Input
+                      id="year"
+                      type="number"
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description *</Label>
+                    <Textarea
+                      id="description"
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="document">Document PDF *</Label>
+                    <Input
+                      id="document"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" disabled={uploading} className="w-full">
+                    {uploading ? 'Téléchargement...' : 'Ajouter'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des textes officiels ({documents.length})
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {loading ? (
+              <p className="text-center py-8 col-span-full">Chargement...</p>
+            ) : documents.length === 0 ? (
+              <p className="text-gray-500 text-center py-8 col-span-full">Aucun document trouvé</p>
+            ) : (
+              documents.map((doc) => {
+                const canDelete = doc.created_by === user?.id;
+                return (
+                  <Card key={doc.id}>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center justify-between">
+                        <span className="flex items-center">
+                          <FileText className="mr-2 h-5 w-5" />
+                          {doc.title}
+                        </span>
+                        <Badge variant="secondary">{doc.year}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-500 flex items-center">
+                          <Calendar className="mr-1 h-3 w-3" />
+                          {new Date(doc.created_at).toLocaleDateString()}
+                        </span>
+                        <div className="flex space-x-2">
+                          <PDFViewer
+                            pdfUrl={doc.document_url}
+                            title={doc.title}
+                            triggerButton={
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            }
+                          />
+                          {canDelete && (
+                            <Button 
+                              size="sm" 
+                              variant="destructive"
+                              onClick={() => handleDelete(doc.id, doc.created_by)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })
+            )}
+          </div>
         </div>
-      </main>
-    </div>
+        <EditorSidebar />
+      </Layout>
+    );
+  }
+
+  // Render desktop layout
+  return (
+    <Layout>
+      <div className="flex">
+        <EditorSidebar />
+        
+        <div className="flex-1 ml-64 p-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Gestion des textes officiels</h1>
+            <p className="text-gray-600 mt-2">Textes relatifs à la P49 et l'administration ivoirienne</p>
+          </div>
+
+          <div className="mb-6">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-primary hover:bg-primary/90">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nouveau document
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Ajouter un document</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Titre *</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="year">Année *</Label>
+                    <Input
+                      id="year"
+                      type="number"
+                      value={formData.year}
+                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description *</Label>
+                    <Textarea
+                      id="description"
+                      value={formData.description}
+                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="document">Document PDF *</Label>
+                    <Input
+                      id="document"
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" disabled={uploading} className="w-full">
+                    {uploading ? 'Téléchargement...' : 'Ajouter'}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <FileText className="mr-2 h-5 w-5" />
+              Liste des textes officiels ({documents.length})
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {loading ? (
+              <p className="text-center py-8 col-span-full">Chargement...</p>
+            ) : documents.length === 0 ? (
+              <p className="text-gray-500 text-center py-8 col-span-full">Aucun document trouvé</p>
+            ) : (
+              documents.map((doc) => {
+                const canDelete = doc.created_by === user?.id;
+                return (
+                  <Card key={doc.id}>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg flex items-center justify-between">
+                        <span className="flex items-center">
+                          <FileText className="mr-2 h-5 w-5" />
+                          {doc.title}
+                        </span>
+                        <Badge variant="secondary">{doc.year}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs text-gray-500 flex items-center">
+                          <Calendar className="mr-1 h-3 w-3" />
+                          {new Date(doc.created_at).toLocaleDateString()}
+                        </span>
+                        <div className="flex space-x-2">
+                          <PDFViewer
+                            pdfUrl={doc.document_url}
+                            title={doc.title}
+                            triggerButton={
+                              <Button size="sm" variant="outline">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            }
+                          />
+                          {canDelete && (
+                            <Button 
+                              size="sm" 
+                              variant="destructive"
+                              onClick={() => handleDelete(doc.id, doc.created_by)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
