@@ -1,11 +1,9 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, FileText, Download, Clock } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
-
 interface AssembleeData {
   id: number;
   type: string;
@@ -24,11 +22,9 @@ interface AssembleeData {
   status: string;
   resume: string;
 }
-
 interface AssembleeCardProps {
   assemblee: AssembleeData;
 }
-
 const getStatusColor = (status: string) => {
   switch (status) {
     case 'Terminée':
@@ -39,15 +35,15 @@ const getStatusColor = (status: string) => {
       return 'bg-blue-100 text-blue-800';
   }
 };
-
-const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
+const AssembleeCard: React.FC<AssembleeCardProps> = ({
+  assemblee
+}) => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
 
   // Version Mobile
   if (isMobile) {
-    return (
-      <Card className="hover:shadow-lg transition-shadow">
+    return <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-primary text-base">{assemblee.type}</CardTitle>
@@ -82,50 +78,38 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           </div>
 
-          {assemblee.inscriptions && (
-            <div className="mb-4">
+          {assemblee.inscriptions && <div className="mb-4">
               <p className="text-xs text-blue-600 font-medium">
                 Inscriptions : {assemblee.inscriptions}
               </p>
-            </div>
-          )}
+            </div>}
 
-          {assemblee.ordreJour && (
-            <div className="mb-4">
+          {assemblee.ordreJour && <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2 text-sm">Ordre du jour :</h4>
               <ul className="text-xs text-gray-600 space-y-1">
-                {assemblee.ordreJour.map((point: string, index: number) => (
-                  <li key={index} className="flex items-start">
+                {assemblee.ordreJour.map((point: string, index: number) => <li key={index} className="flex items-start">
                     <span className="text-primary mr-2">•</span>
                     {point}
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-            </div>
-          )}
+            </div>}
 
-          {assemblee.decisions && (
-            <div className="mb-4">
+          {assemblee.decisions && <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2 text-sm">Principales décisions :</h4>
               <ul className="text-xs text-gray-600 space-y-1">
-                {assemblee.decisions.map((decision: string, index: number) => (
-                  <li key={index} className="flex items-start">
+                {assemblee.decisions.map((decision: string, index: number) => <li key={index} className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>
                     {decision}
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-            </div>
-          )}
+            </div>}
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
 
   // Version Tablette
   if (isTablet) {
-    return (
-      <Card className="hover:shadow-lg transition-shadow">
+    return <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-primary text-lg">{assemblee.type}</CardTitle>
@@ -160,49 +144,37 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           </div>
 
-          {assemblee.inscriptions && (
-            <div className="mb-4">
+          {assemblee.inscriptions && <div className="mb-4">
               <p className="text-sm text-blue-600 font-medium">
                 Inscriptions : {assemblee.inscriptions}
               </p>
-            </div>
-          )}
+            </div>}
 
-          {assemblee.ordreJour && (
-            <div className="mb-4">
+          {assemblee.ordreJour && <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                {assemblee.ordreJour.map((point: string, index: number) => (
-                  <li key={index} className="flex items-start">
+                {assemblee.ordreJour.map((point: string, index: number) => <li key={index} className="flex items-start">
                     <span className="text-primary mr-2">•</span>
                     {point}
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-            </div>
-          )}
+            </div>}
 
-          {assemblee.decisions && (
-            <div className="mb-4">
+          {assemblee.decisions && <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2">Principales décisions :</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                {assemblee.decisions.map((decision: string, index: number) => (
-                  <li key={index} className="flex items-start">
+                {assemblee.decisions.map((decision: string, index: number) => <li key={index} className="flex items-start">
                     <span className="text-green-500 mr-2">✓</span>
                     {decision}
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-            </div>
-          )}
+            </div>}
         </CardContent>
-      </Card>
-    );
+      </Card>;
   }
 
   // Version Desktop
-  return (
-    <Card className="hover:shadow-lg transition-shadow">
+  return <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-primary text-lg">{assemblee.type}</CardTitle>
@@ -223,10 +195,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             <MapPin className="h-4 w-4 mr-2" />
             {assemblee.lieu}
           </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <Users className="h-4 w-4 mr-2" />
-            {assemblee.participants} participants
-          </div>
+          
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-4 w-4 mr-2" />
             Durée : {assemblee.duree}
@@ -237,44 +206,32 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
           </div>
         </div>
 
-        {assemblee.inscriptions && (
-          <div className="mb-4">
+        {assemblee.inscriptions && <div className="mb-4">
             <p className="text-sm text-blue-600 font-medium">
               Inscriptions : {assemblee.inscriptions}
             </p>
-          </div>
-        )}
+          </div>}
 
-        {assemblee.ordreJour && (
-          <div className="mb-4">
+        {assemblee.ordreJour && <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
             <ul className="text-sm text-gray-600 space-y-1">
-              {assemblee.ordreJour.map((point: string, index: number) => (
-                <li key={index} className="flex items-start">
+              {assemblee.ordreJour.map((point: string, index: number) => <li key={index} className="flex items-start">
                   <span className="text-primary mr-2">•</span>
                   {point}
-                </li>
-              ))}
+                </li>)}
             </ul>
-          </div>
-        )}
+          </div>}
 
-        {assemblee.decisions && (
-          <div className="mb-4">
+        {assemblee.decisions && <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-2">Principales décisions :</h4>
             <ul className="text-sm text-gray-600 space-y-1">
-              {assemblee.decisions.map((decision: string, index: number) => (
-                <li key={index} className="flex items-start">
+              {assemblee.decisions.map((decision: string, index: number) => <li key={index} className="flex items-start">
                   <span className="text-green-500 mr-2">✓</span>
                   {decision}
-                </li>
-              ))}
+                </li>)}
             </ul>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default AssembleeCard;
