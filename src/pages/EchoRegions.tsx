@@ -55,23 +55,6 @@ const EchoRegions = () => {
     image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
     actualites: ["Coordination inter-services renforcée", "Programme de formation continue", "Amélioration des infrastructures"]
   }];
-  const statistiques = [{
-    nombre: "12",
-    titre: "Régions Représentées",
-    description: "sur tout le territoire"
-  }, {
-    nombre: "570",
-    titre: "Membres Régionaux",
-    description: "répartis par zone"
-  }, {
-    nombre: "24",
-    titre: "Activités Mensuelles",
-    description: "en moyenne par région"
-  }, {
-    nombre: "95%",
-    titre: "Taux de Participation",
-    description: "aux activités régionales"
-  }];
   return <Layout>
       {/* Header Section with Background Image */}
       <section className={`relative ${isMobile ? 'h-[30vh]' : isTablet ? 'h-[45vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
@@ -90,19 +73,6 @@ const EchoRegions = () => {
         </div>
       </section>
 
-      {/* Statistiques Section */}
-      <section className={`bg-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-12">Présence Territoriale</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {statistiques.map((stat, index) => <div key={index} className="text-center">
-                <div className="text-4xl font-bold text-secondary mb-2">{stat.nombre}</div>
-                <h3 className="text-xl font-semibold text-primary mb-2">{stat.titre}</h3>
-                <p className="text-gray-600">{stat.description}</p>
-              </div>)}
-          </div>
-        </div>
-      </section>
 
       {/* Régions Section */}
       <section className={`bg-accent/30 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
