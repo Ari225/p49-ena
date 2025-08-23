@@ -148,7 +148,7 @@ const EquipeEditoriale = () => {
 
                 {/* Rédacteurs */}
                 <div>
-                  <h2 className="text-3xl font-bold text-primary mb-12 text-center">Rédacteurs</h2>
+                  <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-12 text-center`}>Rédacteurs</h2>
                   {(() => {
                 const redacteurs = editorialTeam.filter(member => member.role === 'redacteur');
                 const memberCount = redacteurs.length;
