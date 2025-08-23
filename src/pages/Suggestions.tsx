@@ -162,7 +162,7 @@ const Suggestions = () => {
               
               <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
                 <CardHeader className="pb-8">
-                  <CardTitle className="text-2xl text-primary text-center flex items-center justify-center gap-3">
+                  <CardTitle className={`text-primary text-center flex items-center justify-center gap-3 ${isMobile ? 'text-lg' : isTablet ? 'text-xl' : 'text-2xl'}`}>
                     <Lightbulb className="h-6 w-6" />
                     Formulaire de Suggestion
                   </CardTitle>
