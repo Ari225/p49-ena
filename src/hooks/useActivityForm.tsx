@@ -21,7 +21,9 @@ export const useActivityForm = () => {
     location: '',
     brief_description: '',
     description: '',
-    participation_fees: []
+    participation_fees: [],
+    session_president: '',
+    agenda_points: []
   });
 
   const resetForm = () => {
@@ -36,7 +38,9 @@ export const useActivityForm = () => {
       location: '',
       brief_description: '',
       description: '',
-      participation_fees: []
+      participation_fees: [],
+      session_president: '',
+      agenda_points: []
     });
     setSelectedImage(null);
     setImagePreview(null);
@@ -54,8 +58,8 @@ export const useActivityForm = () => {
       return false;
     }
 
-    // Valider que l'image est obligatoire
-    if (!selectedImage) {
+    // Valider que l'image est obligatoire (sauf pour Assemblées Générales)
+    if (formData.category !== 'Assemblées Générales' && !selectedImage) {
       toast({
         title: "Erreur",
         description: "L'image est obligatoire pour créer une activité.",
@@ -110,7 +114,9 @@ export const useActivityForm = () => {
           end_time: formData.end_time || null,
           location: formData.location,
           brief_description: formData.brief_description,
-          description: formData.description,
+          description: formData.category === 'Assemblées Générales' 
+            ? formData.agenda_points.map((point, index) => `${index + 1}. ${point}`).join('\n')
+            : formData.description,
           image_url: imageUrl,
           created_by: user.id
         })

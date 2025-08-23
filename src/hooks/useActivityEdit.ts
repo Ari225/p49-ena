@@ -21,7 +21,9 @@ export const useActivityEdit = () => {
     location: '',
     brief_description: '',
     description: '',
-    participation_fees: []
+    participation_fees: [],
+    session_president: '',
+    agenda_points: []
   });
 
   const initializeForm = (activity: Activity) => {
@@ -36,7 +38,9 @@ export const useActivityEdit = () => {
       location: activity.location,
       brief_description: activity.brief_description,
       description: activity.description,
-      participation_fees: activity.participation_fees || []
+      participation_fees: activity.participation_fees || [],
+      session_president: activity.session_president || '',
+      agenda_points: activity.agenda_points || []
     });
     setCurrentImageUrl(activity.image_url || null);
     setImagePreview(activity.image_url || null);
@@ -54,7 +58,9 @@ export const useActivityEdit = () => {
       location: '',
       brief_description: '',
       description: '',
-      participation_fees: []
+      participation_fees: [],
+      session_president: '',
+      agenda_points: []
     });
     setSelectedImage(null);
     setImagePreview(null);
