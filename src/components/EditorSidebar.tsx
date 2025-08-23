@@ -84,7 +84,7 @@ const EditorSidebar = () => {
 
   return (
     <div className="w-64 bg-primary text-white h-screen fixed left-0 top-20 overflow-y-auto">
-      <div className="px-6 pb-6 pt-8">
+      <div className="p-6 px-[20px] py-[50px]">
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
