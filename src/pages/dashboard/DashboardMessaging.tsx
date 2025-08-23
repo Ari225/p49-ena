@@ -20,6 +20,7 @@ interface Contact {
   subject: string;
   message: string;
   created_at: string;
+  statut?: string;
 }
 
 const DashboardMessaging = () => {
@@ -92,12 +93,14 @@ const DashboardMessaging = () => {
     try {
       const { error } = await supabase
         .from('contacts')
-        .update({ status: 'géré' })
+        .update({ statut: 'géré' })
         .eq('id', id);
 
       if (error) throw error;
 
-      setContacts(prev => prev.filter(c => c.id !== id));
+      setContacts(prev => prev.map(c => 
+        c.id === id ? { ...c, statut: 'géré' } : c
+      ));
       toast({
         title: "Succès",
         description: "Message marqué comme géré"
@@ -168,24 +171,32 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      <div className="flex gap-2 justify-end">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => markAsHandled(contact.id)}
-                          className="h-8 w-8 text-green-600 border-green-200 hover:bg-green-50"
-                        >
-                          <Check className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => deleteContact(contact.id)}
-                          className="h-8 w-8 text-red-600 border-red-200 hover:bg-red-50"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
+                      {contact.statut === 'géré' ? (
+                        <div className="flex justify-end">
+                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                            Géré
+                          </Badge>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => markAsHandled(contact.id)}
+                            className="h-8 w-8 text-green-600 border-green-200 hover:bg-green-50"
+                          >
+                            <Check className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => deleteContact(contact.id)}
+                            className="h-8 w-8 text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))
@@ -252,24 +263,32 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      <div className="flex gap-2 justify-end">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => markAsHandled(contact.id)}
-                          className="h-9 w-9 text-green-600 border-green-200 hover:bg-green-50"
-                        >
-                          <Check className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => deleteContact(contact.id)}
-                          className="h-9 w-9 text-red-600 border-red-200 hover:bg-red-50"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </div>
+                      {contact.statut === 'géré' ? (
+                        <div className="flex justify-end">
+                          <Badge variant="secondary" className="bg-green-100 text-green-800">
+                            Géré
+                          </Badge>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 justify-end">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => markAsHandled(contact.id)}
+                            className="h-9 w-9 text-green-600 border-green-200 hover:bg-green-50"
+                          >
+                            <Check className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => deleteContact(contact.id)}
+                            className="h-9 w-9 text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))
@@ -338,24 +357,32 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      <div className="flex gap-3 justify-end">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => markAsHandled(contact.id)}
-                          className="h-10 w-10 text-green-600 border-green-200 hover:bg-green-50"
-                        >
-                          <Check className="h-5 w-5" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => deleteContact(contact.id)}
-                          className="h-10 w-10 text-red-600 border-red-200 hover:bg-red-50"
-                        >
-                          <X className="h-5 w-5" />
-                        </Button>
-                      </div>
+                      {contact.statut === 'géré' ? (
+                        <div className="flex justify-end">
+                          <Badge variant="secondary" className="bg-green-100 text-green-800 text-sm">
+                            Géré
+                          </Badge>
+                        </div>
+                      ) : (
+                        <div className="flex gap-3 justify-end">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => markAsHandled(contact.id)}
+                            className="h-10 w-10 text-green-600 border-green-200 hover:bg-green-50"
+                          >
+                            <Check className="h-5 w-5" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => deleteContact(contact.id)}
+                            className="h-10 w-10 text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <X className="h-5 w-5" />
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))

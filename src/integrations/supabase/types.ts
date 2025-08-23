@@ -368,6 +368,7 @@ export type Database = {
           processed_at: string | null
           processed_by: string | null
           status: string
+          statut: string | null
           subject: string
           updated_at: string
           user_agent: string | null
@@ -383,6 +384,7 @@ export type Database = {
           processed_at?: string | null
           processed_by?: string | null
           status?: string
+          statut?: string | null
           subject: string
           updated_at?: string
           user_agent?: string | null
@@ -398,6 +400,7 @@ export type Database = {
           processed_at?: string | null
           processed_by?: string | null
           status?: string
+          statut?: string | null
           subject?: string
           updated_at?: string
           user_agent?: string | null
