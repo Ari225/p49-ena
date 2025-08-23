@@ -232,7 +232,9 @@ const AssembleesGenerales = () => {
                     <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
                   ))
                 ) : (
-                  <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
+                  <div className="lg:col-span-2 flex justify-center">
+                    <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
+                  </div>
                 )}
               </div>
               </div>
