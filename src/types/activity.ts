@@ -2,7 +2,7 @@
 export interface Activity {
   id: string;
   title: string;
-  category: 'Formation' | 'Conférence' | 'Réunion' | 'Assemblée générale' | 'Les Régionales' | 'Autre';
+  category: 'Conférence' | 'Atelier' | 'Formation' | 'Réunion' | 'Événement social' | 'Les Régionales' | 'Autre';
   other_category?: string;
   date: string;
   end_date?: string;
@@ -38,10 +38,11 @@ export interface ActivityFormData {
 }
 
 export const categoryOptions = [
-  'Formation',
   'Conférence',
+  'Atelier',
+  'Formation',
   'Réunion',
-  'Assemblée générale',
+  'Événement social',
   'Les Régionales',
   'Autre'
 ] as const;

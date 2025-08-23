@@ -84,13 +84,41 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
               {activity.end_time && ` - ${activity.end_time}`}
             </span>
           </div>
+          
+          {activity.category === 'Les Régionales' && activity.end_date && (
+            <div className="flex items-center">
+              <Calendar className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
+              <span>Fin: {new Date(activity.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>
+            </div>
+          )}
+          
           <div className="flex items-center">
             <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
             <span>{activity.location}</span>
           </div>
-          <div className="flex items-center">
-            
-            <span>{activity.description}</span>
+          
+          {activity.category === 'Les Régionales' && activity.participation_fees && activity.participation_fees.length > 0 && (
+            <div className="mt-3">
+              <h5 className={`text-sm font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                Tarifs de participation:
+              </h5>
+              <div className="space-y-1">
+                {activity.participation_fees.map((fee, index) => (
+                  <div key={index} className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'} flex justify-between`}>
+                    <span>{fee.name}</span>
+                    <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div className="flex items-center mt-2">
+            <span className={`text-sm ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>{activity.description}</span>
           </div>
         </div>
 

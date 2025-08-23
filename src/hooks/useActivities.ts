@@ -16,7 +16,13 @@ export const useActivities = () => {
       
       const { data, error } = await supabase
         .from('activities')
-        .select('*')
+        .select(`
+          *,
+          les_regionales (
+            end_date,
+            participation_fees
+          )
+        `)
         .order('date', { ascending: false });
 
       if (error) {
@@ -29,6 +35,7 @@ export const useActivities = () => {
         category: activity.category as Activity['category'],
         other_category: activity.other_category,
         date: activity.date,
+        end_date: activity.end_date || activity.les_regionales?.[0]?.end_date,
         start_time: activity.start_time ? activity.start_time.substring(0, 5) : '',
         end_time: activity.end_time ? activity.end_time.substring(0, 5) : '',
         location: activity.location,
@@ -36,7 +43,9 @@ export const useActivities = () => {
         description: activity.description,
         status: activity.status as Activity['status'],
         image_url: activity.image_url,
-        created_by: activity.created_by
+        created_by: activity.created_by,
+        participation_fees: activity.les_regionales?.[0]?.participation_fees ? 
+          JSON.parse(activity.les_regionales[0].participation_fees as string) : undefined
       })) || [];
 
       setActivities(formattedActivities);
