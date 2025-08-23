@@ -115,6 +115,74 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             </div>
           )}
           
+          {activity.category === 'Assemblées Générales' && (
+            <div className="mt-3 space-y-3">
+              {activity.session_president && (
+                <div>
+                  <h5 className={`text-sm font-semibold mb-1 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                    Président de séance:
+                  </h5>
+                  <p className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
+                    {activity.session_president}
+                  </p>
+                </div>
+              )}
+              {activity.agenda_points && activity.agenda_points.length > 0 && (
+                <div>
+                  <h5 className={`text-sm font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                    Ordre du jour:
+                  </h5>
+                  <div className="space-y-1">
+                    {activity.agenda_points.map((point, index) => (
+                      <div key={index} className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
+                        {index + 1}. {point}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {activity.category === 'Réunions de constitution' && (
+            <div className="mt-3 space-y-3">
+              {activity.session_president && (
+                <div>
+                  <h5 className={`text-sm font-semibold mb-1 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                    Président de séance:
+                  </h5>
+                  <p className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
+                    {activity.session_president}
+                  </p>
+                </div>
+              )}
+              {activity.target_audience && (
+                <div>
+                  <h5 className={`text-sm font-semibold mb-1 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                    Public cible:
+                  </h5>
+                  <p className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
+                    {activity.target_audience}
+                  </p>
+                </div>
+              )}
+              {activity.objectives && activity.objectives.length > 0 && (
+                <div>
+                  <h5 className={`text-sm font-semibold mb-2 ${isPast ? 'text-gray-600' : 'text-primary'}`}>
+                    Objectifs:
+                  </h5>
+                  <div className="space-y-1">
+                    {activity.objectives.map((objective, index) => (
+                      <div key={index} className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
+                        • {objective}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          
           <div className="flex items-center mt-2">
             <span className={`text-sm ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>{activity.description}</span>
           </div>
