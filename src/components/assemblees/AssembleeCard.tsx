@@ -31,7 +31,7 @@ interface AssembleeCardProps {
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'Terminée':
+    case 'Terminé':
       return 'bg-gray-100 text-gray-800';
     case 'À venir':
       return 'bg-green-100 text-green-800';
@@ -92,8 +92,8 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
               <ul className="text-xs text-gray-600 space-y-1">
                 {assemblee.ordreJour.map((point: string, index: number) => (
                   <li key={index} className="flex items-start">
-                   <span className={assemblee.status === 'Terminée' ? 'text-green-500 mr-2' : 'text-gray-500 mr-2'}>
-                     {assemblee.status === 'Terminée' ? '✓' : '•'}
+                   <span className={assemblee.status === 'Terminé' ? 'text-green-500 mr-2' : 'text-gray-500 mr-2'}>
+                     {assemblee.status === 'Terminé' ? '✓' : '•'}
                    </span>
                     {point}
                   </li>
@@ -102,7 +102,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.decisions && assemblee.status === 'Terminée' && (
+          {assemblee.decisions && assemblee.status === 'Terminé' && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2 text-sm">Principales décisions :</h4>
               <ul className="text-xs text-gray-600 space-y-1">
@@ -168,8 +168,8 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
               <ul className="text-sm text-gray-600 space-y-1">
                 {assemblee.ordreJour.map((point: string, index: number) => (
                   <li key={index} className="flex items-start">
-                   <span className={assemblee.status === 'Terminée' ? 'text-green-500 mr-2' : 'text-gray-500 mr-2'}>
-                     {assemblee.status === 'Terminée' ? '✓' : '•'}
+                   <span className={assemblee.status === 'Terminé' ? 'text-green-500 mr-2' : 'text-gray-500 mr-2'}>
+                     {assemblee.status === 'Terminé' ? '✓' : '•'}
                    </span>
                     {point}
                   </li>
@@ -178,7 +178,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.decisions && assemblee.status === 'Terminée' && (
+          {assemblee.decisions && assemblee.status === 'Terminé' && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2">Principales décisions :</h4>
               <ul className="text-sm text-gray-600 space-y-1">
@@ -243,8 +243,8 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             <ul className="text-sm text-gray-600 space-y-1">
               {assemblee.ordreJour.map((point: string, index: number) => (
                 <li key={index} className="flex items-start">
-                   <span className={assemblee.status === 'Terminée' ? 'text-green-500 mr-2' : 'text-gray-500 mr-2'}>
-                     {assemblee.status === 'Terminée' ? '✓' : '•'}
+                   <span className={assemblee.status === 'Terminé' ? 'text-green-500 mr-2' : 'text-gray-500 mr-2'}>
+                     {assemblee.status === 'Terminé' ? '✓' : '•'}
                    </span>
                   {point}
                 </li>
@@ -253,7 +253,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
           </div>
         )}
 
-        {assemblee.decisions && assemblee.status === 'Terminée' && (
+        {assemblee.decisions && assemblee.status === 'Terminé' && (
           <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-2">Principales décisions :</h4>
             <ul className="text-sm text-gray-600 space-y-1">
