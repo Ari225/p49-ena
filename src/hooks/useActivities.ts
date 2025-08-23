@@ -21,6 +21,10 @@ export const useActivities = () => {
           les_regionales (
             end_date,
             participation_fees
+          ),
+          assemblees_generales (
+            session_president,
+            agenda_points
           )
         `)
         .order('date', { ascending: false });
@@ -45,7 +49,12 @@ export const useActivities = () => {
         image_url: activity.image_url,
         created_by: activity.created_by,
         participation_fees: activity.les_regionales?.[0]?.participation_fees ? 
-          JSON.parse(activity.les_regionales[0].participation_fees as string) : undefined
+          JSON.parse(activity.les_regionales[0].participation_fees as string) : undefined,
+        session_president: activity.assemblees_generales?.[0]?.session_president || '',
+        agenda_points: activity.assemblees_generales?.[0]?.agenda_points ? 
+          JSON.parse(activity.assemblees_generales[0].agenda_points as string) : [],
+        target_audience: activity.target_audience || '',
+        objectives: activity.objectives || []
       })) || [];
 
       setActivities(formattedActivities);
