@@ -135,7 +135,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                   <div className="space-y-1">
                     {activity.agenda_points.map((point, index) => (
                       <div key={index} className={`text-xs ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>
-                        {index + 1}. {point}
+                        • {point}
                       </div>
                     ))}
                   </div>
