@@ -111,8 +111,8 @@ const DifficultEventsSection = () => {
   return (
     <section className={`pt-8 pb-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12 my-[100px]">
-          <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>
+        <div className="text-center mb-12">
+          <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>
             Partager la peine, apporter le réconfort
           </h2>
           <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
