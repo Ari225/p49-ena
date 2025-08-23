@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
@@ -14,7 +13,6 @@ import { toast } from 'sonner';
 import JournalEditionDialog from '@/components/journal/JournalEditionDialog';
 import JournalEditionEditDialog from '@/components/journal/JournalEditionEditDialog';
 import JournalPreviewDialog from '@/components/journal/JournalPreviewDialog';
-
 interface JournalEdition {
   id: string;
   title: string;
@@ -25,9 +23,10 @@ interface JournalEdition {
   page_count: number;
   status: string;
 }
-
 const DashboardJournal = () => {
-  const { user } = useAuth();
+  const {
+    user
+  } = useAuth();
   const isMobile = useIsMobile();
   const [editions, setEditions] = useState<JournalEdition[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,46 +34,36 @@ const DashboardJournal = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
   const [selectedEdition, setSelectedEdition] = useState<JournalEdition | null>(null);
-
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
-
   useEffect(() => {
     fetchEditions();
-    
-    // Set up real-time subscription
-    const channel = supabase
-      .channel('journal_editions_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'journal_editions'
-        },
-        () => {
-          fetchEditions();
-        }
-      )
-      .subscribe();
 
+    // Set up real-time subscription
+    const channel = supabase.channel('journal_editions_changes').on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'journal_editions'
+    }, () => {
+      fetchEditions();
+    }).subscribe();
     return () => {
       supabase.removeChannel(channel);
     };
   }, []);
-
   const fetchEditions = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('journal_editions')
-        .select('*')
-        .order('publish_date', { ascending: false })
-        .order('created_at', { ascending: false });
-      
+      const {
+        data,
+        error
+      } = await supabase.from('journal_editions').select('*').order('publish_date', {
+        ascending: false
+      }).order('created_at', {
+        ascending: false
+      });
       if (error) throw error;
-      
       setEditions(data || []);
     } catch (error) {
       console.error('Error fetching journal editions:', error);
@@ -83,7 +72,6 @@ const DashboardJournal = () => {
       setLoading(false);
     }
   };
-
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'publie':
@@ -96,21 +84,17 @@ const DashboardJournal = () => {
         return <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">{status}</span>;
     }
   };
-
   const handleDialogSuccess = () => {
     fetchEditions();
   };
-
   const handleView = (edition: JournalEdition) => {
     setSelectedEdition(edition);
     setPreviewDialogOpen(true);
   };
-
   const handleEdit = (edition: JournalEdition) => {
     setSelectedEdition(edition);
     setEditDialogOpen(true);
   };
-
   const handleDownload = (edition: JournalEdition) => {
     if (edition.pdf_url) {
       window.open(edition.pdf_url, '_blank');
@@ -118,16 +102,12 @@ const DashboardJournal = () => {
       toast.error('Aucun PDF disponible pour cette édition');
     }
   };
-
   const handleDelete = async (edition: JournalEdition) => {
     try {
-      const { error } = await supabase
-        .from('journal_editions')
-        .delete()
-        .eq('id', edition.id);
-
+      const {
+        error
+      } = await supabase.from('journal_editions').delete().eq('id', edition.id);
       if (error) throw error;
-
       toast.success('Édition supprimée avec succès');
       fetchEditions();
     } catch (error) {
@@ -135,39 +115,30 @@ const DashboardJournal = () => {
       toast.error('Erreur lors de la suppression');
     }
   };
-
   const truncateText = (text: string, maxLength: number = 100) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };
-
   if (loading) {
     if (isMobile) {
-      return (
-        <Layout>
+      return <Layout>
           <div className="px-[25px] py-[50px] pb-20">
             <div className="text-center">Chargement...</div>
           </div>
           <AdminSidebar />
-        </Layout>
-      );
+        </Layout>;
     }
-
-    return (
-      <Layout>
+    return <Layout>
         <div className="flex">
           <AdminSidebar />
           <div className="flex-1 ml-64 p-8">
             <div className="text-center">Chargement...</div>
           </div>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
-
   if (isMobile) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary leading-tight whitespace-nowrap">
@@ -177,10 +148,7 @@ const DashboardJournal = () => {
           </div>
 
           <div className="mb-6">
-            <Button 
-              onClick={() => setDialogOpen(true)}
-              className="bg-primary hover:bg-primary/90 w-full"
-            >
+            <Button onClick={() => setDialogOpen(true)} className="bg-primary hover:bg-primary/90 w-full">
               <Plus className="mr-2 h-4 w-4" />
               Nouvelle édition
             </Button>
@@ -194,27 +162,15 @@ const DashboardJournal = () => {
           </div>
 
           <div className="space-y-4">
-            {editions.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">
+            {editions.length === 0 ? <p className="text-center text-gray-500 py-8">
                 Aucune édition créée
-              </p>
-            ) : (
-              editions.map((edition) => (
-                <div key={edition.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              </p> : editions.map(edition => <div key={edition.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                   {/* Image en haut */}
-                  {edition.cover_image_url ? (
-                    <div className="h-32 overflow-hidden">
-                      <img 
-                        src={edition.cover_image_url} 
-                        alt={edition.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-32 bg-gray-100 flex items-center justify-center">
+                  {edition.cover_image_url ? <div className="h-32 overflow-hidden">
+                      <img src={edition.cover_image_url} alt={edition.title} className="w-full h-full object-cover" />
+                    </div> : <div className="h-32 bg-gray-100 flex items-center justify-center">
                       <span className="text-gray-400 text-xs">Aucune image</span>
-                    </div>
-                  )}
+                    </div>}
                   
                   {/* Contenu en dessous */}
                   <div className="p-3">
@@ -228,9 +184,7 @@ const DashboardJournal = () => {
                       <span>{new Date(edition.publish_date).toLocaleDateString('fr-FR')}</span>
                     </div>
                     
-                    {edition.summary && (
-                      <p className="text-xs text-gray-600 line-clamp-2 mb-3">{truncateText(edition.summary, 80)}</p>
-                    )}
+                    {edition.summary && <p className="text-xs text-gray-600 line-clamp-2 mb-3">{truncateText(edition.summary, 80)}</p>}
                     
                     {/* Boutons d'action */}
                     <div className="grid grid-cols-4 gap-2 pt-2 border-t border-gray-100">
@@ -266,37 +220,19 @@ const DashboardJournal = () => {
                       </AlertDialog>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
+                </div>)}
           </div>
         </div>
         <AdminSidebar />
         
-        <JournalEditionDialog 
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onSuccess={handleDialogSuccess}
-        />
+        <JournalEditionDialog open={dialogOpen} onOpenChange={setDialogOpen} onSuccess={handleDialogSuccess} />
         
-        <JournalEditionEditDialog 
-          open={editDialogOpen}
-          onOpenChange={setEditDialogOpen}
-          onSuccess={handleDialogSuccess}
-          edition={selectedEdition}
-        />
+        <JournalEditionEditDialog open={editDialogOpen} onOpenChange={setEditDialogOpen} onSuccess={handleDialogSuccess} edition={selectedEdition} />
         
-        <JournalPreviewDialog 
-          open={previewDialogOpen}
-          onOpenChange={setPreviewDialogOpen}
-          edition={selectedEdition}
-        />
-      </Layout>
-    );
+        <JournalPreviewDialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen} edition={selectedEdition} />
+      </Layout>;
   }
-
-  return (
-    <Layout>
+  return <Layout>
       <div className="flex">
         <AdminSidebar />
         
@@ -307,10 +243,7 @@ const DashboardJournal = () => {
           </div>
 
           <div className="mb-6">
-            <Button 
-              onClick={() => setDialogOpen(true)}
-              className="bg-primary hover:bg-primary/90"
-            >
+            <Button onClick={() => setDialogOpen(true)} className="bg-primary hover:bg-primary/90">
               <Plus className="mr-2 h-4 w-4" />
               Nouvelle édition
             </Button>
@@ -324,27 +257,15 @@ const DashboardJournal = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {editions.length === 0 ? (
-              <p className="text-center text-gray-500 py-8">
+            {editions.length === 0 ? <p className="text-center text-gray-500 py-8">
                 Aucune édition créée
-              </p>
-            ) : (
-              editions.map((edition) => (
-                <div key={edition.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+              </p> : editions.map(edition => <div key={edition.id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
                   {/* Image en haut */}
-                  {edition.cover_image_url ? (
-                    <div className="h-48 overflow-hidden">
-                      <img 
-                        src={edition.cover_image_url} 
-                        alt={edition.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-48 bg-gray-100 flex items-center justify-center">
+                  {edition.cover_image_url ? <div className="h-48 overflow-hidden">
+                      <img src={edition.cover_image_url} alt={edition.title} className="w-full h-full object-cover" />
+                    </div> : <div className="h-48 bg-gray-100 flex items-center justify-center">
                       <span className="text-gray-400">Aucune image</span>
-                    </div>
-                  )}
+                    </div>}
                   
                   {/* Contenu en dessous */}
                   <div className="p-4">
@@ -358,18 +279,14 @@ const DashboardJournal = () => {
                       <span>Publié le {new Date(edition.publish_date).toLocaleDateString('fr-FR')}</span>
                     </div>
                     
-                    {edition.summary && (
-                      <p className="text-sm text-gray-600 line-clamp-3 mb-4">{truncateText(edition.summary, 120)}</p>
-                    )}
+                    {edition.summary && <p className="text-sm text-gray-600 line-clamp-3 mb-4">{truncateText(edition.summary, 120)}</p>}
                     
                     {/* Boutons d'action */}
                     <div className="flex items-center justify-end space-x-2 pt-2 border-t border-gray-100">
                       <Button variant="outline" size="sm" onClick={() => handleView(edition)} title="Voir">
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleDownload(edition)} title="Télécharger">
-                        <Download className="h-4 w-4" />
-                      </Button>
+                      
                       <Button variant="outline" size="sm" onClick={() => handleEdit(edition)} title="Modifier">
                         <Edit className="h-4 w-4" />
                       </Button>
@@ -396,33 +313,16 @@ const DashboardJournal = () => {
                       </AlertDialog>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
+                </div>)}
           </div>
         </div>
       </div>
 
-      <JournalEditionDialog 
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onSuccess={handleDialogSuccess}
-      />
+      <JournalEditionDialog open={dialogOpen} onOpenChange={setDialogOpen} onSuccess={handleDialogSuccess} />
       
-      <JournalEditionEditDialog 
-        open={editDialogOpen}
-        onOpenChange={setEditDialogOpen}
-        onSuccess={handleDialogSuccess}
-        edition={selectedEdition}
-      />
+      <JournalEditionEditDialog open={editDialogOpen} onOpenChange={setEditDialogOpen} onSuccess={handleDialogSuccess} edition={selectedEdition} />
       
-      <JournalPreviewDialog 
-        open={previewDialogOpen}
-        onOpenChange={setPreviewDialogOpen}
-        edition={selectedEdition}
-      />
-    </Layout>
-  );
+      <JournalPreviewDialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen} edition={selectedEdition} />
+    </Layout>;
 };
-
 export default DashboardJournal;
