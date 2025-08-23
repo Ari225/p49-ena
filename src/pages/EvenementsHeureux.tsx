@@ -86,7 +86,7 @@ const EvenementsHeureux = () => {
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-0">
             <div className="text-center mb-12">
-              <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos moments de bonheur</h2>
+              <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos moments de bonheur</h2>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
                 Partageons la joie des naissances, célébrons les promotions et honorons les distinctions de nos membres.
               </p>
