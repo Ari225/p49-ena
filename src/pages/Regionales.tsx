@@ -637,9 +637,9 @@ const Regionales = () => {
                       <ActivityRegionaleCardDesktop key={activity.id} activity={activity} />
                     ))}
                     {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
-                      <div className="text-center py-8">
-                        <p className="text-gray-500">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                      </div>
+                       <div className="text-center py-8 lg:py-16 lg:col-span-3">
+                         <p className="text-gray-500">Aucune activité "Les Régionales" terminée pour le moment.</p>
+                       </div>
                     )}
                   </div>
                 </div>
