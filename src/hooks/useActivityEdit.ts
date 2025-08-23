@@ -139,7 +139,9 @@ export const useActivityEdit = () => {
           description: formData.category === 'Assemblées Générales' 
             ? formData.agenda_points.map((point, index) => `${index + 1}. ${point}`).join('\n')
             : formData.description,
-          image_url: imageUrl
+          image_url: imageUrl,
+          target_audience: formData.category === 'Réunions de constitution' ? formData.target_audience : null,
+          objectives: formData.category === 'Réunions de constitution' ? JSON.stringify(formData.objectives) : null
         })
         .eq('id', activityId);
 

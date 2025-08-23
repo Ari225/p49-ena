@@ -122,7 +122,9 @@ export const useActivityForm = () => {
             ? formData.agenda_points.map((point, index) => `${index + 1}. ${point}`).join('\n')
             : formData.description,
           image_url: imageUrl,
-          created_by: user.id
+          created_by: user.id,
+          target_audience: formData.category === 'Réunions de constitution' ? formData.target_audience : null,
+          objectives: formData.category === 'Réunions de constitution' ? JSON.stringify(formData.objectives) : null
         })
         .select()
         .single();

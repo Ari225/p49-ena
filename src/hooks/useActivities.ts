@@ -54,7 +54,10 @@ export const useActivities = () => {
         agenda_points: activity.assemblees_generales?.[0]?.agenda_points ? 
           JSON.parse(activity.assemblees_generales[0].agenda_points as string) : [],
         target_audience: (activity as any).target_audience || '',
-        objectives: (activity as any).objectives || []
+        objectives: (activity as any).objectives ? 
+          (typeof (activity as any).objectives === 'string' ? 
+            JSON.parse((activity as any).objectives as string) : 
+            (activity as any).objectives) : []
       })) || [];
 
       setActivities(formattedActivities);
