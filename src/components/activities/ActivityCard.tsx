@@ -71,11 +71,20 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
         <div className={`space-y-2 mb-4 ${isPast ? 'text-gray-500' : 'text-gray-700'} ${isMobile ? 'text-xs' : isTablet ? 'text-sm' : 'text-sm md:text-sm'}`}>
           <div className="flex items-center">
             <Calendar className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-            <span>{new Date(activity.date).toLocaleDateString('fr-FR', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric'
-            })}</span>
+            <span>
+              {new Date(activity.date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}
+              {activity.category === 'Les Régionales' && activity.end_date && (
+                <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}</span>
+              )}
+            </span>
           </div>
           <div className="flex items-center">
             <Clock className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
@@ -84,17 +93,6 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
               {activity.end_time && ` - ${activity.end_time}`}
             </span>
           </div>
-          
-          {activity.category === 'Les Régionales' && activity.end_date && (
-            <div className="flex items-center">
-              <Calendar className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
-              <span>Fin: {new Date(activity.end_date).toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              })}</span>
-            </div>
-          )}
           
           <div className="flex items-center">
             <MapPin className={`w-4 h-4 mr-2 ${isPast ? 'text-gray-500' : 'text-primary'}`} />
