@@ -7,7 +7,6 @@ import EditorSidebar from '@/components/EditorSidebar';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import DashboardStats from './DashboardStats';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { getRelativeTime } from '@/utils/timeUtils';
 
@@ -125,11 +124,9 @@ const DashboardHome = () => {
 
           <DashboardStats isMobile={true} />
           
-          <Card>
-            <CardHeader className="px-4 py-3">
-              <CardTitle className="text-lg">Activités récentes</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2 p-4">
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold mb-3">Activités récentes</h2>
+            <div className="space-y-2">
               {activities.map((activity, index) => (
                 <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                   <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
@@ -139,8 +136,8 @@ const DashboardHome = () => {
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
           
           {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         </div>
@@ -164,11 +161,9 @@ const DashboardHome = () => {
 
           <DashboardStats isMobile={false} />
           
-          <Card>
-            <CardHeader>
-              <CardTitle>Activités récentes</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-4">Activités récentes</h2>
+            <div className="space-y-4">
               {activities.map((activity, index) => (
                 <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                   <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
@@ -178,8 +173,8 @@ const DashboardHome = () => {
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
           
           {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         </div>
@@ -205,11 +200,9 @@ const DashboardHome = () => {
 
           <DashboardStats />
           
-          <Card>
-            <CardHeader>
-              <CardTitle>Activités récentes</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <div className="mb-6">
+            <h2 className="text-2xl font-semibold mb-6">Activités récentes</h2>
+            <div className="space-y-4">
               {activities.map((activity, index) => (
                 <div key={index} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                   <div className={`w-2 h-2 ${activity.color} rounded-full`}></div>
@@ -219,8 +212,8 @@ const DashboardHome = () => {
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
