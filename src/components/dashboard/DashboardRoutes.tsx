@@ -21,7 +21,6 @@ import DashboardAddUser from '@/pages/dashboard/DashboardAddUser';
 import DashboardAddJournal from '@/pages/dashboard/DashboardAddJournal';
 import DashboardCommuniques from '@/pages/dashboard/DashboardCommuniques';
 import DashboardEchoRegions from '@/pages/dashboard/DashboardEchoRegions';
-import DashboardCarrieres from '@/pages/dashboard/DashboardCarrieres';
 import DashboardTemoignages from '@/pages/dashboard/DashboardTemoignages';
 import DashboardEvenementsSociaux from '@/pages/dashboard/DashboardEvenementsSociaux';
 import DashboardActivites from '@/pages/dashboard/DashboardActivites';
@@ -45,7 +44,7 @@ const DashboardRoutes = () => {
       <Route path="/journal" element={<DashboardJournal />} />
       <Route path="/communiques" element={<DashboardCommuniques />} />
       <Route path="/echo-regions" element={<DashboardEchoRegions />} />
-      <Route path="/carrieres" element={<DashboardCarrieres />} />
+      <Route path="/carrieres" element={<EditorCarrieres />} />
       <Route path="/temoignages" element={<DashboardTemoignages />} />
       <Route path="/evenements-sociaux" element={<DashboardEvenementsSociaux />} />
       <Route path="/activites" element={<DashboardActivites />} />
@@ -65,7 +64,6 @@ const DashboardRoutes = () => {
       <Route path="/add-journal" element={<DashboardAddJournal />} />
       <Route path="/actualites" element={<DashboardActualites />} />
       <Route path="/textes-officiels" element={<EditorTextesOfficiels />} />
-      <Route path="/carrieres" element={<EditorCarrieres />} />
       <Route path="/suggestions" element={<DashboardSuggestions />} />
       <Route path="/security" element={<SecurityDashboard />} />
     </Routes>
