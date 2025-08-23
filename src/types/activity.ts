@@ -2,7 +2,7 @@
 export interface Activity {
   id: string;
   title: string;
-  category: 'Les Régionales' | 'Assemblées Générales' | 'Réunions de constitution' | 'Conférence' | 'Atelier' | 'Réunion' | 'Autre';
+  category: 'Les Régionales' | 'Assemblées Générales' | 'Réunions de constitution' | 'Conférence' | 'Atelier' | 'Formation' | 'Réunion' | 'Autre';
   other_category?: string;
   date: string;
   end_date?: string;
@@ -47,6 +47,7 @@ export const categoryOptions = [
   'Réunions de constitution',
   'Conférence',
   'Atelier',
+  'Formation',
   'Réunion',
   'Autre'
 ] as const;
