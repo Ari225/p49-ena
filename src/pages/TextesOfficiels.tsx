@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Download, Calendar, Search } from 'lucide-react';
@@ -164,8 +165,10 @@ const TextesOfficiels = () => {
                 <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-xs">
                   {t('documents_help_text') || 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.'}
                 </p>
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-xs">
-                  {t('contact_us') || 'Nous contacter'}
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-xs" asChild>
+                  <Link to="/contact">
+                    {t('contact_us') || 'Nous contacter'}
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -278,8 +281,10 @@ const TextesOfficiels = () => {
                 <p className="text-gray-600 mb-6 max-w-3xl mx-auto text-sm">
                   {t('documents_help_text') || 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.'}
                 </p>
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm">
-                  {t('contact_us') || 'Nous contacter'}
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm" asChild>
+                  <Link to="/contact">
+                    {t('contact_us') || 'Nous contacter'}
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -391,8 +396,10 @@ const TextesOfficiels = () => {
               <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-base">
                 {t('documents_help_text') || 'Pour toute question concernant ces documents ou pour obtenir des copies certifiées, n\'hésitez pas à nous contacter.'}
               </p>
-              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm">
-                {t('contact_us') || 'Nous contacter'}
+              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white text-sm" asChild>
+                <Link to="/contact">
+                  {t('contact_us') || 'Nous contacter'}
+                </Link>
               </Button>
             </div>
           </div>
