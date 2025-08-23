@@ -20,7 +20,7 @@ interface Contact {
   subject: string;
   message: string;
   created_at: string;
-  statut?: string;
+  status?: string;
 }
 
 const DashboardMessaging = () => {
@@ -101,7 +101,7 @@ const DashboardMessaging = () => {
       
       const { error } = await supabase
         .from('contacts')
-        .update({ statut: 'géré' })
+        .update({ status: 'géré' })
         .eq('id', id);
 
       if (error) {
@@ -184,7 +184,7 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      {contact.statut === 'géré' ? (
+                      {contact.status === 'géré' ? (
                         <div className="flex justify-end">
                           <Badge variant="secondary" className="bg-green-100 text-green-800">
                             Géré
@@ -276,7 +276,7 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      {contact.statut === 'géré' ? (
+                      {contact.status === 'géré' ? (
                         <div className="flex justify-end">
                           <Badge variant="secondary" className="bg-green-100 text-green-800">
                             Géré
@@ -370,7 +370,7 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      {contact.statut === 'géré' ? (
+                      {contact.status === 'géré' ? (
                         <div className="flex justify-end">
                           <Badge variant="secondary" className="bg-green-100 text-green-800 text-sm">
                             Géré
