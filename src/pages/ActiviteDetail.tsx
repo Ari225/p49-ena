@@ -102,7 +102,7 @@ const ActiviteDetail = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         {/* Hero Section avec Image */}
         <div className="relative">
           {(activity.image || activity.image_url) && (
