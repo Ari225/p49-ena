@@ -5,7 +5,8 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Mail, MessageSquare } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Trash2, Mail, MessageSquare, Reply, Send } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,6 +30,9 @@ const DashboardMessaging = () => {
   const { toast } = useToast();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyMessage, setReplyMessage] = useState('');
+  const [sendingReply, setSendingReply] = useState(false);
 
   useEffect(() => {
     if (user && isAdmin(user)) {
@@ -63,7 +67,7 @@ const DashboardMessaging = () => {
   };
 
   const deleteContact = async (id: string) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce message ?')) {
+    if (!window.confirm('Êtes-vous sûr de vouloir ignorer ce message ? Il sera définitivement supprimé.')) {
       return;
     }
 
@@ -78,7 +82,7 @@ const DashboardMessaging = () => {
       setContacts(prev => prev.filter(c => c.id !== id));
       toast({
         title: "Succès",
-        description: "Message supprimé avec succès"
+        description: "Message ignoré et supprimé"
       });
     } catch (error) {
       console.error('Error deleting contact:', error);
@@ -87,6 +91,62 @@ const DashboardMessaging = () => {
         description: "Impossible de supprimer le message",
         variant: "destructive"
       });
+    }
+  };
+
+  const handleReply = (contactId: string) => {
+    setReplyingTo(contactId);
+    setReplyMessage('');
+  };
+
+  const cancelReply = () => {
+    setReplyingTo(null);
+    setReplyMessage('');
+  };
+
+  const sendReply = async (contact: Contact) => {
+    if (!replyMessage.trim()) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez saisir un message de réponse",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setSendingReply(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-reply-email', {
+        body: {
+          to: contact.email,
+          subject: contact.subject,
+          replyMessage: replyMessage,
+          originalMessage: contact.message,
+          senderName: contact.name
+        }
+      });
+
+      if (error) throw error;
+
+      // Supprimer le message après envoi de la réponse
+      await deleteContact(contact.id);
+      
+      setReplyingTo(null);
+      setReplyMessage('');
+      
+      toast({
+        title: "Succès",
+        description: "Réponse envoyée avec succès"
+      });
+    } catch (error) {
+      console.error('Error sending reply:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible d'envoyer la réponse",
+        variant: "destructive"
+      });
+    } finally {
+      setSendingReply(false);
     }
   };
 
@@ -138,21 +198,65 @@ const DashboardMessaging = () => {
                           <Badge variant="outline" className="text-xs">
                             {format(new Date(contact.created_at), 'dd/MM/yyyy')}
                           </Badge>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600"
-                            onClick={() => deleteContact(contact.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-xs text-gray-700 whitespace-pre-wrap">
+                      <p className="text-xs text-gray-700 whitespace-pre-wrap mb-4">
                         {contact.message}
                       </p>
+                      
+                      {replyingTo === contact.id ? (
+                        <div className="space-y-3">
+                          <Textarea
+                            placeholder="Saisissez votre réponse..."
+                            value={replyMessage}
+                            onChange={(e) => setReplyMessage(e.target.value)}
+                            className="text-xs"
+                            rows={3}
+                          />
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => sendReply(contact)}
+                              disabled={sendingReply}
+                              className="text-xs"
+                            >
+                              <Send className="h-3 w-3 mr-1" />
+                              {sendingReply ? 'Envoi...' : 'Envoyer'}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={cancelReply}
+                              className="text-xs"
+                            >
+                              Annuler
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleReply(contact.id)}
+                            className="text-xs"
+                          >
+                            <Reply className="h-3 w-3 mr-1" />
+                            Répondre
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => deleteContact(contact.id)}
+                            className="text-red-600 text-xs"
+                          >
+                            <Trash2 className="h-3 w-3 mr-1" />
+                            Ignorer
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))
@@ -211,22 +315,62 @@ const DashboardMessaging = () => {
                           <Badge variant="outline">
                             {format(new Date(contact.created_at), 'dd/MM/yyyy')}
                           </Badge>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600"
-                            onClick={() => deleteContact(contact.id)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Supprimer
-                          </Button>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap mb-4">
                         {contact.message}
                       </p>
+                      
+                      {replyingTo === contact.id ? (
+                        <div className="space-y-3">
+                          <Textarea
+                            placeholder="Saisissez votre réponse..."
+                            value={replyMessage}
+                            onChange={(e) => setReplyMessage(e.target.value)}
+                            className="text-sm"
+                            rows={4}
+                          />
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              onClick={() => sendReply(contact)}
+                              disabled={sendingReply}
+                            >
+                              <Send className="h-4 w-4 mr-1" />
+                              {sendingReply ? 'Envoi...' : 'Envoyer'}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={cancelReply}
+                            >
+                              Annuler
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleReply(contact.id)}
+                          >
+                            <Reply className="h-4 w-4 mr-1" />
+                            Répondre
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => deleteContact(contact.id)}
+                            className="text-red-600"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Ignorer
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))
@@ -287,22 +431,57 @@ const DashboardMessaging = () => {
                           <Badge variant="outline">
                             {format(new Date(contact.created_at), 'dd/MM/yyyy')}
                           </Badge>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600"
-                            onClick={() => deleteContact(contact.id)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Supprimer
-                          </Button>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent className="flex-grow">
-                      <p className="text-base text-gray-700 whitespace-pre-wrap">
+                      <p className="text-base text-gray-700 whitespace-pre-wrap mb-4">
                         {contact.message}
                       </p>
+                      
+                      {replyingTo === contact.id ? (
+                        <div className="space-y-3">
+                          <Textarea
+                            placeholder="Saisissez votre réponse..."
+                            value={replyMessage}
+                            onChange={(e) => setReplyMessage(e.target.value)}
+                            rows={4}
+                          />
+                          <div className="flex gap-2">
+                            <Button
+                              onClick={() => sendReply(contact)}
+                              disabled={sendingReply}
+                            >
+                              <Send className="h-4 w-4 mr-2" />
+                              {sendingReply ? 'Envoi en cours...' : 'Envoyer la réponse'}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={cancelReply}
+                            >
+                              Annuler
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex gap-3">
+                          <Button
+                            variant="outline"
+                            onClick={() => handleReply(contact.id)}
+                          >
+                            <Reply className="h-4 w-4 mr-2" />
+                            Répondre
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => deleteContact(contact.id)}
+                            className="text-red-600 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Ignorer
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))
