@@ -297,12 +297,6 @@ const Regionales = () => {
             <div className="mb-3">
               <p className="text-xs text-gray-700">{latestRegionale.description}</p>
             </div>
-
-            <div className="mt-3">
-              <Badge className="bg-blue-100 text-blue-800 text-xs">
-                Inscriptions ouvertes
-              </Badge>
-            </div>
           </>
         ) : (
           <div className="text-center py-4">
@@ -376,12 +370,6 @@ const Regionales = () => {
                 </div>
               </div>
             )}
-
-            <div className="mt-3">
-              <Badge className="bg-blue-100 text-blue-800">
-                Inscriptions ouvertes
-              </Badge>
-            </div>
           </>
         ) : (
           <div className="text-center py-4">
