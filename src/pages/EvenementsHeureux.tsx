@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
+import EvenementsHeureuxHero from '@/components/evenements-heureux/EvenementsHeureuxHero';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Calendar, MapPin, Users, PartyPopper, Heart, Star, Award } from 'lucide-react';
@@ -79,23 +80,7 @@ const EvenementsHeureux = () => {
   };
   return <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section with Background Image */}
-        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
-          <div className="absolute inset-0">
-            <img src="/lovable-uploads/bc525a09-b8a2-469f-b451-2f78bc437b6e.png" alt="Background événements heureux" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-primary/80"></div>
-          </div>
-          
-          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            
-            <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'} font-bold mb-4 md:mb-6 animate-fade-in`}>
-              Événements Heureux
-            </h1>
-            <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
-              Célébrons ensemble les moments de joie, les réussites et les bonheurs qui illuminent notre communauté
-            </p>
-          </div>
-        </section>
+        <EvenementsHeureuxHero />
 
         {/* Events Section */}
         <section className={`py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
