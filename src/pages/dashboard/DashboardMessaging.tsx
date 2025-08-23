@@ -92,6 +92,7 @@ const DashboardMessaging = () => {
   const markAsHandled = async (id: string) => {
     try {
       console.log('Tentative de marquage comme géré pour l\'ID:', id);
+      console.log('Utilisateur actuel:', user);
       
       const { data, error } = await supabase
         .from('contacts')
@@ -101,7 +102,20 @@ const DashboardMessaging = () => {
 
       console.log('Résultat de l\'update:', { data, error });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur détaillée:', error);
+        throw error;
+      }
+
+      console.log('Data après update:', data);
+
+      // Vérifier que la mise à jour a bien eu lieu
+      const { data: checkData, error: checkError } = await supabase
+        .from('contacts')
+        .select('id, statut')
+        .eq('id', id);
+      
+      console.log('Vérification après update:', { checkData, checkError });
 
       // Recharger toute la liste depuis la base
       await fetchData();
