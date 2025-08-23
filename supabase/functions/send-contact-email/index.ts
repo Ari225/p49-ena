@@ -30,7 +30,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to admin
     const adminEmailResponse = await resend.emails.send({
       from: "Contact Form <onboarding@resend.dev>",
-      to: ["your-email@domain.com"], // Remplacez par votre vraie adresse email
+      to: ["communication@p49-ena.ci"],
       subject: `Nouveau message de contact: ${subject}`,
       html: `
         <h2>Nouveau message de contact</h2>
