@@ -101,25 +101,18 @@ const TextesOfficiels = () => {
           <section className="py-[25px] px-[25px]">
             <div className="container max-w-md mx-0 px-0">
               <div className="grid grid-cols-1 gap-8">
-                {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-base text-primary mb-2 group-hover:text-primary/80 transition-colors">
-                            {document.title}
-                          </CardTitle>
-                          <div className="flex items-center text-xs text-primary/70 mb-2">
-                            <Calendar className="h-4 w-4 mr-2" />
-                            {document.year}
-                          </div>
-                          <p className="text-gray-600 text-xs w-full">
-                            {document.description}
-                          </p>
-                        </div>
-                        <div className="bg-primary/10 text-primary p-3 rounded-full ml-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                          <FileText className="h-5 w-5" />
-                        </div>
+                {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-100">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <span className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">{document.year}</span>
                       </div>
+                      <CardTitle className="text-base text-gray-900 leading-tight mb-2">
+                        {document.title}
+                      </CardTitle>
+                      <p className="text-gray-600 text-xs leading-relaxed">
+                        {document.description}
+                      </p>
                     </CardHeader>
                     
                     <CardContent className="pt-0">
@@ -144,7 +137,8 @@ const TextesOfficiels = () => {
                         />
                         
                         <Button 
-                          className="w-full bg-primary hover:bg-primary/90 text-white text-xs"
+                          variant="ghost"
+                          className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 border border-gray-200 hover:border-primary/30 text-xs"
                           onClick={() => handleDownload(document.document_url, document.title)}
                         >
                           <Download className="h-4 w-4 mr-2" />
@@ -221,25 +215,18 @@ const TextesOfficiels = () => {
           <section className="py-[50px] px-[50px]">
             <div className="container mx-auto px-0">
               <div className="grid grid-cols-2 gap-6">
-                {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-lg text-primary mb-2 group-hover:text-primary/80 transition-colors">
-                            {document.title}
-                          </CardTitle>
-                          <div className="flex items-center text-sm text-primary/70 mb-2">
-                            <Calendar className="h-4 w-4 mr-2" />
-                            {document.year}
-                          </div>
-                          <p className="text-gray-600 text-sm w-full">
-                            {document.description}
-                          </p>
-                        </div>
-                        <div className="bg-primary/10 text-primary p-3 rounded-full ml-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                          <FileText className="h-5 w-5" />
-                        </div>
+                {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-100">
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <FileText className="h-5 w-5 text-primary" />
+                        <span className="text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">{document.year}</span>
                       </div>
+                      <CardTitle className="text-lg text-gray-900 leading-tight mb-2">
+                        {document.title}
+                      </CardTitle>
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {document.description}
+                      </p>
                     </CardHeader>
                     
                     <CardContent className="pt-0">
@@ -264,7 +251,8 @@ const TextesOfficiels = () => {
                         />
                         
                         <Button 
-                          className="w-full bg-primary hover:bg-primary/90 text-white text-sm"
+                          variant="ghost"
+                          className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 border border-gray-200 hover:border-primary/30 text-sm"
                           onClick={() => handleDownload(document.document_url, document.title)}
                         >
                           <Download className="h-4 w-4 mr-2" />
@@ -340,25 +328,18 @@ const TextesOfficiels = () => {
         <section className="py-[100px] px-[100px] md:px-[100px]">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-xl transition-all duration-300 hover:scale-105 border-l-4 border-l-primary bg-white">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-xl text-primary mb-2 group-hover:text-primary/80 transition-colors">
-                          {document.title}
-                        </CardTitle>
-                        <div className="flex items-center text-sm text-primary/70 mb-2">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          {document.year}
-                        </div>
-                        <p className="text-gray-600 text-sm w-full">
-                          {document.description}
-                        </p>
-                      </div>
-                      <div className="bg-primary/10 text-primary p-3 rounded-full ml-4 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                        <FileText className="h-5 w-5" />
-                      </div>
+              {filteredDocuments.map(document => <Card key={document.id} className="group hover:shadow-lg transition-all duration-300 bg-white border border-gray-100">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <FileText className="h-6 w-6 text-primary" />
+                      <span className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">{document.year}</span>
                     </div>
+                    <CardTitle className="text-xl text-gray-900 leading-tight mb-3">
+                      {document.title}
+                    </CardTitle>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {document.description}
+                    </p>
                   </CardHeader>
                   
                   <CardContent className="pt-0">
@@ -383,7 +364,8 @@ const TextesOfficiels = () => {
                       />
                       
                       <Button 
-                        className="w-full bg-primary hover:bg-primary/90 text-white text-sm"
+                        variant="ghost"
+                        className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 border border-gray-200 hover:border-primary/30 text-sm"
                         onClick={() => handleDownload(document.document_url, document.title)}
                       >
                         <Download className="h-4 w-4 mr-2" />
