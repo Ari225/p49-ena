@@ -62,11 +62,13 @@ const DashboardMessaging = () => {
   }
 
   const deleteContact = async (id: string) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir ignorer ce message ? Il sera définitivement supprimé.')) {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer définitivement ce message ?')) {
       return;
     }
 
     try {
+      console.log('🗑️ Suppression du message ID:', id);
+      
       const { error } = await supabase
         .from('contacts')
         .delete()
@@ -74,13 +76,17 @@ const DashboardMessaging = () => {
 
       if (error) throw error;
 
-      setContacts(prev => prev.filter(c => c.id !== id));
+      console.log('✅ Suppression réussie, rechargement...');
+      
+      // Recharger la liste
+      await fetchData();
+      
       toast({
         title: "Succès",
-        description: "Message ignoré et supprimé"
+        description: "Message supprimé définitivement"
       });
     } catch (error) {
-      console.error('Error deleting contact:', error);
+      console.error('❌ Erreur suppression:', error);
       toast({
         title: "Erreur",
         description: "Impossible de supprimer le message",
@@ -91,41 +97,29 @@ const DashboardMessaging = () => {
 
   const markAsHandled = async (id: string) => {
     try {
-      console.log('Tentative de marquage comme géré pour l\'ID:', id);
-      console.log('Utilisateur actuel:', user);
+      console.log('🔄 Marquage comme géré pour l\'ID:', id);
       
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('contacts')
         .update({ statut: 'géré' })
-        .eq('id', id)
-        .select();
-
-      console.log('Résultat de l\'update:', { data, error });
+        .eq('id', id);
 
       if (error) {
-        console.error('Erreur détaillée:', error);
+        console.error('❌ Erreur update:', error);
         throw error;
       }
 
-      console.log('Data après update:', data);
-
-      // Vérifier que la mise à jour a bien eu lieu
-      const { data: checkData, error: checkError } = await supabase
-        .from('contacts')
-        .select('id, statut')
-        .eq('id', id);
+      console.log('✅ Update réussi, rechargement des données...');
       
-      console.log('Vérification après update:', { checkData, checkError });
-
-      // Recharger toute la liste depuis la base
+      // Recharger la liste complète
       await fetchData();
       
       toast({
         title: "Succès",
-        description: "Message marqué comme géré"
+        description: "Message marqué comme géré et placé en bas de la liste"
       });
     } catch (error) {
-      console.error('Error marking contact as handled:', error);
+      console.error('❌ Erreur complète:', error);
       toast({
         title: "Erreur",
         description: "Impossible de marquer le message comme géré",
