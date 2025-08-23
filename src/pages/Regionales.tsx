@@ -240,55 +240,85 @@ const Regionales = () => {
   // ======================
   // MOBILE VERSION - RegionaleFutureCard
   // ======================
-  const RegionaleFutureCardMobile = ({
-    regionale
-  }: {
-    regionale: any;
-  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-xs mx-auto">
+  const RegionaleFutureCardMobile = () => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow w-full">
       <div className="relative">
-        <img src={regionale.image} alt={regionale.titre} className="w-full h-32 object-cover" />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
-          {regionale.status}
+        <img 
+          src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          alt={latestRegionale?.title || "Les Régionales"} 
+          className="w-full h-32 object-cover" 
+        />
+        <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+          À venir
         </Badge>
       </div>
       <CardContent className="p-3">
-        <h3 className="text-lg font-semibold text-primary mb-2">{regionale.titre}</h3>
-        <p className="text-gray-600 text-xs mb-3">{regionale.resume}</p>
-        
-        <div className="space-y-1 mb-3">
-          <div className="flex items-center text-xs text-gray-600">
-            <Calendar className="h-3 w-3 mr-1" />
-            Du {regionale.dateDebut} au {regionale.dateFin}
-          </div>
-          <div className="flex items-center text-xs text-gray-600">
-            <MapPin className="h-3 w-3 mr-1" />
-            {regionale.lieu}
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <p className="text-xs font-medium text-gray-700 mb-1 flex items-center">
-            Tarifs de participation :
-          </p>
-          <div className="space-y-0.5 text-xs text-gray-600">
-            <div className="flex justify-between">
-              <span>Individuel</span>
-              <span className="font-medium">{regionale.tarifs.individuel}</span>
+        {latestRegionale ? (
+          <>
+            <h3 className="text-lg font-semibold text-primary mb-2">{latestRegionale.title}</h3>
+            <p className="text-gray-600 text-xs mb-3">{latestRegionale.brief_description}</p>
+            
+            <div className="space-y-1 mb-3">
+              <div className="flex items-center text-xs text-gray-600">
+                <Calendar className="h-3 w-3 mr-1" />
+                {new Date(latestRegionale.date).toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
+                {latestRegionale.end_date && (
+                  <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}</span>
+                )}
+              </div>
+              <div className="flex items-center text-xs text-gray-600">
+                <Clock className="h-3 w-3 mr-1" />
+                {latestRegionale.start_time}
+                {latestRegionale.end_time && ` - ${latestRegionale.end_time}`}
+              </div>
+              <div className="flex items-center text-xs text-gray-600">
+                <MapPin className="h-3 w-3 mr-1" />
+                {latestRegionale.location}
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Couple</span>
-              <span className="font-medium">{regionale.tarifs.couple}</span>
-            </div>
-          </div>
-        </div>
 
-        {regionale.inscriptions && <div className="mt-3">
-            <Badge className="bg-blue-100 text-blue-800 text-xs">
-              Inscriptions : {regionale.inscriptions}
-            </Badge>
-          </div>}
+            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
+              <div className="mb-3">
+                <p className="text-xs font-medium text-gray-700 mb-1 flex items-center">
+                  Tarifs de participation :
+                </p>
+                <div className="space-y-0.5 text-xs text-gray-600">
+                  {latestRegionale.participation_fees.map((fee, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{fee.name}</span>
+                      <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mb-3">
+              <p className="text-xs text-gray-700">{latestRegionale.description}</p>
+            </div>
+
+            <div className="mt-3">
+              <Badge className="bg-blue-100 text-blue-800 text-xs">
+                Inscriptions ouvertes
+              </Badge>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-gray-500 text-xs">Aucune activité "Les Régionales" programmée pour le moment.</p>
+          </div>
+        )}
       </CardContent>
-    </Card>;
+    </Card>
+  );
 
   // ======================
   // TABLET VERSION - RegionaleFutureCard
@@ -347,7 +377,7 @@ const Regionales = () => {
   // DESKTOP VERSION - RegionaleFutureCard
   // ======================
   const RegionaleFutureCardDesktop = () => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-md">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-lg w-full">
       <div className="relative">
         <img 
           src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
@@ -429,7 +459,7 @@ const Regionales = () => {
 
   // Sélection du composant selon l'appareil
   const RegionaleCard = isMobile ? RegionaleCardMobile : isTablet ? RegionaleCardTablet : RegionaleCardDesktop;
-  const RegionaleFutureCard = RegionaleFutureCardDesktop;
+  const RegionaleFutureCard = isMobile ? RegionaleFutureCardMobile : RegionaleFutureCardDesktop;
   return <Layout>
       <div className="min-h-screen bg-white">
         {/* ======================
