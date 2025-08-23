@@ -115,7 +115,7 @@ const AssembleesGenerales = () => {
 
               {selectedTab === 'passees' && (
                 <div>
-                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
+                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
                     {assembleesPassees.map((assemblee) => (
                       <AssembleeCard key={assemblee.id} assemblee={assemblee} />
@@ -173,7 +173,7 @@ const AssembleesGenerales = () => {
 
             {selectedTab === 'passees' && (
               <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
+                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
                   {assembleesPassees.map((assemblee) => (
                     <AssembleeCard key={assemblee.id} assemblee={assemblee} />
