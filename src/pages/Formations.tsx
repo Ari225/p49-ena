@@ -52,7 +52,7 @@ const Formations = () => {
           <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
               <img 
-                src="/lovable-uploads/436fe1b1-52ae-4d7a-a153-a06e2b8567ce.png" 
+                src="/lovable-uploads/actualites_bg.webp" 
                 alt="Background formations" 
                 className="w-full h-full object-cover" 
               />
