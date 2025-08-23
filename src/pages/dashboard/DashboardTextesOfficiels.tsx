@@ -5,16 +5,11 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Plus, Eye, Trash2, Calendar } from 'lucide-react';
+import { FileText, Eye, Trash2, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import { useImageUpload } from '@/hooks/useImageUpload';
 import PDFViewer from '@/components/PDFViewer';
 
 interface OfficialDocument {
@@ -33,14 +28,6 @@ const DashboardTextesOfficiels = () => {
   const isTablet = useIsTablet();
   const [documents, setDocuments] = useState<OfficialDocument[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    title: '',
-    year: new Date().getFullYear(),
-    description: '',
-    document: null as File | null
-  });
-  const { uploadImage, uploading } = useImageUpload();
 
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
@@ -71,59 +58,6 @@ const DashboardTextesOfficiels = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.title || !formData.year || !formData.description || !formData.document) {
-      toast({
-        title: 'Erreur',
-        description: 'Tous les champs sont obligatoires',
-        variant: 'destructive'
-      });
-      return;
-    }
-
-    try {
-      // Upload du document PDF
-      const documentUrl = await uploadImage(formData.document, 'documents');
-      if (!documentUrl) {
-        throw new Error('Erreur lors du téléchargement du document');
-      }
-
-      const { error } = await supabase
-        .from('official_documents')
-        .insert({
-          title: formData.title,
-          year: formData.year,
-          description: formData.description,
-          document_url: documentUrl,
-          created_by: user?.id
-        });
-
-      if (error) throw error;
-
-      toast({
-        title: 'Succès',
-        description: 'Document ajouté avec succès'
-      });
-
-      setIsDialogOpen(false);
-      setFormData({
-        title: '',
-        year: new Date().getFullYear(),
-        description: '',
-        document: null
-      });
-      fetchDocuments();
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du document:', error);
-      toast({
-        title: 'Erreur',
-        description: 'Impossible d\'ajouter le document',
-        variant: 'destructive'
-      });
-    }
-  };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) return;
@@ -158,68 +92,9 @@ const DashboardTextesOfficiels = () => {
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">
-              Gestion des textes officiels
+              Textes officiels
             </h1>
-            <p className="text-gray-600 mt-2 text-sm">Textes relatifs à la P49 et l'administration ivoirienne</p>
-          </div>
-
-          <div className="mb-4">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="w-full bg-primary hover:bg-primary/90">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nouveau document
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[calc(100vw-50px)] max-w-md mx-auto rounded-xl">
-                <DialogHeader>
-                  <DialogTitle>Ajouter un document</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="title">Titre *</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="year">Année *</Label>
-                    <Input
-                      id="year"
-                      type="number"
-                      value={formData.year}
-                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="document">Document PDF *</Label>
-                    <Input
-                      id="document"
-                      type="file"
-                      accept=".pdf"
-                      onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
-                      required
-                    />
-                  </div>
-                  <Button type="submit" disabled={uploading} className="w-full">
-                    {uploading ? 'Téléchargement...' : 'Ajouter'}
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <p className="text-gray-600 mt-2 text-sm">Consultation des textes relatifs à la P49 et l'administration ivoirienne</p>
           </div>
 
           <div className="mb-6">
@@ -289,67 +164,8 @@ const DashboardTextesOfficiels = () => {
       <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des textes officiels</h1>
-            <p className="text-gray-600 mt-2">Textes relatifs à la P49 et l'administration ivoirienne</p>
-          </div>
-
-          <div className="mb-6">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nouveau document
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Ajouter un document</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="title">Titre *</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="year">Année *</Label>
-                    <Input
-                      id="year"
-                      type="number"
-                      value={formData.year}
-                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="document">Document PDF *</Label>
-                    <Input
-                      id="document"
-                      type="file"
-                      accept=".pdf"
-                      onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
-                      required
-                    />
-                  </div>
-                  <Button type="submit" disabled={uploading} className="w-full">
-                    {uploading ? 'Téléchargement...' : 'Ajouter'}
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <h1 className="text-3xl font-bold text-primary">Textes officiels</h1>
+            <p className="text-gray-600 mt-2">Consultation des textes relatifs à la P49 et l'administration ivoirienne</p>
           </div>
 
           <div className="mb-6">
@@ -421,67 +237,8 @@ const DashboardTextesOfficiels = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion des textes officiels</h1>
-            <p className="text-gray-600 mt-2">Textes relatifs à la P49 et l'administration ivoirienne</p>
-          </div>
-
-          <div className="mb-6">
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nouveau document
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Ajouter un document</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="title">Titre *</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="year">Année *</Label>
-                    <Input
-                      id="year"
-                      type="number"
-                      value={formData.year}
-                      onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="description">Description *</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="document">Document PDF *</Label>
-                    <Input
-                      id="document"
-                      type="file"
-                      accept=".pdf"
-                      onChange={(e) => setFormData({ ...formData, document: e.target.files?.[0] || null })}
-                      required
-                    />
-                  </div>
-                  <Button type="submit" disabled={uploading} className="w-full">
-                    {uploading ? 'Téléchargement...' : 'Ajouter'}
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <h1 className="text-3xl font-bold text-primary">Textes officiels</h1>
+            <p className="text-gray-600 mt-2">Consultation des textes relatifs à la P49 et l'administration ivoirienne</p>
           </div>
 
           <div className="mb-6">
