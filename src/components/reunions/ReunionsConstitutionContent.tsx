@@ -331,14 +331,14 @@ const ReunionsConstitutionContent = () => {
 
           {/* Contenu des onglets */}
           {selectedTab === 'programmees' && <div>
-              <h2 className="text-lg font-bold text-primary mb-4">Prochaines Réunions</h2>
+              <h2 className="text-lg font-bold text-primary mb-4 text-center">Prochaines Réunions</h2>
               <div className="space-y-4">
                 {reunionsProgrammees.map(reunion => <ReunionCardMobile key={reunion.id} reunion={reunion} />)}
               </div>
             </div>}
 
           {selectedTab === 'passees' && <div>
-              <h2 className="text-lg font-bold text-primary mb-4">Réunions Passées</h2>
+              <h2 className="text-lg font-bold text-primary mb-4 text-center">Réunions Passées</h2>
               <div className="space-y-4">
                 {reunionsPassees.map(reunion => <ReunionCardMobile key={reunion.id} reunion={reunion} />)}
               </div>
@@ -363,14 +363,14 @@ const ReunionsConstitutionContent = () => {
 
           {/* Contenu des onglets */}
           {selectedTab === 'programmees' && <div>
-              <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Réunions</h2>
+              <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines Réunions</h2>
               <div className="grid grid-cols-1 gap-6">
                 {reunionsProgrammees.map(reunion => <ReunionCardTablet key={reunion.id} reunion={reunion} />)}
               </div>
             </div>}
 
           {selectedTab === 'passees' && <div>
-              <h2 className="text-2xl font-bold text-primary mb-6">Réunions Passées</h2>
+              <h2 className="text-2xl font-bold text-primary mb-6 text-center">Réunions Passées</h2>
               <div className="grid grid-cols-1 gap-6">
                 {reunionsPassees.map(reunion => <ReunionCardTablet key={reunion.id} reunion={reunion} />)}
               </div>
@@ -394,14 +394,14 @@ const ReunionsConstitutionContent = () => {
 
         {/* Contenu des onglets */}
         {selectedTab === 'programmees' && <div>
-            <h2 className="text-2xl font-bold text-primary mb-6">Prochaines Réunions</h2>
+            <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines Réunions</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {reunionsProgrammees.map(reunion => <ReunionCardDesktop key={reunion.id} reunion={reunion} />)}
             </div>
           </div>}
 
         {selectedTab === 'passees' && <div>
-            <h2 className="text-2xl font-bold text-primary mb-6">Réunions Passées</h2>
+            <h2 className="text-2xl font-bold text-primary mb-6 text-center">Réunions Passées</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {reunionsPassees.map(reunion => <ReunionCardDesktop key={reunion.id} reunion={reunion} />)}
             </div>
