@@ -114,7 +114,7 @@ const DashboardMessaging = () => {
 
     setSendingReply(true);
     try {
-      const { error } = await supabase.functions.invoke('send-reply-email', {
+      const { data, error } = await supabase.functions.invoke('send-reply-email', {
         body: {
           to: contact.email,
           subject: contact.subject,
@@ -124,23 +124,25 @@ const DashboardMessaging = () => {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
 
-      // Supprimer le message après envoi de la réponse
-      await deleteContact(contact.id);
+      console.log('Email sent successfully:', data);
       
       setReplyingTo(null);
       setReplyMessage('');
       
       toast({
         title: "Succès",
-        description: "Réponse envoyée avec succès"
+        description: "Réponse envoyée avec succès. Le message reste dans la liste."
       });
     } catch (error) {
       console.error('Error sending reply:', error);
       toast({
         title: "Erreur",
-        description: "Impossible d'envoyer la réponse",
+        description: `Impossible d'envoyer la réponse: ${error.message || 'Erreur inconnue'}`,
         variant: "destructive"
       });
     } finally {

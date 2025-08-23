@@ -26,6 +26,11 @@ const handler = async (req: Request): Promise<Response> => {
     const { to, subject, replyMessage, originalMessage, senderName }: ReplyEmailRequest = await req.json();
 
     console.log("Sending reply email to:", to);
+    console.log("RESEND_API_KEY configured:", !!Deno.env.get("RESEND_API_KEY"));
+
+    if (!Deno.env.get("RESEND_API_KEY")) {
+      throw new Error("RESEND_API_KEY not configured");
+    }
 
     const emailResponse = await resend.emails.send({
       from: "P49 <onboarding@resend.dev>",
@@ -57,6 +62,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Email sent successfully:", emailResponse);
 
+    if (emailResponse.error) {
+      console.error("Resend error:", emailResponse.error);
+      throw new Error(`Resend error: ${emailResponse.error.message}`);
+    }
+
     return new Response(JSON.stringify(emailResponse), {
       status: 200,
       headers: {
@@ -67,7 +77,10 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-reply-email function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack || 'No stack trace available'
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
