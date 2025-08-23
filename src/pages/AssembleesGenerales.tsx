@@ -41,8 +41,11 @@ const AssembleesGenerales = () => {
     }),
     lieu: activity.location,
     participants: 0, // Non disponible dans les activités
-    duree: activity.start_time && activity.end_time ? 
-      `${activity.start_time} - ${activity.end_time}` : 'Non définie',
+    duree: activity.start_time ? 
+      (activity.end_time ? 
+        `${activity.start_time} - ${activity.end_time}` : 
+        `À partir de ${activity.start_time}`) : 
+      'Heure non définie',
     president: activity.session_president || 'Non défini',
     ordreJour: activity.agenda_points || [],
     decisions: activity.status === 'Terminé' ? activity.agenda_points || [] : undefined,
