@@ -460,63 +460,20 @@ const Regionales = () => {
   // Sélection du composant selon l'appareil
   const RegionaleFutureCard = isMobile ? RegionaleFutureCardMobile : isTablet ? RegionaleFutureCardTablet : RegionaleFutureCardDesktop;
   return <Layout>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen">
         {/* ======================
-            MOBILE VERSION - Header
+            HERO SECTION - Background image
             ====================== */}
-        {isMobile && <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" alt="Background régionales" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-primary/80"></div>
+        <section className="relative h-[400px] overflow-hidden">
+          <img src="/lovable-uploads/P49Grid.webp" alt="Les Régionales" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 flex items-center justify-center text-white px-4">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Les Régionales</h1>
+              <p className="text-lg md:text-xl lg:text-2xl">Rencontres territoriales de la P49</p>
             </div>
-            
-            <div className="relative z-10 text-center px-[25px]">
-              <h1 className="text-2xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
-                Les Régionales de la P49
-              </h1>
-              <p className="text-sm italic mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                L'activité principale qui permet d'étendre le réseau au plan national
-              </p>
-            </div>
-          </section>}
-
-        {/* ======================
-            TABLET VERSION - Header
-            ====================== */}
-        {isTablet && <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" alt="Background régionales" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-primary/80"></div>
-            </div>
-            
-            <div className="relative z-10 text-center px-[50px]">
-              <h1 className="text-4xl md:text-4xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
-                Les Régionales de la P49
-              </h1>
-              <p className="text-base italic mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                L'activité principale qui permet d'étendre le réseau au plan national
-              </p>
-            </div>
-          </section>}
-
-        {/* ======================
-            DESKTOP VERSION - Header
-            ====================== */}
-        {!isMobile && !isTablet && <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
-            <div className="absolute inset-0">
-              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" alt="Background régionales" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-primary/80"></div>
-            </div>
-            
-            <div className="relative z-10 text-center px-8 lg:px-[100px]">
-              <h1 className="text-6xl md:text-6xl lg:text-6xl font-bold mb-[10px] md:mb-[10px] animate-fade-in">
-                Les Régionales de la P49
-              </h1>
-              <p className="text-lg md:text-lg italic mb-6 md:mb-8 animate-fade-in text-white font-normal max-w-3xl mx-auto">
-                L'activité principale qui permet d'étendre le réseau au plan national
-              </p>
-            </div>
-          </section>}
+          </div>
+        </section>
 
         {/* ======================
             MOBILE VERSION - Contenu principal
@@ -564,15 +521,15 @@ const Regionales = () => {
         {/* ======================
             TABLET VERSION - Contenu principal
             ====================== */}
-        {isTablet && <section className="py-[50px] px-[50px] bg-white">
-            <div className="container mx-auto px-4">
+        {isTablet && !isMobile && <section className="py-[50px] px-[50px] bg-white">
+            <div className="container mx-auto">
               {/* Onglets centrés */}
-              <div className="flex justify-center mb-[50px] md:mb-[50px]">
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
-                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-sm">
+              <div className="flex justify-center mb-[50px]">
+                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="px-6 py-2">
                     À venir
                   </Button>
-                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
+                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="px-6 py-2">
                     Passées
                   </Button>
                 </div>
@@ -607,15 +564,15 @@ const Regionales = () => {
         {/* ======================
             DESKTOP VERSION - Contenu principal
             ====================== */}
-        {!isMobile && !isTablet && <section className="py-[50px] px-[100px] bg-white">
-            <div className="container mx-auto px-4">
+        {!isMobile && !isTablet && <section className="py-[100px] px-[100px] bg-white">
+            <div className="container mx-auto">
               {/* Onglets centrés */}
-              <div className="flex justify-center mb-[50px] md:mb-[50px]">
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
-                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-sm">
+              <div className="flex justify-center mb-[100px]">
+                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="px-8 py-3 text-base">
                     À venir
                   </Button>
-                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
+                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="px-8 py-3 text-base">
                     Passées
                   </Button>
                 </div>
@@ -637,67 +594,13 @@ const Regionales = () => {
                       <ActivityRegionaleCardDesktop key={activity.id} activity={activity} />
                     ))}
                     {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
-                       <div className="text-center py-8 lg:py-16 lg:col-span-3">
-                         <p className="text-gray-500">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                       </div>
+                      <div className="text-center py-8 lg:py-16 lg:col-span-3">
+                        <p className="text-gray-500">Aucune activité "Les Régionales" terminée pour le moment.</p>
+                      </div>
                     )}
                   </div>
                 </div>
               )}
-            </div>
-          </section>}
-
-        {/* ======================
-            MOBILE VERSION - Information supplémentaire
-            ====================== */}
-        {isMobile && <section className="py-12 bg-accent/10 px-[25px]">
-            <div className="container mx-auto px-0">
-              <div className="text-center mb-6">
-                <h2 className="text-lg font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
-                <p className="text-gray-700 text-xs">
-                  Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA.
-                </p>
-                <p className="text-gray-700 text-xs">
-                  Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
-                </p>
-              </div>
-              
-            </div>
-          </section>}
-
-        {/* ======================
-            TABLET VERSION - Information supplémentaire
-            ====================== */}
-        {isTablet && <section className="py-14 bg-accent/10 px-[50px]">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-7">
-                <h2 className="text-xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
-                <p className="text-gray-700 max-w-3xl mx-auto text-sm">
-                 Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA.
-                </p>
-                <p className="text-gray-700 max-w-3xl mx-auto text-sm">
-                 Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
-                </p>
-              </div>
-              
-            </div>
-          </section>}
-
-        {/* ======================
-            DESKTOP VERSION - Information supplémentaire
-            ====================== */}
-        {!isMobile && !isTablet && <section className="py-16 bg-accent/10 px-[100px]">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-8">
-                <h2 className="text-xl font-bold text-primary mb-[10px] md:mb-[10px]">Qu'est-ce que Les Régionales de la P49 ?</h2>
-                <p className="text-gray-700 max-w-3xl mx-auto text-base">
-                 Les Régionales de la P49 constituent un cadre périodique de rencontre et d’échanges des Énarques de la 49e promotion de l’ENA.
-                </p>
-                <p className="text-gray-700 max-w-3xl mx-auto text-base">
-                 Cette caravane déjà organisée dans plusieurs villes du pays (Abengourou, Yamoussoukro, Korhogo, San-Pédro, etc.) vise à rassembler les membres de la P49 et à créer les conditions de la familiarisation et de l’union. 
-                </p>
-              </div>
-              
             </div>
           </section>}
       </div>
