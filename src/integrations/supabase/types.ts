@@ -1399,6 +1399,10 @@ export type Database = {
         Args: { p_member_id: number; p_update_data: Json }
         Returns: boolean
       }
+      update_member_info_with_matricule: {
+        Args: { p_matricule: string; p_update_data: Json }
+        Returns: Json
+      }
       update_testimonial_secure: {
         Args: { new_content: string; testimonial_id: string }
         Returns: boolean

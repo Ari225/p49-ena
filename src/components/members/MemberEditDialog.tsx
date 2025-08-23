@@ -63,6 +63,7 @@ const MemberEditDialog: React.FC<MemberEditDialogProps> = ({
   const [formData, setFormData] = useState<Partial<MemberData>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [verifiedMatricule, setVerifiedMatricule] = useState<string>('');
 
   // Réinitialiser quand le dialog s'ouvre
   useEffect(() => {
@@ -71,6 +72,7 @@ const MemberEditDialog: React.FC<MemberEditDialogProps> = ({
       setIsVerified(false);
       setMemberData(null);
       setFormData({});
+      setVerifiedMatricule('');
     }
   }, [isOpen, member]);
 
@@ -126,6 +128,9 @@ const MemberEditDialog: React.FC<MemberEditDialogProps> = ({
   const handleVerificationSuccess = (matricule?: string) => {
     setIsVerified(true);
     setIsVerificationOpen(false);
+    if (matricule) {
+      setVerifiedMatricule(matricule);
+    }
     loadMemberData(matricule);
   };
 
@@ -173,7 +178,7 @@ const MemberEditDialog: React.FC<MemberEditDialogProps> = ({
 
   // Sauvegarder les modifications
   const handleSave = async () => {
-    if (!memberData || !formData) return;
+    if (!memberData || !formData || !verifiedMatricule) return;
 
     setIsSaving(true);
     try {
@@ -196,12 +201,19 @@ const MemberEditDialog: React.FC<MemberEditDialogProps> = ({
       if (formData['instagram'] !== undefined) updateData['instagram'] = formData['instagram'];
       if (formData['linkedIn'] !== undefined) updateData['linkedIn'] = formData['linkedIn'];
 
-      const { error } = await supabase.rpc('update_member_info', {
-        p_member_id: memberData.id,
+      // Utiliser la nouvelle fonction qui ne nécessite pas d'authentification
+      const { data, error } = await supabase.rpc('update_member_info_with_matricule', {
+        p_matricule: verifiedMatricule,
         p_update_data: updateData
       });
 
       if (error) throw error;
+
+      // Vérifier le résultat de la fonction (typage approprié)
+      const result = data as { success: boolean; error?: string; message?: string };
+      if (!result?.success) {
+        throw new Error(result?.error || 'Erreur lors de la mise à jour');
+      }
 
       toast.success('Informations mises à jour avec succès');
       onUpdate?.();
