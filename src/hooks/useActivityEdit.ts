@@ -83,8 +83,8 @@ export const useActivityEdit = () => {
       return false;
     }
 
-    // Valider qu'il y a une image (soit existante, soit nouvelle) sauf pour Assemblées Générales
-    if (formData.category !== 'Assemblées Générales' && !selectedImage && !currentImageUrl) {
+    // Valider qu'il y a une image (soit existante, soit nouvelle) sauf pour Assemblées Générales et Réunions de constitution
+    if (formData.category !== 'Assemblées Générales' && formData.category !== 'Réunions de constitution' && !selectedImage && !currentImageUrl) {
       toast({
         title: "Erreur",
         description: "L'image est obligatoire pour l'activité.",

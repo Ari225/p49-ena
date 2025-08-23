@@ -62,8 +62,8 @@ export const useActivityForm = () => {
       return false;
     }
 
-    // Valider que l'image est obligatoire (sauf pour Assemblées Générales)
-    if (formData.category !== 'Assemblées Générales' && !selectedImage) {
+    // Valider que l'image est obligatoire (sauf pour Assemblées Générales et Réunions de constitution)
+    if (formData.category !== 'Assemblées Générales' && formData.category !== 'Réunions de constitution' && !selectedImage) {
       toast({
         title: "Erreur",
         description: "L'image est obligatoire pour créer une activité.",
