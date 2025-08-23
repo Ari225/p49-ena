@@ -92,7 +92,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
               <ul className="text-xs text-gray-600 space-y-1">
                 {assemblee.ordreJour.map((point: string, index: number) => (
                   <li key={index} className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
+                     <span className="text-gray-500 mr-2">•</span>
                     {point}
                   </li>
                 ))}
@@ -166,7 +166,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
               <ul className="text-sm text-gray-600 space-y-1">
                 {assemblee.ordreJour.map((point: string, index: number) => (
                   <li key={index} className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
+                     <span className="text-gray-500 mr-2">•</span>
                     {point}
                   </li>
                 ))}
@@ -239,7 +239,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             <ul className="text-sm text-gray-600 space-y-1">
               {assemblee.ordreJour.map((point: string, index: number) => (
                 <li key={index} className="flex items-start">
-                  <span className="text-green-500 mr-2">✓</span>
+                     <span className="text-gray-500 mr-2">•</span>
                   {point}
                 </li>
               ))}
