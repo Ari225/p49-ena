@@ -89,7 +89,7 @@ const EquipeEditoriale = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center mb-12">
               <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-6`}>Notre Mission</h2>
-              <p className="text-gray-700 leading-relaxed text-lg">
+              <p className={`text-gray-700 leading-relaxed ${isMobile ? 'text-sm' : 'text-lg'}`}>
                 L'équipe éditoriale de Perspectives 49 s'engage à produire un contenu de qualité, 
                 informatif et engagé. Composée de professionnels expérimentés issus du réseau P49, 
                 notre équipe apporte une expertise unique dans les domaines de l'administration publique, 
