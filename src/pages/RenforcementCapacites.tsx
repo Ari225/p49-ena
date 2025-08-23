@@ -32,7 +32,7 @@ const RenforcementCapacites = () => {
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : isTab ? 'h-[45vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img src="/lovable-uploads/renforcement-capacites-bg.jpg" alt="Background renforcement capacités" className="w-full h-full object-cover" />
+            <img src="/lovable-uploads/archives.webp" alt="Background renforcement capacités" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
