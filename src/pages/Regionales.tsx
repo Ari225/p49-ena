@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, Clock, Camera, Euro } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { useActivities } from '@/hooks/useActivities';
+import { Activity } from '@/types/activity';
 const Regionales = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('futures');
+  const { activities } = useActivities();
+  
+  // Récupérer la dernière activité "Les Régionales"
+  const latestRegionale = activities.find(activity => activity.category === 'Les Régionales') || null;
   const regionalesPassees = [{
     id: 1,
     titre: "Régionale Sud 2024",
@@ -340,59 +346,90 @@ const Regionales = () => {
   // ======================
   // DESKTOP VERSION - RegionaleFutureCard
   // ======================
-  const RegionaleFutureCardDesktop = ({
-    regionale
-  }: {
-    regionale: any;
-  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-md">
+  const RegionaleFutureCardDesktop = () => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-md">
       <div className="relative">
-        <img src={regionale.image} alt={regionale.titre} className="w-full h-48 object-cover" />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
-          {regionale.status}
+        <img 
+          src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          alt={latestRegionale?.title || "Les Régionales"} 
+          className="w-full h-48 object-cover" 
+        />
+        <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+          À venir
         </Badge>
       </div>
       <CardContent className="p-6">
-        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
-        <p className="text-gray-600 text-sm mb-4">{regionale.resume}</p>
-        
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-4 w-4 mr-2" />
-            Du {regionale.dateDebut} au {regionale.dateFin}
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="h-4 w-4 mr-2" />
-            {regionale.lieu}
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <p className="text-sm font-medium text-gray-700 mb-2 flex items-center">
-            Tarifs de participation :
-          </p>
-          <div className="space-y-1 text-sm text-gray-600">
-            <div className="flex justify-between">
-              <span>Individuel</span>
-              <span className="font-medium">{regionale.tarifs.individuel}</span>
+        {latestRegionale ? (
+          <>
+            <h3 className="text-xl font-semibold text-primary mb-2">{latestRegionale.title}</h3>
+            <p className="text-gray-600 text-sm mb-4">{latestRegionale.brief_description}</p>
+            
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center text-sm text-gray-600">
+                <Calendar className="h-4 w-4 mr-2" />
+                {new Date(latestRegionale.date).toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
+                {latestRegionale.end_date && (
+                  <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}</span>
+                )}
+              </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <Clock className="h-4 w-4 mr-2" />
+                {latestRegionale.start_time}
+                {latestRegionale.end_time && ` - ${latestRegionale.end_time}`}
+              </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <MapPin className="h-4 w-4 mr-2" />
+                {latestRegionale.location}
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Couple</span>
-              <span className="font-medium">{regionale.tarifs.couple}</span>
-            </div>
-          </div>
-        </div>
 
-        {regionale.inscriptions && <div className="mt-4">
-            <Badge className="bg-blue-100 text-blue-800">
-              Inscriptions : {regionale.inscriptions}
-            </Badge>
-          </div>}
+            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
+              <div className="mb-4">
+                <p className="text-sm font-medium text-gray-700 mb-2 flex items-center">
+                  <Euro className="h-4 w-4 mr-2" />
+                  Tarifs de participation :
+                </p>
+                <div className="space-y-1 text-sm text-gray-600">
+                  {latestRegionale.participation_fees.map((fee, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{fee.name}</span>
+                      <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mb-4">
+              <p className="text-sm text-gray-700">{latestRegionale.description}</p>
+            </div>
+
+            <div className="mt-4">
+              <Badge className="bg-green-100 text-green-800">
+                À venir
+              </Badge>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500">Aucune activité "Les Régionales" programmée pour le moment.</p>
+          </div>
+        )}
       </CardContent>
-    </Card>;
+    </Card>
+  );
 
   // Sélection du composant selon l'appareil
   const RegionaleCard = isMobile ? RegionaleCardMobile : isTablet ? RegionaleCardTablet : RegionaleCardDesktop;
-  const RegionaleFutureCard = isMobile ? RegionaleFutureCardMobile : isTablet ? RegionaleFutureCardTablet : RegionaleFutureCardDesktop;
+  const RegionaleFutureCard = RegionaleFutureCardDesktop;
   return <Layout>
       <div className="min-h-screen bg-white">
         {/* ======================
@@ -473,7 +510,7 @@ const Regionales = () => {
               {selectedTab === 'futures' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
                   <div className="flex justify-center">
-                    {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
+                    <RegionaleFutureCard />
                   </div>
                 </div>}
 
@@ -507,7 +544,7 @@ const Regionales = () => {
               {selectedTab === 'futures' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
                   <div className="flex justify-center">
-                    {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
+                    <RegionaleFutureCard />
                   </div>
                 </div>}
 
@@ -541,7 +578,7 @@ const Regionales = () => {
               {selectedTab === 'futures' && <div>
                   <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Régionales</h2>
                   <div className="flex justify-center">
-                    {regionalesFutures.map(regionale => <RegionaleFutureCard key={regionale.id} regionale={regionale} />)}
+                    <RegionaleFutureCard />
                   </div>
                 </div>}
 
