@@ -119,18 +119,18 @@ const JournalSection = () => {
                 isTab ? 'px-6 py-3 text-sm' :
                 'px-4 py-2 rounded flex items-center text-sm md:text-sm' // Desktop
               }`}>
-                <Link to="/journal" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
-                  Dernière édition
-                </Link>
+                 <Link to="/derniere-edition" className="bg-primary text-white hover:bg-primary py-[5px] px-[15px] rounded flex items-center transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
+                   Dernière édition
+                 </Link>
               </Button>
               <Button asChild variant="outline" className={`border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-200 ${
                 isMobile ? 'flex-1 py-3 text-xs' : 
                 isTab ? 'px-6 py-3 text-sm' :
                 'text-sm md:text-sm px-4 md:px-6 py-2 md:py-3' // Desktop
               }`}>
-                <Link to="/journal" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200">
-                  Archives
-                </Link>
+                 <Link to="/archives" className="border-primary text-primary hover:bg-primary hover:text-white font-medium py-[5px] px-[15px] rounded transition-colors duration-200">
+                   Archives
+                 </Link>
               </Button>
             </div>
           </div>
