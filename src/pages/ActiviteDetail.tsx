@@ -179,19 +179,15 @@ const ActiviteDetail = () => {
         {/* Contenu principal */}
         <div className={`max-w-4xl mx-auto py-12 ${isMobile ? 'px-6' : 'px-8'}`}>
           {/* Description */}
-          <Card className="shadow-sm border-0 bg-white">
-            <CardHeader>
-              <CardTitle className="text-xl text-primary flex items-center">
-                <Calendar className="w-5 h-5 mr-2" />
-                Description de l'activité
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 leading-relaxed text-base">
-                {activity.description}
-              </p>
-            </CardContent>
-          </Card>
+          <div className="mb-8">
+            <h2 className="text-xl text-primary flex items-center mb-6">
+              <Calendar className="w-5 h-5 mr-2" />
+              Description de l'activité
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-base">
+              {activity.description}
+            </p>
+          </div>
 
           {/* Bouton d'action */}
           {currentStatus === 'À venir' && (
