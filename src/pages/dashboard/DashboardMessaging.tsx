@@ -5,8 +5,7 @@ import AdminSidebar from '@/components/AdminSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Trash2, Mail, MessageSquare, Reply, Send } from 'lucide-react';
+import { X, Check, Mail } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,9 +29,6 @@ const DashboardMessaging = () => {
   const { toast } = useToast();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
-  const [replyingTo, setReplyingTo] = useState<string | null>(null);
-  const [replyMessage, setReplyMessage] = useState('');
-  const [sendingReply, setSendingReply] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -92,88 +88,27 @@ const DashboardMessaging = () => {
     }
   };
 
-  const handleReply = (contactId: string) => {
-    setReplyingTo(contactId);
-    setReplyMessage('');
-  };
-
-  const cancelReply = () => {
-    setReplyingTo(null);
-    setReplyMessage('');
-  };
-
-  const sendReply = async (contact: Contact) => {
-    if (!replyMessage.trim()) {
-      toast({
-        title: "Erreur",
-        description: "Veuillez saisir un message de réponse",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setSendingReply(true);
+  const markAsHandled = async (id: string) => {
     try {
-      console.log('Envoi de la réponse pour:', contact.email);
-      
-      const response = await supabase.functions.invoke('send-reply-email', {
-        body: {
-          to: contact.email,
-          subject: contact.subject,
-          replyMessage: replyMessage,
-          originalMessage: contact.message,
-          senderName: contact.name
-        }
-      });
+      const { error } = await supabase
+        .from('contacts')
+        .update({ status: 'géré' })
+        .eq('id', id);
 
-      console.log('Réponse complète de la fonction:', response);
+      if (error) throw error;
 
-      // Si la fonction retourne une erreur HTTP
-      if (!response.data && response.error) {
-        console.error('Erreur HTTP de la fonction:', response.error);
-        throw new Error(`Erreur de la fonction: ${response.error.message}`);
-      }
-
-      // Si la fonction retourne des données mais avec une erreur dans les données
-      if (response.data && response.data.error) {
-        console.error('Erreur dans la réponse:', response.data.error);
-        throw new Error(response.data.error);
-      }
-
-      // Succès
-      console.log('Email envoyé avec succès:', response.data);
-      
-      setReplyingTo(null);
-      setReplyMessage('');
-      
+      setContacts(prev => prev.filter(c => c.id !== id));
       toast({
         title: "Succès",
-        description: "Réponse envoyée avec succès !"
+        description: "Message marqué comme géré"
       });
-      
-    } catch (error: any) {
-      console.error('Erreur complète:', error);
-      
-      // Afficher un message d'erreur plus détaillé
-      let errorMessage = 'Erreur inconnue';
-      
-      if (error.message.includes('RESEND_API_KEY not configured')) {
-        errorMessage = 'Configuration manquante: La clé API Resend n\'est pas configurée. Veuillez contacter l\'administrateur.';
-      } else if (error.message.includes('Domain not verified')) {
-        errorMessage = 'Le domaine email n\'est pas vérifié. Veuillez vérifier la configuration Resend.';
-      } else if (error.message.includes('Invalid API key')) {
-        errorMessage = 'Clé API Resend invalide. Veuillez vérifier la configuration.';
-      } else {
-        errorMessage = `Erreur: ${error.message}`;
-      }
-      
+    } catch (error) {
+      console.error('Error marking contact as handled:', error);
       toast({
-        title: "Erreur d'envoi",
-        description: errorMessage,
+        title: "Erreur",
+        description: "Impossible de marquer le message comme géré",
         variant: "destructive"
       });
-    } finally {
-      setSendingReply(false);
     }
   };
 
@@ -233,57 +168,24 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      {replyingTo === contact.id ? (
-                        <div className="space-y-3">
-                          <Textarea
-                            placeholder="Saisissez votre réponse..."
-                            value={replyMessage}
-                            onChange={(e) => setReplyMessage(e.target.value)}
-                            className="text-xs"
-                            rows={3}
-                          />
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              onClick={() => sendReply(contact)}
-                              disabled={sendingReply}
-                              className="text-xs"
-                            >
-                              <Send className="h-3 w-3 mr-1" />
-                              {sendingReply ? 'Envoi...' : 'Envoyer'}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={cancelReply}
-                              className="text-xs"
-                            >
-                              Annuler
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleReply(contact.id)}
-                            className="text-xs"
-                          >
-                            <Reply className="h-3 w-3 mr-1" />
-                            Répondre
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => deleteContact(contact.id)}
-                            className="text-red-600 text-xs"
-                          >
-                            <Trash2 className="h-3 w-3 mr-1" />
-                            Ignorer
-                          </Button>
-                        </div>
-                      )}
+                      <div className="flex gap-2 justify-end">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => markAsHandled(contact.id)}
+                          className="h-8 w-8 text-green-600 border-green-200 hover:bg-green-50"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => deleteContact(contact.id)}
+                          className="h-8 w-8 text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))
@@ -350,54 +252,24 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      {replyingTo === contact.id ? (
-                        <div className="space-y-3">
-                          <Textarea
-                            placeholder="Saisissez votre réponse..."
-                            value={replyMessage}
-                            onChange={(e) => setReplyMessage(e.target.value)}
-                            className="text-sm"
-                            rows={4}
-                          />
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              onClick={() => sendReply(contact)}
-                              disabled={sendingReply}
-                            >
-                              <Send className="h-4 w-4 mr-1" />
-                              {sendingReply ? 'Envoi...' : 'Envoyer'}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={cancelReply}
-                            >
-                              Annuler
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleReply(contact.id)}
-                          >
-                            <Reply className="h-4 w-4 mr-1" />
-                            Répondre
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => deleteContact(contact.id)}
-                            className="text-red-600"
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Ignorer
-                          </Button>
-                        </div>
-                      )}
+                      <div className="flex gap-2 justify-end">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => markAsHandled(contact.id)}
+                          className="h-9 w-9 text-green-600 border-green-200 hover:bg-green-50"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => deleteContact(contact.id)}
+                          className="h-9 w-9 text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))
@@ -466,49 +338,24 @@ const DashboardMessaging = () => {
                         {contact.message}
                       </p>
                       
-                      {replyingTo === contact.id ? (
-                        <div className="space-y-3">
-                          <Textarea
-                            placeholder="Saisissez votre réponse..."
-                            value={replyMessage}
-                            onChange={(e) => setReplyMessage(e.target.value)}
-                            rows={4}
-                          />
-                          <div className="flex gap-2">
-                            <Button
-                              onClick={() => sendReply(contact)}
-                              disabled={sendingReply}
-                            >
-                              <Send className="h-4 w-4 mr-2" />
-                              {sendingReply ? 'Envoi en cours...' : 'Envoyer la réponse'}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              onClick={cancelReply}
-                            >
-                              Annuler
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex gap-3">
-                          <Button
-                            variant="outline"
-                            onClick={() => handleReply(contact.id)}
-                          >
-                            <Reply className="h-4 w-4 mr-2" />
-                            Répondre
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => deleteContact(contact.id)}
-                            className="text-red-600 hover:bg-red-50"
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Ignorer
-                          </Button>
-                        </div>
-                      )}
+                      <div className="flex gap-3 justify-end">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => markAsHandled(contact.id)}
+                          className="h-10 w-10 text-green-600 border-green-200 hover:bg-green-50"
+                        >
+                          <Check className="h-5 w-5" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => deleteContact(contact.id)}
+                          className="h-10 w-10 text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          <X className="h-5 w-5" />
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))
