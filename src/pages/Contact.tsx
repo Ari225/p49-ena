@@ -103,7 +103,7 @@ const Contact = () => {
             Contactez-nous
           </h1>
           <p className={`text-white mb-6 ${isMobile ? 'text-base' : 'text-lg'} font-normal max-w-2xl mx-auto`}>
-            Nous sommes à votre écoute. N'hésitez pas à nous contacter pour toute question ou suggestion.
+            Contactez-nous pour toute question ou suggestion. Nous sommes à l'écoute.
           </p>
           <div className="flex items-center justify-center space-x-6 text-white">
             <div className="flex items-center">
