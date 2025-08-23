@@ -77,8 +77,8 @@ export const useActivityEdit = () => {
       return false;
     }
 
-    // Valider qu'il y a une image (soit existante, soit nouvelle)
-    if (!selectedImage && !currentImageUrl) {
+    // Valider qu'il y a une image (soit existante, soit nouvelle) sauf pour Assemblées Générales
+    if (formData.category !== 'Assemblées Générales' && !selectedImage && !currentImageUrl) {
       toast({
         title: "Erreur",
         description: "L'image est obligatoire pour l'activité.",
@@ -130,7 +130,9 @@ export const useActivityEdit = () => {
           end_time: formData.end_time || null,
           location: formData.location,
           brief_description: formData.brief_description,
-          description: formData.description,
+          description: formData.category === 'Assemblées Générales' 
+            ? formData.agenda_points.map((point, index) => `${index + 1}. ${point}`).join('\n')
+            : formData.description,
           image_url: imageUrl
         })
         .eq('id', activityId);
@@ -143,6 +145,51 @@ export const useActivityEdit = () => {
           variant: "destructive"
         });
         return false;
+      }
+
+      // Gérer les données spécifiques aux catégories
+      // Assemblées Générales
+      if (formData.category === 'Assemblées Générales') {
+        // Vérifier si un enregistrement existe déjà
+        const { data: existingAssemblees } = await supabase
+          .from('assemblees_generales')
+          .select('id')
+          .eq('activity_id', activityId)
+          .single();
+
+        if (existingAssemblees) {
+          // Mettre à jour l'enregistrement existant
+          const { error: assembleesError } = await supabase
+            .from('assemblees_generales')
+            .update({
+              session_president: formData.session_president,
+              agenda_points: JSON.stringify(formData.agenda_points)
+            })
+            .eq('activity_id', activityId);
+
+          if (assembleesError) {
+            console.error('Error updating assemblees generales data:', assembleesError);
+          }
+        } else {
+          // Créer un nouvel enregistrement
+          const { error: assembleesError } = await supabase
+            .from('assemblees_generales')
+            .insert({
+              activity_id: activityId,
+              session_president: formData.session_president,
+              agenda_points: JSON.stringify(formData.agenda_points)
+            });
+
+          if (assembleesError) {
+            console.error('Error creating assemblees generales data:', assembleesError);
+          }
+        }
+      } else {
+        // Si la catégorie n'est plus "Assemblées Générales", supprimer les données existantes
+        await supabase
+          .from('assemblees_generales')
+          .delete()
+          .eq('activity_id', activityId);
       }
 
       // Gérer les données spécifiques aux Régionales

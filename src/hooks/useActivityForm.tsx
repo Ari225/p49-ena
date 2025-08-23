@@ -133,6 +133,27 @@ export const useActivityForm = () => {
         return false;
       }
 
+      // Si c'est une activité "Assemblées Générales", sauvegarder les données supplémentaires
+      if (formData.category === 'Assemblées Générales' && activityData) {
+        const { error: assembleesError } = await supabase
+          .from('assemblees_generales')
+          .insert({
+            activity_id: activityData.id,
+            session_president: formData.session_president,
+            agenda_points: JSON.stringify(formData.agenda_points)
+          });
+
+        if (assembleesError) {
+          console.error('Error creating assemblees generales data:', assembleesError);
+          toast({
+            title: "Erreur",
+            description: "Impossible de sauvegarder les données de l'assemblée générale.",
+            variant: "destructive"
+          });
+          return false;
+        }
+      }
+
       // Si c'est une activité "Les Régionales", sauvegarder les données supplémentaires
       if (formData.category === 'Les Régionales' && activityData) {
         const { error: regionalesError } = await supabase

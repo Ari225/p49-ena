@@ -124,6 +124,41 @@ export type Database = {
         }
         Relationships: []
       }
+      assemblees_generales: {
+        Row: {
+          activity_id: string
+          agenda_points: Json
+          created_at: string
+          id: string
+          session_president: string
+          updated_at: string
+        }
+        Insert: {
+          activity_id: string
+          agenda_points?: Json
+          created_at?: string
+          id?: string
+          session_president: string
+          updated_at?: string
+        }
+        Update: {
+          activity_id?: string
+          agenda_points?: Json
+          created_at?: string
+          id?: string
+          session_president?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assemblees_generales_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       blog_article_comments: {
         Row: {
           article_id: string
