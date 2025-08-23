@@ -320,7 +320,7 @@ const ReunionsConstitutionContent = () => {
     return <section className="py-8 px-[25px]">
         <div className="container mx-auto px-0">
           {/* Onglets */}
-          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-6">
+          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-6 max-w-md mx-auto">
             <Button variant={selectedTab === 'programmees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('programmees')} className="flex-1 text-xs">
               Programmées
             </Button>
@@ -352,7 +352,7 @@ const ReunionsConstitutionContent = () => {
     return <section className="py-12 px-[50px]">
         <div className="container mx-auto px-4">
           {/* Onglets */}
-          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
+          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md mx-auto">
             <Button variant={selectedTab === 'programmees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('programmees')} className="flex-1">
               Programmées
             </Button>
@@ -383,7 +383,7 @@ const ReunionsConstitutionContent = () => {
   return <section className="py-16 px-[100px]">
       <div className="container mx-auto px-4">
         {/* Onglets */}
-        <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md">
+        <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-8 max-w-md mx-auto">
           <Button variant={selectedTab === 'programmees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('programmees')} className="flex-1">
             Programmées
           </Button>
