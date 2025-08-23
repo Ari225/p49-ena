@@ -20,13 +20,13 @@ const TestimonialsSection = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const isMobile = useIsMobile();
-  const isTablet = useIsTablet();
+  const isTab = useIsTablet();
   const isDesktop = useIsDesktop();
 
   const getTitleClasses = () => {
     if (isMobile) {
       return 'text-xl'; // Mobile
-    } else if (isTablet) {
+    } else if (isTab) {
       return 'text-2xl'; // Tablette
     } else {
       return 'text-3xl md:text-3xl'; // Desktop
@@ -86,7 +86,7 @@ const TestimonialsSection = () => {
         containScroll: "trimSnaps" as const,
       };
     }
-    if (isTablet) {
+    if (isTab) {
       return {
         align: "center" as const,
         slidesToScroll: 1,
@@ -115,7 +115,7 @@ const TestimonialsSection = () => {
           >
             <CarouselContent className={`
               ${isMobile ? '-ml-2 md:-ml-4' : ''}
-              ${isTablet ? '-ml-4' : ''}
+              ${isTab ? '-ml-4' : ''}
               ${isDesktop ? '-ml-6' : ''}
             `}>
               {testimonials.map((testimonial, index) => (
@@ -123,14 +123,14 @@ const TestimonialsSection = () => {
                   key={index} 
                   className={`
                     ${isMobile ? 'pl-2 md:pl-4 basis-full' : ''}
-                    ${isTablet ? 'pl-4 basis-1/2 md:basis-1/3' : ''}
+                    ${isTab ? 'pl-4 basis-1/2 md:basis-1/3' : ''}
                     ${isDesktop ? 'pl-6 basis-1/3' : ''}
                   `}
                 >
                   <div className="p-1">
                     <Card className={`
                       h-full transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg
-                      ${isTablet && 'mx-2'}
+                      ${isTab && 'mx-2'}
                       ${isDesktop && 'mx-1'}
                     `}>
                       <CardContent className="p-6">
@@ -171,10 +171,14 @@ const TestimonialsSection = () => {
         </div>
         
         <div className="text-center mt-8">
-          <Button asChild className="bg-primary hover:bg-primary text-base md:text-sm text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold">
-            <Link to="/temoignages" className="flex items-center">
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${
+            isMobile ? 'w-full text-xs' : 
+            isTab ? 'px-8 py-3 text-sm' :
+            'text-sm md:text-sm' // Desktop
+          }`}>
+            <Link to="/temoignages" className="flex items-center justify-center">
               Voir tous les témoignages
-              <ChevronRight className="h-4 w-4 ml-2" />
+              <ChevronRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>
         </div>
