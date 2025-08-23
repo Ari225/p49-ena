@@ -154,7 +154,7 @@ const Suggestions = () => {
           <div className="container mx-auto px-0">
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-4xl'}`}>Partagez vos Idées</h2>
+                <h2 className={`font-bold text-primary mb-4 ${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-4xl'}`}>Partagez vos idées</h2>
                 <p className={`text-gray-600 ${isMobile ? 'text-sm' : isTablet ? 'text-base' : 'text-lg'}`}>
                   Votre contribution est précieuse pour enrichir notre contenu éditorial
                 </p>
