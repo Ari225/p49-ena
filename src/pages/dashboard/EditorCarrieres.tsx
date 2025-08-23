@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Briefcase, Plus, Edit, Trash2, MapPin, Calendar } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
@@ -109,73 +110,13 @@ const EditorCarrieres = () => {
 
           <div className="mb-4">
             <Button 
-              onClick={() => setShowForm(!showForm)} 
+              onClick={() => setShowForm(true)} 
               className="bg-primary hover:bg-primary/90 w-full"
             >
               <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle offre'}
+              Nouvelle offre
             </Button>
           </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Ajouter une offre d'emploi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder="Titre du poste"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Entreprise/Organisation"
-                    value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Localisation"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="w-full p-2 border rounded-md"
-                    value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    required
-                  >
-                    <option value="">Type de contrat</option>
-                    <option value="CDI">CDI</option>
-                    <option value="CDD">CDD</option>
-                    <option value="Stage">Stage</option>
-                    <option value="Freelance">Freelance</option>
-                    <option value="Consultation">Consultation</option>
-                  </select>
-                  <Textarea
-                    placeholder="Description du poste"
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    required
-                  />
-                  <Textarea
-                    placeholder="Exigences et qualifications"
-                    value={formData.requirements}
-                    onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                  />
-                  <Input
-                    placeholder="Salaire"
-                    value={formData.salary}
-                    onChange={(e) => setFormData({...formData, salary: e.target.value})}
-                  />
-                  <Button type="submit" className="w-full">Publier</Button>
-                </form>
-              </CardContent>
-            </Card>
-          )}
 
           <div className="space-y-4">
             {loading ? (
@@ -221,6 +162,65 @@ const EditorCarrieres = () => {
           </div>
         </div>
         <EditorSidebar />
+
+        {/* Popup pour le formulaire */}
+        <Dialog open={showForm} onOpenChange={setShowForm}>
+          <DialogContent className="max-w-md mx-auto">
+            <DialogHeader>
+              <DialogTitle>Ajouter une offre d'emploi</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Input
+                placeholder="Titre du poste"
+                value={formData.title}
+                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Entreprise/Organisation"
+                value={formData.company}
+                onChange={(e) => setFormData({...formData, company: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Localisation"
+                value={formData.location}
+                onChange={(e) => setFormData({...formData, location: e.target.value})}
+                required
+              />
+              <select
+                className="w-full p-2 border rounded-md"
+                value={formData.type}
+                onChange={(e) => setFormData({...formData, type: e.target.value})}
+                required
+              >
+                <option value="">Type de contrat</option>
+                <option value="CDI">CDI</option>
+                <option value="CDD">CDD</option>
+                <option value="Stage">Stage</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Consultation">Consultation</option>
+              </select>
+              <Textarea
+                placeholder="Description du poste"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                required
+              />
+              <Textarea
+                placeholder="Exigences et qualifications"
+                value={formData.requirements}
+                onChange={(e) => setFormData({...formData, requirements: e.target.value})}
+              />
+              <Input
+                placeholder="Salaire"
+                value={formData.salary}
+                onChange={(e) => setFormData({...formData, salary: e.target.value})}
+              />
+              <Button type="submit" className="w-full">Publier l'offre</Button>
+            </form>
+          </DialogContent>
+        </Dialog>
       </Layout>
     );
   }
@@ -237,79 +237,13 @@ const EditorCarrieres = () => {
 
           <div className="mb-6">
             <Button 
-              onClick={() => setShowForm(!showForm)} 
+              onClick={() => setShowForm(true)} 
               className="bg-primary hover:bg-primary/90"
             >
               <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle offre d\'emploi'}
+              Nouvelle offre
             </Button>
           </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Ajouter une offre d'emploi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Titre du poste"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Entreprise/Organisation"
-                    value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Localisation"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="p-2 border rounded-md"
-                    value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    required
-                  >
-                    <option value="">Type de contrat</option>
-                    <option value="CDI">CDI</option>
-                    <option value="CDD">CDD</option>
-                    <option value="Stage">Stage</option>
-                    <option value="Freelance">Freelance</option>
-                    <option value="Consultation">Consultation</option>
-                  </select>
-                  <div className="md:col-span-2">
-                    <Textarea
-                      placeholder="Description du poste"
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Textarea
-                      placeholder="Exigences et qualifications"
-                      value={formData.requirements}
-                      onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                    />
-                  </div>
-                  <Input
-                    placeholder="Salaire"
-                    value={formData.salary}
-                    onChange={(e) => setFormData({...formData, salary: e.target.value})}
-                  />
-                  <div className="md:col-span-2">
-                    <Button type="submit">Publier l'offre</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (
@@ -355,6 +289,71 @@ const EditorCarrieres = () => {
           </div>
         </div>
         <EditorSidebar />
+
+        {/* Popup pour le formulaire */}
+        <Dialog open={showForm} onOpenChange={setShowForm}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Ajouter une offre d'emploi</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                placeholder="Titre du poste"
+                value={formData.title}
+                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Entreprise/Organisation"
+                value={formData.company}
+                onChange={(e) => setFormData({...formData, company: e.target.value})}
+                required
+              />
+              <Input
+                placeholder="Localisation"
+                value={formData.location}
+                onChange={(e) => setFormData({...formData, location: e.target.value})}
+                required
+              />
+              <select
+                className="p-2 border rounded-md"
+                value={formData.type}
+                onChange={(e) => setFormData({...formData, type: e.target.value})}
+                required
+              >
+                <option value="">Type de contrat</option>
+                <option value="CDI">CDI</option>
+                <option value="CDD">CDD</option>
+                <option value="Stage">Stage</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Consultation">Consultation</option>
+              </select>
+              <div className="md:col-span-2">
+                <Textarea
+                  placeholder="Description du poste"
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="md:col-span-2">
+                <Textarea
+                  placeholder="Exigences et qualifications"
+                  value={formData.requirements}
+                  onChange={(e) => setFormData({...formData, requirements: e.target.value})}
+                />
+              </div>
+              <Input
+                placeholder="Salaire"
+                value={formData.salary}
+                onChange={(e) => setFormData({...formData, salary: e.target.value})}
+              />
+              <div className="md:col-span-2">
+                <Button type="submit" className="w-full">Publier l'offre</Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </Layout>
     );
   }
@@ -373,79 +372,13 @@ const EditorCarrieres = () => {
 
           <div className="mb-6">
             <Button 
-              onClick={() => setShowForm(!showForm)} 
+              onClick={() => setShowForm(true)} 
               className="bg-primary hover:bg-primary/90"
             >
               <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle offre d\'emploi'}
+              Nouvelle offre
             </Button>
           </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Ajouter une offre d'emploi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Titre du poste"
-                    value={formData.title}
-                    onChange={(e) => setFormData({...formData, title: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Entreprise/Organisation"
-                    value={formData.company}
-                    onChange={(e) => setFormData({...formData, company: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Localisation"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    required
-                  />
-                  <select
-                    className="p-2 border rounded-md"
-                    value={formData.type}
-                    onChange={(e) => setFormData({...formData, type: e.target.value})}
-                    required
-                  >
-                    <option value="">Type de contrat</option>
-                    <option value="CDI">CDI</option>
-                    <option value="CDD">CDD</option>
-                    <option value="Stage">Stage</option>
-                    <option value="Freelance">Freelance</option>
-                    <option value="Consultation">Consultation</option>
-                  </select>
-                  <div className="md:col-span-2">
-                    <Textarea
-                      placeholder="Description du poste"
-                      value={formData.description}
-                      onChange={(e) => setFormData({...formData, description: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Textarea
-                      placeholder="Exigences et qualifications"
-                      value={formData.requirements}
-                      onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                    />
-                  </div>
-                  <Input
-                    placeholder="Salaire"
-                    value={formData.salary}
-                    onChange={(e) => setFormData({...formData, salary: e.target.value})}
-                  />
-                  <div className="md:col-span-2">
-                    <Button type="submit">Publier l'offre</Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (
@@ -465,7 +398,7 @@ const EditorCarrieres = () => {
                         {offer.location}
                       </div>
                       <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
+                        <Calendar className="w-4 w-4 mr-1" />
                         {new Date(offer.posted_date).toLocaleDateString('fr-FR')}
                       </div>
                     </div>
@@ -491,6 +424,71 @@ const EditorCarrieres = () => {
           </div>
         </div>
       </div>
+
+      {/* Popup pour le formulaire */}
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Ajouter une offre d'emploi</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              placeholder="Titre du poste"
+              value={formData.title}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              required
+            />
+            <Input
+              placeholder="Entreprise/Organisation"
+              value={formData.company}
+              onChange={(e) => setFormData({...formData, company: e.target.value})}
+              required
+            />
+            <Input
+              placeholder="Localisation"
+              value={formData.location}
+              onChange={(e) => setFormData({...formData, location: e.target.value})}
+              required
+            />
+            <select
+              className="p-2 border rounded-md"
+              value={formData.type}
+              onChange={(e) => setFormData({...formData, type: e.target.value})}
+              required
+            >
+              <option value="">Type de contrat</option>
+              <option value="CDI">CDI</option>
+              <option value="CDD">CDD</option>
+              <option value="Stage">Stage</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Consultation">Consultation</option>
+            </select>
+            <div className="md:col-span-2">
+              <Textarea
+                placeholder="Description du poste"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                required
+              />
+            </div>
+            <div className="md:col-span-2">
+              <Textarea
+                placeholder="Exigences et qualifications"
+                value={formData.requirements}
+                onChange={(e) => setFormData({...formData, requirements: e.target.value})}
+              />
+            </div>
+            <Input
+              placeholder="Salaire"
+              value={formData.salary}
+              onChange={(e) => setFormData({...formData, salary: e.target.value})}
+            />
+            <div className="md:col-span-2">
+              <Button type="submit" className="w-full">Publier l'offre</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
