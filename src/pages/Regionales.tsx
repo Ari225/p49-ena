@@ -248,6 +248,9 @@ const Regionales = () => {
           alt={latestRegionale?.title || "Les Régionales"} 
           className="w-full h-32 object-cover" 
         />
+        <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+          À venir
+        </Badge>
       </div>
       <CardContent className="p-3">
         {latestRegionale ? (
@@ -381,6 +384,9 @@ const Regionales = () => {
           alt={latestRegionale?.title || "Les Régionales"} 
           className="w-full h-48 object-cover" 
         />
+        <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+          À venir
+        </Badge>
       </div>
       <CardContent className="p-6">
         {latestRegionale ? (
@@ -418,7 +424,6 @@ const Regionales = () => {
             {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
               <div className="mb-4">
                 <p className="text-sm font-medium text-gray-700 mb-2 flex items-center">
-                  <Euro className="h-4 w-4 mr-2" />
                   Tarifs de participation :
                 </p>
                 <div className="space-y-1 text-sm text-gray-600">
