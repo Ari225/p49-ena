@@ -18,55 +18,6 @@ const Regionales = () => {
   
   // Récupérer toutes les activités "Les Régionales"
   const allRegionales = activities.filter(activity => activity.category === 'Les Régionales');
-  const regionalesPassees = [{
-    id: 1,
-    titre: "Régionale Sud 2024",
-    date: "15 Mars 2024",
-    lieu: "San-Pédro",
-    participants: 52,
-    duree: "2 jours",
-    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=250&fit=crop",
-    resume: "Rencontre exceptionnelle avec focus sur le développement économique de la région Sud. Présentation des projets d'infrastructures et échanges sur les opportunités d'investissement.",
-    themes: ["Développement économique", "Infrastructures", "Investissements"],
-    status: "Terminée"
-  }, {
-    id: 2,
-    titre: "Régionale Est 2024",
-    date: "22 Février 2024",
-    lieu: "Abengourou",
-    participants: 38,
-    duree: "1 jour",
-    image: "https://images.unsplash.com/photo-1559223607-a43c990c692f?w=400&h=250&fit=crop",
-    resume: "Session dédiée aux questions agricoles et à la valorisation des produits locaux. Ateliers pratiques sur les techniques modernes d'agriculture.",
-    themes: ["Agriculture", "Produits locaux", "Formation"],
-    status: "Terminée"
-  }, {
-    id: 3,
-    titre: "Régionale Ouest 2023",
-    date: "18 Décembre 2023",
-    lieu: "Man",
-    participants: 45,
-    duree: "2 jours",
-    image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=250&fit=crop",
-    resume: "Grande assemblée de fin d'année avec bilan des activités et perspectives pour 2024. Cérémonie de reconnaissance des membres méritants.",
-    themes: ["Bilan annuel", "Perspectives", "Reconnaissance"],
-    status: "Terminée"
-  }];
-  const regionalesFutures = [{
-    id: 4,
-    titre: "Régionale Centre 2025",
-    dateDebut: "28 juin 2025",
-    dateFin: "30 juin 2025",
-    lieu: "Yamoussoukro",
-    image: "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png",
-    resume: "Rencontre axée sur l'innovation et la transformation digitale de l'administration publique. Ateliers sur les nouvelles technologies.",
-    status: "À venir",
-    inscriptions: "Ouvertes",
-    tarifs: {
-      individuel: "50 000 FCFA",
-      couple: "75 000 FCFA"
-    }
-  }];
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Terminée':
@@ -755,12 +706,21 @@ const Regionales = () => {
                   )}
                 </div>}
 
-              {selectedTab === 'passees' && <div>
+              {selectedTab === 'passees' && (
+                <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => (
+                      <ActivityRegionaleCardMobile key={activity.id} activity={activity} />
+                    ))}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
+                      <div className="text-center py-8">
+                        <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" terminée pour le moment.</p>
+                      </div>
+                    )}
                   </div>
-                </div>}
+                </div>
+              )}
             </div>
           </section>}
 
@@ -803,12 +763,21 @@ const Regionales = () => {
                   )}
                 </div>}
 
-              {selectedTab === 'passees' && <div>
+              {selectedTab === 'passees' && (
+                <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => (
+                      <ActivityRegionaleCardTablet key={activity.id} activity={activity} />
+                    ))}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
+                      <div className="text-center py-8">
+                        <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" terminée pour le moment.</p>
+                      </div>
+                    )}
                   </div>
-                </div>}
+                </div>
+              )}
             </div>
           </section>}
 
@@ -851,12 +820,21 @@ const Regionales = () => {
                   )}
                 </div>}
 
-              {selectedTab === 'passees' && <div>
+              {selectedTab === 'passees' && (
+                <div>
                   <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {regionalesPassees.map(regionale => <RegionaleCard key={regionale.id} regionale={regionale} />)}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => (
+                      <ActivityRegionaleCardDesktop key={activity.id} activity={activity} />
+                    ))}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
+                      <div className="text-center py-8">
+                        <p className="text-gray-500">Aucune activité "Les Régionales" terminée pour le moment.</p>
+                      </div>
+                    )}
                   </div>
-                </div>}
+                </div>
+              )}
             </div>
           </section>}
 
