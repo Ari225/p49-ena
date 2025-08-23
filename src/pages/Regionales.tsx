@@ -20,7 +20,7 @@ const Regionales = () => {
   const allRegionales = activities.filter(activity => activity.category === 'Les Régionales');
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Terminée':
+      case 'Terminé':
         return 'bg-gray-100 text-gray-800';
       case 'À venir':
         return 'bg-green-100 text-green-800';
@@ -28,168 +28,6 @@ const Regionales = () => {
         return 'bg-blue-100 text-blue-800';
     }
   };
-
-  // ======================
-  // MOBILE VERSION - RegionaleCard
-  // ======================
-  const RegionaleCardMobile = ({
-    regionale
-  }: {
-    regionale: any;
-  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="relative">
-        <img src={regionale.image} alt={regionale.titre} className="w-full h-32 object-cover" />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
-          {regionale.status}
-        </Badge>
-      </div>
-      <CardContent className="p-3">
-        <h3 className="text-lg font-semibold text-primary mb-2">{regionale.titre}</h3>
-        <p className="text-gray-600 text-xs mb-3">{regionale.resume}</p>
-        
-        <div className="space-y-1 mb-3">
-          <div className="flex items-center text-xs text-gray-600">
-            <Calendar className="h-3 w-3 mr-1" />
-            {regionale.date}
-          </div>
-          <div className="flex items-center text-xs text-gray-600">
-            <MapPin className="h-3 w-3 mr-1" />
-            {regionale.lieu}
-          </div>
-          <div className="flex items-center text-xs text-gray-600">
-            <Users className="h-3 w-3 mr-1" />
-            {regionale.participants} participants
-          </div>
-          <div className="flex items-center text-xs text-gray-600">
-            <Clock className="h-3 w-3 mr-1" />
-            {regionale.duree}
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <p className="text-xs font-medium text-gray-700 mb-1">Thèmes abordés :</p>
-          <div className="flex flex-wrap gap-1">
-            {regionale.themes.map((theme: string, index: number) => <Badge key={index} variant="outline" className="text-xs px-2 py-0">
-                {theme}
-              </Badge>)}
-          </div>
-        </div>
-
-        {regionale.inscriptions && <div className="mt-3">
-            <Badge className="bg-blue-100 text-blue-800 text-xs">
-              Inscriptions : {regionale.inscriptions}
-            </Badge>
-          </div>}
-      </CardContent>
-    </Card>;
-
-  // ======================
-  // TABLET VERSION - RegionaleCard
-  // ======================
-  const RegionaleCardTablet = ({
-    regionale
-  }: {
-    regionale: any;
-  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="relative">
-        <img src={regionale.image} alt={regionale.titre} className="w-full h-40 object-cover" />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
-          {regionale.status}
-        </Badge>
-      </div>
-      <CardContent className="p-4">
-        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
-        <p className="text-gray-600 text-sm mb-3">{regionale.resume}</p>
-        
-        <div className="space-y-1.5 mb-3">
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-3.5 w-3.5 mr-1.5" />
-            {regionale.date}
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="h-3.5 w-3.5 mr-1.5" />
-            {regionale.lieu}
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <Users className="h-3.5 w-3.5 mr-1.5" />
-            {regionale.participants} participants
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <Clock className="h-3.5 w-3.5 mr-1.5" />
-            {regionale.duree}
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <p className="text-sm font-medium text-gray-700 mb-1.5">Thèmes abordés :</p>
-          <div className="flex flex-wrap gap-1">
-            {regionale.themes.map((theme: string, index: number) => <Badge key={index} variant="outline" className="text-xs">
-                {theme}
-              </Badge>)}
-          </div>
-        </div>
-
-        {regionale.inscriptions && <div className="mt-3">
-            <Badge className="bg-blue-100 text-blue-800">
-              Inscriptions : {regionale.inscriptions}
-            </Badge>
-          </div>}
-      </CardContent>
-    </Card>;
-
-  // ======================
-  // DESKTOP VERSION - RegionaleCard
-  // ======================
-  const RegionaleCardDesktop = ({
-    regionale
-  }: {
-    regionale: any;
-  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="relative">
-        <img src={regionale.image} alt={regionale.titre} className="w-full h-48 object-cover" />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
-          {regionale.status}
-        </Badge>
-      </div>
-      <CardContent className="p-6">
-        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
-        <p className="text-gray-600 text-sm mb-4">{regionale.resume}</p>
-        
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-4 w-4 mr-2" />
-            {regionale.date}
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="h-4 w-4 mr-2" />
-            {regionale.lieu}
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <Users className="h-4 w-4 mr-2" />
-            {regionale.participants} participants
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <Clock className="h-4 w-4 mr-2" />
-            {regionale.duree}
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <p className="text-sm font-medium text-gray-700 mb-2">Thèmes abordés :</p>
-          <div className="flex flex-wrap gap-1">
-            {regionale.themes.map((theme: string, index: number) => <Badge key={index} variant="outline" className="text-xs">
-                {theme}
-              </Badge>)}
-          </div>
-        </div>
-
-        {regionale.inscriptions && <div className="mt-4">
-            <Badge className="bg-blue-100 text-blue-800">
-              Inscriptions : {regionale.inscriptions}
-            </Badge>
-          </div>}
-      </CardContent>
-    </Card>;
 
   // ======================
   // MOBILE VERSION - ActivityRegionaleCard
@@ -478,55 +316,81 @@ const Regionales = () => {
   // ======================
   // TABLET VERSION - RegionaleFutureCard
   // ======================
-  const RegionaleFutureCardTablet = ({
-    regionale
-  }: {
-    regionale: any;
-  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-sm mx-auto">
+  const RegionaleFutureCardTablet = () => (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-sm mx-auto">
       <div className="relative">
-        <img src={regionale.image} alt={regionale.titre} className="w-full h-40 object-cover" />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${getStatusColor(regionale.status)}`}>
-          {regionale.status}
+        <img 
+          src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          alt={latestRegionale?.title || "Les Régionales"} 
+          className="w-full h-40 object-cover" 
+        />
+        <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+          À venir
         </Badge>
       </div>
       <CardContent className="p-4">
-        <h3 className="text-xl font-semibold text-primary mb-2">{regionale.titre}</h3>
-        <p className="text-gray-600 text-sm mb-3">{regionale.resume}</p>
-        
-        <div className="space-y-1.5 mb-3">
-          <div className="flex items-center text-sm text-gray-600">
-            <Calendar className="h-3.5 w-3.5 mr-1.5" />
-            Du {regionale.dateDebut} au {regionale.dateFin}
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="h-3.5 w-3.5 mr-1.5" />
-            {regionale.lieu}
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <p className="text-sm font-medium text-gray-700 mb-1.5 flex items-center">
-            Tarifs de participation :
-          </p>
-          <div className="space-y-1 text-sm text-gray-600">
-            <div className="flex justify-between">
-              <span>Individuel</span>
-              <span className="font-medium">{regionale.tarifs.individuel}</span>
+        {latestRegionale ? (
+          <>
+            <h3 className="text-xl font-semibold text-primary mb-2">{latestRegionale.title}</h3>
+            <p className="text-gray-600 text-sm mb-3">{latestRegionale.brief_description}</p>
+            
+            <div className="space-y-1.5 mb-3">
+              <div className="flex items-center text-sm text-gray-600">
+                <Calendar className="h-3.5 w-3.5 mr-1.5" />
+                {new Date(latestRegionale.date).toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
+                {latestRegionale.end_date && (
+                  <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}</span>
+                )}
+              </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <Clock className="h-3.5 w-3.5 mr-1.5" />
+                {latestRegionale.start_time}
+                {latestRegionale.end_time && ` - ${latestRegionale.end_time}`}
+              </div>
+              <div className="flex items-center text-sm text-gray-600">
+                <MapPin className="h-3.5 w-3.5 mr-1.5" />
+                {latestRegionale.location}
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>couple</span>
-              <span className="font-medium">{regionale.tarifs.couple}</span>
-            </div>
-          </div>
-        </div>
 
-        {regionale.inscriptions && <div className="mt-3">
-            <Badge className="bg-blue-100 text-blue-800">
-              Inscriptions : {regionale.inscriptions}
-            </Badge>
-          </div>}
+            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
+              <div className="mb-3">
+                <p className="text-sm font-medium text-gray-700 mb-1.5">
+                  Tarifs de participation :
+                </p>
+                <div className="space-y-1 text-sm text-gray-600">
+                  {latestRegionale.participation_fees.map((fee, index) => (
+                    <div key={index} className="flex justify-between">
+                      <span>{fee.name}</span>
+                      <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-3">
+              <Badge className="bg-blue-100 text-blue-800">
+                Inscriptions ouvertes
+              </Badge>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-4">
+            <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
+          </div>
+        )}
       </CardContent>
-    </Card>;
+    </Card>
+  );
 
   // ======================
   // DESKTOP VERSION - RegionaleFutureCard
@@ -606,8 +470,7 @@ const Regionales = () => {
   );
 
   // Sélection du composant selon l'appareil
-  const RegionaleCard = isMobile ? RegionaleCardMobile : isTablet ? RegionaleCardTablet : RegionaleCardDesktop;
-  const RegionaleFutureCard = isMobile ? RegionaleFutureCardMobile : RegionaleFutureCardDesktop;
+  const RegionaleFutureCard = isMobile ? RegionaleFutureCardMobile : isTablet ? RegionaleFutureCardTablet : RegionaleFutureCardDesktop;
   return <Layout>
       <div className="min-h-screen bg-white">
         {/* ======================
