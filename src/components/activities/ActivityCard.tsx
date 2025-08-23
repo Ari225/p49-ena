@@ -183,9 +183,11 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             </div>
           )}
           
-          <div className="flex items-center mt-2">
-            <span className={`text-sm ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>{activity.description}</span>
-          </div>
+          {activity.category !== 'Assemblées Générales' && (
+            <div className="flex items-center mt-2">
+              <span className={`text-sm ${isPast ? 'text-gray-500' : 'text-gray-700'}`}>{activity.description}</span>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-2">
