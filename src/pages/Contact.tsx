@@ -10,6 +10,7 @@ import { Mail, Phone, MapPin, Send, Clock, Users } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import ContactMap from '@/components/ContactMap';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 
 const Contact = () => {
   const isMobile = useIsMobile();
@@ -19,19 +20,61 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message envoyé",
-      description: "Nous vous répondrons dans les plus brefs délais."
-    });
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    });
+    setIsSubmitting(true);
+
+    try {
+      // Insérer le message en base de données
+      const { error } = await supabase
+        .from('contacts')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          ip_address: null, // Peut être ajouté côté serveur si nécessaire
+          user_agent: navigator.userAgent
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      // Envoyer l'email de notification
+      await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        }
+      });
+
+      toast({
+        title: "Message envoyé avec succès",
+        description: "Nous vous répondrons dans les plus brefs délais."
+      });
+
+      // Réinitialiser le formulaire
+      setFormData({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error: any) {
+      console.error('Erreur lors de l\'envoi:', error);
+      toast({
+        title: "Erreur lors de l'envoi",
+        description: "Une erreur s'est produite. Veuillez réessayer.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -193,9 +236,13 @@ const Contact = () => {
                         placeholder="Décrivez votre demande en détail..."
                       />
                     </div>
-                    <Button type="submit" className="bg-primary hover:bg-primary/90 w-full py-3 text-lg font-semibold transition-all duration-300 hover:shadow-lg">
+                    <Button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="bg-primary hover:bg-primary/90 w-full py-3 text-lg font-semibold transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
                       <Send className="h-5 w-5 mr-2" />
-                      Envoyer le message
+                      {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                     </Button>
                   </form>
                 </CardContent>
