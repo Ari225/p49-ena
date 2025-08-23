@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import AssembleeCard from '@/components/assemblees/AssembleeCard';
 import AssembleesHeader from '@/components/assemblees/AssembleesHeader';
-import { assembleesPassees } from '@/components/assemblees/assembleesData';
+// Removed static data import
 import { useActivities } from '@/hooks/useActivities';
 import { Activity } from '@/types/activity';
 
@@ -23,6 +23,14 @@ const AssembleesGenerales = () => {
     )
     .sort((a: Activity, b: Activity) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
 
+  // Récupérer les activités "Assemblées Générales" passées
+  const assembleesPassees = activities
+    .filter((activity: Activity) => 
+      activity.category === 'Assemblées Générales' && 
+      activity.status === 'Terminé'
+    )
+    .sort((a: Activity, b: Activity) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   const convertActivityToAssemblee = (activity: Activity) => ({
     id: parseInt(activity.id.slice(-8), 16), // Convertir les 8 derniers caractères en nombre
     type: activity.title,
@@ -37,6 +45,7 @@ const AssembleesGenerales = () => {
       `${activity.start_time} - ${activity.end_time}` : 'Non définie',
     president: activity.session_president || 'Non défini',
     ordreJour: activity.agenda_points || [],
+    decisions: activity.status === 'Terminé' ? activity.agenda_points || [] : undefined,
     status: activity.status,
     resume: activity.brief_description || activity.description
   });
@@ -89,9 +98,13 @@ const AssembleesGenerales = () => {
                 <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
                   <div className="grid grid-cols-1 gap-6">
-                    {assembleesPassees.map((assemblee) => (
-                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                    ))}
+                    {assembleesPassees.length > 0 ? (
+                      assembleesPassees.map((activity) => (
+                        <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -149,11 +162,15 @@ const AssembleesGenerales = () => {
               {selectedTab === 'passees' && (
                 <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                    {assembleesPassees.map((assemblee) => (
-                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                    ))}
-                  </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                  {assembleesPassees.length > 0 ? (
+                    assembleesPassees.map((activity) => (
+                      <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
+                    ))
+                  ) : (
+                    <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
+                  )}
+                </div>
                 </div>
               )}
             </div>
@@ -209,11 +226,15 @@ const AssembleesGenerales = () => {
             {selectedTab === 'passees' && (
               <div>
                 <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                  {assembleesPassees.map((assemblee) => (
-                    <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                  ))}
-                </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                {assembleesPassees.length > 0 ? (
+                  assembleesPassees.map((activity) => (
+                    <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
+                  ))
+                ) : (
+                  <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
+                )}
+              </div>
               </div>
             )}
           </div>

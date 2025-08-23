@@ -90,7 +90,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.ordreJour && (
+          {assemblee.ordreJour && assemblee.status === 'À venir' && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2 text-sm">Ordre du jour :</h4>
               <ul className="text-xs text-gray-600 space-y-1">
@@ -104,7 +104,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.decisions && (
+          {assemblee.decisions && assemblee.status === 'Terminée' && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2 text-sm">Principales décisions :</h4>
               <ul className="text-xs text-gray-600 space-y-1">
@@ -168,7 +168,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.ordreJour && (
+          {assemblee.ordreJour && assemblee.status === 'À venir' && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
               <ul className="text-sm text-gray-600 space-y-1">
@@ -182,7 +182,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.decisions && (
+          {assemblee.decisions && assemblee.status === 'Terminée' && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2">Principales décisions :</h4>
               <ul className="text-sm text-gray-600 space-y-1">
@@ -245,7 +245,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
           </div>
         )}
 
-        {assemblee.ordreJour && (
+        {assemblee.ordreJour && assemblee.status === 'À venir' && (
           <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
             <ul className="text-sm text-gray-600 space-y-1">
@@ -259,7 +259,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
           </div>
         )}
 
-        {assemblee.decisions && (
+        {assemblee.decisions && assemblee.status === 'Terminée' && (
           <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-2">Principales décisions :</h4>
             <ul className="text-sm text-gray-600 space-y-1">
