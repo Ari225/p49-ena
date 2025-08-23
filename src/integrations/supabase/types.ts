@@ -27,9 +27,11 @@ export type Database = {
           id: string
           image_url: string | null
           location: string
+          objectives: Json | null
           other_category: string | null
           start_time: string | null
           status: string
+          target_audience: string | null
           time: string | null
           title: string
           updated_at: string
@@ -46,9 +48,11 @@ export type Database = {
           id?: string
           image_url?: string | null
           location: string
+          objectives?: Json | null
           other_category?: string | null
           start_time?: string | null
           status?: string
+          target_audience?: string | null
           time?: string | null
           title: string
           updated_at?: string
@@ -65,9 +69,11 @@ export type Database = {
           id?: string
           image_url?: string | null
           location?: string
+          objectives?: Json | null
           other_category?: string | null
           start_time?: string | null
           status?: string
+          target_audience?: string | null
           time?: string | null
           title?: string
           updated_at?: string

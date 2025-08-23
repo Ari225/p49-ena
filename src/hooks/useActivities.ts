@@ -53,8 +53,8 @@ export const useActivities = () => {
         session_president: activity.assemblees_generales?.[0]?.session_president || '',
         agenda_points: activity.assemblees_generales?.[0]?.agenda_points ? 
           JSON.parse(activity.assemblees_generales[0].agenda_points as string) : [],
-        target_audience: activity.target_audience || '',
-        objectives: activity.objectives || []
+        target_audience: (activity as any).target_audience || '',
+        objectives: (activity as any).objectives || []
       })) || [];
 
       setActivities(formattedActivities);
