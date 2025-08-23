@@ -87,40 +87,49 @@ const Contact = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <div 
-        style={{
-          backgroundImage: 'url(/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }} 
-        className={`min-h-[60vh] flex items-center justify-center py-[50px] relative ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}
-      >
-        <div className="absolute inset-0 bg-primary/80"></div>
+      <section className={`relative ${
+        isMobile ? 'h-[30vh]' : 'h-[60vh]'
+      } flex items-center justify-center text-white overflow-hidden`}>
+        <div className="absolute inset-0">
+          <img 
+            src="/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png" 
+            alt="Background contact" 
+            className="w-full h-full object-cover" 
+          />
+          <div className="absolute inset-0 bg-primary/80"></div>
+        </div>
         
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className={`font-bold text-white mb-4 ${isMobile ? 'text-3xl' : 'text-5xl'}`}>
+        <div className={`relative z-10 text-center ${
+          isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'
+        }`}>
+          <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
+            isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'
+          }`}>
             Contactez-nous
           </h1>
-          <p className={`text-white mb-6 ${isMobile ? 'text-base' : 'text-lg'} font-normal max-w-2xl mx-auto`}>
+          <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
+            isMobile ? 'text-sm' : 'text-lg md:text-lg'
+          }`}>
             Contactez-nous pour toute question ou suggestion. Nous sommes à l'écoute.
           </p>
-          <div className="flex items-center justify-center space-x-6 text-white">
-            <div className="flex items-center">
-              <Clock className="h-5 w-5 mr-2" />
-              <span className="text-sm">Réponse sous 24h</span>
-            </div>
-            <div className="flex items-center">
-              <Users className="h-5 w-5 mr-2" />
-              <span className="text-sm">Support dédié</span>
-            </div>
-          </div>
         </div>
-      </div>
+      </section>
 
       {/* Main Content */}
       <div className={`py-16 bg-white ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
         <div className={`${isMobile ? 'mx-0 px-0' : 'container mx-auto px-4'}`}>
+          {/* Service Info */}
+          <div className="flex items-center justify-center space-x-8 mb-12 pb-8 border-b border-gray-200">
+            <div className="flex items-center text-primary">
+              <Clock className="h-6 w-6 mr-3" />
+              <span className="text-lg font-medium">Réponse sous 24h</span>
+            </div>
+            <div className="flex items-center text-primary">
+              <Users className="h-6 w-6 mr-3" />
+              <span className="text-lg font-medium">Support dédié</span>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Info Cards */}
             <div className="space-y-6">
