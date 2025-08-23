@@ -30,6 +30,8 @@ import DashboardActualites from '@/pages/dashboard/DashboardActualites';
 import DashboardTextesOfficiels from '@/pages/dashboard/DashboardTextesOfficiels';
 import DashboardMessaging from '@/pages/dashboard/DashboardMessaging';
 import DashboardSuggestions from '@/pages/dashboard/DashboardSuggestions';
+import EditorTextesOfficiels from '@/pages/dashboard/EditorTextesOfficiels';
+import EditorCarrieres from '@/pages/dashboard/EditorCarrieres';
 import SecurityDashboard from '@/components/dashboard/SecurityDashboard';
 import DashboardHome from './DashboardHome';
 
@@ -62,7 +64,8 @@ const DashboardRoutes = () => {
       <Route path="/add-user" element={<DashboardAddUser />} />
       <Route path="/add-journal" element={<DashboardAddJournal />} />
       <Route path="/actualites" element={<DashboardActualites />} />
-      <Route path="/textes-officiels" element={<DashboardTextesOfficiels />} />
+      <Route path="/textes-officiels" element={<EditorTextesOfficiels />} />
+      <Route path="/carrieres" element={<EditorCarrieres />} />
       <Route path="/suggestions" element={<DashboardSuggestions />} />
       <Route path="/security" element={<SecurityDashboard />} />
     </Routes>
