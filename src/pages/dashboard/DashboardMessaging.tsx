@@ -91,16 +91,21 @@ const DashboardMessaging = () => {
 
   const markAsHandled = async (id: string) => {
     try {
-      const { error } = await supabase
+      console.log('Tentative de marquage comme géré pour l\'ID:', id);
+      
+      const { data, error } = await supabase
         .from('contacts')
         .update({ statut: 'géré' })
-        .eq('id', id);
+        .eq('id', id)
+        .select();
+
+      console.log('Résultat de l\'update:', { data, error });
 
       if (error) throw error;
 
-      setContacts(prev => prev.map(c => 
-        c.id === id ? { ...c, statut: 'géré' } : c
-      ));
+      // Recharger toute la liste depuis la base
+      await fetchData();
+      
       toast({
         title: "Succès",
         description: "Message marqué comme géré"
