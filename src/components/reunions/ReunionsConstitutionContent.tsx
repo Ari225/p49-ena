@@ -98,15 +98,12 @@ const ReunionsConstitutionContent = () => {
               Objectifs :
             </h4>
             <ul className="text-xs text-gray-600 space-y-1">
-              {activity.objectives.slice(0, 2).map((objectif: string, index: number) => (
+              {activity.objectives.map((objectif: string, index: number) => (
                 <li key={index} className="flex items-start">
                   <span className="text-primary mr-1">•</span>
                   {objectif}
                 </li>
               ))}
-              {activity.objectives.length > 2 && (
-                <li className="text-gray-500">... et {activity.objectives.length - 2} autres</li>
-              )}
             </ul>
           </div>
         )}
