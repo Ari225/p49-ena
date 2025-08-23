@@ -88,20 +88,7 @@ const ActualitesConcours = () => {
 
         <div className={`container mx-auto py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           {/* Filters */}
-          <div className="flex flex-wrap gap-4 mb-8 justify-center">
-            <button onClick={() => setFilter('all')} className={`px-4 py-2 rounded-lg font-medium transition-colors ${filter === 'all' ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
-              Tous les concours
-            </button>
-            <button onClick={() => setFilter('admission')} className={`px-4 py-2 rounded-lg font-medium transition-colors ${filter === 'admission' ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
-              Concours d'admission
-            </button>
-            <button onClick={() => setFilter('fonction-publique')} className={`px-4 py-2 rounded-lg font-medium transition-colors ${filter === 'fonction-publique' ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
-              Fonction publique
-            </button>
-            <button onClick={() => setFilter('specialise')} className={`px-4 py-2 rounded-lg font-medium transition-colors ${filter === 'specialise' ? 'bg-primary text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
-              Concours spécialisés
-            </button>
-          </div>
+          
 
           {/* Concours Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
