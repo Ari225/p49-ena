@@ -16,8 +16,10 @@ export interface Activity {
   image_url?: string;
   created_by?: string;
   participation_fees?: ParticipationFee[];
-  session_president?: string; // Pour Assemblées Générales
+  session_president?: string; // Pour Assemblées Générales et Réunions de constitution
   agenda_points?: string[]; // Pour Assemblées Générales
+  target_audience?: string; // Pour Réunions de constitution
+  objectives?: string[]; // Pour Réunions de constitution
 }
 
 export interface ParticipationFee {
@@ -37,8 +39,10 @@ export interface ActivityFormData {
   brief_description: string;
   description: string;
   participation_fees: ParticipationFee[];
-  session_president: string; // Pour Assemblées Générales
+  session_president: string; // Pour Assemblées Générales et Réunions de constitution
   agenda_points: string[]; // Pour Assemblées Générales
+  target_audience: string; // Pour Réunions de constitution
+  objectives: string[]; // Pour Réunions de constitution
 }
 
 export const categoryOptions = [

@@ -23,7 +23,9 @@ export const useActivityForm = () => {
     description: '',
     participation_fees: [],
     session_president: '',
-    agenda_points: []
+    agenda_points: [],
+    target_audience: '',
+    objectives: []
   });
 
   const resetForm = () => {
@@ -40,7 +42,9 @@ export const useActivityForm = () => {
       description: '',
       participation_fees: [],
       session_president: '',
-      agenda_points: []
+      agenda_points: [],
+      target_audience: '',
+      objectives: []
     });
     setSelectedImage(null);
     setImagePreview(null);

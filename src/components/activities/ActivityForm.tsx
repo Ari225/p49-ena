@@ -49,6 +49,18 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
       }
     }
     
+    // Validation spéciale pour Réunions de constitution
+    if (formData.category === 'Réunions de constitution') {
+      if (!formData.session_president.trim() || !formData.target_audience.trim()) {
+        e.preventDefault();
+        return;
+      }
+      if (formData.objectives.length === 0 || formData.objectives.some(obj => !obj.trim())) {
+        e.preventDefault();
+        return;
+      }
+    }
+    
     const success = await handleSubmit(e);
     if (success) {
       onSuccess();
@@ -99,6 +111,30 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
     setFormData({
       ...formData,
       agenda_points: updatedPoints
+    });
+  };
+
+  // Fonctions pour gérer les objectifs (Réunions de constitution)
+  const addObjective = () => {
+    setFormData({
+      ...formData,
+      objectives: [...formData.objectives, '']
+    });
+  };
+
+  const removeObjective = (index: number) => {
+    setFormData({
+      ...formData,
+      objectives: formData.objectives.filter((_, i) => i !== index)
+    });
+  };
+
+  const updateObjective = (index: number, value: string) => {
+    const updatedObjectives = [...formData.objectives];
+    updatedObjectives[index] = value;
+    setFormData({
+      ...formData,
+      objectives: updatedObjectives
     });
   };
 
@@ -250,8 +286,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           />
         </div>
 
-        {/* Président de séance - Spécifique aux Assemblées Générales */}
-        {formData.category === 'Assemblées Générales' && (
+        {/* Président de séance - Spécifique aux Assemblées Générales et Réunions de constitution */}
+        {(formData.category === 'Assemblées Générales' || formData.category === 'Réunions de constitution') && (
           <div className="space-y-2">
             <Label htmlFor="session_president" className="text-sm font-medium text-gray-700 flex items-center">
               <User className="w-4 h-4 mr-2 text-primary" />
@@ -268,10 +304,29 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           </div>
         )}
 
-        {/* Description détaillée OU Ordre du jour */}
+        {/* Public cible - Spécifique aux Réunions de constitution */}
+        {formData.category === 'Réunions de constitution' && (
+          <div className="space-y-2">
+            <Label htmlFor="target_audience" className="text-sm font-medium text-gray-700 flex items-center">
+              <User className="w-4 h-4 mr-2 text-primary" />
+              Public cible *
+            </Label>
+            <Input
+              id="target_audience"
+              placeholder="Décrivez le public cible de cette réunion"
+              value={formData.target_audience}
+              onChange={(e) => setFormData({...formData, target_audience: e.target.value})}
+              className="border-gray-300 focus:border-primary focus:ring-primary"
+              required
+            />
+          </div>
+        )}
+
+        {/* Description détaillée OU Ordre du jour OU Objectifs */}
         <div className="space-y-2">
           <Label htmlFor="description" className="text-sm font-medium text-gray-700">
-            {formData.category === 'Assemblées Générales' ? 'Ordre du jour *' : 'Description détaillée *'}
+            {formData.category === 'Assemblées Générales' ? 'Ordre du jour *' : 
+             formData.category === 'Réunions de constitution' ? 'Objectifs *' : 'Description détaillée *'}
           </Label>
           {formData.category === 'Assemblées Générales' ? (
             <div className="space-y-4">
@@ -326,6 +381,59 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
                 </Button>
               )}
             </div>
+          ) : formData.category === 'Réunions de constitution' ? (
+            <div className="space-y-4">
+              <p className="text-xs text-gray-500">
+                Ajoutez les objectifs de cette réunion de constitution
+              </p>
+              
+              {formData.objectives.map((objective, index) => (
+                <div key={index} className="space-y-3 p-3 border border-gray-200 rounded-lg bg-gray-50/50">
+                  <div className="flex justify-between items-center">
+                    <h4 className="text-sm font-medium text-gray-700">Objectif {index + 1}</h4>
+                    {formData.objectives.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removeObjective(index)}
+                        className="text-red-600 hover:bg-red-50 border-red-300"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                  <Textarea
+                    placeholder="Décrivez cet objectif..."
+                    value={objective}
+                    onChange={(e) => updateObjective(index, e.target.value)}
+                    className="border-gray-300 focus:border-primary focus:ring-primary min-h-[60px] resize-none"
+                    required
+                  />
+                </div>
+              ))}
+              
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addObjective}
+                className="flex items-center gap-2 text-primary border-primary hover:bg-primary/5"
+              >
+                <Plus className="w-4 h-4" />
+                Ajouter un objectif
+              </Button>
+              
+              {formData.objectives.length === 0 && (
+                <Button
+                  type="button"
+                  onClick={() => setFormData({...formData, objectives: ['']})}
+                  className="w-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/30"
+                >
+                  Ajouter le premier objectif
+                </Button>
+              )}
+            </div>
           ) : (
             <Textarea
               id="description"
@@ -338,8 +446,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
           )}
         </div>
 
-        {/* Upload d'image - Caché pour Assemblées Générales */}
-        {formData.category !== 'Assemblées Générales' && (
+        {/* Upload d'image - Caché pour Assemblées Générales et Réunions de constitution */}
+        {formData.category !== 'Assemblées Générales' && formData.category !== 'Réunions de constitution' && (
           <ImageUpload
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
