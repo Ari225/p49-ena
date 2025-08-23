@@ -8,7 +8,9 @@ import {
   User, 
   Send,
   BarChart3,
-  BookOpen
+  BookOpen,
+  Briefcase,
+  MessageSquare
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -34,9 +36,19 @@ const EditorSidebar = () => {
       icon: BookOpen
     },
     {
-      title: 'Actualités',
-      href: '/dashboard/actualites',
+      title: 'Textes officiels',
+      href: '/dashboard/textes-officiels',
       icon: FileText
+    },
+    {
+      title: 'Carrières+',
+      href: '/dashboard/carrieres',
+      icon: Briefcase
+    },
+    {
+      title: 'Suggestions',
+      href: '/dashboard/suggestions',
+      icon: MessageSquare
     },
     {
       title: 'Mon Profil',
