@@ -101,7 +101,7 @@ const DepartsRetraite = () => {
 
         {/* Events Section */}
         <section className={`py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             <div className="text-center mb-12">
               <h2 className={`${isMobile ? 'text-xl' : 'text-3xl'} font-bold text-primary mb-4`}>Nos retraités honorés</h2>
               <p className={`${isMobile ? 'text-sm' : 'text-base'} text-gray-600 max-w-2xl mx-auto`}>
