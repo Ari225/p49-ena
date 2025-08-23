@@ -23,6 +23,16 @@ const TestimonialsSection = () => {
   const isTablet = useIsTablet();
   const isDesktop = useIsDesktop();
 
+  const getTitleClasses = () => {
+    if (isMobile) {
+      return 'text-xl'; // Mobile
+    } else if (isTablet) {
+      return 'text-2xl'; // Tablette
+    } else {
+      return 'text-3xl md:text-3xl'; // Desktop
+    }
+  };
+
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 7000, stopOnInteraction: true })
   );
@@ -49,7 +59,7 @@ const TestimonialsSection = () => {
     return (
       <section className="py-[75px] px-8 md:px-12 lg:py-[100px] lg:px-[100px] bg-white">
         <div className="container mx-auto px-0">
-          <h2 className="text-3xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
+          <h2 className={`${getTitleClasses()} font-bold text-center text-primary mb-[10px] md:mb-[10px]`}>Témoignages</h2>
           <div className="text-center">Chargement des témoignages...</div>
         </div>
       </section>
@@ -60,7 +70,7 @@ const TestimonialsSection = () => {
     return (
       <section className="py-[75px] px-8 md:px-12 lg:py-[100px] lg:px-[100px] bg-white">
         <div className="container mx-auto px-0">
-          <h2 className="text-3xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
+          <h2 className={`${getTitleClasses()} font-bold text-center text-primary mb-[10px] md:mb-[10px]`}>Témoignages</h2>
           <div className="text-center text-gray-500">Aucun témoignage disponible pour aujourd'hui.</div>
         </div>
       </section>
@@ -93,7 +103,7 @@ const TestimonialsSection = () => {
   return (
     <section className="py-[75px] px-4 md:px-8 lg:py-[100px] lg:px-16 bg-white">
       <div className="container mx-auto px-0">
-        <h2 className="text-3xl md:text-3xl font-bold text-center text-primary mb-12">Témoignages</h2>
+        <h2 className={`${getTitleClasses()} font-bold text-center text-primary mb-[10px] md:mb-[10px]`}>Témoignages</h2>
         
         <div className="relative">
           <Carousel
