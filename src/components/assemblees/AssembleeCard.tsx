@@ -69,10 +69,6 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
               {assemblee.lieu}
             </div>
             <div className="flex items-center text-xs text-gray-600">
-              <Users className="h-3 w-3 mr-2" />
-              {assemblee.participants} participants
-            </div>
-            <div className="flex items-center text-xs text-gray-600">
               <Clock className="h-3 w-3 mr-2" />
               Heure : {assemblee.duree}
             </div>
@@ -90,7 +86,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.ordreJour && assemblee.status === 'À venir' && (
+          {assemblee.ordreJour && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2 text-sm">Ordre du jour :</h4>
               <ul className="text-xs text-gray-600 space-y-1">
@@ -147,10 +143,6 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
               {assemblee.lieu}
             </div>
             <div className="flex items-center text-sm text-gray-600">
-              <Users className="h-4 w-4 mr-2" />
-              {assemblee.participants} participants
-            </div>
-            <div className="flex items-center text-sm text-gray-600">
               <Clock className="h-4 w-4 mr-2" />
               Heure : {assemblee.duree}
             </div>
@@ -168,7 +160,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             </div>
           )}
 
-          {assemblee.ordreJour && assemblee.status === 'À venir' && (
+          {assemblee.ordreJour && (
             <div className="mb-4">
               <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
               <ul className="text-sm text-gray-600 space-y-1">
@@ -224,10 +216,6 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
             {assemblee.lieu}
           </div>
           <div className="flex items-center text-sm text-gray-600">
-            <Users className="h-4 w-4 mr-2" />
-            {assemblee.participants} participants
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-4 w-4 mr-2" />
             Heure : {assemblee.duree}
           </div>
@@ -245,7 +233,7 @@ const AssembleeCard: React.FC<AssembleeCardProps> = ({ assemblee }) => {
           </div>
         )}
 
-        {assemblee.ordreJour && assemblee.status === 'À venir' && (
+        {assemblee.ordreJour && (
           <div className="mb-4">
             <h4 className="font-medium text-gray-700 mb-2">Ordre du jour :</h4>
             <ul className="text-sm text-gray-600 space-y-1">
