@@ -28,6 +28,7 @@ import DashboardActivites from '@/pages/dashboard/DashboardActivites';
 import DashboardMediatheque from '@/pages/dashboard/DashboardMediatheque';
 import DashboardActualites from '@/pages/dashboard/DashboardActualites';
 import DashboardTextesOfficiels from '@/pages/dashboard/DashboardTextesOfficiels';
+import DashboardMessaging from '@/pages/dashboard/DashboardMessaging';
 import SecurityDashboard from '@/components/dashboard/SecurityDashboard';
 import DashboardHome from './DashboardHome';
 
@@ -50,6 +51,7 @@ const DashboardRoutes = () => {
       <Route path="/settings" element={<DashboardSettings />} />
       <Route path="/notifications" element={<DashboardNotifications />} />
       <Route path="/popups" element={<DashboardPopups />} />
+      <Route path="/messagerie" element={<DashboardMessaging />} />
       <Route path="/profile" element={<DashboardProfile />} />
       <Route path="/submitted" element={<DashboardSubmitted />} />
       

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { FileText, PenTool, MessageSquare, BarChart3, BookOpen, MapPin, Briefcase, Star, PartyPopper, Activity, PlayCircle, User } from 'lucide-react';
+import { FileText, PenTool, MessageSquare, BarChart3, BookOpen, MapPin, Briefcase, Star, PartyPopper, Activity, PlayCircle, User, Mail } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -78,6 +78,11 @@ const AdminSidebar = () => {
       title: 'Pop-ups',
       href: '/dashboard/popups',
       icon: MessageSquare
+    },
+    {
+      title: 'Messagerie',
+      href: '/dashboard/messagerie',
+      icon: Mail
     },
     {
       title: 'Profil',
