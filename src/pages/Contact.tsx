@@ -136,9 +136,6 @@ const Contact = () => {
             <div className="lg:col-span-2">
               <Card className="shadow-lg">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Send className="h-8 w-8 text-secondary" />
-                  </div>
                   <CardTitle className="text-primary text-2xl mb-2">Envoyez-nous un message</CardTitle>
                   <p className="text-gray-600">Remplissez le formulaire ci-dessous et nous vous répondrons rapidement</p>
                 </CardHeader>
