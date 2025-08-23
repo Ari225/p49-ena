@@ -33,11 +33,13 @@ const DashboardMessaging = () => {
 
   const fetchData = async () => {
     try {
+      console.log('🔄 Appel de get_contact_messages...');
       const { data: contactData, error: contactError } = await supabase
         .rpc('get_contact_messages');
 
       if (contactError) throw contactError;
 
+      console.log('📋 Données reçues:', contactData);
       setContacts(contactData || []);
     } catch (error) {
       console.error('Erreur lors du chargement:', error);
@@ -99,18 +101,27 @@ const DashboardMessaging = () => {
     try {
       console.log('🔄 Marquage comme géré pour l\'ID:', id);
       
-      const { error } = await supabase
+      // Trouver le contact dans la liste actuelle
+      const currentContact = contacts.find(c => c.id === id);
+      console.log('📋 Contact actuel avant update:', currentContact);
+      
+      const { data, error } = await supabase
         .from('contacts')
         .update({ status: 'géré' })
-        .eq('id', id);
+        .eq('id', id)
+        .select();
 
       if (error) {
         console.error('❌ Erreur update:', error);
         throw error;
       }
 
-      console.log('✅ Update réussi, rechargement des données...');
+      console.log('✅ Update réussi, données retournées:', data);
       
+      // Attendre un petit délai pour être sûr que la transaction est commitée
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.log('🔄 Rechargement des données...');
       // Recharger la liste complète
       await fetchData();
       
