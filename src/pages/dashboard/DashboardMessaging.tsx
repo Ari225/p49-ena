@@ -34,22 +34,10 @@ const DashboardMessaging = () => {
   const [replyMessage, setReplyMessage] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
 
-  useEffect(() => {
-    if (user && isAdmin(user)) {
-      fetchData();
-    }
-  }, [user]);
-
-  if (!user || !isAdmin(user)) {
-    return <div>Non autorisé</div>;
-  }
-
   const fetchData = async () => {
     try {
       const { data: contactData, error: contactError } = await supabase
-        .from('contacts')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .rpc('get_contact_messages');
 
       if (contactError) throw contactError;
 
@@ -65,6 +53,16 @@ const DashboardMessaging = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user && isAdmin(user)) {
+      fetchData();
+    }
+  }, [user]);
+
+  if (!user || !isAdmin(user)) {
+    return <div>Non autorisé</div>;
+  }
 
   const deleteContact = async (id: string) => {
     if (!window.confirm('Êtes-vous sûr de vouloir ignorer ce message ? Il sera définitivement supprimé.')) {
