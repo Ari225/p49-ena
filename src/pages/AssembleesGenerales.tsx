@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -8,44 +7,32 @@ import AssembleesHeader from '@/components/assemblees/AssembleesHeader';
 // Removed static data import
 import { useActivities } from '@/hooks/useActivities';
 import { Activity } from '@/types/activity';
-
 const AssembleesGenerales = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('prochaines');
-  const { activities } = useActivities();
+  const {
+    activities
+  } = useActivities();
 
   // Récupérer la dernière activité "Assemblées Générales" à venir
-  const prochainAssemblee = activities
-    .filter((activity: Activity) => 
-      activity.category === 'Assemblées Générales' && 
-      activity.status === 'À venir'
-    )
-    .sort((a: Activity, b: Activity) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
+  const prochainAssemblee = activities.filter((activity: Activity) => activity.category === 'Assemblées Générales' && activity.status === 'À venir').sort((a: Activity, b: Activity) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
 
   // Récupérer les activités "Assemblées Générales" passées
-  const assembleesPassees = activities
-    .filter((activity: Activity) => 
-      activity.category === 'Assemblées Générales' && 
-      activity.status === 'Terminé'
-    )
-    .sort((a: Activity, b: Activity) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
+  const assembleesPassees = activities.filter((activity: Activity) => activity.category === 'Assemblées Générales' && activity.status === 'Terminé').sort((a: Activity, b: Activity) => new Date(b.date).getTime() - new Date(a.date).getTime());
   const convertActivityToAssemblee = (activity: Activity) => ({
-    id: parseInt(activity.id.slice(-8), 16), // Convertir les 8 derniers caractères en nombre
+    id: parseInt(activity.id.slice(-8), 16),
+    // Convertir les 8 derniers caractères en nombre
     type: activity.title,
-    date: new Date(activity.date).toLocaleDateString('fr-FR', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    date: new Date(activity.date).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     }),
     lieu: activity.location,
-    participants: 0, // Non disponible dans les activités
-    duree: activity.start_time ? 
-      (activity.end_time ? 
-        `${activity.start_time} - ${activity.end_time}` : 
-        `À partir de ${activity.start_time}`) : 
-      'Heure non définie',
+    participants: 0,
+    // Non disponible dans les activités
+    duree: activity.start_time ? activity.end_time ? `${activity.start_time} - ${activity.end_time}` : `À partir de ${activity.start_time}` : 'Heure non définie',
     president: activity.session_president || 'Non défini',
     ordreJour: activity.agenda_points || [],
     decisions: activity.status === 'Terminé' ? activity.agenda_points || [] : undefined,
@@ -55,8 +42,7 @@ const AssembleesGenerales = () => {
 
   // Mobile Version
   if (isMobile) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="min-h-screen bg-white">
           <AssembleesHeader />
 
@@ -65,63 +51,39 @@ const AssembleesGenerales = () => {
             <div className="container mx-auto px-0">
               {/* Onglets Mobile */}
               <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md mx-auto mb-[50px]">
-                <Button
-                  variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
-                  onClick={() => setSelectedTab('prochaines')}
-                  className="flex-1 text-xs"
-                >
+                <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-xs">
                   Prochaines
                 </Button>
-                <Button
-                  variant={selectedTab === 'passees' ? 'default' : 'ghost'}
-                  onClick={() => setSelectedTab('passees')}
-                  className="flex-1 text-xs"
-                >
+                <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-xs">
                   Passées
                 </Button>
               </div>
 
               {/* Contenu des onglets Mobile */}
-              {selectedTab === 'prochaines' && (
-                <div>
+              {selectedTab === 'prochaines' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="flex justify-center">
                     <div className="w-full max-w-md">
-                      {prochainAssemblee ? (
-                        <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} />
-                      ) : (
-                        <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>
-                      )}
+                      {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
                     </div>
                   </div>
-                </div>
-              )}
+                </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
                   <div className="grid grid-cols-1 gap-6">
-                    {assembleesPassees.length > 0 ? (
-                      assembleesPassees.map((activity) => (
-                        <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
-                      ))
-                    ) : (
-                      <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
-                    )}
+                    {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
 
   // Tablet Version
   if (isTablet) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="min-h-screen bg-white">
           <AssembleesHeader />
 
@@ -130,62 +92,38 @@ const AssembleesGenerales = () => {
             <div className="container mx-auto px-0 max-w-4xl">
               {/* Onglets Tablette */}
               <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md mx-auto mb-[50px]">
-                <Button
-                  variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
-                  onClick={() => setSelectedTab('prochaines')}
-                  className="flex-1 text-sm"
-                >
+                <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-sm">
                   Prochaines
                 </Button>
-                <Button
-                  variant={selectedTab === 'passees' ? 'default' : 'ghost'}
-                  onClick={() => setSelectedTab('passees')}
-                  className="flex-1 text-sm"
-                >
+                <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
                   Passées
                 </Button>
               </div>
 
               {/* Contenu des onglets Tablette */}
-              {selectedTab === 'prochaines' && (
-                <div>
+              {selectedTab === 'prochaines' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="flex justify-center">
                     <div className="w-full max-w-2xl">
-                      {prochainAssemblee ? (
-                        <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} />
-                      ) : (
-                        <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>
-                      )}
+                      {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
                     </div>
                   </div>
-                </div>
-              )}
+                </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                  {assembleesPassees.length > 0 ? (
-                    assembleesPassees.map((activity) => (
-                      <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
-                    ))
-                  ) : (
-                    <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
-                  )}
+                  {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
                 </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>
         </div>
-      </Layout>
-    );
+      </Layout>;
   }
 
   // Desktop Version
-  return (
-    <Layout>
+  return <Layout>
       <div className="min-h-screen bg-white">
         <AssembleesHeader />
 
@@ -194,59 +132,35 @@ const AssembleesGenerales = () => {
           <div className="container mx-auto px-4 max-w-6xl">
             {/* Onglets Desktop */}
             <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md mx-auto mb-[50px]">
-              <Button
-                variant={selectedTab === 'prochaines' ? 'default' : 'ghost'}
-                onClick={() => setSelectedTab('prochaines')}
-                className="flex-1 text-sm"
-              >
+              <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-sm">
                 Prochaines
               </Button>
-              <Button
-                variant={selectedTab === 'passees' ? 'default' : 'ghost'}
-                onClick={() => setSelectedTab('passees')}
-                className="flex-1 text-sm"
-              >
+              <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
                 Passées
               </Button>
             </div>
 
             {/* Contenu des onglets Desktop */}
-            {selectedTab === 'prochaines' && (
-              <div>
+            {selectedTab === 'prochaines' && <div>
                 <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                 <div className="flex justify-center">
                   <div className="w-full max-w-2xl">
-                    {prochainAssemblee ? (
-                      <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} />
-                    ) : (
-                      <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>
-                    )}
+                    {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
                   </div>
                 </div>
-              </div>
-            )}
+              </div>}
 
-            {selectedTab === 'passees' && (
-              <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
+            {selectedTab === 'passees' && <div>
+                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                {assembleesPassees.length > 0 ? (
-                  assembleesPassees.map((activity) => (
-                    <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />
-                  ))
-                ) : (
-                  <div className="lg:col-span-2 flex justify-center">
+                {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <div className="lg:col-span-2 flex justify-center">
                     <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
-                  </div>
-                )}
+                  </div>}
               </div>
-              </div>
-            )}
+              </div>}
           </div>
         </section>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default AssembleesGenerales;
