@@ -5,12 +5,41 @@ import { Button } from '@/components/ui/button';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import AssembleeCard from '@/components/assemblees/AssembleeCard';
 import AssembleesHeader from '@/components/assemblees/AssembleesHeader';
-import { assembleesPassees, assembleesFutures } from '@/components/assemblees/assembleesData';
+import { assembleesPassees } from '@/components/assemblees/assembleesData';
+import { useActivities } from '@/hooks/useActivities';
+import { Activity } from '@/types/activity';
 
 const AssembleesGenerales = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('prochaines');
+  const { activities } = useActivities();
+
+  // Récupérer la dernière activité "Assemblées Générales" à venir
+  const prochainAssemblee = activities
+    .filter((activity: Activity) => 
+      activity.category === 'Assemblées Générales' && 
+      activity.status === 'À venir'
+    )
+    .sort((a: Activity, b: Activity) => new Date(a.date).getTime() - new Date(b.date).getTime())[0];
+
+  const convertActivityToAssemblee = (activity: Activity) => ({
+    id: parseInt(activity.id.slice(-8), 16), // Convertir les 8 derniers caractères en nombre
+    type: activity.title,
+    date: new Date(activity.date).toLocaleDateString('fr-FR', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    }),
+    lieu: activity.location,
+    participants: 0, // Non disponible dans les activités
+    duree: activity.start_time && activity.end_time ? 
+      `${activity.start_time} - ${activity.end_time}` : 'Non définie',
+    president: activity.session_president || 'Non défini',
+    ordreJour: activity.agenda_points || [],
+    status: activity.status,
+    resume: activity.brief_description || activity.description
+  });
 
   // Mobile Version
   if (isMobile) {
@@ -46,9 +75,11 @@ const AssembleesGenerales = () => {
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="flex justify-center">
                     <div className="w-full max-w-md">
-                      {assembleesFutures.map((assemblee) => (
-                        <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                      ))}
+                      {prochainAssemblee ? (
+                        <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} />
+                      ) : (
+                        <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -105,9 +136,11 @@ const AssembleesGenerales = () => {
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="flex justify-center">
                     <div className="w-full max-w-2xl">
-                      {assembleesFutures.map((assemblee) => (
-                        <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                      ))}
+                      {prochainAssemblee ? (
+                        <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} />
+                      ) : (
+                        <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -163,9 +196,11 @@ const AssembleesGenerales = () => {
                 <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                 <div className="flex justify-center">
                   <div className="w-full max-w-2xl">
-                    {assembleesFutures.map((assemblee) => (
-                      <AssembleeCard key={assemblee.id} assemblee={assemblee} />
-                    ))}
+                    {prochainAssemblee ? (
+                      <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} />
+                    ) : (
+                      <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>
+                    )}
                   </div>
                 </div>
               </div>
