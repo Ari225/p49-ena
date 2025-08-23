@@ -73,16 +73,22 @@ const EditorCarrieres = () => {
   ];
 
   useEffect(() => {
+    console.log('EditorCarrieres - useEffect called, user:', user);
     if (!user) {
+      console.log('EditorCarrieres - No user, navigating to login');
       navigate('/login');
       return;
     }
+    console.log('EditorCarrieres - User found, setting loading to false');
     // Simulation du chargement
     setTimeout(() => {
+      console.log('EditorCarrieres - Loading timeout completed');
       setLoading(false);
     }, 500);
   }, [user, navigate]);
 
+  console.log('EditorCarrieres - Component rendering, user:', user, 'loading:', loading, 'isMobile:', isMobile, 'isTablet:', isTablet);
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Nouvelle offre:', formData);
@@ -92,6 +98,7 @@ const EditorCarrieres = () => {
 
   // Render mobile layout
   if (isMobile) {
+    console.log('EditorCarrieres - Rendering mobile layout, loading:', loading);
     return (
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
