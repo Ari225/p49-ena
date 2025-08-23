@@ -104,7 +104,7 @@ const DashboardMessaging = () => {
           <div className="mb-6">
             <h2 className="text-lg font-semibold text-primary flex items-center">
               <Mail className="mr-2 h-5 w-5" />
-              Messages de contact ({contacts.length})
+              Liste des messages ({contacts.length})
             </h2>
           </div>
 
@@ -177,7 +177,7 @@ const DashboardMessaging = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <Mail className="mr-2 h-5 w-5" />
-              Messages de contact ({contacts.length})
+              Liste des messages ({contacts.length})
             </h2>
           </div>
 
@@ -253,7 +253,7 @@ const DashboardMessaging = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <Mail className="mr-2 h-5 w-5" />
-              Messages de contact ({contacts.length})
+              Liste des messages ({contacts.length})
             </h2>
           </div>
 
