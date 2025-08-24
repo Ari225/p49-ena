@@ -21,17 +21,18 @@ const EditorSidebar = () => {
 
   const menuItems = [
     {
-      title: 'Tableau de bord',
+      title: 'Panneau',
       href: '/dashboard',
       icon: BarChart3
     },
     {
-      title: 'Articles de blog',
+      title: 'Blog',
       href: '/dashboard/blog',
       icon: PenTool
     },
     {
       title: 'Écho des Régions',
+      mobileTitle: 'Écho régions',
       href: '/dashboard/echo-regions',
       icon: BookOpen
     },
@@ -51,7 +52,7 @@ const EditorSidebar = () => {
       icon: MessageSquare
     },
     {
-      title: 'Mon Profil',
+      title: 'Profil',
       href: '/dashboard/profile',
       icon: User
     }
@@ -78,7 +79,7 @@ const EditorSidebar = () => {
                 >
                   <Icon className="h-5 w-5 mb-1" />
                   <span className="text-xs text-center leading-tight whitespace-nowrap">
-                    {item.title.split(' ').map((word, index, array) => (
+                    {(item.mobileTitle || item.title).split(' ').map((word, index, array) => (
                       <span key={index}>
                         {word}
                         {index < array.length - 1 && index === Math.floor(array.length / 2) - 1 ? <br /> : ' '}

@@ -13,7 +13,7 @@ const AdminSidebar = () => {
 
   const menuItems = [
     {
-      title: 'Portail',
+      title: 'Panneau',
       href: '/dashboard',
       icon: BarChart3
     },
