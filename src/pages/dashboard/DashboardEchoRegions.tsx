@@ -42,56 +42,6 @@ const DashboardEchoRegions = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingEcho, setEditingEcho] = useState<EchoRegion | null>(null);
 
-  // Données d'exemple pour tester l'affichage des cartes
-  const mockEchoRegions: EchoRegion[] = [{
-    id: '1',
-    title: "Rencontre mensuelle des membres d'Abidjan",
-    summary: "Plus de 30 membres se sont retrouvés pour échanger sur les projets en cours et planifier les activités futures.",
-    details: "La rencontre mensuelle de la délégation d'Abidjan s'est tenue le samedi 25 mars 2024 dans les locaux de la préfecture.",
-    image_url: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    published_date: "2024-03-25",
-    published_by: "Délégation Abidjan",
-    created_at: "2024-03-25T10:00:00Z",
-    is_visible: true,
-    reading_time: 5,
-    region: "Abidjan"
-  }, {
-    id: '2',
-    title: "Session de formation en leadership",
-    summary: "Formation intensive sur le leadership transformationnel organisée pour 15 membres de la région de Bouaké.",
-    details: "Une formation de trois jours sur le leadership transformationnel s'est déroulée du 18 au 20 mars 2024.",
-    image_url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=300&fit=crop",
-    published_date: "2024-03-20",
-    published_by: "Délégation Bouaké",
-    created_at: "2024-03-20T14:30:00Z",
-    is_visible: true,
-    reading_time: 7,
-    region: "Bouaké"
-  }, {
-    id: '3',
-    title: "Inauguration du bureau régional de San-Pédro",
-    summary: "Ouverture officielle du nouveau bureau régional en présence du Préfet et des autorités locales.",
-    details: "Le nouveau bureau régional de San-Pédro a été officiellement inauguré le 15 mars 2024.",
-    image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
-    published_date: "2024-03-15",
-    published_by: "Délégation San-Pédro",
-    created_at: "2024-03-15T09:00:00Z",
-    is_visible: true,
-    reading_time: 4,
-    region: "San-Pédro"
-  }, {
-    id: '4',
-    title: "Atelier sur la gestion publique moderne",
-    summary: "Workshop sur les innovations en gestion publique locale organisé à Korhogo.",
-    details: "L'atelier de formation sur la gestion publique moderne s'est tenu le 10 mars 2024 à Korhogo.",
-    image_url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop",
-    published_date: "2024-03-10",
-    published_by: "Délégation Korhogo",
-    created_at: "2024-03-10T16:00:00Z",
-    is_visible: false,
-    reading_time: 6,
-    region: "Korhogo"
-  }];
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
@@ -99,16 +49,12 @@ const DashboardEchoRegions = () => {
     image_url: '',
     published_date: new Date().toISOString().split('T')[0],
     published_by: '',
+    region: '',
     is_visible: true,
     reading_time: 5
   });
   useEffect(() => {
-    // Simuler le chargement des données
-    setLoading(true);
-    setTimeout(() => {
-      setEchoRegions(mockEchoRegions);
-      setLoading(false);
-    }, 500);
+    fetchEchoRegions();
   }, []);
   const fetchEchoRegions = async () => {
     try {
@@ -116,7 +62,7 @@ const DashboardEchoRegions = () => {
       const {
         data,
         error
-      } = await supabase.from('news').select('*').eq('category', 'echo_regions').order('published_date', {
+      } = await supabase.from('echo_regions').select('*').order('published_date', {
         ascending: false
       });
       if (error) throw error;
@@ -134,9 +80,8 @@ const DashboardEchoRegions = () => {
       if (editingEcho) {
         const {
           error
-        } = await supabase.from('news').update({
+        } = await supabase.from('echo_regions').update({
           ...formData,
-          category: 'echo_regions',
           updated_at: new Date().toISOString()
         }).eq('id', editingEcho.id);
         if (error) throw error;
@@ -144,9 +89,8 @@ const DashboardEchoRegions = () => {
       } else {
         const {
           error
-        } = await supabase.from('news').insert([{
+        } = await supabase.from('echo_regions').insert([{
           ...formData,
-          category: 'echo_regions',
           created_by: user?.id
         }]);
         if (error) throw error;
@@ -168,6 +112,7 @@ const DashboardEchoRegions = () => {
       image_url: echo.image_url || '',
       published_date: echo.published_date,
       published_by: echo.published_by || '',
+      region: echo.region || '',
       is_visible: echo.is_visible,
       reading_time: echo.reading_time || 5
     });
@@ -180,7 +125,7 @@ const DashboardEchoRegions = () => {
     try {
       const {
         error
-      } = await supabase.from('news').delete().eq('id', id);
+      } = await supabase.from('echo_regions').delete().eq('id', id);
       if (error) throw error;
       toast.success('Écho des régions supprimé avec succès');
       fetchEchoRegions();
@@ -197,6 +142,7 @@ const DashboardEchoRegions = () => {
       image_url: '',
       published_date: new Date().toISOString().split('T')[0],
       published_by: '',
+      region: '',
       is_visible: true,
       reading_time: 5
     });
@@ -341,11 +287,18 @@ const DashboardEchoRegions = () => {
               })} />
               </div>
               <div>
-                <Label htmlFor="published_by">Publié par</Label>
+                <Label htmlFor="published_by">Publié par (région/auteur)</Label>
                 <Input id="published_by" value={formData.published_by} onChange={e => setFormData({
                 ...formData,
                 published_by: e.target.value
               })} />
+              </div>
+              <div>
+                <Label htmlFor="region">Région *</Label>
+                <Input id="region" value={formData.region} onChange={e => setFormData({
+                ...formData,
+                region: e.target.value
+              })} required />
               </div>
               <div className="flex items-center space-x-2">
                 <input type="checkbox" id="is_visible" checked={formData.is_visible} onChange={e => setFormData({
@@ -461,6 +414,13 @@ const DashboardEchoRegions = () => {
                 published_by: e.target.value
               })} placeholder="Nom de la région ou de l'auteur" />
               </div>
+              <div>
+                <Label htmlFor="region">Région *</Label>
+                <Input id="region" value={formData.region} onChange={e => setFormData({
+                ...formData,
+                region: e.target.value
+              })} required placeholder="Nom de la région" />
+              </div>
               <div className="flex items-center space-x-2">
                 <input type="checkbox" id="is_visible" checked={formData.is_visible} onChange={e => setFormData({
                 ...formData,
@@ -572,6 +532,13 @@ const DashboardEchoRegions = () => {
               ...formData,
               published_by: e.target.value
             })} placeholder="Nom de la région ou de l'auteur" />
+            </div>
+            <div>
+              <Label htmlFor="region">Région *</Label>
+              <Input id="region" value={formData.region} onChange={e => setFormData({
+              ...formData,
+              region: e.target.value
+            })} required placeholder="Nom de la région" />
             </div>
             <div className="flex items-center space-x-2">
               <input type="checkbox" id="is_visible" checked={formData.is_visible} onChange={e => setFormData({
