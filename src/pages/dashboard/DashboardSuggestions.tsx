@@ -7,7 +7,7 @@ import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, MessageSquare, Calendar, User, Tag, AlertCircle } from 'lucide-react';
+import { Loader2, MessageSquare, Calendar, User, Tag, AlertCircle, X, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
@@ -60,6 +60,63 @@ const DashboardSuggestions = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteSuggestion = async (suggestionId: string) => {
+    try {
+      const { error } = await supabase
+        .from('suggestions')
+        .delete()
+        .eq('id', suggestionId);
+
+      if (error) throw error;
+
+      setSuggestions(suggestions.filter(s => s.id !== suggestionId));
+      toast({
+        title: "Succès",
+        description: "Suggestion supprimée avec succès",
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de supprimer la suggestion",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleValidateSuggestion = async (suggestionId: string) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('suggestions')
+        .update({ 
+          status: `Attribuée à ${user.firstName} ${user.lastName}` 
+        })
+        .eq('id', suggestionId);
+
+      if (error) throw error;
+
+      setSuggestions(suggestions.map(s => 
+        s.id === suggestionId 
+          ? { ...s, status: `Attribuée à ${user.firstName} ${user.lastName}` }
+          : s
+      ));
+
+      toast({
+        title: "Succès",
+        description: "Suggestion validée avec succès",
+      });
+    } catch (error) {
+      console.error('Erreur lors de la validation:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de valider la suggestion",
+        variant: "destructive",
+      });
     }
   };
 
@@ -181,9 +238,36 @@ const DashboardSuggestions = () => {
                             </a>
                           </div>
                         )}
-                      </div>
-                    </div>
-                  </CardContent>
+                       </div>
+                       
+                       {suggestion.status && suggestion.status !== 'en_attente' ? (
+                         <div className="pt-3 border-t">
+                           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                             {suggestion.status}
+                           </Badge>
+                         </div>
+                       ) : (
+                         <div className="flex gap-2 pt-3 border-t">
+                           <Button
+                             size="sm"
+                             variant="destructive"
+                             onClick={() => handleDeleteSuggestion(suggestion.id)}
+                             className="h-8 w-8 p-0"
+                           >
+                             <X className="h-4 w-4" />
+                           </Button>
+                           <Button
+                             size="sm"
+                             variant="default"
+                             onClick={() => handleValidateSuggestion(suggestion.id)}
+                             className="h-8 w-8 p-0 bg-green-600 hover:bg-green-700"
+                           >
+                             <Check className="h-4 w-4" />
+                           </Button>
+                         </div>
+                       )}
+                     </div>
+                   </CardContent>
                 </Card>
               ))
             )}
@@ -240,18 +324,44 @@ const DashboardSuggestions = () => {
                           </div>
                         </CardDescription>
                       </div>
-                      <div className="flex flex-col space-y-2">
-                        <Badge className={getPriorityColor(suggestion.priority)}>
-                          <AlertCircle className="h-3 w-3 mr-1" />
-                          {suggestion.priority}
-                        </Badge>
-                        <Badge className={getCategoryColor(suggestion.category)}>
-                          <Tag className="h-3 w-3 mr-1" />
-                          {suggestion.category}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
+                       <div className="flex flex-col space-y-2">
+                         <Badge className={getPriorityColor(suggestion.priority)}>
+                           <AlertCircle className="h-3 w-3 mr-1" />
+                           {suggestion.priority}
+                         </Badge>
+                         <Badge className={getCategoryColor(suggestion.category)}>
+                           <Tag className="h-3 w-3 mr-1" />
+                           {suggestion.category}
+                         </Badge>
+                       </div>
+                     </div>
+                     {suggestion.status && suggestion.status !== 'en_attente' ? (
+                       <div className="mt-3">
+                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                           {suggestion.status}
+                         </Badge>
+                       </div>
+                     ) : (
+                       <div className="flex gap-2 mt-3">
+                         <Button
+                           size="sm"
+                           variant="destructive"
+                           onClick={() => handleDeleteSuggestion(suggestion.id)}
+                           className="h-8 w-8 p-0"
+                         >
+                           <X className="h-4 w-4" />
+                         </Button>
+                         <Button
+                           size="sm"
+                           variant="default"
+                           onClick={() => handleValidateSuggestion(suggestion.id)}
+                           className="h-8 w-8 p-0 bg-green-600 hover:bg-green-700"
+                         >
+                           <Check className="h-4 w-4" />
+                         </Button>
+                       </div>
+                     )}
+                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div>
@@ -337,18 +447,44 @@ const DashboardSuggestions = () => {
                           </div>
                         </CardDescription>
                       </div>
-                      <div className="flex flex-col space-y-2">
-                        <Badge className={getPriorityColor(suggestion.priority)}>
-                          <AlertCircle className="h-3 w-3 mr-1" />
-                          {suggestion.priority}
-                        </Badge>
-                        <Badge className={getCategoryColor(suggestion.category)}>
-                          <Tag className="h-3 w-3 mr-1" />
-                          {suggestion.category}
-                        </Badge>
-                      </div>
-                    </div>
-                  </CardHeader>
+                       <div className="flex flex-col space-y-2">
+                         <Badge className={getPriorityColor(suggestion.priority)}>
+                           <AlertCircle className="h-3 w-3 mr-1" />
+                           {suggestion.priority}
+                         </Badge>
+                         <Badge className={getCategoryColor(suggestion.category)}>
+                           <Tag className="h-3 w-3 mr-1" />
+                           {suggestion.category}
+                         </Badge>
+                       </div>
+                     </div>
+                     {suggestion.status && suggestion.status !== 'en_attente' ? (
+                       <div className="mt-3">
+                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                           {suggestion.status}
+                         </Badge>
+                       </div>
+                     ) : (
+                       <div className="flex gap-2 mt-3">
+                         <Button
+                           size="sm"
+                           variant="destructive"
+                           onClick={() => handleDeleteSuggestion(suggestion.id)}
+                           className="h-8 w-8 p-0"
+                         >
+                           <X className="h-4 w-4" />
+                         </Button>
+                         <Button
+                           size="sm"
+                           variant="default"
+                           onClick={() => handleValidateSuggestion(suggestion.id)}
+                           className="h-8 w-8 p-0 bg-green-600 hover:bg-green-700"
+                         >
+                           <Check className="h-4 w-4" />
+                         </Button>
+                       </div>
+                     )}
+                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
                       <div>
