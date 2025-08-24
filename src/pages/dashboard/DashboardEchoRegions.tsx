@@ -38,12 +38,14 @@ const DashboardEchoRegions = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const userIsAdmin = isAdmin(user);
-  const { delegues, loading: loadingDelegues } = useDeleguesRegionaux();
+  const {
+    delegues,
+    loading: loadingDelegues
+  } = useDeleguesRegionaux();
   const [echoRegions, setEchoRegions] = useState<EchoRegion[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingEcho, setEditingEcho] = useState<EchoRegion | null>(null);
-
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
@@ -60,12 +62,14 @@ const DashboardEchoRegions = () => {
   }, []);
 
   // Créer des cartes basées sur les délégués régionaux
-  const delegueCards = delegues.map((delegue) => ({
+  const delegueCards = delegues.map(delegue => ({
     id: delegue.id.toString(),
-    title: delegue.region, // Utiliser la région comme titre
+    title: delegue.region,
+    // Utiliser la région comme titre
     summary: `Délégué régional - ${delegue.name}`,
     details: `Informations sur ${delegue.region} représentée par ${delegue.name}`,
-    image_url: '/lovable-uploads/Pers49.webp', // Image par défaut
+    image_url: '/lovable-uploads/Pers49.webp',
+    // Image par défaut
     published_date: new Date().toISOString().split('T')[0],
     published_by: delegue.name,
     created_at: new Date().toISOString(),
@@ -172,10 +176,7 @@ const DashboardEchoRegions = () => {
       </div>
       <CardHeader>
         <CardTitle className="text-primary text-xl">{delegue.region}</CardTitle>
-        <div className="flex items-center text-gray-600 text-sm">
-          <MapPin className="w-4 h-4 mr-1" />
-          {delegue.published_by}
-        </div>
+        
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
