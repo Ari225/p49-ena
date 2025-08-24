@@ -135,12 +135,14 @@ const ActualitesConcours = () => {
                           Plus d'infos
                         </button>
                         {concour.lien_concours && (
-                          <button 
-                            onClick={() => window.open(concour.lien_concours, '_blank')}
-                            className="px-4 py-2 border border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors"
+                          <a 
+                            href={concour.lien_concours}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors"
                           >
                             <ExternalLink className="h-4 w-4" />
-                          </button>
+                          </a>
                         )}
                       </div>
                     </CardContent>
