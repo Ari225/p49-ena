@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Briefcase, Plus, Edit, Trash2, MapPin, Calendar } from 'lucide-react';
+import { Briefcase, Plus, Edit, Trash2, MapPin, Calendar, List, Clock, Users, Link, GraduationCap } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useCareerAnnouncements, CareerAnnouncement, CareerAnnouncementFormData } from '@/hooks/useCareerAnnouncements';
 
@@ -88,6 +88,14 @@ const EditorCarrieres = () => {
       lien_concours: announcement.lien_concours || ''
     });
     setShowForm(true);
+  };
+
+  const handleDialogClose = (open: boolean) => {
+    setShowForm(open);
+    if (!open) {
+      resetForm();
+      setEditingAnnouncement(null);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -300,20 +308,125 @@ const EditorCarrieres = () => {
             <Calendar className="w-4 h-4 mr-1" />
             {new Date(announcement.published_date).toLocaleDateString('fr-FR')}
           </div>
-          {announcement.lieu && (
-            <div className="flex items-center text-sm text-gray-500">
-              <MapPin className="w-4 h-4 mr-1" />
-              {announcement.lieu}
-            </div>
-          )}
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600 mb-2">{announcement.description}</p>
-        {announcement.niveau && <p className="text-sm"><strong>Niveau:</strong> {announcement.niveau}</p>}
-        {announcement.duree_formation && <p className="text-sm"><strong>Durée:</strong> {announcement.duree_formation} jours</p>}
-        {announcement.duree_coaching && <p className="text-sm"><strong>Durée:</strong> {announcement.duree_coaching}</p>}
-        {announcement.nombre_places && <p className="text-sm"><strong>Places:</strong> {announcement.nombre_places}</p>}
+        <p className="text-gray-600 mb-3">{announcement.description}</p>
+        
+        {/* Informations spécifiques à chaque catégorie */}
+        <div className="space-y-2 mb-4">
+          {/* Formations */}
+          {announcement.category === 'Formations' && (
+            <div className="space-y-1">
+              {announcement.niveau && (
+                <div className="flex items-center text-sm">
+                  <GraduationCap className="w-4 h-4 mr-2 text-blue-500" />
+                  <strong>Niveau:</strong> <span className="ml-1">{announcement.niveau}</span>
+                </div>
+              )}
+              {announcement.date_debut && (
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-4 h-4 mr-2 text-green-500" />
+                  <strong>Date de début:</strong> <span className="ml-1">{new Date(announcement.date_debut).toLocaleDateString('fr-FR')}</span>
+                </div>
+              )}
+              {announcement.duree_formation && (
+                <div className="flex items-center text-sm">
+                  <Clock className="w-4 h-4 mr-2 text-orange-500" />
+                  <strong>Durée:</strong> <span className="ml-1">{announcement.duree_formation} jours</span>
+                </div>
+              )}
+              {announcement.type_formation && (
+                <div className="flex items-center text-sm">
+                  <span className="text-purple-500 mr-2">📍</span>
+                  <strong>Type:</strong> <span className="ml-1 capitalize">{announcement.type_formation}</span>
+                </div>
+              )}
+              {announcement.lieu && (
+                <div className="flex items-center text-sm">
+                  <MapPin className="w-4 h-4 mr-2 text-red-500" />
+                  <strong>Lieu:</strong> <span className="ml-1">{announcement.lieu}</span>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Renforcement des capacités */}
+          {announcement.category === 'Renforcement des capacités' && announcement.points_renforcement && announcement.points_renforcement.length > 0 && (
+            <div>
+              <div className="flex items-center text-sm font-semibold mb-2">
+                <span className="text-blue-500 mr-2">💪</span>
+                Points de renforcement:
+              </div>
+              <ul className="ml-6 space-y-1">
+                {announcement.points_renforcement.map((point, index) => (
+                  <li key={index} className="text-sm flex items-start">
+                    <span className="text-primary mr-2">•</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {/* Coaching & mentorat */}
+          {announcement.category === 'Coaching & mentorat' && (
+            <div className="space-y-1">
+              {announcement.duree_coaching && (
+                <div className="flex items-center text-sm">
+                  <Clock className="w-4 h-4 mr-2 text-blue-500" />
+                  <strong>Durée:</strong> <span className="ml-1">{announcement.duree_coaching}</span>
+                </div>
+              )}
+              {announcement.format && (
+                <div className="flex items-center text-sm">
+                  <span className="text-green-500 mr-2">📋</span>
+                  <strong>Format:</strong> <span className="ml-1">{announcement.format}</span>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Concours */}
+          {announcement.category === 'Concours' && (
+            <div className="space-y-1">
+              {announcement.date_ouverture && (
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-4 h-4 mr-2 text-green-500" />
+                  <strong>Ouverture:</strong> <span className="ml-1">{new Date(announcement.date_ouverture).toLocaleDateString('fr-FR')}</span>
+                </div>
+              )}
+              {announcement.date_limite && (
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-4 h-4 mr-2 text-red-500" />
+                  <strong>Date limite:</strong> <span className="ml-1">{new Date(announcement.date_limite).toLocaleDateString('fr-FR')}</span>
+                </div>
+              )}
+              {announcement.lieu && (
+                <div className="flex items-center text-sm">
+                  <MapPin className="w-4 h-4 mr-2 text-blue-500" />
+                  <strong>Lieu:</strong> <span className="ml-1">{announcement.lieu}</span>
+                </div>
+              )}
+              {announcement.nombre_places && (
+                <div className="flex items-center text-sm">
+                  <Users className="w-4 h-4 mr-2 text-purple-500" />
+                  <strong>Places:</strong> <span className="ml-1">{announcement.nombre_places}</span>
+                </div>
+              )}
+              {announcement.lien_concours && (
+                <div className="flex items-center text-sm">
+                  <Link className="w-4 h-4 mr-2 text-orange-500" />
+                  <strong>Lien:</strong> 
+                  <a href={announcement.lien_concours} target="_blank" rel="noopener noreferrer" className="ml-1 text-blue-600 hover:underline">
+                    Accéder au concours
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        
         <div className="flex space-x-2 mt-4">
           <Button size="sm" variant="outline" onClick={() => handleEdit(announcement)}>
             <Edit className="h-4 w-4 mr-1" />
@@ -349,6 +462,17 @@ const EditorCarrieres = () => {
             </Button>
           </div>
 
+          {/* Titre de la liste des annonces */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <List className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-gray-800">Liste des annonces</h2>
+              <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-sm font-medium">
+                {announcements.length}
+              </span>
+            </div>
+          </div>
+
           <div className="space-y-4">
             {loading ? (
               <div>Chargement...</div>
@@ -360,7 +484,7 @@ const EditorCarrieres = () => {
         <EditorSidebar />
 
         {/* Popup pour le formulaire */}
-        <Dialog open={showForm} onOpenChange={setShowForm}>
+        <Dialog open={showForm} onOpenChange={handleDialogClose}>
           <DialogContent className="mx-auto rounded-2xl max-w-[90vw] w-full max-h-[90vh] overflow-y-auto left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <DialogHeader>
               <DialogTitle>{editingAnnouncement ? 'Modifier une annonce' : 'Ajouter une annonce'}</DialogTitle>
@@ -419,6 +543,17 @@ const EditorCarrieres = () => {
             </Button>
           </div>
 
+          {/* Titre de la liste des annonces */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <List className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-semibold text-gray-800">Liste des annonces</h2>
+              <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                {announcements.length}
+              </span>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (
               <p className="text-center py-8 col-span-full">Chargement...</p>
@@ -430,7 +565,7 @@ const EditorCarrieres = () => {
         <EditorSidebar />
 
         {/* Popup pour le formulaire */}
-        <Dialog open={showForm} onOpenChange={setShowForm}>
+        <Dialog open={showForm} onOpenChange={handleDialogClose}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>{editingAnnouncement ? 'Modifier une annonce' : 'Ajouter une annonce'}</DialogTitle>
@@ -495,6 +630,17 @@ const EditorCarrieres = () => {
             </Button>
           </div>
 
+          {/* Titre de la liste des annonces */}
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <List className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-semibold text-gray-800">Liste des annonces</h2>
+              <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                {announcements.length}
+              </span>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (
               <p className="text-center py-8 col-span-full">Chargement...</p>
@@ -506,7 +652,7 @@ const EditorCarrieres = () => {
       </div>
 
       {/* Popup pour le formulaire */}
-      <Dialog open={showForm} onOpenChange={setShowForm}>
+      <Dialog open={showForm} onOpenChange={handleDialogClose}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>{editingAnnouncement ? 'Modifier une annonce' : 'Ajouter une annonce'}</DialogTitle>
