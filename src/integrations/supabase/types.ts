@@ -625,6 +625,7 @@ export type Database = {
           "Nom et Prénoms": string | null
           Position: Database["public"]["Enums"]["position_member"] | null
           Poste: string | null
+          Région: string | null
         }
         Insert: {
           created_at?: string
@@ -632,6 +633,7 @@ export type Database = {
           "Nom et Prénoms"?: string | null
           Position?: Database["public"]["Enums"]["position_member"] | null
           Poste?: string | null
+          Région?: string | null
         }
         Update: {
           created_at?: string
@@ -639,6 +641,7 @@ export type Database = {
           "Nom et Prénoms"?: string | null
           Position?: Database["public"]["Enums"]["position_member"] | null
           Poste?: string | null
+          Région?: string | null
         }
         Relationships: []
       }
