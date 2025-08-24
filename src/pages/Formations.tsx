@@ -1,48 +1,27 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { GraduationCap, Clock, Users, Award } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { useCareerAnnouncements } from '@/hooks/useCareerAnnouncements';
 
 const Formations = () => {
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
+  const navigate = useNavigate();
+  const { announcements, loading } = useCareerAnnouncements();
 
-  const formations = [
-    {
-      title: "Leadership et Management",
-      duration: "3 jours",
-      participants: "25 max",
-      description: "Développez vos compétences en leadership pour mieux diriger vos équipes.",
-      icon: Users,
-      level: "Intermédiaire"
-    },
-    {
-      title: "Gestion de Projet",
-      duration: "5 jours",
-      participants: "20 max",
-      description: "Maîtrisez les outils et méthodes de gestion de projet modernes.",
-      icon: Award,
-      level: "Débutant"
-    },
-    {
-      title: "Communication Publique",
-      duration: "2 jours",
-      participants: "30 max",
-      description: "Améliorez vos techniques de communication dans le secteur public.",
-      icon: GraduationCap,
-      level: "Tous niveaux"
-    },
-    {
-      title: "Digitalisation Administrative",
-      duration: "4 jours",
-      participants: "15 max",
-      description: "Adoptez les outils numériques pour moderniser l'administration.",
-      icon: Clock,
-      level: "Avancé"
-    }
-  ];
+  // Filtrer seulement les annonces de formations
+  const formations = announcements.filter(announcement => announcement.category === 'Formations');
+
+  const handleInscription = () => {
+    navigate('/contact');
+  };
+
+  const getDefaultIcon = () => GraduationCap;
 
   return (
     <Layout>
@@ -119,117 +98,165 @@ const Formations = () => {
         {/* Content Section - Mobile */}
         {isMobile && (
           <div className="container mx-auto py-12 px-[25px]">
-            <div className="grid grid-cols-1 gap-6">
-              {formations.map((formation, index) => (
-                <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
-                  <CardHeader>
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                        <formation.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-primary text-lg">{formation.title}</CardTitle>
-                        <span className="text-sm text-gray-500">{formation.level}</span>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 text-sm">{formation.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {formation.duration}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        {formation.participants}
-                      </div>
-                    </div>
-                    <button className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-                      S'inscrire
-                    </button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center">Chargement des formations...</div>
+            ) : formations.length === 0 ? (
+              <div className="text-center text-gray-500">Aucune formation disponible pour le moment.</div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                {formations.map((formation, index) => {
+                  const IconComponent = getDefaultIcon();
+                  return (
+                    <Card key={formation.id || index} className="hover:shadow-xl transition-shadow duration-300">
+                      <CardHeader>
+                        <div className="flex items-center mb-4">
+                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                            <IconComponent className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-primary text-lg">{formation.title}</CardTitle>
+                            {formation.niveau && <span className="text-sm text-gray-500">{formation.niveau}</span>}
+                          </div>
+                        </div>
+                        <p className="text-gray-600 text-sm">{formation.description}</p>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                          {formation.duree_formation && (
+                            <div className="flex items-center">
+                              <Clock className="h-4 w-4 mr-1" />
+                              {formation.duree_formation}
+                            </div>
+                          )}
+                          {formation.nombre_places && (
+                            <div className="flex items-center">
+                              <Users className="h-4 w-4 mr-1" />
+                              {formation.nombre_places}
+                            </div>
+                          )}
+                        </div>
+                        <Button 
+                          onClick={handleInscription} 
+                          className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                        >
+                          S'inscrire
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
         {/* Content Section - Tablet */}
         {isTab && (
           <div className="container mx-auto py-16 px-[50px]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {formations.map((formation, index) => (
-                <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
-                  <CardHeader>
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                        <formation.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-primary text-xl">{formation.title}</CardTitle>
-                        <span className="text-sm text-gray-500">{formation.level}</span>
-                      </div>
-                    </div>
-                    <p className="text-gray-600">{formation.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {formation.duration}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        {formation.participants}
-                      </div>
-                    </div>
-                    <button className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-                      S'inscrire
-                    </button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center">Chargement des formations...</div>
+            ) : formations.length === 0 ? (
+              <div className="text-center text-gray-500">Aucune formation disponible pour le moment.</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {formations.map((formation, index) => {
+                  const IconComponent = getDefaultIcon();
+                  return (
+                    <Card key={formation.id || index} className="hover:shadow-xl transition-shadow duration-300">
+                      <CardHeader>
+                        <div className="flex items-center mb-4">
+                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                            <IconComponent className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-primary text-xl">{formation.title}</CardTitle>
+                            {formation.niveau && <span className="text-sm text-gray-500">{formation.niveau}</span>}
+                          </div>
+                        </div>
+                        <p className="text-gray-600">{formation.description}</p>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                          {formation.duree_formation && (
+                            <div className="flex items-center">
+                              <Clock className="h-4 w-4 mr-1" />
+                              {formation.duree_formation}
+                            </div>
+                          )}
+                          {formation.nombre_places && (
+                            <div className="flex items-center">
+                              <Users className="h-4 w-4 mr-1" />
+                              {formation.nombre_places}
+                            </div>
+                          )}
+                        </div>
+                        <Button 
+                          onClick={handleInscription} 
+                          className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                        >
+                          S'inscrire
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
         {/* Content Section - Desktop */}
         {!isMobile && !isTab && (
           <div className="container mx-auto py-16 px-[100px]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {formations.map((formation, index) => (
-                <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
-                  <CardHeader>
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                        <formation.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-primary text-xl">{formation.title}</CardTitle>
-                        <span className="text-sm text-gray-500">{formation.level}</span>
-                      </div>
-                    </div>
-                    <p className="text-gray-600">{formation.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {formation.duration}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        {formation.participants}
-                      </div>
-                    </div>
-                    <button className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-                      S'inscrire
-                    </button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {loading ? (
+              <div className="text-center">Chargement des formations...</div>
+            ) : formations.length === 0 ? (
+              <div className="text-center text-gray-500">Aucune formation disponible pour le moment.</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {formations.map((formation, index) => {
+                  const IconComponent = getDefaultIcon();
+                  return (
+                    <Card key={formation.id || index} className="hover:shadow-xl transition-shadow duration-300">
+                      <CardHeader>
+                        <div className="flex items-center mb-4">
+                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                            <IconComponent className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-primary text-xl">{formation.title}</CardTitle>
+                            {formation.niveau && <span className="text-sm text-gray-500">{formation.niveau}</span>}
+                          </div>
+                        </div>
+                        <p className="text-gray-600">{formation.description}</p>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                          {formation.duree_formation && (
+                            <div className="flex items-center">
+                              <Clock className="h-4 w-4 mr-1" />
+                              {formation.duree_formation}
+                            </div>
+                          )}
+                          {formation.nombre_places && (
+                            <div className="flex items-center">
+                              <Users className="h-4 w-4 mr-1" />
+                              {formation.nombre_places}
+                            </div>
+                          )}
+                        </div>
+                        <Button 
+                          onClick={handleInscription} 
+                          className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                        >
+                          S'inscrire
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>
