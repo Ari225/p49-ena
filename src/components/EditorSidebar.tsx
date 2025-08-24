@@ -79,12 +79,7 @@ const EditorSidebar = () => {
                 >
                   <Icon className="h-5 w-5 mb-1" />
                   <span className="text-xs text-center leading-tight whitespace-nowrap">
-                    {(item.mobileTitle || item.title).split(' ').map((word, index, array) => (
-                      <span key={index}>
-                        {word}
-                        {index < array.length - 1 && index === Math.floor(array.length / 2) - 1 ? <br /> : ' '}
-                      </span>
-                    ))}
+                    {item.mobileTitle || item.title}
                   </span>
                 </Link>
               );
