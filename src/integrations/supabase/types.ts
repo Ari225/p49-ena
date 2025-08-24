@@ -361,6 +361,78 @@ export type Database = {
           },
         ]
       }
+      career_announcements: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          date_debut: string | null
+          date_limite: string | null
+          date_ouverture: string | null
+          description: string
+          duree_coaching: string | null
+          duree_formation: string | null
+          format: string | null
+          id: string
+          is_active: boolean
+          lien_concours: string | null
+          lieu: string | null
+          niveau: string | null
+          nombre_places: string | null
+          points_renforcement: Json | null
+          published_date: string
+          title: string
+          type_formation: string | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          date_debut?: string | null
+          date_limite?: string | null
+          date_ouverture?: string | null
+          description: string
+          duree_coaching?: string | null
+          duree_formation?: string | null
+          format?: string | null
+          id?: string
+          is_active?: boolean
+          lien_concours?: string | null
+          lieu?: string | null
+          niveau?: string | null
+          nombre_places?: string | null
+          points_renforcement?: Json | null
+          published_date?: string
+          title: string
+          type_formation?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          date_debut?: string | null
+          date_limite?: string | null
+          date_ouverture?: string | null
+          description?: string
+          duree_coaching?: string | null
+          duree_formation?: string | null
+          format?: string | null
+          id?: string
+          is_active?: boolean
+          lien_concours?: string | null
+          lieu?: string | null
+          niveau?: string | null
+          nombre_places?: string | null
+          points_renforcement?: Json | null
+          published_date?: string
+          title?: string
+          type_formation?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       communiques: {
         Row: {
           created_at: string
