@@ -1,258 +1,477 @@
 
-import React, { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
+import EditorSidebar from '@/components/EditorSidebar';
+import { useAuth } from '@/context/AuthContext';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { isAdmin } from '@/utils/roleUtils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Plus, Edit, Trash2, Users } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { isAdmin } from '@/utils/roleUtils';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Plus, Edit, Trash2, MapPin, Calendar, Eye } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
+interface EchoRegion {
+  id: string;
+  title: string;
+  summary?: string;
+  details?: string;
+  image_url?: string;
+  published_date: string;
+  published_by?: string;
+  created_at: string;
+  is_visible: boolean;
+  reading_time?: number;
+}
 
 const DashboardEchoRegions = () => {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const userIsAdmin = isAdmin(user);
+  
+  const [echoRegions, setEchoRegions] = useState<EchoRegion[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingEcho, setEditingEcho] = useState<EchoRegion | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    chef_lieu: '',
-    representant: '',
-    membres: '',
-    derniere_activite: ''
+    title: '',
+    summary: '',
+    details: '',
+    image_url: '',
+    published_date: new Date().toISOString().split('T')[0],
+    published_by: '',
+    is_visible: true,
+    reading_time: 5
   });
 
-  const mockRegions = [
-    {
-      id: '1',
-      name: 'Région du Centre',
-      chef_lieu: 'Yamoussoukro',
-      representant: 'Dr. Kouakou Marie',
-      membres: 120,
-      derniere_activite: 'Formation sur la gouvernance locale - Mars 2024'
-    },
-    {
-      id: '2',
-      name: 'Région de l\'Ouest',
-      chef_lieu: 'Man',
-      representant: 'M. Traoré Seydou',
-      membres: 85,
-      derniere_activite: 'Assemblée régionale - Février 2024'
+  useEffect(() => {
+    fetchEchoRegions();
+  }, []);
+
+  const fetchEchoRegions = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('news')
+        .select('*')
+        .eq('category', 'echo_regions')
+        .order('published_date', { ascending: false });
+
+      if (error) throw error;
+      setEchoRegions(data || []);
+    } catch (error) {
+      console.error('Erreur lors du chargement:', error);
+      toast.error('Erreur lors du chargement des échos des régions');
+    } finally {
+      setLoading(false);
     }
-  ];
-
-  if (!user || !isAdmin(user)) {
-    return <div>Non autorisé</div>;
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Nouvelle région:', formData);
-    setShowForm(false);
-    setFormData({ name: '', chef_lieu: '', representant: '', membres: '', derniere_activite: '' });
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      if (editingEcho) {
+        const { error } = await supabase
+          .from('news')
+          .update({
+            ...formData,
+            category: 'echo_regions',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', editingEcho.id);
+
+        if (error) throw error;
+        toast.success('Écho des régions mis à jour avec succès');
+      } else {
+        const { error } = await supabase
+          .from('news')
+          .insert([{
+            ...formData,
+            category: 'echo_regions',
+            created_by: user?.id
+          }]);
+
+        if (error) throw error;
+        toast.success('Écho des régions créé avec succès');
+      }
+
+      resetForm();
+      fetchEchoRegions();
+    } catch (error) {
+      console.error('Erreur:', error);
+      toast.error('Erreur lors de la sauvegarde');
+    }
+  };
+
+  const handleEdit = (echo: EchoRegion) => {
+    setEditingEcho(echo);
+    setFormData({
+      title: echo.title,
+      summary: echo.summary || '',
+      details: echo.details || '',
+      image_url: echo.image_url || '',
+      published_date: echo.published_date,
+      published_by: echo.published_by || '',
+      is_visible: echo.is_visible,
+      reading_time: echo.reading_time || 5
+    });
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet écho des régions ?')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('news')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      toast.success('Écho des régions supprimé avec succès');
+      fetchEchoRegions();
+    } catch (error) {
+      console.error('Erreur:', error);
+      toast.error('Erreur lors de la suppression');
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      summary: '',
+      details: '',
+      image_url: '',
+      published_date: new Date().toISOString().split('T')[0],
+      published_by: '',
+      is_visible: true,
+      reading_time: 5
+    });
+    setEditingEcho(null);
+    setShowForm(false);
+  };
+
+  const renderEchoCard = (echo: EchoRegion) => (
+    <Card key={echo.id} className="hover:shadow-lg transition-shadow">
+      <CardHeader>
+        <div className="flex justify-between items-start">
+          <CardTitle className="text-lg line-clamp-2">{echo.title}</CardTitle>
+          <div className="flex items-center gap-2 ml-2">
+            <Badge variant={echo.is_visible ? "default" : "secondary"}>
+              {echo.is_visible ? "Visible" : "Masqué"}
+            </Badge>
+          </div>
+        </div>
+        {echo.summary && (
+          <p className="text-sm text-gray-600 line-clamp-3">{echo.summary}</p>
+        )}
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            <span>Publié le {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}</span>
+          </div>
+          {echo.published_by && (
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4" />
+              <span>Par {echo.published_by}</span>
+            </div>
+          )}
+          {echo.reading_time && (
+            <div className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              <span>{echo.reading_time} min de lecture</span>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2 mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleEdit(echo)}
+          >
+            <Edit className="h-4 w-4 mr-1" />
+            Modifier
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleDelete(echo.id)}
+            className="text-red-600 hover:text-red-700"
+          >
+            <Trash2 className="h-4 w-4 mr-1" />
+            Supprimer
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   if (isMobile) {
     return (
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary whitespace-nowrap">Gestion écho des régions</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer les informations régionales</p>
-          </div>
-
-          <div className="mb-4">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90 w-full"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle région'}
-            </Button>
-          </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Ajouter une région</CardTitle>
-              </CardHeader>
-              <CardContent>
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-2xl font-bold text-primary">Écho des régions</h1>
+              <p className="text-gray-600 text-sm">Gérer les actualités régionales</p>
+            </div>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogTrigger asChild>
+                <Button size="sm">
+                  <Plus className="h-4 w-4 mr-1" />
+                  Nouveau
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
+                  </DialogTitle>
+                </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder="Nom de la région"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Chef-lieu"
-                    value={formData.chef_lieu}
-                    onChange={(e) => setFormData({...formData, chef_lieu: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Représentant"
-                    value={formData.representant}
-                    onChange={(e) => setFormData({...formData, representant: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Nombre de membres"
-                    type="number"
-                    value={formData.membres}
-                    onChange={(e) => setFormData({...formData, membres: e.target.value})}
-                    required
-                  />
-                  <Textarea
-                    placeholder="Dernière activité"
-                    value={formData.derniere_activite}
-                    onChange={(e) => setFormData({...formData, derniere_activite: e.target.value})}
-                    required
-                  />
-                  <Button type="submit" className="w-full">Ajouter</Button>
+                  <div>
+                    <Label htmlFor="title">Titre *</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({...formData, title: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="summary">Résumé</Label>
+                    <Textarea
+                      id="summary"
+                      value={formData.summary}
+                      onChange={(e) => setFormData({...formData, summary: e.target.value})}
+                      rows={3}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="details">Contenu détaillé</Label>
+                    <Textarea
+                      id="details"
+                      value={formData.details}
+                      onChange={(e) => setFormData({...formData, details: e.target.value})}
+                      rows={5}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="image_url">URL de l'image</Label>
+                    <Input
+                      id="image_url"
+                      type="url"
+                      value={formData.image_url}
+                      onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="published_date">Date de publication</Label>
+                    <Input
+                      id="published_date"
+                      type="date"
+                      value={formData.published_date}
+                      onChange={(e) => setFormData({...formData, published_date: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="published_by">Publié par</Label>
+                    <Input
+                      id="published_by"
+                      value={formData.published_by}
+                      onChange={(e) => setFormData({...formData, published_by: e.target.value})}
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="is_visible"
+                      checked={formData.is_visible}
+                      onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
+                    />
+                    <Label htmlFor="is_visible">Visible sur le site</Label>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button type="submit" className="flex-1">
+                      {editingEcho ? 'Mettre à jour' : 'Créer'}
+                    </Button>
+                    <Button type="button" variant="outline" onClick={resetForm}>
+                      Annuler
+                    </Button>
+                  </div>
                 </form>
-              </CardContent>
-            </Card>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-8">Chargement...</div>
+          ) : (
+            <div className="space-y-4">
+              {echoRegions.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  Aucun écho des régions trouvé
+                </div>
+              ) : (
+                echoRegions.map(renderEchoCard)
+              )}
+            </div>
           )}
 
-          <div className="space-y-4">
-            {mockRegions.map((region) => (
-              <Card key={region.id}>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center">
-                    <MapPin className="w-5 h-5 mr-2" />
-                    {region.name}
-                  </CardTitle>
-                  <p className="text-sm text-gray-600">{region.chef_lieu}</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 mb-4">
-                    <p><strong>Représentant:</strong> {region.representant}</p>
-                    <p className="flex items-center">
-                      <Users className="w-4 h-4 mr-1" />
-                      <strong>Membres:</strong> {region.membres}
-                    </p>
-                    <p><strong>Dernière activité:</strong> {region.derniere_activite}</p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         </div>
-        <AdminSidebar />
       </Layout>
     );
   }
 
+  // Version desktop/tablet
   return (
     <Layout>
       <div className="flex">
-        <AdminSidebar />
+        {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         
         <div className="flex-1 ml-64 p-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Gestion écho des régions</h1>
-            <p className="text-gray-600 mt-2">Gérer les informations régionales</p>
-          </div>
-
-          <div className="mb-6">
-            <Button 
-              onClick={() => setShowForm(!showForm)} 
-              className="bg-primary hover:bg-primary/90"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              {showForm ? 'Annuler' : 'Nouvelle région'}
-            </Button>
-          </div>
-
-          {showForm && (
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Ajouter une région</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Input
-                    placeholder="Nom de la région"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Chef-lieu"
-                    value={formData.chef_lieu}
-                    onChange={(e) => setFormData({...formData, chef_lieu: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Représentant"
-                    value={formData.representant}
-                    onChange={(e) => setFormData({...formData, representant: e.target.value})}
-                    required
-                  />
-                  <Input
-                    placeholder="Nombre de membres"
-                    type="number"
-                    value={formData.membres}
-                    onChange={(e) => setFormData({...formData, membres: e.target.value})}
-                    required
-                  />
-                  <Textarea
-                    placeholder="Dernière activité"
-                    value={formData.derniere_activite}
-                    onChange={(e) => setFormData({...formData, derniere_activite: e.target.value})}
-                    required
-                  />
-                  <Button type="submit">Ajouter la région</Button>
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-primary">Écho des régions</h1>
+              <p className="text-gray-600">Gérer les actualités et informations régionales</p>
+            </div>
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="h-5 w-5 mr-2" />
+                  Nouvel écho des régions
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
+                  </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <Label htmlFor="title">Titre *</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({...formData, title: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="summary">Résumé</Label>
+                    <Textarea
+                      id="summary"
+                      value={formData.summary}
+                      onChange={(e) => setFormData({...formData, summary: e.target.value})}
+                      rows={3}
+                      placeholder="Un bref résumé de l'actualité régionale..."
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="details">Contenu détaillé</Label>
+                    <Textarea
+                      id="details"
+                      value={formData.details}
+                      onChange={(e) => setFormData({...formData, details: e.target.value})}
+                      rows={6}
+                      placeholder="Le contenu complet de l'écho des régions..."
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="image_url">URL de l'image</Label>
+                    <Input
+                      id="image_url"
+                      type="url"
+                      value={formData.image_url}
+                      onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                      placeholder="https://exemple.com/image.jpg"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="published_date">Date de publication</Label>
+                      <Input
+                        id="published_date"
+                        type="date"
+                        value={formData.published_date}
+                        onChange={(e) => setFormData({...formData, published_date: e.target.value})}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="reading_time">Temps de lecture (min)</Label>
+                      <Input
+                        id="reading_time"
+                        type="number"
+                        min="1"
+                        value={formData.reading_time}
+                        onChange={(e) => setFormData({...formData, reading_time: parseInt(e.target.value)})}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="published_by">Publié par (région/auteur)</Label>
+                    <Input
+                      id="published_by"
+                      value={formData.published_by}
+                      onChange={(e) => setFormData({...formData, published_by: e.target.value})}
+                      placeholder="Nom de la région ou de l'auteur"
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="is_visible"
+                      checked={formData.is_visible}
+                      onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
+                    />
+                    <Label htmlFor="is_visible">Visible sur le site</Label>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button type="submit" className="flex-1">
+                      {editingEcho ? 'Mettre à jour' : 'Créer'}
+                    </Button>
+                    <Button type="button" variant="outline" onClick={resetForm}>
+                      Annuler
+                    </Button>
+                  </div>
                 </form>
-              </CardContent>
-            </Card>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockRegions.map((region) => (
-              <Card key={region.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <MapPin className="w-5 h-5 mr-2" />
-                    {region.name}
-                  </CardTitle>
-                  <p className="text-gray-600">{region.chef_lieu}</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 mb-4">
-                    <p><strong>Représentant:</strong> {region.representant}</p>
-                    <p className="flex items-center">
-                      <Users className="w-4 h-4 mr-1" />
-                      <strong>Membres:</strong> {region.membres}
-                    </p>
-                    <p><strong>Dernière activité:</strong> {region.derniere_activite}</p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
-                      <Edit className="h-4 w-4 mr-1" />
-                      Modifier
-                    </Button>
-                    <Button size="sm" variant="outline" className="text-red-600">
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Supprimer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+              </DialogContent>
+            </Dialog>
           </div>
+
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="text-gray-500">Chargement des échos des régions...</div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {echoRegions.length === 0 ? (
+                <div className="col-span-full text-center py-12 text-gray-500">
+                  <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p className="text-lg font-medium">Aucun écho des régions</p>
+                  <p>Commencez par créer votre première actualité régionale</p>
+                </div>
+              ) : (
+                echoRegions.map(renderEchoCard)
+              )}
+            </div>
+          )}
         </div>
       </div>
     </Layout>
