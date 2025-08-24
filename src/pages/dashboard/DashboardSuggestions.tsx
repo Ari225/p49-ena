@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import Layout from '@/components/Layout';
+import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Loader2, MessageSquare, Calendar, User, Tag, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useIsMobile } from '@/hooks/use-mobile';
-import EditorSidebar from '@/components/EditorSidebar';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
 interface Suggestion {
   id: string;
@@ -28,6 +29,7 @@ const DashboardSuggestions = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,7 +38,6 @@ const DashboardSuggestions = () => {
       navigate('/login');
       return;
     }
-
     fetchSuggestions();
   }, [user, navigate]);
 
@@ -92,134 +93,296 @@ const DashboardSuggestions = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen">
-        {!isMobile && <EditorSidebar />}
-        <div className={`flex-1 ${!isMobile ? 'ml-64' : ''}`}>
-          <div className="flex items-center justify-center min-h-screen">
-            <Loader2 className="h-8 w-8 animate-spin" />
+      <Layout>
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </Layout>
+    );
+  }
+
+  // Render mobile layout
+  if (isMobile) {
+    return (
+      <Layout>
+        <div className="px-[25px] py-[50px] pb-20">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-primary whitespace-nowrap">Suggestions</h1>
+            <p className="text-gray-600 mt-1 text-sm">Gérer les suggestions soumises</p>
+          </div>
+
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <MessageSquare className="w-5 h-5 text-primary" />
+              <h2 className="text-lg font-semibold text-gray-800">Liste des suggestions ({suggestions.length})</h2>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {suggestions.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Aucune suggestion</h3>
+                  <p className="text-muted-foreground text-center">
+                    Aucune suggestion n'a été soumise pour le moment.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              suggestions.map((suggestion) => (
+                <Card key={suggestion.id} className="border-l-4 border-l-primary">
+                  <CardHeader>
+                    <div className="space-y-2">
+                      <CardTitle className="text-lg">{suggestion.subject}</CardTitle>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge className={getPriorityColor(suggestion.priority)}>
+                          <AlertCircle className="h-3 w-3 mr-1" />
+                          {suggestion.priority}
+                        </Badge>
+                        <Badge className={getCategoryColor(suggestion.category)}>
+                          <Tag className="h-3 w-3 mr-1" />
+                          {suggestion.category}
+                        </Badge>
+                      </div>
+                      <CardDescription className="space-y-1 text-sm">
+                        <div className="flex items-center space-x-1">
+                          <User className="h-4 w-4" />
+                          <span>{suggestion.name}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{new Date(suggestion.created_at).toLocaleDateString('fr-FR')}</span>
+                        </div>
+                      </CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <h4 className="font-medium mb-2">Description</h4>
+                        <p className="text-muted-foreground leading-relaxed text-sm">
+                          {suggestion.description}
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-2 pt-3 border-t">
+                        <div className="text-sm">
+                          <span className="font-medium">Email:</span>{' '}
+                          <a href={`mailto:${suggestion.email}`} className="text-primary hover:underline">
+                            {suggestion.email}
+                          </a>
+                        </div>
+                        {suggestion.phone && (
+                          <div className="text-sm">
+                            <span className="font-medium">Téléphone:</span>{' '}
+                            <a href={`tel:${suggestion.phone}`} className="text-primary hover:underline">
+                              {suggestion.phone}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+        </div>
+        <EditorSidebar />
+      </Layout>
+    );
+  }
+
+  // Render tablet layout  
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Suggestions</h1>
+            <p className="text-gray-600 mt-2">Gérer les suggestions soumises par les utilisateurs</p>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <MessageSquare className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-semibold text-gray-800">Liste des suggestions ({suggestions.length})</h2>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {suggestions.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Aucune suggestion</h3>
+                  <p className="text-muted-foreground text-center">
+                    Aucune suggestion n'a été soumise pour le moment.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              suggestions.map((suggestion) => (
+                <Card key={suggestion.id} className="border-l-4 border-l-primary">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <CardTitle className="text-xl">{suggestion.subject}</CardTitle>
+                        <CardDescription className="flex items-center space-x-4 text-sm">
+                          <div className="flex items-center space-x-1">
+                            <User className="h-4 w-4" />
+                            <span>{suggestion.name}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-4 w-4" />
+                            <span>{new Date(suggestion.created_at).toLocaleDateString('fr-FR')}</span>
+                          </div>
+                        </CardDescription>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <Badge className={getPriorityColor(suggestion.priority)}>
+                          <AlertCircle className="h-3 w-3 mr-1" />
+                          {suggestion.priority}
+                        </Badge>
+                        <Badge className={getCategoryColor(suggestion.category)}>
+                          <Tag className="h-3 w-3 mr-1" />
+                          {suggestion.category}
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Description</h4>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {suggestion.description}
+                        </p>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-4 pt-4 border-t">
+                        <div className="text-sm">
+                          <span className="font-medium">Email:</span>{' '}
+                          <a href={`mailto:${suggestion.email}`} className="text-primary hover:underline">
+                            {suggestion.email}
+                          </a>
+                        </div>
+                        {suggestion.phone && (
+                          <div className="text-sm">
+                            <span className="font-medium">Téléphone:</span>{' '}
+                            <a href={`tel:${suggestion.phone}`} className="text-primary hover:underline">
+                              {suggestion.phone}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+        </div>
+        <EditorSidebar />
+      </Layout>
+    );
+  }
+
+  // Render desktop layout
+  return (
+    <Layout>
+      <div className="flex">
+        <EditorSidebar />
+        
+        <div className="flex-1 ml-64 p-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Suggestions</h1>
+            <p className="text-gray-600 mt-2">Gérer les suggestions soumises par les utilisateurs</p>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <MessageSquare className="w-5 h-5 text-primary" />
+              <h2 className="text-xl font-semibold text-gray-800">Liste des suggestions ({suggestions.length})</h2>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {suggestions.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Aucune suggestion</h3>
+                  <p className="text-muted-foreground text-center">
+                    Aucune suggestion n'a été soumise pour le moment.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              suggestions.map((suggestion) => (
+                <Card key={suggestion.id} className="border-l-4 border-l-primary">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <CardTitle className="text-xl">{suggestion.subject}</CardTitle>
+                        <CardDescription className="flex items-center space-x-4 text-sm">
+                          <div className="flex items-center space-x-1">
+                            <User className="h-4 w-4" />
+                            <span>{suggestion.name}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-4 w-4" />
+                            <span>{new Date(suggestion.created_at).toLocaleDateString('fr-FR')}</span>
+                          </div>
+                        </CardDescription>
+                      </div>
+                      <div className="flex flex-col space-y-2">
+                        <Badge className={getPriorityColor(suggestion.priority)}>
+                          <AlertCircle className="h-3 w-3 mr-1" />
+                          {suggestion.priority}
+                        </Badge>
+                        <Badge className={getCategoryColor(suggestion.category)}>
+                          <Tag className="h-3 w-3 mr-1" />
+                          {suggestion.category}
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Description</h4>
+                        <p className="text-muted-foreground leading-relaxed">
+                          {suggestion.description}
+                        </p>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-4 pt-4 border-t">
+                        <div className="text-sm">
+                          <span className="font-medium">Email:</span>{' '}
+                          <a href={`mailto:${suggestion.email}`} className="text-primary hover:underline">
+                            {suggestion.email}
+                          </a>
+                        </div>
+                        {suggestion.phone && (
+                          <div className="text-sm">
+                            <span className="font-medium">Téléphone:</span>{' '}
+                            <a href={`tel:${suggestion.phone}`} className="text-primary hover:underline">
+                              {suggestion.phone}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </div>
-    );
-  }
-
-  const mainContent = (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Suggestions</h1>
-          <p className="text-muted-foreground">
-            Gérez les suggestions soumises par les utilisateurs
-          </p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Badge variant="secondary" className="text-sm">
-            {suggestions.length} suggestion{suggestions.length !== 1 ? 's' : ''}
-          </Badge>
-        </div>
-      </div>
-
-      {suggestions.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Aucune suggestion</h3>
-            <p className="text-muted-foreground text-center">
-              Aucune suggestion n'a été soumise pour le moment.
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-6">
-          {suggestions.map((suggestion) => (
-            <Card key={suggestion.id} className="border-l-4 border-l-primary">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <CardTitle className="text-xl">{suggestion.subject}</CardTitle>
-                    <CardDescription className="flex items-center space-x-4 text-sm">
-                      <div className="flex items-center space-x-1">
-                        <User className="h-4 w-4" />
-                        <span>{suggestion.name}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{new Date(suggestion.created_at).toLocaleDateString('fr-FR')}</span>
-                      </div>
-                    </CardDescription>
-                  </div>
-                  <div className="flex flex-col space-y-2">
-                    <Badge className={getPriorityColor(suggestion.priority)}>
-                      <AlertCircle className="h-3 w-3 mr-1" />
-                      {suggestion.priority}
-                    </Badge>
-                    <Badge className={getCategoryColor(suggestion.category)}>
-                      <Tag className="h-3 w-3 mr-1" />
-                      {suggestion.category}
-                    </Badge>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2">Description</h4>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {suggestion.description}
-                    </p>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-4 pt-4 border-t">
-                    <div className="text-sm">
-                      <span className="font-medium">Email:</span>{' '}
-                      <a 
-                        href={`mailto:${suggestion.email}`}
-                        className="text-primary hover:underline"
-                      >
-                        {suggestion.email}
-                      </a>
-                    </div>
-                    {suggestion.phone && (
-                      <div className="text-sm">
-                        <span className="font-medium">Téléphone:</span>{' '}
-                        <a 
-                          href={`tel:${suggestion.phone}`}
-                          className="text-primary hover:underline"
-                        >
-                          {suggestion.phone}
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
-  if (isMobile) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-6 pb-20">
-          {mainContent}
-        </div>
-        <EditorSidebar />
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex min-h-screen bg-background">
-      <EditorSidebar />
-      <main className="flex-1 ml-64">
-        <div className="container mx-auto px-6 py-8">
-          {mainContent}
-        </div>
-      </main>
-    </div>
+    </Layout>
   );
 };
 
