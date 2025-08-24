@@ -119,13 +119,35 @@ const Formations = () => {
                           </div>
                         </div>
                         <p className="text-gray-600 text-sm">{formation.description}</p>
+                        
+                        {/* Informations supplémentaires */}
+                        <div className="mt-4 space-y-2 text-sm">
+                          {formation.type_formation && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Type:</span>
+                              <span className="ml-2">{formation.type_formation}</span>
+                            </div>
+                          )}
+                          {formation.lieu && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Lieu:</span>
+                              <span className="ml-2">{formation.lieu}</span>
+                            </div>
+                          )}
+                          {formation.format && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Format:</span>
+                              <span className="ml-2">{formation.format}</span>
+                            </div>
+                          )}
+                        </div>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-500 mb-4">
                           {formation.duree_formation && (
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-1" />
-                              {formation.duree_formation}
+                              {formation.duree_formation.includes('jour') ? formation.duree_formation : `${formation.duree_formation} jours`}
                             </div>
                           )}
                           {formation.nombre_places && (
@@ -174,13 +196,35 @@ const Formations = () => {
                           </div>
                         </div>
                         <p className="text-gray-600">{formation.description}</p>
+                        
+                        {/* Informations supplémentaires */}
+                        <div className="mt-4 space-y-2 text-sm">
+                          {formation.type_formation && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Type:</span>
+                              <span className="ml-2">{formation.type_formation}</span>
+                            </div>
+                          )}
+                          {formation.lieu && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Lieu:</span>
+                              <span className="ml-2">{formation.lieu}</span>
+                            </div>
+                          )}
+                          {formation.format && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Format:</span>
+                              <span className="ml-2">{formation.format}</span>
+                            </div>
+                          )}
+                        </div>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-500 mb-4">
                           {formation.duree_formation && (
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-1" />
-                              {formation.duree_formation}
+                              {formation.duree_formation.includes('jour') ? formation.duree_formation : `${formation.duree_formation} jours`}
                             </div>
                           )}
                           {formation.nombre_places && (
@@ -229,13 +273,35 @@ const Formations = () => {
                           </div>
                         </div>
                         <p className="text-gray-600">{formation.description}</p>
+                        
+                        {/* Informations supplémentaires */}
+                        <div className="mt-4 space-y-2 text-sm">
+                          {formation.type_formation && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Type:</span>
+                              <span className="ml-2">{formation.type_formation}</span>
+                            </div>
+                          )}
+                          {formation.lieu && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Lieu:</span>
+                              <span className="ml-2">{formation.lieu}</span>
+                            </div>
+                          )}
+                          {formation.format && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Format:</span>
+                              <span className="ml-2">{formation.format}</span>
+                            </div>
+                          )}
+                        </div>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-500 mb-4">
                           {formation.duree_formation && (
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-1" />
-                              {formation.duree_formation}
+                              {formation.duree_formation.includes('jour') ? formation.duree_formation : `${formation.duree_formation} jours`}
                             </div>
                           )}
                           {formation.nombre_places && (
