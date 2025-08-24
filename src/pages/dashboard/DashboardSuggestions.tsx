@@ -418,7 +418,7 @@ const DashboardSuggestions = () => {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {suggestions.length === 0 ? (
               <Card>
                 <CardContent className="flex flex-col items-center justify-center py-12">
