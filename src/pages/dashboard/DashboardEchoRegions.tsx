@@ -240,7 +240,7 @@ const DashboardEchoRegions = () => {
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Eye className="w-4 h-4 mr-1" />
-              Lecture:
+              Temps de lecture:
             </span>
             <span className="font-bold text-secondary">{echo.reading_time} min</span>
           </div>
@@ -256,41 +256,41 @@ const DashboardEchoRegions = () => {
             <p className="text-xs text-gray-600">{echo.summary}</p>
           </div>
           <div className="pt-2 border-t">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Actions:</h4>
-            <div className="space-y-1">
-              <div className="text-xs text-gray-600 flex items-start">
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">Actions disponibles:</h4>
+            <ul className="space-y-1">
+              <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Statut: {echo.is_visible ? "Visible" : "Masqué"}
-              </div>
-              <div className="text-xs text-gray-600 flex items-start">
+                Modifier le contenu et les métadonnées
+              </li>
+              <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Temps de lecture: {echo.reading_time} minutes
-              </div>
-              <div className="text-xs text-gray-600 flex items-start">
+                Gérer la visibilité ({echo.is_visible ? "Actuellement visible" : "Actuellement masqué"})
+              </li>
+              <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Région: {echo.published_by}
-              </div>
+                Supprimer définitivement l'article
+              </li>
+            </ul>
+            <div className="flex gap-2 mt-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleEdit(echo)}
+              >
+                <Edit className="h-4 w-4 mr-1" />
+                Modifier
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDelete(echo.id)}
+                className="text-red-600 hover:text-red-700"
+              >
+                <Trash2 className="h-4 w-4 mr-1" />
+                Supprimer
+              </Button>
             </div>
           </div>
-        </div>
-        <div className="flex gap-2 mt-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleEdit(echo)}
-          >
-            <Edit className="h-4 w-4 mr-1" />
-            Modifier
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleDelete(echo.id)}
-            className="text-red-600 hover:text-red-700"
-          >
-            <Trash2 className="h-4 w-4 mr-1" />
-            Supprimer
-          </Button>
         </div>
       </CardContent>
     </Card>
