@@ -183,58 +183,64 @@ const DashboardEchoRegions = () => {
       <CardContent>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Date de publication:</span>
-            <span className="font-medium text-primary">
-              {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}
-            </span>
+            <span className="text-sm text-gray-600">Auteur:</span>
+            <span className="font-medium text-primary">{echo.published_by || 'Rédaction P49'}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Eye className="w-4 h-4 mr-1" />
-              Temps de lecture:
+              Lecture:
             </span>
             <span className="font-bold text-secondary">{echo.reading_time || 5} min</span>
           </div>
           <div className="pt-2 border-t">
             <div className="flex items-center text-sm text-gray-600 mb-2">
-              <Calendar className="w-4 h-4 mr-1" />
-              Status:
+              <Calendar className="w-4 w-4 mr-1" />
+              Date de publication:
             </div>
-            <Badge variant={echo.is_visible ? "default" : "secondary"}>
-              {echo.is_visible ? "Visible" : "Masqué"}
-            </Badge>
+            <p className="text-sm font-medium text-primary">
+              {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}
+            </p>
           </div>
           {echo.summary && (
             <div className="pt-2 border-t">
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Résumé:</h4>
-              <p className="text-xs text-gray-600 line-clamp-3">{echo.summary}</p>
+              <p className="text-xs text-gray-600">{echo.summary}</p>
             </div>
           )}
-          {echo.details && (
-            <div className="pt-2 border-t">
-              <h4 className="text-sm font-semibold text-gray-700 mb-2">Contenu:</h4>
-              <p className="text-xs text-gray-600 line-clamp-2">{echo.details}</p>
+          <div className="pt-2 border-t">
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">Actions administrateur:</h4>
+            <div className="space-y-1">
+              <div className="text-xs text-gray-600 flex items-start">
+                <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                Status: {echo.is_visible ? "Visible sur le site" : "Masqué du public"}
+              </div>
+              <div className="text-xs text-gray-600 flex items-start">
+                <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                Dernière modification: {format(new Date(echo.created_at), 'd/MM/yyyy', { locale: fr })}
+              </div>
+              <div className="flex gap-2 mt-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleEdit(echo)}
+                  className="text-xs"
+                >
+                  <Edit className="h-3 w-3 mr-1" />
+                  Modifier
+                </Button>
+                <Button
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => handleDelete(echo.id)}
+                  className="text-red-600 hover:text-red-700 text-xs"
+                >
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Supprimer
+                </Button>
+              </div>
             </div>
-          )}
-        </div>
-        <div className="flex gap-2 mt-4 pt-4 border-t">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleEdit(echo)}
-          >
-            <Edit className="h-4 w-4 mr-1" />
-            Modifier
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleDelete(echo.id)}
-            className="text-red-600 hover:text-red-700"
-          >
-            <Trash2 className="h-4 w-4 mr-1" />
-            Supprimer
-          </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
