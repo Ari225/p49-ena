@@ -5,6 +5,7 @@ export interface DelegueRegional {
   id: number;
   name: string;
   position: string;
+  region: string;
 }
 
 export const useDeleguesRegionaux = () => {
@@ -42,7 +43,8 @@ export const useDeleguesRegionaux = () => {
           return {
             id: delegue.id,
             name: delegue["Nom et Prénoms"] || 'Nom non défini',
-            position: delegue["Poste"] || 'Poste non défini'
+            position: delegue["Poste"] || 'Poste non défini',
+            region: delegue["Région"] || 'Région non définie'
           };
         });
 

@@ -62,16 +62,16 @@ const DashboardEchoRegions = () => {
   // Créer des cartes basées sur les délégués régionaux
   const delegueCards = delegues.map((delegue) => ({
     id: delegue.id.toString(),
-    title: delegue.name,
-    summary: `Délégué régional - ${delegue.position}`,
-    details: `Informations sur la région représentée par ${delegue.name}`,
+    title: delegue.region, // Utiliser la région comme titre
+    summary: `Délégué régional - ${delegue.name}`,
+    details: `Informations sur ${delegue.region} représentée par ${delegue.name}`,
     image_url: '/lovable-uploads/Pers49.webp', // Image par défaut
     published_date: new Date().toISOString().split('T')[0],
     published_by: delegue.name,
     created_at: new Date().toISOString(),
     is_visible: true,
     reading_time: 5,
-    region: delegue.position.replace('Délégué régional ', '') // Extraire la région du poste
+    region: delegue.region // Utiliser la vraie région
   }));
   const fetchEchoRegions = async () => {
     try {
@@ -180,33 +180,33 @@ const DashboardEchoRegions = () => {
       <CardContent>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Représentant:</span>
+            <span className="text-sm text-gray-600">Délégué régional:</span>
             <span className="font-medium text-primary">{delegue.published_by}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Users className="w-4 h-4 mr-1" />
-              Poste:
+              Région:
             </span>
-            <span className="font-bold text-secondary">Délégué régional</span>
+            <span className="font-bold text-secondary">{delegue.region}</span>
           </div>
           <div className="pt-2 border-t">
             <div className="flex items-center text-sm text-gray-600 mb-2">
               <Calendar className="w-4 h-4 mr-1" />
-              Région:
+              Informations:
             </div>
             <p className="text-sm font-medium text-primary">{delegue.summary}</p>
           </div>
           <div className="pt-2 border-t">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Informations:</h4>
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">Détails:</h4>
             <ul className="space-y-1">
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Représentant actuel: {delegue.published_by}
+                Délégué: {delegue.published_by}
               </li>
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Région: {delegue.region}
+                Zone: {delegue.region}
               </li>
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
