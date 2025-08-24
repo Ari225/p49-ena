@@ -163,69 +163,65 @@ const DashboardEchoRegions = () => {
   };
 
   const renderEchoCard = (echo: EchoRegion) => (
-    <Card key={echo.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-200 h-full">
+    <Card key={echo.id} className="hover:shadow-xl transition-shadow duration-300">
       {echo.image_url && (
-        <div className="aspect-[16/10] overflow-hidden relative">
+        <div className="aspect-video overflow-hidden rounded-t-lg">
           <img 
             src={echo.image_url} 
             alt={echo.title} 
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
           />
-          <div className="absolute top-4 left-4">
-            <Badge variant={echo.is_visible ? "default" : "secondary"}>
-              {echo.is_visible ? "Visible" : "Masqué"}
-            </Badge>
-          </div>
-          {echo.published_by && (
-            <div className="absolute top-4 right-4">
-              <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
-                {echo.published_by}
-              </span>
-            </div>
-          )}
         </div>
       )}
-      <CardContent className="p-6">
-        <div className="flex items-center text-sm text-gray-500 gap-4 mb-3">
-          <div className="flex items-center bg-gray-50 px-2 py-1 rounded-md">
-            <Calendar className="h-3 w-3 mr-1" />
-            {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}
-          </div>
-          {echo.reading_time && (
-            <div className="flex items-center">
-              <Eye className="h-3 w-3 mr-1" />
-              <span>{echo.reading_time} min</span>
-            </div>
-          )}
+      <CardHeader>
+        <CardTitle className="text-primary text-xl">{echo.title}</CardTitle>
+        <div className="flex items-center text-gray-600 text-sm">
+          <MapPin className="w-4 h-4 mr-1" />
+          {echo.published_by || 'Perspectives 49'}
         </div>
-        
-        <CardTitle className="text-lg font-semibold text-primary leading-tight line-clamp-2 mb-3">
-          {echo.title}
-        </CardTitle>
-        
-        {echo.summary && (
-          <p className="text-gray-700 line-clamp-3 leading-relaxed mb-4 text-sm">
-            {echo.summary}
-          </p>
-        )}
-        
-        {!echo.image_url && (
-          <div className="flex items-center gap-2 mb-4">
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-600">Date de publication:</span>
+            <span className="font-medium text-primary">
+              {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-600 flex items-center">
+              <Eye className="w-4 h-4 mr-1" />
+              Temps de lecture:
+            </span>
+            <span className="font-bold text-secondary">{echo.reading_time || 5} min</span>
+          </div>
+          <div className="pt-2 border-t">
+            <div className="flex items-center text-sm text-gray-600 mb-2">
+              <Calendar className="w-4 h-4 mr-1" />
+              Status:
+            </div>
             <Badge variant={echo.is_visible ? "default" : "secondary"}>
               {echo.is_visible ? "Visible" : "Masqué"}
             </Badge>
-            {echo.published_by && (
-              <span className="text-xs text-gray-500">Par {echo.published_by}</span>
-            )}
           </div>
-        )}
-        
-        <div className="flex gap-2 mt-4">
+          {echo.summary && (
+            <div className="pt-2 border-t">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Résumé:</h4>
+              <p className="text-xs text-gray-600 line-clamp-3">{echo.summary}</p>
+            </div>
+          )}
+          {echo.details && (
+            <div className="pt-2 border-t">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Contenu:</h4>
+              <p className="text-xs text-gray-600 line-clamp-2">{echo.details}</p>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2 mt-4 pt-4 border-t">
           <Button
             variant="outline"
             size="sm"
             onClick={() => handleEdit(echo)}
-            className="flex-1"
           >
             <Edit className="h-4 w-4 mr-1" />
             Modifier
@@ -236,7 +232,8 @@ const DashboardEchoRegions = () => {
             onClick={() => handleDelete(echo.id)}
             className="text-red-600 hover:text-red-700"
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-4 w-4 mr-1" />
+            Supprimer
           </Button>
         </div>
       </CardContent>
