@@ -122,6 +122,18 @@ const Formations = () => {
                         
                         {/* Informations supplémentaires */}
                         <div className="mt-4 space-y-2 text-sm">
+                          {formation.niveau && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Niveau:</span>
+                              <span className="ml-2">{formation.niveau}</span>
+                            </div>
+                          )}
+                          {formation.date_debut && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Date de début:</span>
+                              <span className="ml-2">{new Date(formation.date_debut).toLocaleDateString('fr-FR')}</span>
+                            </div>
+                          )}
                           {formation.type_formation && (
                             <div className="flex items-center text-gray-600">
                               <span className="font-medium">Type:</span>
@@ -199,6 +211,18 @@ const Formations = () => {
                         
                         {/* Informations supplémentaires */}
                         <div className="mt-4 space-y-2 text-sm">
+                          {formation.niveau && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Niveau:</span>
+                              <span className="ml-2">{formation.niveau}</span>
+                            </div>
+                          )}
+                          {formation.date_debut && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Date de début:</span>
+                              <span className="ml-2">{new Date(formation.date_debut).toLocaleDateString('fr-FR')}</span>
+                            </div>
+                          )}
                           {formation.type_formation && (
                             <div className="flex items-center text-gray-600">
                               <span className="font-medium">Type:</span>
@@ -276,6 +300,18 @@ const Formations = () => {
                         
                         {/* Informations supplémentaires */}
                         <div className="mt-4 space-y-2 text-sm">
+                          {formation.niveau && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Niveau:</span>
+                              <span className="ml-2">{formation.niveau}</span>
+                            </div>
+                          )}
+                          {formation.date_debut && (
+                            <div className="flex items-center text-gray-600">
+                              <span className="font-medium">Date de début:</span>
+                              <span className="ml-2">{new Date(formation.date_debut).toLocaleDateString('fr-FR')}</span>
+                            </div>
+                          )}
                           {formation.type_formation && (
                             <div className="flex items-center text-gray-600">
                               <span className="font-medium">Type:</span>
