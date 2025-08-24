@@ -163,44 +163,69 @@ const DashboardEchoRegions = () => {
   };
 
   const renderEchoCard = (echo: EchoRegion) => (
-    <Card key={echo.id} className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="flex justify-between items-start">
-          <CardTitle className="text-lg line-clamp-2">{echo.title}</CardTitle>
-          <div className="flex items-center gap-2 ml-2">
+    <Card key={echo.id} className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-200 h-full">
+      {echo.image_url && (
+        <div className="aspect-[16/10] overflow-hidden relative">
+          <img 
+            src={echo.image_url} 
+            alt={echo.title} 
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+          />
+          <div className="absolute top-4 left-4">
             <Badge variant={echo.is_visible ? "default" : "secondary"}>
               {echo.is_visible ? "Visible" : "Masqué"}
             </Badge>
           </div>
-        </div>
-        {echo.summary && (
-          <p className="text-sm text-gray-600 line-clamp-3">{echo.summary}</p>
-        )}
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2 text-sm text-gray-500">
-          <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            <span>Publié le {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}</span>
-          </div>
           {echo.published_by && (
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              <span>Par {echo.published_by}</span>
-            </div>
-          )}
-          {echo.reading_time && (
-            <div className="flex items-center gap-2">
-              <Eye className="h-4 w-4" />
-              <span>{echo.reading_time} min de lecture</span>
+            <div className="absolute top-4 right-4">
+              <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
+                {echo.published_by}
+              </span>
             </div>
           )}
         </div>
+      )}
+      <CardContent className="p-6">
+        <div className="flex items-center text-sm text-gray-500 gap-4 mb-3">
+          <div className="flex items-center bg-gray-50 px-2 py-1 rounded-md">
+            <Calendar className="h-3 w-3 mr-1" />
+            {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}
+          </div>
+          {echo.reading_time && (
+            <div className="flex items-center">
+              <Eye className="h-3 w-3 mr-1" />
+              <span>{echo.reading_time} min</span>
+            </div>
+          )}
+        </div>
+        
+        <CardTitle className="text-lg font-semibold text-primary leading-tight line-clamp-2 mb-3">
+          {echo.title}
+        </CardTitle>
+        
+        {echo.summary && (
+          <p className="text-gray-700 line-clamp-3 leading-relaxed mb-4 text-sm">
+            {echo.summary}
+          </p>
+        )}
+        
+        {!echo.image_url && (
+          <div className="flex items-center gap-2 mb-4">
+            <Badge variant={echo.is_visible ? "default" : "secondary"}>
+              {echo.is_visible ? "Visible" : "Masqué"}
+            </Badge>
+            {echo.published_by && (
+              <span className="text-xs text-gray-500">Par {echo.published_by}</span>
+            )}
+          </div>
+        )}
+        
         <div className="flex gap-2 mt-4">
           <Button
             variant="outline"
             size="sm"
             onClick={() => handleEdit(echo)}
+            className="flex-1"
           >
             <Edit className="h-4 w-4 mr-1" />
             Modifier
@@ -211,8 +236,7 @@ const DashboardEchoRegions = () => {
             onClick={() => handleDelete(echo.id)}
             className="text-red-600 hover:text-red-700"
           >
-            <Trash2 className="h-4 w-4 mr-1" />
-            Supprimer
+            <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       </CardContent>
