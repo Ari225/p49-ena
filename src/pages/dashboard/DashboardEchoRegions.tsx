@@ -41,6 +41,58 @@ const DashboardEchoRegions = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingEcho, setEditingEcho] = useState<EchoRegion | null>(null);
+  
+  // Données d'exemple pour tester l'affichage des cartes
+  const mockEchoRegions: EchoRegion[] = [
+    {
+      id: '1',
+      title: "Rencontre mensuelle des membres d'Abidjan",
+      summary: "Plus de 30 membres se sont retrouvés pour échanger sur les projets en cours et planifier les activités futures.",
+      details: "La rencontre mensuelle de la délégation d'Abidjan s'est tenue le samedi 25 mars 2024 dans les locaux de la préfecture.",
+      image_url: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
+      published_date: "2024-03-25",
+      published_by: "Délégation Abidjan",
+      created_at: "2024-03-25T10:00:00Z",
+      is_visible: true,
+      reading_time: 5
+    },
+    {
+      id: '2', 
+      title: "Session de formation en leadership",
+      summary: "Formation intensive sur le leadership transformationnel organisée pour 15 membres de la région de Bouaké.",
+      details: "Une formation de trois jours sur le leadership transformationnel s'est déroulée du 18 au 20 mars 2024.",
+      image_url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=300&fit=crop",
+      published_date: "2024-03-20",
+      published_by: "Délégation Bouaké",
+      created_at: "2024-03-20T14:30:00Z",
+      is_visible: true,
+      reading_time: 7
+    },
+    {
+      id: '3',
+      title: "Inauguration du bureau régional de San-Pédro", 
+      summary: "Ouverture officielle du nouveau bureau régional en présence du Préfet et des autorités locales.",
+      details: "Le nouveau bureau régional de San-Pédro a été officiellement inauguré le 15 mars 2024.",
+      image_url: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+      published_date: "2024-03-15",
+      published_by: "Délégation San-Pédro", 
+      created_at: "2024-03-15T09:00:00Z",
+      is_visible: true,
+      reading_time: 4
+    },
+    {
+      id: '4',
+      title: "Atelier sur la gestion publique moderne",
+      summary: "Workshop sur les innovations en gestion publique locale organisé à Korhogo.",
+      details: "L'atelier de formation sur la gestion publique moderne s'est tenu le 10 mars 2024 à Korhogo.",
+      image_url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop",
+      published_date: "2024-03-10",
+      published_by: "Délégation Korhogo",
+      created_at: "2024-03-10T16:00:00Z", 
+      is_visible: false,
+      reading_time: 6
+    }
+  ];
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
@@ -53,7 +105,12 @@ const DashboardEchoRegions = () => {
   });
 
   useEffect(() => {
-    fetchEchoRegions();
+    // Simuler le chargement des données
+    setLoading(true);
+    setTimeout(() => {
+      setEchoRegions(mockEchoRegions);
+      setLoading(false);
+    }, 500);
   }, []);
 
   const fetchEchoRegions = async () => {
