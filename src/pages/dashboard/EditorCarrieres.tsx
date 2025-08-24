@@ -116,6 +116,8 @@ const EditorCarrieres = () => {
 
   console.log('EditorCarrieres - Component rendering, user:', user, 'loading:', loading, 'isMobile:', isMobile, 'isTablet:', isTablet);
   
+  // Force refresh - using mockAnnouncements (not mockOffers)
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Nouvelle annonce:', formData);
