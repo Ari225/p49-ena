@@ -10,39 +10,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Briefcase, Plus, Edit, Trash2, MapPin, Calendar } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
-
-interface Announcement {
-  id: string;
-  title: string;
-  category: 'Formations' | 'Renforcement des capacités' | 'Coaching & mentorat' | 'Concours';
-  description: string;
-  posted_date: string;
-  // Formation fields
-  niveau?: 'Débutant' | 'Intermédiaire' | 'Avancé' | 'Expert' | 'Tous les niveaux';
-  date_debut?: string;
-  duree_formation?: string;
-  type_formation?: 'en ligne' | 'en présentiel';
-  lieu?: string;
-  // Renforcement des capacités fields
-  points_renforcement?: string[];
-  // Coaching & mentorat fields
-  duree_coaching?: string;
-  format?: string;
-  // Concours fields
-  date_ouverture?: string;
-  date_limite?: string;
-  nombre_places?: string;
-  lien_concours?: string;
-}
+import { useCareerAnnouncements, CareerAnnouncement, CareerAnnouncementFormData } from '@/hooks/useCareerAnnouncements';
 
 const EditorCarrieres = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const [loading, setLoading] = useState(true);
+  const { announcements, loading, createAnnouncement, updateAnnouncement, deleteAnnouncement } = useCareerAnnouncements();
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
+  const [editingAnnouncement, setEditingAnnouncement] = useState<CareerAnnouncement | null>(null);
+  const [formData, setFormData] = useState<CareerAnnouncementFormData>({
     title: '',
     category: '',
     description: '',
@@ -64,41 +42,6 @@ const EditorCarrieres = () => {
     lien_concours: ''
   });
 
-  const mockAnnouncements: Announcement[] = [
-    {
-      id: '1',
-      title: 'Formation en Gestion de Projet',
-      category: 'Formations',
-      description: 'Formation complète sur les méthodes de gestion de projet.',
-      posted_date: '2024-03-20',
-      niveau: 'Intermédiaire',
-      date_debut: '2024-04-15',
-      duree_formation: '5',
-      type_formation: 'en présentiel',
-      lieu: 'Abidjan'
-    },
-    {
-      id: '2',
-      title: 'Renforcement Leadership',
-      category: 'Renforcement des capacités',
-      description: 'Programme de développement des compétences en leadership.',
-      posted_date: '2024-03-18',
-      points_renforcement: ['Communication efficace', 'Prise de décision', 'Gestion d\'équipe']
-    },
-    {
-      id: '3',
-      title: 'Concours de Recrutement 2024',
-      category: 'Concours',
-      description: 'Concours pour le recrutement de cadres supérieurs.',
-      posted_date: '2024-03-15',
-      date_ouverture: '2024-04-01',
-      date_limite: '2024-04-30',
-      lieu: 'Yamoussoukro',
-      nombre_places: '50',
-      lien_concours: 'https://concours.gouv.ci'
-    }
-  ];
-
   useEffect(() => {
     console.log('EditorCarrieres - useEffect called, user:', user);
     if (!user) {
@@ -106,23 +49,51 @@ const EditorCarrieres = () => {
       navigate('/login');
       return;
     }
-    console.log('EditorCarrieres - User found, setting loading to false');
-    // Simulation du chargement
-    setTimeout(() => {
-      console.log('EditorCarrieres - Loading timeout completed');
-      setLoading(false);
-    }, 500);
   }, [user, navigate]);
 
   console.log('EditorCarrieres - Component rendering, user:', user, 'loading:', loading, 'isMobile:', isMobile, 'isTablet:', isTablet);
   
-  // Force refresh - using mockAnnouncements (not mockOffers)
-  
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Nouvelle annonce:', formData);
-    setShowForm(false);
-    resetForm();
+    
+    const success = editingAnnouncement 
+      ? await updateAnnouncement(editingAnnouncement.id, formData)
+      : await createAnnouncement(formData);
+    
+    if (success) {
+      setShowForm(false);
+      resetForm();
+      setEditingAnnouncement(null);
+    }
+  };
+
+  const handleEdit = (announcement: CareerAnnouncement) => {
+    setEditingAnnouncement(announcement);
+    setFormData({
+      title: announcement.title,
+      category: announcement.category,
+      description: announcement.description,
+      niveau: announcement.niveau || '',
+      date_debut: announcement.date_debut || '',
+      duree_formation: announcement.duree_formation || '',
+      type_formation: announcement.type_formation || '',
+      lieu: announcement.lieu || '',
+      points_renforcement: announcement.points_renforcement || [''],
+      duree_coaching: announcement.duree_coaching || '',
+      format: announcement.format || '',
+      date_ouverture: announcement.date_ouverture || '',
+      date_limite: announcement.date_limite || '',
+      nombre_places: announcement.nombre_places || '',
+      lien_concours: announcement.lien_concours || ''
+    });
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette annonce ?')) {
+      await deleteAnnouncement(id);
+    }
   };
 
   const resetForm = () => {
@@ -316,7 +287,7 @@ const EditorCarrieres = () => {
     }
   };
 
-  const renderAnnouncementCard = (announcement: Announcement) => (
+  const renderAnnouncementCard = (announcement: CareerAnnouncement) => (
     <Card key={announcement.id}>
       <CardHeader>
         <CardTitle className="text-lg flex items-center">
@@ -327,7 +298,7 @@ const EditorCarrieres = () => {
           <p className="text-sm font-medium text-primary">{announcement.category}</p>
           <div className="flex items-center text-sm text-gray-500">
             <Calendar className="w-4 h-4 mr-1" />
-            {new Date(announcement.posted_date).toLocaleDateString('fr-FR')}
+            {new Date(announcement.published_date).toLocaleDateString('fr-FR')}
           </div>
           {announcement.lieu && (
             <div className="flex items-center text-sm text-gray-500">
@@ -344,11 +315,11 @@ const EditorCarrieres = () => {
         {announcement.duree_coaching && <p className="text-sm"><strong>Durée:</strong> {announcement.duree_coaching}</p>}
         {announcement.nombre_places && <p className="text-sm"><strong>Places:</strong> {announcement.nombre_places}</p>}
         <div className="flex space-x-2 mt-4">
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" onClick={() => handleEdit(announcement)}>
             <Edit className="h-4 w-4 mr-1" />
             Modifier
           </Button>
-          <Button size="sm" variant="outline" className="text-red-600">
+          <Button size="sm" variant="outline" className="text-red-600" onClick={() => handleDelete(announcement.id)}>
             <Trash2 className="h-4 w-4 mr-1" />
             Supprimer
           </Button>
@@ -382,7 +353,7 @@ const EditorCarrieres = () => {
             {loading ? (
               <div>Chargement...</div>
             ) : (
-              mockAnnouncements.map(renderAnnouncementCard)
+              announcements.map(renderAnnouncementCard)
             )}
           </div>
         </div>
@@ -392,7 +363,7 @@ const EditorCarrieres = () => {
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="mx-4 rounded-2xl max-w-[90vw] w-full max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Ajouter une annonce</DialogTitle>
+              <DialogTitle>{editingAnnouncement ? 'Modifier une annonce' : 'Ajouter une annonce'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
@@ -420,7 +391,7 @@ const EditorCarrieres = () => {
                 required
               />
               {renderCategoryFields()}
-              <Button type="submit" className="w-full">Publier l'annonce</Button>
+               <Button type="submit" className="w-full">{editingAnnouncement ? 'Mettre à jour' : 'Publier l\'annonce'}</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -452,7 +423,7 @@ const EditorCarrieres = () => {
             {loading ? (
               <p className="text-center py-8 col-span-full">Chargement...</p>
             ) : (
-              mockAnnouncements.map(renderAnnouncementCard)
+              announcements.map(renderAnnouncementCard)
             )}
           </div>
         </div>
@@ -462,7 +433,7 @@ const EditorCarrieres = () => {
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Ajouter une annonce</DialogTitle>
+              <DialogTitle>{editingAnnouncement ? 'Modifier une annonce' : 'Ajouter une annonce'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
@@ -493,7 +464,7 @@ const EditorCarrieres = () => {
               </div>
               {renderCategoryFields()}
               <div className="md:col-span-2">
-                <Button type="submit" className="w-full">Publier l'annonce</Button>
+                <Button type="submit" className="w-full">{editingAnnouncement ? 'Mettre à jour' : 'Publier l\'annonce'}</Button>
               </div>
             </form>
           </DialogContent>
@@ -528,7 +499,7 @@ const EditorCarrieres = () => {
             {loading ? (
               <p className="text-center py-8 col-span-full">Chargement...</p>
             ) : (
-              mockAnnouncements.map(renderAnnouncementCard)
+              announcements.map(renderAnnouncementCard)
             )}
           </div>
         </div>
@@ -538,7 +509,7 @@ const EditorCarrieres = () => {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Ajouter une annonce</DialogTitle>
+            <DialogTitle>{editingAnnouncement ? 'Modifier une annonce' : 'Ajouter une annonce'}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
@@ -569,7 +540,7 @@ const EditorCarrieres = () => {
             </div>
             {renderCategoryFields()}
             <div className="md:col-span-2">
-              <Button type="submit" className="w-full">Publier l'annonce</Button>
+              <Button type="submit" className="w-full">{editingAnnouncement ? 'Mettre à jour' : 'Publier l\'annonce'}</Button>
             </div>
           </form>
         </DialogContent>
