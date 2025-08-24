@@ -1,36 +1,24 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserCheck, MessageCircle, Target, Calendar } from 'lucide-react';
+import { UserCheck, MessageCircle, Target, Calendar, Clock, MapPin } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { useCareerAnnouncements } from '@/hooks/useCareerAnnouncements';
 const CoachingMentorat = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const services = [{
-    title: "Coaching Individuel",
-    description: "Accompagnement personnalisé pour atteindre vos objectifs professionnels",
-    icon: UserCheck,
-    duration: "3-6 mois",
-    format: "Sessions 1h/semaine"
-  }, {
-    title: "Mentorat Carrière",
-    description: "Bénéficiez de l'expérience d'un mentor expérimenté",
-    icon: MessageCircle,
-    duration: "6-12 mois",
-    format: "Rencontres mensuelles"
-  }, {
-    title: "Coaching d'Équipe",
-    description: "Développez la performance collective de votre équipe",
-    icon: Target,
-    duration: "3-9 mois",
-    format: "Ateliers bimensuels"
-  }, {
-    title: "Programme Structuré",
-    description: "Parcours de développement avec objectifs définis",
-    icon: Calendar,
-    duration: "12 mois",
-    format: "Planning personnalisé"
-  }];
+  const navigate = useNavigate();
+  const { announcements, loading } = useCareerAnnouncements();
+  
+  // Filtrer les annonces de catégorie "Coaching & mentorat"
+  const coachingAnnouncements = announcements.filter(
+    announcement => announcement.category === 'Coaching & mentorat'
+  );
+
+  const handleDemande = () => {
+    navigate('/contact');
+  };
   return <Layout>
       <div className="min-h-screen bg-gray-50">
         {/* Header Section with Background Image */}
@@ -49,34 +37,65 @@ const CoachingMentorat = () => {
         </section>
 
         <div className={`container mx-auto py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <service.icon className="h-6 w-6 text-primary" />
+          {loading ? (
+            <div className="text-center text-gray-600">
+              Chargement des programmes de coaching...
+            </div>
+          ) : coachingAnnouncements.length === 0 ? (
+            <div className="text-center text-gray-600">
+              Aucun programme de coaching & mentorat disponible pour le moment.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {coachingAnnouncements.map((coaching, index) => (
+                <Card key={coaching.id} className="hover:shadow-xl transition-shadow duration-300">
+                  <CardHeader>
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                        <UserCheck className="h-6 w-6 text-primary" />
+                      </div>
+                      <CardTitle className="text-primary text-xl">{coaching.title}</CardTitle>
                     </div>
-                    <CardTitle className="text-primary text-xl">{service.title}</CardTitle>
-                  </div>
-                  <p className="text-gray-600">{service.description}</p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 mb-6">
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Durée:</span>
-                      <span className="font-medium">{service.duration}</span>
+                    <p className="text-gray-600">{coaching.description}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 mb-6">
+                      {coaching.duree_coaching && (
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>Durée:</span>
+                          <span className="font-medium">{coaching.duree_coaching}</span>
+                        </div>
+                      )}
+                      {coaching.format && (
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>Format:</span>
+                          <span className="font-medium">{coaching.format}</span>
+                        </div>
+                      )}
+                      {coaching.lieu && (
+                        <div className="flex items-center text-sm text-gray-600 mb-2">
+                          <MapPin className="h-4 w-4 mr-2" />
+                          <span>{coaching.lieu}</span>
+                        </div>
+                      )}
+                      {coaching.date_debut && (
+                        <div className="flex items-center text-sm text-gray-600 mb-2">
+                          <Calendar className="h-4 w-4 mr-2" />
+                          <span>Début : {new Date(coaching.date_debut).toLocaleDateString('fr-FR')}</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Format:</span>
-                      <span className="font-medium">{service.format}</span>
-                    </div>
-                  </div>
-                  <button className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
-                    Demander un accompagnement
-                  </button>
-                </CardContent>
-              </Card>)}
-          </div>
+                    <button 
+                      onClick={handleDemande}
+                      className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                    >
+                      Demander un accompagnement
+                    </button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           {/* Benefits Section */}
           <div className="mt-16 text-center">
