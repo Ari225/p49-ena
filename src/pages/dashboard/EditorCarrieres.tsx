@@ -11,16 +11,28 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Briefcase, Plus, Edit, Trash2, MapPin, Calendar } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
-interface JobOffer {
+interface Announcement {
   id: string;
   title: string;
-  company: string;
-  location: string;
-  type: string;
+  category: 'Formations' | 'Renforcement des capacités' | 'Coaching & mentorat' | 'Concours';
   description: string;
-  requirements?: string;
-  salary: string;
   posted_date: string;
+  // Formation fields
+  niveau?: 'Débutant' | 'Intermédiaire' | 'Avancé' | 'Expert' | 'Tous les niveaux';
+  date_debut?: string;
+  duree_formation?: string;
+  type_formation?: 'en ligne' | 'en présentiel';
+  lieu?: string;
+  // Renforcement des capacités fields
+  points_renforcement?: string[];
+  // Coaching & mentorat fields
+  duree_coaching?: string;
+  format?: string;
+  // Concours fields
+  date_ouverture?: string;
+  date_limite?: string;
+  nombre_places?: string;
+  lien_concours?: string;
 }
 
 const EditorCarrieres = () => {
@@ -32,44 +44,58 @@ const EditorCarrieres = () => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
-    company: '',
-    location: '',
-    type: '',
+    category: '',
     description: '',
-    requirements: '',
-    salary: ''
+    // Formation fields
+    niveau: '',
+    date_debut: '',
+    duree_formation: '',
+    type_formation: '',
+    lieu: '',
+    // Renforcement des capacités fields
+    points_renforcement: [''],
+    // Coaching & mentorat fields
+    duree_coaching: '',
+    format: '',
+    // Concours fields
+    date_ouverture: '',
+    date_limite: '',
+    nombre_places: '',
+    lien_concours: ''
   });
 
-  const mockOffers: JobOffer[] = [
+  const mockAnnouncements: Announcement[] = [
     {
       id: '1',
-      title: 'Directeur des Ressources Humaines',
-      company: 'Ministère de la Fonction Publique',
-      location: 'Abidjan',
-      type: 'CDI',
-      description: 'Poste de direction pour la gestion des ressources humaines.',
-      salary: 'À négocier',
-      posted_date: '2024-03-20'
+      title: 'Formation en Gestion de Projet',
+      category: 'Formations',
+      description: 'Formation complète sur les méthodes de gestion de projet.',
+      posted_date: '2024-03-20',
+      niveau: 'Intermédiaire',
+      date_debut: '2024-04-15',
+      duree_formation: '5',
+      type_formation: 'en présentiel',
+      lieu: 'Abidjan'
     },
     {
       id: '2',
-      title: 'Conseiller en Politiques Publiques',
-      company: 'Cabinet du Premier Ministre',
-      location: 'Yamoussoukro',
-      type: 'CDD',
-      description: 'Analyse et élaboration de politiques publiques.',
-      salary: '1 500 000 FCFA',
-      posted_date: '2024-03-18'
+      title: 'Renforcement Leadership',
+      category: 'Renforcement des capacités',
+      description: 'Programme de développement des compétences en leadership.',
+      posted_date: '2024-03-18',
+      points_renforcement: ['Communication efficace', 'Prise de décision', 'Gestion d\'équipe']
     },
     {
       id: '3',
-      title: 'Chargé de Communication',
-      company: 'Ministère de l\'Information',
-      location: 'Abidjan',
-      type: 'CDD',
-      description: 'Gestion de la communication institutionnelle et des relations publiques.',
-      salary: '800 000 FCFA',
-      posted_date: '2024-03-15'
+      title: 'Concours de Recrutement 2024',
+      category: 'Concours',
+      description: 'Concours pour le recrutement de cadres supérieurs.',
+      posted_date: '2024-03-15',
+      date_ouverture: '2024-04-01',
+      date_limite: '2024-04-30',
+      lieu: 'Yamoussoukro',
+      nombre_places: '50',
+      lien_concours: 'https://concours.gouv.ci'
     }
   ];
 
@@ -92,10 +118,242 @@ const EditorCarrieres = () => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Nouvelle offre:', formData);
+    console.log('Nouvelle annonce:', formData);
     setShowForm(false);
-    setFormData({ title: '', company: '', location: '', type: '', description: '', requirements: '', salary: '' });
+    resetForm();
   };
+
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      category: '',
+      description: '',
+      niveau: '',
+      date_debut: '',
+      duree_formation: '',
+      type_formation: '',
+      lieu: '',
+      points_renforcement: [''],
+      duree_coaching: '',
+      format: '',
+      date_ouverture: '',
+      date_limite: '',
+      nombre_places: '',
+      lien_concours: ''
+    });
+  };
+
+  const addPoint = () => {
+    setFormData({
+      ...formData,
+      points_renforcement: [...formData.points_renforcement, '']
+    });
+  };
+
+  const removePoint = (index: number) => {
+    const newPoints = formData.points_renforcement.filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      points_renforcement: newPoints.length > 0 ? newPoints : ['']
+    });
+  };
+
+  const updatePoint = (index: number, value: string) => {
+    const newPoints = [...formData.points_renforcement];
+    newPoints[index] = value;
+    setFormData({
+      ...formData,
+      points_renforcement: newPoints
+    });
+  };
+
+  const renderCategoryFields = () => {
+    switch (formData.category) {
+      case 'Formations':
+        return (
+          <>
+            <select
+              className="w-full p-2 border rounded-md"
+              value={formData.niveau}
+              onChange={(e) => setFormData({...formData, niveau: e.target.value})}
+              required
+            >
+              <option value="">Niveau</option>
+              <option value="Débutant">Débutant</option>
+              <option value="Intermédiaire">Intermédiaire</option>
+              <option value="Avancé">Avancé</option>
+              <option value="Expert">Expert</option>
+              <option value="Tous les niveaux">Tous les niveaux</option>
+            </select>
+            <Input
+              type="date"
+              placeholder="Date de début"
+              value={formData.date_debut}
+              onChange={(e) => setFormData({...formData, date_debut: e.target.value})}
+              required
+            />
+            <Input
+              placeholder="Durée de formation (nombre de jours)"
+              value={formData.duree_formation}
+              onChange={(e) => setFormData({...formData, duree_formation: e.target.value})}
+              required
+            />
+            <select
+              className="w-full p-2 border rounded-md"
+              value={formData.type_formation}
+              onChange={(e) => setFormData({...formData, type_formation: e.target.value})}
+              required
+            >
+              <option value="">Type</option>
+              <option value="en ligne">En ligne</option>
+              <option value="en présentiel">En présentiel</option>
+            </select>
+            {formData.type_formation === 'en présentiel' && (
+              <Input
+                placeholder="Lieu"
+                value={formData.lieu}
+                onChange={(e) => setFormData({...formData, lieu: e.target.value})}
+                required
+              />
+            )}
+          </>
+        );
+      case 'Renforcement des capacités':
+        return (
+          <div className={isMobile ? "" : "md:col-span-2"}>
+            <label className="text-sm font-medium mb-2 block">Points de renforcement</label>
+            {formData.points_renforcement.map((point, index) => (
+              <div key={index} className="flex gap-2 mb-2">
+                <Input
+                  placeholder={`Point ${index + 1}`}
+                  value={point}
+                  onChange={(e) => updatePoint(index, e.target.value)}
+                  required
+                />
+                {formData.points_renforcement.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => removePoint(index)}
+                  >
+                    ×
+                  </Button>
+                )}
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addPoint}
+              className="mt-2"
+            >
+              + Ajouter un point
+            </Button>
+          </div>
+        );
+      case 'Coaching & mentorat':
+        return (
+          <>
+            <Input
+              placeholder="Durée (ex: 3 mois, 2 semaines)"
+              value={formData.duree_coaching}
+              onChange={(e) => setFormData({...formData, duree_coaching: e.target.value})}
+              required
+            />
+            <Input
+              placeholder="Format"
+              value={formData.format}
+              onChange={(e) => setFormData({...formData, format: e.target.value})}
+              required
+            />
+          </>
+        );
+      case 'Concours':
+        return (
+          <>
+            <Input
+              type="date"
+              placeholder="Date d'ouverture"
+              value={formData.date_ouverture}
+              onChange={(e) => setFormData({...formData, date_ouverture: e.target.value})}
+              required
+            />
+            <Input
+              type="date"
+              placeholder="Date limite"
+              value={formData.date_limite}
+              onChange={(e) => setFormData({...formData, date_limite: e.target.value})}
+              required
+            />
+            <Input
+              placeholder="Lieu"
+              value={formData.lieu}
+              onChange={(e) => setFormData({...formData, lieu: e.target.value})}
+              required
+            />
+            <Input
+              placeholder="Nombre de places disponibles"
+              value={formData.nombre_places}
+              onChange={(e) => setFormData({...formData, nombre_places: e.target.value})}
+              required
+            />
+            <div className={isMobile ? "" : "md:col-span-2"}>
+              <Input
+                placeholder="Lien du concours"
+                value={formData.lien_concours}
+                onChange={(e) => setFormData({...formData, lien_concours: e.target.value})}
+                required
+              />
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderAnnouncementCard = (announcement: Announcement) => (
+    <Card key={announcement.id}>
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center">
+          <Briefcase className="w-5 h-5 mr-2" />
+          {announcement.title}
+        </CardTitle>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-primary">{announcement.category}</p>
+          <div className="flex items-center text-sm text-gray-500">
+            <Calendar className="w-4 h-4 mr-1" />
+            {new Date(announcement.posted_date).toLocaleDateString('fr-FR')}
+          </div>
+          {announcement.lieu && (
+            <div className="flex items-center text-sm text-gray-500">
+              <MapPin className="w-4 h-4 mr-1" />
+              {announcement.lieu}
+            </div>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-gray-600 mb-2">{announcement.description}</p>
+        {announcement.niveau && <p className="text-sm"><strong>Niveau:</strong> {announcement.niveau}</p>}
+        {announcement.duree_formation && <p className="text-sm"><strong>Durée:</strong> {announcement.duree_formation} jours</p>}
+        {announcement.duree_coaching && <p className="text-sm"><strong>Durée:</strong> {announcement.duree_coaching}</p>}
+        {announcement.nombre_places && <p className="text-sm"><strong>Places:</strong> {announcement.nombre_places}</p>}
+        <div className="flex space-x-2 mt-4">
+          <Button size="sm" variant="outline">
+            <Edit className="h-4 w-4 mr-1" />
+            Modifier
+          </Button>
+          <Button size="sm" variant="outline" className="text-red-600">
+            <Trash2 className="h-4 w-4 mr-1" />
+            Supprimer
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   // Render mobile layout
   if (isMobile) {
@@ -105,7 +363,7 @@ const EditorCarrieres = () => {
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary whitespace-nowrap">Gestion carrières+</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gérer les offres d'emploi</p>
+            <p className="text-gray-600 mt-1 text-sm">Gérer les annonces</p>
           </div>
 
           <div className="mb-4">
@@ -114,7 +372,7 @@ const EditorCarrieres = () => {
               className="bg-primary hover:bg-primary/90 w-full"
             >
               <Plus className="mr-2 h-4 w-4" />
-              Nouvelle offre
+              Nouvelle annonce
             </Button>
           </div>
 
@@ -122,42 +380,7 @@ const EditorCarrieres = () => {
             {loading ? (
               <div>Chargement...</div>
             ) : (
-              mockOffers.map((offer) => (
-                <Card key={offer.id}>
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center">
-                      <Briefcase className="w-5 h-5 mr-2" />
-                      {offer.title}
-                    </CardTitle>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-primary">{offer.company}</p>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {offer.location}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(offer.posted_date).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-2">{offer.description}</p>
-                    <p className="text-sm"><strong>Type:</strong> {offer.type}</p>
-                    <p className="text-sm mb-4"><strong>Salaire:</strong> {offer.salary}</p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Modifier
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-red-600">
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Supprimer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+              mockAnnouncements.map(renderAnnouncementCard)
             )}
           </div>
         </div>
@@ -165,59 +388,37 @@ const EditorCarrieres = () => {
 
         {/* Popup pour le formulaire */}
         <Dialog open={showForm} onOpenChange={setShowForm}>
-          <DialogContent className="max-w-md mx-auto">
+          <DialogContent className="mx-4 rounded-2xl max-w-[calc(100vw-2rem)] w-full">
             <DialogHeader>
-              <DialogTitle>Ajouter une offre d'emploi</DialogTitle>
+              <DialogTitle>Ajouter une annonce</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
-                placeholder="Titre du poste"
+                placeholder="Titre"
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
                 required
               />
-              <Input
-                placeholder="Entreprise/Organisation"
-                value={formData.company}
-                onChange={(e) => setFormData({...formData, company: e.target.value})}
-                required
-              />
-              <Input
-                placeholder="Localisation"
-                value={formData.location}
-                onChange={(e) => setFormData({...formData, location: e.target.value})}
-                required
-              />
               <select
                 className="w-full p-2 border rounded-md"
-                value={formData.type}
-                onChange={(e) => setFormData({...formData, type: e.target.value})}
+                value={formData.category}
+                onChange={(e) => setFormData({...formData, category: e.target.value})}
                 required
               >
-                <option value="">Type de contrat</option>
-                <option value="CDI">CDI</option>
-                <option value="CDD">CDD</option>
-                <option value="Stage">Stage</option>
-                <option value="Freelance">Freelance</option>
-                <option value="Consultation">Consultation</option>
+                <option value="">Catégorie</option>
+                <option value="Formations">Formations</option>
+                <option value="Renforcement des capacités">Renforcement des capacités</option>
+                <option value="Coaching & mentorat">Coaching & mentorat</option>
+                <option value="Concours">Concours</option>
               </select>
               <Textarea
-                placeholder="Description du poste"
+                placeholder="Description"
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 required
               />
-              <Textarea
-                placeholder="Exigences et qualifications"
-                value={formData.requirements}
-                onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-              />
-              <Input
-                placeholder="Salaire"
-                value={formData.salary}
-                onChange={(e) => setFormData({...formData, salary: e.target.value})}
-              />
-              <Button type="submit" className="w-full">Publier l'offre</Button>
+              {renderCategoryFields()}
+              <Button type="submit" className="w-full">Publier l'annonce</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -232,7 +433,7 @@ const EditorCarrieres = () => {
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion carrières+</h1>
-            <p className="text-gray-600 mt-2">Gérer les offres d'emploi et opportunités de carrière</p>
+            <p className="text-gray-600 mt-2">Gérer les annonces et opportunités de carrière</p>
           </div>
 
           <div className="mb-6">
@@ -241,7 +442,7 @@ const EditorCarrieres = () => {
               className="bg-primary hover:bg-primary/90"
             >
               <Plus className="mr-2 h-4 w-4" />
-              Nouvelle offre
+              Nouvelle annonce
             </Button>
           </div>
 
@@ -249,42 +450,7 @@ const EditorCarrieres = () => {
             {loading ? (
               <p className="text-center py-8 col-span-full">Chargement...</p>
             ) : (
-              mockOffers.map((offer) => (
-                <Card key={offer.id}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Briefcase className="w-5 h-5 mr-2" />
-                      {offer.title}
-                    </CardTitle>
-                    <div className="space-y-1">
-                      <p className="font-medium text-primary">{offer.company}</p>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {offer.location}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(offer.posted_date).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-2">{offer.description}</p>
-                    <p className="text-sm"><strong>Type:</strong> {offer.type}</p>
-                    <p className="text-sm mb-4"><strong>Salaire:</strong> {offer.salary}</p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Modifier
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-red-600">
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Supprimer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+              mockAnnouncements.map(renderAnnouncementCard)
             )}
           </div>
         </div>
@@ -294,62 +460,38 @@ const EditorCarrieres = () => {
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Ajouter une offre d'emploi</DialogTitle>
+              <DialogTitle>Ajouter une annonce</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
-                placeholder="Titre du poste"
+                placeholder="Titre"
                 value={formData.title}
                 onChange={(e) => setFormData({...formData, title: e.target.value})}
                 required
               />
-              <Input
-                placeholder="Entreprise/Organisation"
-                value={formData.company}
-                onChange={(e) => setFormData({...formData, company: e.target.value})}
-                required
-              />
-              <Input
-                placeholder="Localisation"
-                value={formData.location}
-                onChange={(e) => setFormData({...formData, location: e.target.value})}
-                required
-              />
               <select
                 className="p-2 border rounded-md"
-                value={formData.type}
-                onChange={(e) => setFormData({...formData, type: e.target.value})}
+                value={formData.category}
+                onChange={(e) => setFormData({...formData, category: e.target.value})}
                 required
               >
-                <option value="">Type de contrat</option>
-                <option value="CDI">CDI</option>
-                <option value="CDD">CDD</option>
-                <option value="Stage">Stage</option>
-                <option value="Freelance">Freelance</option>
-                <option value="Consultation">Consultation</option>
+                <option value="">Catégorie</option>
+                <option value="Formations">Formations</option>
+                <option value="Renforcement des capacités">Renforcement des capacités</option>
+                <option value="Coaching & mentorat">Coaching & mentorat</option>
+                <option value="Concours">Concours</option>
               </select>
               <div className="md:col-span-2">
                 <Textarea
-                  placeholder="Description du poste"
+                  placeholder="Description"
                   value={formData.description}
                   onChange={(e) => setFormData({...formData, description: e.target.value})}
                   required
                 />
               </div>
+              {renderCategoryFields()}
               <div className="md:col-span-2">
-                <Textarea
-                  placeholder="Exigences et qualifications"
-                  value={formData.requirements}
-                  onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                />
-              </div>
-              <Input
-                placeholder="Salaire"
-                value={formData.salary}
-                onChange={(e) => setFormData({...formData, salary: e.target.value})}
-              />
-              <div className="md:col-span-2">
-                <Button type="submit" className="w-full">Publier l'offre</Button>
+                <Button type="submit" className="w-full">Publier l'annonce</Button>
               </div>
             </form>
           </DialogContent>
@@ -367,7 +509,7 @@ const EditorCarrieres = () => {
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion carrières+</h1>
-            <p className="text-gray-600 mt-2">Gérer les offres d'emploi et opportunités de carrière</p>
+            <p className="text-gray-600 mt-2">Gérer les annonces et opportunités de carrière</p>
           </div>
 
           <div className="mb-6">
@@ -376,7 +518,7 @@ const EditorCarrieres = () => {
               className="bg-primary hover:bg-primary/90"
             >
               <Plus className="mr-2 h-4 w-4" />
-              Nouvelle offre
+              Nouvelle annonce
             </Button>
           </div>
 
@@ -384,42 +526,7 @@ const EditorCarrieres = () => {
             {loading ? (
               <p className="text-center py-8 col-span-full">Chargement...</p>
             ) : (
-              mockOffers.map((offer) => (
-                <Card key={offer.id}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Briefcase className="w-5 h-5 mr-2" />
-                      {offer.title}
-                    </CardTitle>
-                    <div className="space-y-1">
-                      <p className="font-medium text-primary">{offer.company}</p>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {offer.location}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="w-4 w-4 mr-1" />
-                        {new Date(offer.posted_date).toLocaleDateString('fr-FR')}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 mb-2">{offer.description}</p>
-                    <p className="text-sm"><strong>Type:</strong> {offer.type}</p>
-                    <p className="text-sm mb-4"><strong>Salaire:</strong> {offer.salary}</p>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4 mr-1" />
-                        Modifier
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-red-600">
-                        <Trash2 className="h-4 w-4 mr-1" />
-                        Supprimer
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
+              mockAnnouncements.map(renderAnnouncementCard)
             )}
           </div>
         </div>
@@ -429,62 +536,38 @@ const EditorCarrieres = () => {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Ajouter une offre d'emploi</DialogTitle>
+            <DialogTitle>Ajouter une annonce</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              placeholder="Titre du poste"
+              placeholder="Titre"
               value={formData.title}
               onChange={(e) => setFormData({...formData, title: e.target.value})}
               required
             />
-            <Input
-              placeholder="Entreprise/Organisation"
-              value={formData.company}
-              onChange={(e) => setFormData({...formData, company: e.target.value})}
-              required
-            />
-            <Input
-              placeholder="Localisation"
-              value={formData.location}
-              onChange={(e) => setFormData({...formData, location: e.target.value})}
-              required
-            />
             <select
               className="p-2 border rounded-md"
-              value={formData.type}
-              onChange={(e) => setFormData({...formData, type: e.target.value})}
+              value={formData.category}
+              onChange={(e) => setFormData({...formData, category: e.target.value})}
               required
             >
-              <option value="">Type de contrat</option>
-              <option value="CDI">CDI</option>
-              <option value="CDD">CDD</option>
-              <option value="Stage">Stage</option>
-              <option value="Freelance">Freelance</option>
-              <option value="Consultation">Consultation</option>
+              <option value="">Catégorie</option>
+              <option value="Formations">Formations</option>
+              <option value="Renforcement des capacités">Renforcement des capacités</option>
+              <option value="Coaching & mentorat">Coaching & mentorat</option>
+              <option value="Concours">Concours</option>
             </select>
             <div className="md:col-span-2">
               <Textarea
-                placeholder="Description du poste"
+                placeholder="Description"
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 required
               />
             </div>
+            {renderCategoryFields()}
             <div className="md:col-span-2">
-              <Textarea
-                placeholder="Exigences et qualifications"
-                value={formData.requirements}
-                onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-              />
-            </div>
-            <Input
-              placeholder="Salaire"
-              value={formData.salary}
-              onChange={(e) => setFormData({...formData, salary: e.target.value})}
-            />
-            <div className="md:col-span-2">
-              <Button type="submit" className="w-full">Publier l'offre</Button>
+              <Button type="submit" className="w-full">Publier l'annonce</Button>
             </div>
           </form>
         </DialogContent>
