@@ -33,61 +33,174 @@ const DashboardHome = () => {
           timestamp: number;
         }> = [];
 
-        // Récupérer les articles récents
+        // Récupérer les articles de blog récents
         const { data: articles } = await supabase
           .from('blog_articles')
           .select('title, created_at')
           .order('created_at', { ascending: false })
-          .limit(3);
+          .limit(2);
 
         if (articles) {
           articles.forEach(article => {
             const timeAgo = getRelativeTime(article.created_at);
             recentActivities.push({
-              title: 'Nouvel article créé',
-              description: `Article "${article.title}" créé ${timeAgo}`,
+              title: 'Nouvel article de blog',
+              description: `"${article.title}" créé ${timeAgo}`,
               color: 'bg-green-500',
               timestamp: new Date(article.created_at).getTime()
             });
           });
         }
 
-        // Récupérer les nouveaux utilisateurs
-        const { data: users } = await supabase
-          .from('app_users')
-          .select('first_name, last_name, role, created_at')
-          .order('created_at', { ascending: false })
-          .limit(3);
-
-        if (users) {
-          users.forEach(user => {
-            const timeAgo = getRelativeTime(user.created_at);
-            const roleLabel = user.role === 'admin_principal' ? 'Admin Principal' : 
-                            user.role === 'admin_secondaire' ? 'Admin Secondaire' : 'Rédacteur';
-            recentActivities.push({
-              title: 'Nouveau membre inscrit',
-              description: `${user.first_name} ${user.last_name} (${roleLabel}) a rejoint ${timeAgo}`,
-              color: 'bg-blue-500',
-              timestamp: new Date(user.created_at).getTime()
-            });
-          });
-        }
-
-        // Récupérer les actualités récentes
+        // Récupérer les actualités récentes (écho des régions inclus)
         const { data: news } = await supabase
           .from('news')
-          .select('title, created_at')
+          .select('title, category, created_at')
           .order('created_at', { ascending: false })
           .limit(2);
 
         if (news) {
           news.forEach(newsItem => {
             const timeAgo = getRelativeTime(newsItem.created_at);
+            const type = newsItem.category === 'echo_regions' ? 'Écho des régions' : 'Actualité';
             recentActivities.push({
-              title: 'Nouvelle actualité créée',
-              description: `Actualité "${newsItem.title}" créée ${timeAgo}`,
+              title: `Nouveau(lle) ${type}`,
+              description: `"${newsItem.title}" créé ${timeAgo}`,
               color: 'bg-orange-500',
               timestamp: new Date(newsItem.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les annonces carrières+ récentes
+        const { data: careers } = await supabase
+          .from('career_announcements')
+          .select('title, category, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+
+        if (careers) {
+          careers.forEach(career => {
+            const timeAgo = getRelativeTime(career.created_at);
+            recentActivities.push({
+              title: 'Nouvelle annonce Carrières+',
+              description: `${career.category}: "${career.title}" créé ${timeAgo}`,
+              color: 'bg-purple-500',
+              timestamp: new Date(career.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les suggestions récentes
+        const { data: suggestions } = await supabase
+          .from('suggestions')
+          .select('subject, name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+
+        if (suggestions) {
+          suggestions.forEach(suggestion => {
+            const timeAgo = getRelativeTime(suggestion.created_at);
+            recentActivities.push({
+              title: 'Nouvelle suggestion',
+              description: `"${suggestion.subject}" de ${suggestion.name} ${timeAgo}`,
+              color: 'bg-yellow-500',
+              timestamp: new Date(suggestion.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les messages de contact récents
+        const { data: contacts } = await supabase
+          .from('contacts')
+          .select('subject, name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+
+        if (contacts) {
+          contacts.forEach(contact => {
+            const timeAgo = getRelativeTime(contact.created_at);
+            recentActivities.push({
+              title: 'Nouveau message de contact',
+              description: `"${contact.subject}" de ${contact.name} ${timeAgo}`,
+              color: 'bg-blue-500',
+              timestamp: new Date(contact.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les communiqués récents
+        const { data: communiques } = await supabase
+          .from('communiques')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+
+        if (communiques) {
+          communiques.forEach(communique => {
+            const timeAgo = getRelativeTime(communique.created_at);
+            recentActivities.push({
+              title: 'Nouveau communiqué',
+              description: `"${communique.title}" créé ${timeAgo}`,
+              color: 'bg-red-500',
+              timestamp: new Date(communique.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les nouveaux témoignages
+        const { data: testimonials } = await supabase
+          .from('testimonials')
+          .select('member_name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+
+        if (testimonials) {
+          testimonials.forEach(testimonial => {
+            const timeAgo = getRelativeTime(testimonial.created_at);
+            recentActivities.push({
+              title: 'Nouveau témoignage',
+              description: `Témoignage de ${testimonial.member_name} ${timeAgo}`,
+              color: 'bg-indigo-500',
+              timestamp: new Date(testimonial.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les éditions de journal récentes
+        const { data: journals } = await supabase
+          .from('journal_editions')
+          .select('title, created_at')
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (journals) {
+          journals.forEach(journal => {
+            const timeAgo = getRelativeTime(journal.created_at);
+            recentActivities.push({
+              title: 'Nouvelle édition du journal',
+              description: `"${journal.title}" créé ${timeAgo}`,
+              color: 'bg-teal-500',
+              timestamp: new Date(journal.created_at).getTime()
+            });
+          });
+        }
+
+        // Récupérer les médias récents
+        const { data: media } = await supabase
+          .from('media_items')
+          .select('title, category, created_at')
+          .order('created_at', { ascending: false })
+          .limit(2);
+
+        if (media) {
+          media.forEach(mediaItem => {
+            const timeAgo = getRelativeTime(mediaItem.created_at);
+            recentActivities.push({
+              title: 'Nouveau média ajouté',
+              description: `${mediaItem.category}: "${mediaItem.title}" ${timeAgo}`,
+              color: 'bg-pink-500',
+              timestamp: new Date(mediaItem.created_at).getTime()
             });
           });
         }
