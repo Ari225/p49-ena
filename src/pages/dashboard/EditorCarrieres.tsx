@@ -390,7 +390,7 @@ const EditorCarrieres = () => {
 
         {/* Popup pour le formulaire */}
         <Dialog open={showForm} onOpenChange={setShowForm}>
-          <DialogContent className="mx-4 rounded-2xl max-w-[calc(100vw-2rem)] w-full">
+          <DialogContent className="mx-4 rounded-2xl max-w-[90vw] w-full max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Ajouter une annonce</DialogTitle>
             </DialogHeader>
