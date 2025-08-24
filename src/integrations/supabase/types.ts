@@ -1156,6 +1156,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      can_manage_suggestions: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       confirm_security_lockdown: {
         Args: Record<PropertyKey, never>
         Returns: {
