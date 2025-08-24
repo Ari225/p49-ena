@@ -92,17 +92,13 @@ const DashboardJournal = () => {
     setPreviewDialogOpen(true);
   };
   const handleEdit = (edition: JournalEdition) => {
+    console.log('Editing edition:', edition); // Debug log
     setSelectedEdition(edition);
     setEditDialogOpen(true);
   };
-  const handleDownload = (edition: JournalEdition) => {
-    if (edition.pdf_url) {
-      window.open(edition.pdf_url, '_blank');
-    } else {
-      toast.error('Aucun PDF disponible pour cette édition');
-    }
-  };
+  
   const handleDelete = async (edition: JournalEdition) => {
+    console.log('Deleting edition:', edition); // Debug log
     try {
       const {
         error
@@ -187,12 +183,9 @@ const DashboardJournal = () => {
                     {edition.summary && <p className="text-xs text-gray-600 line-clamp-2 mb-3">{truncateText(edition.summary, 80)}</p>}
                     
                     {/* Boutons d'action */}
-                    <div className="grid grid-cols-4 gap-2 pt-2 border-t border-gray-100">
+                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-gray-100">
                       <Button variant="outline" size="sm" onClick={() => handleView(edition)} className="text-xs">
                         <Eye className="h-3 w-3" />
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleDownload(edition)} className="text-xs">
-                        <Download className="h-3 w-3" />
                       </Button>
                       <Button variant="outline" size="sm" onClick={() => handleEdit(edition)} className="text-xs">
                         <Edit className="h-3 w-3" />
