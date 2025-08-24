@@ -194,7 +194,7 @@ const DashboardEchoRegions = () => {
           <div className="pt-2 border-t">
             <div className="flex items-center text-sm text-gray-600 mb-2">
               <Calendar className="w-4 h-4 mr-1" />
-              Informations:
+              Dernière activité:
             </div>
             <p className="text-sm font-medium text-primary">{delegue.summary}</p>
           </div>
