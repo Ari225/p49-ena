@@ -17,6 +17,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useDeleguesRegionaux } from '@/hooks/useDeleguesRegionaux';
 interface EchoRegion {
   id: string;
   title: string;
@@ -37,6 +38,7 @@ const DashboardEchoRegions = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const userIsAdmin = isAdmin(user);
+  const { delegues, loading: loadingDelegues } = useDeleguesRegionaux();
   const [echoRegions, setEchoRegions] = useState<EchoRegion[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -56,6 +58,21 @@ const DashboardEchoRegions = () => {
   useEffect(() => {
     fetchEchoRegions();
   }, []);
+
+  // Créer des cartes basées sur les délégués régionaux
+  const delegueCards = delegues.map((delegue) => ({
+    id: delegue.id.toString(),
+    title: delegue.name,
+    summary: `Délégué régional - ${delegue.position}`,
+    details: `Informations sur la région représentée par ${delegue.name}`,
+    image_url: '/lovable-uploads/Pers49.webp', // Image par défaut
+    published_date: new Date().toISOString().split('T')[0],
+    published_by: delegue.name,
+    created_at: new Date().toISOString(),
+    is_visible: true,
+    reading_time: 5,
+    region: delegue.position.replace('Délégué régional ', '') // Extraire la région du poste
+  }));
   const fetchEchoRegions = async () => {
     try {
       setLoading(true);
@@ -149,66 +166,54 @@ const DashboardEchoRegions = () => {
     setEditingEcho(null);
     setShowForm(false);
   };
-  const renderEchoCard = (echo: EchoRegion) => <Card key={echo.id} className="hover:shadow-xl transition-shadow duration-300">
+  const renderDelegueCard = (delegue: any) => <Card key={delegue.id} className="hover:shadow-xl transition-shadow duration-300">
       <div className="aspect-video overflow-hidden rounded-t-lg">
-        <img src={echo.image_url} alt={echo.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+        <img src="/lovable-uploads/Pers49.webp" alt={delegue.region} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
       </div>
       <CardHeader>
-        <CardTitle className="text-primary text-xl">{echo.region}</CardTitle>
+        <CardTitle className="text-primary text-xl">{delegue.region}</CardTitle>
         <div className="flex items-center text-gray-600 text-sm">
           <MapPin className="w-4 h-4 mr-1" />
-          {echo.published_by}
+          {delegue.published_by}
         </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Représentant:</span>
-            <span className="font-medium text-primary">{echo.published_by}</span>
+            <span className="font-medium text-primary">{delegue.published_by}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Users className="w-4 h-4 mr-1" />
-              Membres:
+              Poste:
             </span>
-            <span className="font-bold text-secondary">{echo.reading_time} min</span>
+            <span className="font-bold text-secondary">Délégué régional</span>
           </div>
           <div className="pt-2 border-t">
             <div className="flex items-center text-sm text-gray-600 mb-2">
               <Calendar className="w-4 h-4 mr-1" />
-              Dernière activité:
+              Région:
             </div>
-            <p className="text-sm font-medium text-primary">{echo.summary}</p>
+            <p className="text-sm font-medium text-primary">{delegue.summary}</p>
           </div>
           <div className="pt-2 border-t">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
+            <h4 className="text-sm font-semibold text-gray-700 mb-2">Informations:</h4>
             <ul className="space-y-1">
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Publié le {format(new Date(echo.published_date), 'd MMMM yyyy', {
-                locale: fr
-              })}
+                Représentant actuel: {delegue.published_by}
               </li>
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Temps de lecture: {echo.reading_time} minutes
+                Région: {delegue.region}
               </li>
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Statut: {echo.is_visible ? "Visible" : "Masqué"}
+                Statut: Actif
               </li>
             </ul>
           </div>
-        </div>
-        <div className="flex gap-2 mt-4">
-          <Button variant="outline" size="sm" onClick={() => handleEdit(echo)}>
-            <Edit className="h-4 w-4 mr-1" />
-            Modifier
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => handleDelete(echo.id)} className="text-red-600 hover:text-red-700">
-            <Trash2 className="h-4 w-4 mr-1" />
-            Supprimer
-          </Button>
         </div>
       </CardContent>
     </Card>;
@@ -230,14 +235,14 @@ const DashboardEchoRegions = () => {
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-primary flex items-center">
               <MapPin className="mr-2 h-5 w-5" />
-              Liste des échos des régions ({echoRegions.length})
+              Liste des délégués régionaux ({delegues.length})
             </h2>
           </div>
 
-          {loading ? <div className="text-center py-8">Chargement...</div> : <div className="space-y-4">
-              {echoRegions.length === 0 ? <div className="text-center py-8 text-gray-500">
-                  Aucun écho des régions trouvé
-                </div> : echoRegions.map(renderEchoCard)}
+          {loadingDelegues ? <div className="text-center py-8">Chargement...</div> : <div className="space-y-4">
+              {delegues.length === 0 ? <div className="text-center py-8 text-gray-500">
+                  Aucun délégué régional trouvé
+                </div> : delegueCards.map(renderDelegueCard)}
             </div>}
         </div>
         
@@ -338,18 +343,18 @@ const DashboardEchoRegions = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <MapPin className="mr-2 h-5 w-5" />
-              Liste des échos des régions ({echoRegions.length})
+              Liste des délégués régionaux ({delegues.length})
             </h2>
           </div>
 
-          {loading ? <div className="text-center py-12">
-              <div className="text-gray-500">Chargement des échos des régions...</div>
+          {loadingDelegues ? <div className="text-center py-12">
+              <div className="text-gray-500">Chargement des délégués régionaux...</div>
             </div> : <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {echoRegions.length === 0 ? <div className="col-span-full text-center py-12 text-gray-500">
+              {delegues.length === 0 ? <div className="col-span-full text-center py-12 text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p className="text-lg font-medium">Aucun écho des régions</p>
-                  <p>Commencez par créer votre première actualité régionale</p>
-                </div> : echoRegions.map(renderEchoCard)}
+                  <p className="text-lg font-medium">Aucun délégué régional</p>
+                  <p>Les délégués régionaux apparaîtront ici automatiquement</p>
+                </div> : delegueCards.map(renderDelegueCard)}
             </div>}
         </div>
         
@@ -458,18 +463,18 @@ const DashboardEchoRegions = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <MapPin className="mr-2 h-5 w-5" />
-              Liste des échos des régions ({echoRegions.length})
+              Liste des délégués régionaux ({delegues.length})
             </h2>
           </div>
 
-          {loading ? <div className="text-center py-12">
-              <div className="text-gray-500">Chargement des échos des régions...</div>
+          {loadingDelegues ? <div className="text-center py-12">
+              <div className="text-gray-500">Chargement des délégués régionaux...</div>
             </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {echoRegions.length === 0 ? <div className="col-span-full text-center py-12 text-gray-500">
+              {delegues.length === 0 ? <div className="col-span-full text-center py-12 text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                  <p className="text-lg font-medium">Aucun écho des régions</p>
-                  <p>Commencez par créer votre première actualité régionale</p>
-                </div> : echoRegions.map(renderEchoCard)}
+                  <p className="text-lg font-medium">Aucun délégué régional</p>
+                  <p>Les délégués régionaux apparaîtront ici automatiquement</p>
+                </div> : delegueCards.map(renderDelegueCard)}
             </div>}
         </div>
       </div>
