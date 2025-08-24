@@ -136,7 +136,7 @@ const ActualitesConcours = () => {
                         </button>
                         {concour.lien_concours && (
                           <a 
-                            href={concour.lien_concours}
+                            href={concour.lien_concours.startsWith('http') ? concour.lien_concours : `https://${concour.lien_concours}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center px-4 py-2 border border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors"
