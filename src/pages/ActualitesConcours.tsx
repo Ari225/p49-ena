@@ -136,7 +136,7 @@ const ActualitesConcours = () => {
                         </button>
                         {concour.lien_concours && (
                           <button 
-                            onClick={() => window.open(concour.lien_concours, '_blank')}
+                            onClick={() => window.location.href = concour.lien_concours}
                             className="px-4 py-2 border border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-colors"
                           >
                             <ExternalLink className="h-4 w-4" />
