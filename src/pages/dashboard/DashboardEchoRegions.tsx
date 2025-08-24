@@ -186,7 +186,7 @@ const DashboardEchoRegions = () => {
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Users className="w-4 h-4 mr-1" />
-              Région:
+              Membres:
             </span>
             <span className="font-bold text-secondary">{delegue.region}</span>
           </div>
