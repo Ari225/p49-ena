@@ -240,7 +240,7 @@ const DashboardEchoRegions = () => {
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Users className="w-4 h-4 mr-1" />
-              Temps de lecture:
+              Membres:
             </span>
             <span className="font-bold text-secondary">{echo.reading_time} min</span>
           </div>
@@ -249,22 +249,22 @@ const DashboardEchoRegions = () => {
               <Calendar className="w-4 h-4 mr-1" />
               Dernière activité:
             </div>
-            <p className="text-sm font-medium text-primary">{format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}</p>
+            <p className="text-sm font-medium text-primary">{echo.summary}</p>
           </div>
           <div className="pt-2 border-t">
             <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
             <ul className="space-y-1">
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                {echo.summary}
+                Publié le {format(new Date(echo.published_date), 'd MMMM yyyy', { locale: fr })}
               </li>
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Status: {echo.is_visible ? "Visible sur le site" : "Masqué du public"}
+                Temps de lecture: {echo.reading_time} minutes
               </li>
               <li className="text-xs text-gray-600 flex items-start">
                 <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Actions: Modifier ou supprimer l'article
+                Statut: {echo.is_visible ? "Visible" : "Masqué"}
               </li>
             </ul>
           </div>
