@@ -224,11 +224,7 @@ const DashboardEchoRegions = () => {
     return (
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-primary">Écho des régions</h1>
-              <p className="text-gray-600 text-sm">Gérer les actualités régionales</p>
-            </div>
+          <div className="space-y-4 mb-6">
             <Dialog open={showForm} onOpenChange={setShowForm}>
               <DialogTrigger asChild>
                 <Button size="sm">
@@ -316,6 +312,13 @@ const DashboardEchoRegions = () => {
                 </form>
               </DialogContent>
             </Dialog>
+            <div>
+              <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
+                <MapPin className="h-5 w-5" />
+                Liste des échos des régions ({echoRegions.length})
+              </h1>
+              <p className="text-gray-600 text-sm">Gérer les actualités régionales</p>
+            </div>
           </div>
 
           {loading ? (
@@ -345,11 +348,7 @@ const DashboardEchoRegions = () => {
         {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         
         <div className="flex-1 ml-64 p-8">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-primary">Écho des régions</h1>
-              <p className="text-gray-600">Gérer les actualités et informations régionales</p>
-            </div>
+          <div className="space-y-6 mb-8">
             <Dialog open={showForm} onOpenChange={setShowForm}>
               <DialogTrigger asChild>
                 <Button>
@@ -453,6 +452,13 @@ const DashboardEchoRegions = () => {
                 </form>
               </DialogContent>
             </Dialog>
+            <div>
+              <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
+                <MapPin className="h-6 w-6" />
+                Liste des échos des régions ({echoRegions.length})
+              </h1>
+              <p className="text-gray-600">Gérer les actualités et informations régionales</p>
+            </div>
           </div>
 
           {loading ? (
