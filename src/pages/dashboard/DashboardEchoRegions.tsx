@@ -28,6 +28,7 @@ interface EchoRegion {
   created_at: string;
   is_visible: boolean;
   reading_time?: number;
+  region?: string;
 }
 const DashboardEchoRegions = () => {
   const {
@@ -52,7 +53,8 @@ const DashboardEchoRegions = () => {
     published_by: "Délégation Abidjan",
     created_at: "2024-03-25T10:00:00Z",
     is_visible: true,
-    reading_time: 5
+    reading_time: 5,
+    region: "Abidjan"
   }, {
     id: '2',
     title: "Session de formation en leadership",
@@ -63,7 +65,8 @@ const DashboardEchoRegions = () => {
     published_by: "Délégation Bouaké",
     created_at: "2024-03-20T14:30:00Z",
     is_visible: true,
-    reading_time: 7
+    reading_time: 7,
+    region: "Bouaké"
   }, {
     id: '3',
     title: "Inauguration du bureau régional de San-Pédro",
@@ -74,7 +77,8 @@ const DashboardEchoRegions = () => {
     published_by: "Délégation San-Pédro",
     created_at: "2024-03-15T09:00:00Z",
     is_visible: true,
-    reading_time: 4
+    reading_time: 4,
+    region: "San-Pédro"
   }, {
     id: '4',
     title: "Atelier sur la gestion publique moderne",
@@ -85,7 +89,8 @@ const DashboardEchoRegions = () => {
     published_by: "Délégation Korhogo",
     created_at: "2024-03-10T16:00:00Z",
     is_visible: false,
-    reading_time: 6
+    reading_time: 6,
+    region: "Korhogo"
   }];
   const [formData, setFormData] = useState({
     title: '',
@@ -203,7 +208,7 @@ const DashboardEchoRegions = () => {
         <img src={echo.image_url} alt={echo.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
       </div>
       <CardHeader>
-        <CardTitle className="text-primary text-xl">{echo.title}</CardTitle>
+        <CardTitle className="text-primary text-xl">{echo.region}</CardTitle>
         <div className="flex items-center text-gray-600 text-sm">
           <MapPin className="w-4 h-4 mr-1" />
           {echo.published_by}
