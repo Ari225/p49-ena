@@ -180,7 +180,7 @@ const DashboardEchoRegions = () => {
       <CardContent>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Délégué régional:</span>
+            <span className="text-sm text-gray-600">Représentant:</span>
             <span className="font-medium text-primary">{delegue.published_by}</span>
           </div>
           <div className="flex items-center justify-between">
