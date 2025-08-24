@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import AdminSidebar from '@/components/AdminSidebar';
@@ -224,101 +223,23 @@ const DashboardEchoRegions = () => {
     return (
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
-          <div className="space-y-4 mb-6">
-            <Dialog open={showForm} onOpenChange={setShowForm}>
-              <DialogTrigger asChild>
-                <Button size="sm">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Nouveau
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
-                  </DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="title">Titre *</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({...formData, title: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="summary">Résumé</Label>
-                    <Textarea
-                      id="summary"
-                      value={formData.summary}
-                      onChange={(e) => setFormData({...formData, summary: e.target.value})}
-                      rows={3}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="details">Contenu détaillé</Label>
-                    <Textarea
-                      id="details"
-                      value={formData.details}
-                      onChange={(e) => setFormData({...formData, details: e.target.value})}
-                      rows={5}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="image_url">URL de l'image</Label>
-                    <Input
-                      id="image_url"
-                      type="url"
-                      value={formData.image_url}
-                      onChange={(e) => setFormData({...formData, image_url: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="published_date">Date de publication</Label>
-                    <Input
-                      id="published_date"
-                      type="date"
-                      value={formData.published_date}
-                      onChange={(e) => setFormData({...formData, published_date: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="published_by">Publié par</Label>
-                    <Input
-                      id="published_by"
-                      value={formData.published_by}
-                      onChange={(e) => setFormData({...formData, published_by: e.target.value})}
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="is_visible"
-                      checked={formData.is_visible}
-                      onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
-                    />
-                    <Label htmlFor="is_visible">Visible sur le site</Label>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button type="submit" className="flex-1">
-                      {editingEcho ? 'Mettre à jour' : 'Créer'}
-                    </Button>
-                    <Button type="button" variant="outline" onClick={resetForm}>
-                      Annuler
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-            <div>
-              <h1 className="text-2xl font-bold text-primary flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
-                Liste des échos des régions ({echoRegions.length})
-              </h1>
-              <p className="text-gray-600 text-sm">Gérer les actualités régionales</p>
-            </div>
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-primary">Écho des régions</h1>
+            <p className="text-gray-600 mt-2 text-sm">Gérer les actualités régionales</p>
+          </div>
+
+          <div className="mb-6">
+            <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90 w-full">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvel écho des régions
+            </Button>
+          </div>
+
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold text-primary flex items-center">
+              <MapPin className="mr-2 h-5 w-5" />
+              Liste des échos des régions ({echoRegions.length})
+            </h2>
           </div>
 
           {loading ? (
@@ -334,131 +255,264 @@ const DashboardEchoRegions = () => {
               )}
             </div>
           )}
-
-          {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         </div>
+        
+        {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
+        
+        <Dialog open={showForm} onOpenChange={setShowForm}>
+          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="title">Titre *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="summary">Résumé</Label>
+                <Textarea
+                  id="summary"
+                  value={formData.summary}
+                  onChange={(e) => setFormData({...formData, summary: e.target.value})}
+                  rows={3}
+                />
+              </div>
+              <div>
+                <Label htmlFor="details">Contenu détaillé</Label>
+                <Textarea
+                  id="details"
+                  value={formData.details}
+                  onChange={(e) => setFormData({...formData, details: e.target.value})}
+                  rows={5}
+                />
+              </div>
+              <div>
+                <Label htmlFor="image_url">URL de l'image</Label>
+                <Input
+                  id="image_url"
+                  type="url"
+                  value={formData.image_url}
+                  onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                />
+              </div>
+              <div>
+                <Label htmlFor="published_date">Date de publication</Label>
+                <Input
+                  id="published_date"
+                  type="date"
+                  value={formData.published_date}
+                  onChange={(e) => setFormData({...formData, published_date: e.target.value})}
+                />
+              </div>
+              <div>
+                <Label htmlFor="published_by">Publié par</Label>
+                <Input
+                  id="published_by"
+                  value={formData.published_by}
+                  onChange={(e) => setFormData({...formData, published_by: e.target.value})}
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="is_visible"
+                  checked={formData.is_visible}
+                  onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
+                />
+                <Label htmlFor="is_visible">Visible sur le site</Label>
+              </div>
+              <div className="flex gap-2">
+                <Button type="submit" className="flex-1">
+                  {editingEcho ? 'Mettre à jour' : 'Créer'}
+                </Button>
+                <Button type="button" variant="outline" onClick={resetForm}>
+                  Annuler
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </Layout>
     );
   }
 
-  // Version desktop/tablet
+  if (isTablet) {
+    return (
+      <Layout>
+        <div className="px-[30px] py-[40px] pb-20">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Écho des régions</h1>
+            <p className="text-gray-600 mt-2">Gérer les actualités et informations régionales</p>
+          </div>
+
+          <div className="mb-6">
+            <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvel écho des régions
+            </Button>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <MapPin className="mr-2 h-5 w-5" />
+              Liste des échos des régions ({echoRegions.length})
+            </h2>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="text-gray-500">Chargement des échos des régions...</div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {echoRegions.length === 0 ? (
+                <div className="col-span-full text-center py-12 text-gray-500">
+                  <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p className="text-lg font-medium">Aucun écho des régions</p>
+                  <p>Commencez par créer votre première actualité régionale</p>
+                </div>
+              ) : (
+                echoRegions.map(renderEchoCard)
+              )}
+            </div>
+          )}
+        </div>
+        
+        {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
+        
+        <Dialog open={showForm} onOpenChange={setShowForm}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <Label htmlFor="title">Titre *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="summary">Résumé</Label>
+                <Textarea
+                  id="summary"
+                  value={formData.summary}
+                  onChange={(e) => setFormData({...formData, summary: e.target.value})}
+                  rows={3}
+                  placeholder="Un bref résumé de l'actualité régionale..."
+                />
+              </div>
+              <div>
+                <Label htmlFor="details">Contenu détaillé</Label>
+                <Textarea
+                  id="details"
+                  value={formData.details}
+                  onChange={(e) => setFormData({...formData, details: e.target.value})}
+                  rows={6}
+                  placeholder="Le contenu complet de l'écho des régions..."
+                />
+              </div>
+              <div>
+                <Label htmlFor="image_url">URL de l'image</Label>
+                <Input
+                  id="image_url"
+                  type="url"
+                  value={formData.image_url}
+                  onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                  placeholder="https://exemple.com/image.jpg"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="published_date">Date de publication</Label>
+                  <Input
+                    id="published_date"
+                    type="date"
+                    value={formData.published_date}
+                    onChange={(e) => setFormData({...formData, published_date: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="reading_time">Temps de lecture (min)</Label>
+                  <Input
+                    id="reading_time"
+                    type="number"
+                    min="1"
+                    value={formData.reading_time}
+                    onChange={(e) => setFormData({...formData, reading_time: parseInt(e.target.value)})}
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="published_by">Publié par (région/auteur)</Label>
+                <Input
+                  id="published_by"
+                  value={formData.published_by}
+                  onChange={(e) => setFormData({...formData, published_by: e.target.value})}
+                  placeholder="Nom de la région ou de l'auteur"
+                />
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="is_visible"
+                  checked={formData.is_visible}
+                  onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
+                />
+                <Label htmlFor="is_visible">Visible sur le site</Label>
+              </div>
+              <div className="flex gap-2">
+                <Button type="submit" className="flex-1">
+                  {editingEcho ? 'Mettre à jour' : 'Créer'}
+                </Button>
+                <Button type="button" variant="outline" onClick={resetForm}>
+                  Annuler
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </Layout>
+    );
+  }
+
+  // Version desktop
   return (
     <Layout>
       <div className="flex">
         {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         
         <div className="flex-1 ml-64 p-8">
-          <div className="space-y-6 mb-8">
-            <Dialog open={showForm} onOpenChange={setShowForm}>
-              <DialogTrigger asChild>
-                <Button>
-                  <Plus className="h-5 w-5 mr-2" />
-                  Nouvel écho des régions
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
-                  </DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <Label htmlFor="title">Titre *</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({...formData, title: e.target.value})}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="summary">Résumé</Label>
-                    <Textarea
-                      id="summary"
-                      value={formData.summary}
-                      onChange={(e) => setFormData({...formData, summary: e.target.value})}
-                      rows={3}
-                      placeholder="Un bref résumé de l'actualité régionale..."
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="details">Contenu détaillé</Label>
-                    <Textarea
-                      id="details"
-                      value={formData.details}
-                      onChange={(e) => setFormData({...formData, details: e.target.value})}
-                      rows={6}
-                      placeholder="Le contenu complet de l'écho des régions..."
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="image_url">URL de l'image</Label>
-                    <Input
-                      id="image_url"
-                      type="url"
-                      value={formData.image_url}
-                      onChange={(e) => setFormData({...formData, image_url: e.target.value})}
-                      placeholder="https://exemple.com/image.jpg"
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="published_date">Date de publication</Label>
-                      <Input
-                        id="published_date"
-                        type="date"
-                        value={formData.published_date}
-                        onChange={(e) => setFormData({...formData, published_date: e.target.value})}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="reading_time">Temps de lecture (min)</Label>
-                      <Input
-                        id="reading_time"
-                        type="number"
-                        min="1"
-                        value={formData.reading_time}
-                        onChange={(e) => setFormData({...formData, reading_time: parseInt(e.target.value)})}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <Label htmlFor="published_by">Publié par (région/auteur)</Label>
-                    <Input
-                      id="published_by"
-                      value={formData.published_by}
-                      onChange={(e) => setFormData({...formData, published_by: e.target.value})}
-                      placeholder="Nom de la région ou de l'auteur"
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="is_visible"
-                      checked={formData.is_visible}
-                      onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
-                    />
-                    <Label htmlFor="is_visible">Visible sur le site</Label>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button type="submit" className="flex-1">
-                      {editingEcho ? 'Mettre à jour' : 'Créer'}
-                    </Button>
-                    <Button type="button" variant="outline" onClick={resetForm}>
-                      Annuler
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
-            <div>
-              <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
-                <MapPin className="h-6 w-6" />
-                Liste des échos des régions ({echoRegions.length})
-              </h1>
-              <p className="text-gray-600">Gérer les actualités et informations régionales</p>
-            </div>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-primary">Écho des régions</h1>
+            <p className="text-gray-600 mt-2">Gérer les actualités et informations régionales</p>
+          </div>
+
+          <div className="mb-6">
+            <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90">
+              <Plus className="mr-2 h-4 w-4" />
+              Nouvel écho des régions
+            </Button>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-primary flex items-center">
+              <MapPin className="mr-2 h-5 w-5" />
+              Liste des échos des régions ({echoRegions.length})
+            </h2>
           </div>
 
           {loading ? (
@@ -480,6 +534,104 @@ const DashboardEchoRegions = () => {
           )}
         </div>
       </div>
+      
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
+            </DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <Label htmlFor="title">Titre *</Label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="summary">Résumé</Label>
+              <Textarea
+                id="summary"
+                value={formData.summary}
+                onChange={(e) => setFormData({...formData, summary: e.target.value})}
+                rows={3}
+                placeholder="Un bref résumé de l'actualité régionale..."
+              />
+            </div>
+            <div>
+              <Label htmlFor="details">Contenu détaillé</Label>
+              <Textarea
+                id="details"
+                value={formData.details}
+                onChange={(e) => setFormData({...formData, details: e.target.value})}
+                rows={6}
+                placeholder="Le contenu complet de l'écho des régions..."
+              />
+            </div>
+            <div>
+              <Label htmlFor="image_url">URL de l'image</Label>
+              <Input
+                id="image_url"
+                type="url"
+                value={formData.image_url}
+                onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                placeholder="https://exemple.com/image.jpg"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="published_date">Date de publication</Label>
+                <Input
+                  id="published_date"
+                  type="date"
+                  value={formData.published_date}
+                  onChange={(e) => setFormData({...formData, published_date: e.target.value})}
+                />
+              </div>
+              <div>
+                <Label htmlFor="reading_time">Temps de lecture (min)</Label>
+                <Input
+                  id="reading_time"
+                  type="number"
+                  min="1"
+                  value={formData.reading_time}
+                  onChange={(e) => setFormData({...formData, reading_time: parseInt(e.target.value)})}
+                />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="published_by">Publié par (région/auteur)</Label>
+              <Input
+                id="published_by"
+                value={formData.published_by}
+                onChange={(e) => setFormData({...formData, published_by: e.target.value})}
+                placeholder="Nom de la région ou de l'auteur"
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="is_visible"
+                checked={formData.is_visible}
+                onChange={(e) => setFormData({...formData, is_visible: e.target.checked})}
+              />
+              <Label htmlFor="is_visible">Visible sur le site</Label>
+            </div>
+            <div className="flex gap-2">
+              <Button type="submit" className="flex-1">
+                {editingEcho ? 'Mettre à jour' : 'Créer'}
+              </Button>
+              <Button type="button" variant="outline" onClick={resetForm}>
+                Annuler
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
