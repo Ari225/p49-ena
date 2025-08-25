@@ -176,8 +176,7 @@ const DashboardCarrieres = () => {
         
         <div className="flex justify-end mt-4">
           <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50" onClick={() => deleteAnnouncement(announcement.id)}>
-            <Trash2 className="h-4 w-4 mr-1" />
-            Supprimer
+            <Trash2 className="h-4 w-4" />
           </Button>
         </div>
       </CardContent>
