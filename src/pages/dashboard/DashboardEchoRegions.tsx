@@ -306,7 +306,6 @@ const DashboardEchoRegions = () => {
                   <div className="space-y-1">
                     {delegue.actualites_recentes.slice(0, 3).map((actualite: any, index: number) => (
                       <div key={index} className="text-sm text-gray-600 border-l-2 border-blue-200 pl-2">
-                        <span className="text-xs text-gray-500">{actualite.date}</span>
                         <p>{actualite.contenu}</p>
                       </div>
                     ))}
