@@ -7,56 +7,49 @@ import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, MapPin, Calendar, Eye, Users } from 'lucide-react';
+import { Plus, Edit, MapPin, Calendar, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
 import { useDeleguesRegionaux } from '@/hooks/useDeleguesRegionaux';
+
 interface EchoRegion {
   id: string;
-  title: string;
-  summary?: string;
-  details?: string;
+  region: string;
+  delegue: string;
+  delegue_id?: number;
+  membres?: number;
+  derniere_activite?: string;
+  actualites_recentes?: any;
   image_url?: string;
-  published_date: string;
-  published_by?: string;
   created_at: string;
-  is_visible: boolean;
-  reading_time?: number;
-  region?: string;
+  updated_at: string;
+  created_by?: string;
 }
+
 const DashboardEchoRegions = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const userIsAdmin = isAdmin(user);
-  const {
-    delegues,
-    loading: loadingDelegues
-  } = useDeleguesRegionaux();
+  const { delegues, loading: loadingDelegues } = useDeleguesRegionaux();
+  
   const [echoRegions, setEchoRegions] = useState<EchoRegion[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingEcho, setEditingEcho] = useState<EchoRegion | null>(null);
   const [formData, setFormData] = useState({
-    title: '',
-    summary: '',
-    details: '',
-    image_url: '',
-    published_date: new Date().toISOString().split('T')[0],
-    published_by: '',
     region: '',
-    is_visible: true,
-    reading_time: 5
+    delegue: '',
+    membres: 0,
+    derniere_activite: '',
+    actualites_recentes: [],
+    image_url: ''
   });
+
   useEffect(() => {
     fetchEchoRegions();
   }, []);
@@ -64,28 +57,26 @@ const DashboardEchoRegions = () => {
   // Créer des cartes basées sur les délégués régionaux
   const delegueCards = delegues.map(delegue => ({
     id: delegue.id.toString(),
-    title: delegue.region,
-    // Utiliser la région comme titre
-    summary: `Délégué régional - ${delegue.name}`,
-    details: `Informations sur ${delegue.region} représentée par ${delegue.name}`,
+    region: delegue.region,
+    delegue: delegue.name,
+    delegue_id: delegue.id,
+    membres: 0,
+    derniere_activite: 'Récemment',
+    actualites_recentes: [],
     image_url: '/lovable-uploads/Pers49.webp',
-    // Image par défaut
-    published_date: new Date().toISOString().split('T')[0],
-    published_by: delegue.name,
     created_at: new Date().toISOString(),
-    is_visible: true,
-    reading_time: 5,
-    region: delegue.region // Utiliser la vraie région
+    updated_at: new Date().toISOString(),
+    created_by: user?.id
   }));
+
   const fetchEchoRegions = async () => {
     try {
       setLoading(true);
-      const {
-        data,
-        error
-      } = await supabase.from('echo_regions').select('*').order('published_date', {
-        ascending: false
-      });
+      const { data, error } = await supabase
+        .from('echo_regions')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
       if (error) throw error;
       setEchoRegions(data || []);
     } catch (error) {
@@ -95,28 +86,33 @@ const DashboardEchoRegions = () => {
       setLoading(false);
     }
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (editingEcho) {
-        const {
-          error
-        } = await supabase.from('echo_regions').update({
-          ...formData,
-          updated_at: new Date().toISOString()
-        }).eq('id', editingEcho.id);
+        const { error } = await supabase
+          .from('echo_regions')
+          .update({
+            ...formData,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', editingEcho.id);
+        
         if (error) throw error;
         toast.success('Écho des régions mis à jour avec succès');
       } else {
-        const {
-          error
-        } = await supabase.from('echo_regions').insert([{
-          ...formData,
-          created_by: user?.id
-        }]);
+        const { error } = await supabase
+          .from('echo_regions')
+          .insert([{
+            ...formData,
+            created_by: user?.id
+          }]);
+        
         if (error) throw error;
         toast.success('Écho des régions créé avec succès');
       }
+      
       resetForm();
       fetchEchoRegions();
     } catch (error) {
@@ -124,89 +120,85 @@ const DashboardEchoRegions = () => {
       toast.error('Erreur lors de la sauvegarde');
     }
   };
+
   const handleEdit = (echo: EchoRegion) => {
     setEditingEcho(echo);
     setFormData({
-      title: echo.title,
-      summary: echo.summary || '',
-      details: echo.details || '',
-      image_url: echo.image_url || '',
-      published_date: echo.published_date,
-      published_by: echo.published_by || '',
-      region: echo.region || '',
-      is_visible: echo.is_visible,
-      reading_time: echo.reading_time || 5
+      region: echo.region,
+      delegue: echo.delegue,
+      membres: echo.membres || 0,
+      derniere_activite: echo.derniere_activite || '',
+      actualites_recentes: echo.actualites_recentes || [],
+      image_url: echo.image_url || ''
     });
     setShowForm(true);
   };
-  const handleDelete = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cet écho des régions ?')) {
-      return;
-    }
-    try {
-      const {
-        error
-      } = await supabase.from('echo_regions').delete().eq('id', id);
-      if (error) throw error;
-      toast.success('Écho des régions supprimé avec succès');
-      fetchEchoRegions();
-    } catch (error) {
-      console.error('Erreur:', error);
-      toast.error('Erreur lors de la suppression');
-    }
-  };
+
   const resetForm = () => {
     setFormData({
-      title: '',
-      summary: '',
-      details: '',
-      image_url: '',
-      published_date: new Date().toISOString().split('T')[0],
-      published_by: '',
       region: '',
-      is_visible: true,
-      reading_time: 5
+      delegue: '',
+      membres: 0,
+      derniere_activite: '',
+      actualites_recentes: [],
+      image_url: ''
     });
     setEditingEcho(null);
     setShowForm(false);
   };
-  const renderDelegueCard = (delegue: any) => <Card key={delegue.id} className="hover:shadow-xl transition-shadow duration-300">
+
+  const renderDelegueCard = (delegue: any) => (
+    <Card key={delegue.id} className="hover:shadow-xl transition-shadow duration-300 relative">
       <div className="aspect-video overflow-hidden rounded-t-lg">
-        <img src="/lovable-uploads/Pers49.webp" alt={delegue.region} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+        <img 
+          src="/lovable-uploads/Pers49.webp" 
+          alt={delegue.region} 
+          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+        />
       </div>
       <CardHeader>
         <CardTitle className="text-primary text-xl">{delegue.region}</CardTitle>
-        
+        <Button
+          size="sm"
+          variant="outline"
+          className="absolute top-2 right-2 h-8 w-8 p-0"
+          onClick={() => handleEdit(delegue)}
+        >
+          <Edit className="h-4 w-4" />
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Délégué:</span>
-            <span className="font-medium text-primary">{delegue.published_by}</span>
+            <span className="font-medium text-primary">{delegue.delegue}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600 flex items-center">
               <Users className="w-4 h-4 mr-1" />
               Membres:
             </span>
-            <span className="font-bold text-secondary">{delegue.region}</span>
+            <span className="font-bold text-secondary">{delegue.membres}</span>
           </div>
           <div className="pt-2 border-t">
             <div className="flex items-center text-sm text-gray-600 mb-2">
               <Calendar className="w-4 h-4 mr-1" />
               Dernière activité:
             </div>
-            
+            <p className="text-sm">{delegue.derniere_activite}</p>
           </div>
           <div className="pt-2 border-t">
             <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
-            
+            <p className="text-sm text-gray-500">Aucune actualité récente</p>
           </div>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
+
   if (isMobile) {
-    return <Layout>
+    return (
+      <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-primary">Écho des régions</h1>
@@ -227,11 +219,19 @@ const DashboardEchoRegions = () => {
             </h2>
           </div>
 
-          {loadingDelegues ? <div className="text-center py-8">Chargement...</div> : <div className="space-y-4">
-              {delegues.length === 0 ? <div className="text-center py-8 text-gray-500">
+          {loadingDelegues ? (
+            <div className="text-center py-8">Chargement...</div>
+          ) : (
+            <div className="space-y-4">
+              {delegues.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
                   Aucun délégué régional trouvé
-                </div> : delegueCards.map(renderDelegueCard)}
-            </div>}
+                </div>
+              ) : (
+                delegueCards.map(renderDelegueCard)
+              )}
+            </div>
+          )}
         </div>
         
         {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
@@ -245,60 +245,65 @@ const DashboardEchoRegions = () => {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="title">Titre *</Label>
-                <Input id="title" value={formData.title} onChange={e => setFormData({
-                ...formData,
-                title: e.target.value
-              })} required />
+                <Label htmlFor="region">Région *</Label>
+                <Input 
+                  id="region" 
+                  value={formData.region} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    region: e.target.value
+                  })} 
+                  required 
+                />
               </div>
               <div>
-                <Label htmlFor="summary">Résumé</Label>
-                <Textarea id="summary" value={formData.summary} onChange={e => setFormData({
-                ...formData,
-                summary: e.target.value
-              })} rows={3} />
+                <Label htmlFor="delegue">Délégué *</Label>
+                <Input 
+                  id="delegue" 
+                  value={formData.delegue} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    delegue: e.target.value
+                  })} 
+                  required 
+                />
               </div>
               <div>
-                <Label htmlFor="details">Contenu détaillé</Label>
-                <Textarea id="details" value={formData.details} onChange={e => setFormData({
-                ...formData,
-                details: e.target.value
-              })} rows={5} />
+                <Label htmlFor="membres">Nombre de membres</Label>
+                <Input 
+                  id="membres" 
+                  type="number" 
+                  min="0"
+                  value={formData.membres} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    membres: parseInt(e.target.value) || 0
+                  })} 
+                />
+              </div>
+              <div>
+                <Label htmlFor="derniere_activite">Dernière activité</Label>
+                <Textarea 
+                  id="derniere_activite" 
+                  value={formData.derniere_activite} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    derniere_activite: e.target.value
+                  })} 
+                  rows={3} 
+                />
               </div>
               <div>
                 <Label htmlFor="image_url">URL de l'image</Label>
-                <Input id="image_url" type="url" value={formData.image_url} onChange={e => setFormData({
-                ...formData,
-                image_url: e.target.value
-              })} />
-              </div>
-              <div>
-                <Label htmlFor="published_date">Date de publication</Label>
-                <Input id="published_date" type="date" value={formData.published_date} onChange={e => setFormData({
-                ...formData,
-                published_date: e.target.value
-              })} />
-              </div>
-              <div>
-                <Label htmlFor="published_by">Publié par (région/auteur)</Label>
-                <Input id="published_by" value={formData.published_by} onChange={e => setFormData({
-                ...formData,
-                published_by: e.target.value
-              })} />
-              </div>
-              <div>
-                <Label htmlFor="region">Région *</Label>
-                <Input id="region" value={formData.region} onChange={e => setFormData({
-                ...formData,
-                region: e.target.value
-              })} required />
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="is_visible" checked={formData.is_visible} onChange={e => setFormData({
-                ...formData,
-                is_visible: e.target.checked
-              })} />
-                
+                <Input 
+                  id="image_url" 
+                  type="url" 
+                  value={formData.image_url} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    image_url: e.target.value
+                  })} 
+                />
               </div>
               <div className="flex gap-2">
                 <Button type="submit" className="flex-1">
@@ -311,10 +316,13 @@ const DashboardEchoRegions = () => {
             </form>
           </DialogContent>
         </Dialog>
-      </Layout>;
+      </Layout>
+    );
   }
+
   if (isTablet) {
-    return <Layout>
+    return (
+      <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Écho des régions</h1>
@@ -335,15 +343,23 @@ const DashboardEchoRegions = () => {
             </h2>
           </div>
 
-          {loadingDelegues ? <div className="text-center py-12">
+          {loadingDelegues ? (
+            <div className="text-center py-12">
               <div className="text-gray-500">Chargement des délégués régionaux...</div>
-            </div> : <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {delegues.length === 0 ? <div className="col-span-full text-center py-12 text-gray-500">
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {delegues.length === 0 ? (
+                <div className="col-span-full text-center py-12 text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                   <p className="text-lg font-medium">Aucun délégué régional</p>
                   <p>Les délégués régionaux apparaîtront ici automatiquement</p>
-                </div> : delegueCards.map(renderDelegueCard)}
-            </div>}
+                </div>
+              ) : (
+                delegueCards.map(renderDelegueCard)
+              )}
+            </div>
+          )}
         </div>
         
         {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
@@ -357,69 +373,70 @@ const DashboardEchoRegions = () => {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <Label htmlFor="title">Titre *</Label>
-                <Input id="title" value={formData.title} onChange={e => setFormData({
-                ...formData,
-                title: e.target.value
-              })} required />
+                <Label htmlFor="region">Région *</Label>
+                <Input 
+                  id="region" 
+                  value={formData.region} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    region: e.target.value
+                  })} 
+                  required 
+                  placeholder="Nom de la région"
+                />
               </div>
               <div>
-                <Label htmlFor="summary">Résumé</Label>
-                <Textarea id="summary" value={formData.summary} onChange={e => setFormData({
-                ...formData,
-                summary: e.target.value
-              })} rows={3} placeholder="Un bref résumé de l'actualité régionale..." />
+                <Label htmlFor="delegue">Délégué *</Label>
+                <Input 
+                  id="delegue" 
+                  value={formData.delegue} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    delegue: e.target.value
+                  })} 
+                  required 
+                  placeholder="Nom du délégué régional"
+                />
               </div>
               <div>
-                <Label htmlFor="details">Contenu détaillé</Label>
-                <Textarea id="details" value={formData.details} onChange={e => setFormData({
-                ...formData,
-                details: e.target.value
-              })} rows={6} placeholder="Le contenu complet de l'écho des régions..." />
+                <Label htmlFor="membres">Nombre de membres</Label>
+                <Input 
+                  id="membres" 
+                  type="number" 
+                  min="0"
+                  value={formData.membres} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    membres: parseInt(e.target.value) || 0
+                  })} 
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor="derniere_activite">Dernière activité</Label>
+                <Textarea 
+                  id="derniere_activite" 
+                  value={formData.derniere_activite} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    derniere_activite: e.target.value
+                  })} 
+                  rows={3} 
+                  placeholder="Description de la dernière activité..."
+                />
               </div>
               <div>
                 <Label htmlFor="image_url">URL de l'image</Label>
-                <Input id="image_url" type="url" value={formData.image_url} onChange={e => setFormData({
-                ...formData,
-                image_url: e.target.value
-              })} placeholder="https://exemple.com/image.jpg" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="published_date">Date de publication</Label>
-                  <Input id="published_date" type="date" value={formData.published_date} onChange={e => setFormData({
-                  ...formData,
-                  published_date: e.target.value
-                })} />
-                </div>
-                <div>
-                  <Label htmlFor="reading_time">Temps de lecture (min)</Label>
-                  <Input id="reading_time" type="number" min="1" value={formData.reading_time} onChange={e => setFormData({
-                  ...formData,
-                  reading_time: parseInt(e.target.value)
-                })} />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="published_by">Publié par (région/auteur)</Label>
-                <Input id="published_by" value={formData.published_by} onChange={e => setFormData({
-                ...formData,
-                published_by: e.target.value
-              })} placeholder="Nom de la région ou de l'auteur" />
-              </div>
-              <div>
-                <Label htmlFor="region">Région *</Label>
-                <Input id="region" value={formData.region} onChange={e => setFormData({
-                ...formData,
-                region: e.target.value
-              })} required placeholder="Nom de la région" />
-              </div>
-              <div className="flex items-center space-x-2">
-                <input type="checkbox" id="is_visible" checked={formData.is_visible} onChange={e => setFormData({
-                ...formData,
-                is_visible: e.target.checked
-              })} />
-                <Label htmlFor="is_visible">Visible sur le site</Label>
+                <Input 
+                  id="image_url" 
+                  type="url" 
+                  value={formData.image_url} 
+                  onChange={e => setFormData({
+                    ...formData,
+                    image_url: e.target.value
+                  })} 
+                  placeholder="https://exemple.com/image.jpg"
+                />
               </div>
               <div className="flex gap-2">
                 <Button type="submit" className="flex-1">
@@ -432,11 +449,13 @@ const DashboardEchoRegions = () => {
             </form>
           </DialogContent>
         </Dialog>
-      </Layout>;
+      </Layout>
+    );
   }
 
   // Version desktop
-  return <Layout>
+  return (
+    <Layout>
       <div className="flex">
         {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         
@@ -446,8 +465,6 @@ const DashboardEchoRegions = () => {
             <p className="text-gray-600 mt-2">Gérer les actualités et informations régionales</p>
           </div>
 
-          
-
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <MapPin className="mr-2 h-5 w-5" />
@@ -455,15 +472,23 @@ const DashboardEchoRegions = () => {
             </h2>
           </div>
 
-          {loadingDelegues ? <div className="text-center py-12">
+          {loadingDelegues ? (
+            <div className="text-center py-12">
               <div className="text-gray-500">Chargement des délégués régionaux...</div>
-            </div> : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {delegues.length === 0 ? <div className="col-span-full text-center py-12 text-gray-500">
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {delegues.length === 0 ? (
+                <div className="col-span-full text-center py-12 text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                   <p className="text-lg font-medium">Aucun délégué régional</p>
                   <p>Les délégués régionaux apparaîtront ici automatiquement</p>
-                </div> : delegueCards.map(renderDelegueCard)}
-            </div>}
+                </div>
+              ) : (
+                delegueCards.map(renderDelegueCard)
+              )}
+            </div>
+          )}
         </div>
       </div>
       
@@ -476,69 +501,70 @@ const DashboardEchoRegions = () => {
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="title">Titre *</Label>
-              <Input id="title" value={formData.title} onChange={e => setFormData({
-              ...formData,
-              title: e.target.value
-            })} required />
+              <Label htmlFor="region">Région *</Label>
+              <Input 
+                id="region" 
+                value={formData.region} 
+                onChange={e => setFormData({
+                  ...formData,
+                  region: e.target.value
+                })} 
+                required 
+                placeholder="Nom de la région"
+              />
             </div>
             <div>
-              <Label htmlFor="summary">Résumé</Label>
-              <Textarea id="summary" value={formData.summary} onChange={e => setFormData({
-              ...formData,
-              summary: e.target.value
-            })} rows={3} placeholder="Un bref résumé de l'actualité régionale..." />
+              <Label htmlFor="delegue">Délégué *</Label>
+              <Input 
+                id="delegue" 
+                value={formData.delegue} 
+                onChange={e => setFormData({
+                  ...formData,
+                  delegue: e.target.value
+                })} 
+                required 
+                placeholder="Nom du délégué régional"
+              />
             </div>
             <div>
-              <Label htmlFor="details">Contenu détaillé</Label>
-              <Textarea id="details" value={formData.details} onChange={e => setFormData({
-              ...formData,
-              details: e.target.value
-            })} rows={6} placeholder="Le contenu complet de l'écho des régions..." />
+              <Label htmlFor="membres">Nombre de membres</Label>
+              <Input 
+                id="membres" 
+                type="number" 
+                min="0"
+                value={formData.membres} 
+                onChange={e => setFormData({
+                  ...formData,
+                  membres: parseInt(e.target.value) || 0
+                })} 
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <Label htmlFor="derniere_activite">Dernière activité</Label>
+              <Textarea 
+                id="derniere_activite" 
+                value={formData.derniere_activite} 
+                onChange={e => setFormData({
+                  ...formData,
+                  derniere_activite: e.target.value
+                })} 
+                rows={3} 
+                placeholder="Description de la dernière activité..."
+              />
             </div>
             <div>
               <Label htmlFor="image_url">URL de l'image</Label>
-              <Input id="image_url" type="url" value={formData.image_url} onChange={e => setFormData({
-              ...formData,
-              image_url: e.target.value
-            })} placeholder="https://exemple.com/image.jpg" />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="published_date">Date de publication</Label>
-                <Input id="published_date" type="date" value={formData.published_date} onChange={e => setFormData({
-                ...formData,
-                published_date: e.target.value
-              })} />
-              </div>
-              <div>
-                <Label htmlFor="reading_time">Temps de lecture (min)</Label>
-                <Input id="reading_time" type="number" min="1" value={formData.reading_time} onChange={e => setFormData({
-                ...formData,
-                reading_time: parseInt(e.target.value)
-              })} />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="published_by">Publié par (région/auteur)</Label>
-              <Input id="published_by" value={formData.published_by} onChange={e => setFormData({
-              ...formData,
-              published_by: e.target.value
-            })} placeholder="Nom de la région ou de l'auteur" />
-            </div>
-            <div>
-              <Label htmlFor="region">Région *</Label>
-              <Input id="region" value={formData.region} onChange={e => setFormData({
-              ...formData,
-              region: e.target.value
-            })} required placeholder="Nom de la région" />
-            </div>
-            <div className="flex items-center space-x-2">
-              <input type="checkbox" id="is_visible" checked={formData.is_visible} onChange={e => setFormData({
-              ...formData,
-              is_visible: e.target.checked
-            })} />
-              <Label htmlFor="is_visible">Visible sur le site</Label>
+              <Input 
+                id="image_url" 
+                type="url" 
+                value={formData.image_url} 
+                onChange={e => setFormData({
+                  ...formData,
+                  image_url: e.target.value
+                })} 
+                placeholder="https://exemple.com/image.jpg"
+              />
             </div>
             <div className="flex gap-2">
               <Button type="submit" className="flex-1">
@@ -551,6 +577,8 @@ const DashboardEchoRegions = () => {
           </form>
         </DialogContent>
       </Dialog>
-    </Layout>;
+    </Layout>
+  );
 };
+
 export default DashboardEchoRegions;
