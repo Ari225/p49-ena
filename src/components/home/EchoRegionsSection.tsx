@@ -6,59 +6,58 @@ import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useSwipe } from '@/hooks/useSwipe';
 import { Card, CardContent } from '@/components/ui/card';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock, Users, MapPin } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const EchoRegionsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [regions, setRegions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
 
-  const regionalNews = [{
-    id: '1',
-    title: "Rencontre mensuelle des membres d'Abidjan",
-    summary: "Plus de 30 membres se sont retrouvés pour échanger sur les projets en cours.",
-    category: "Abidjan",
-    image_url: "/lovable-uploads/narcissek.jpeg",
-    published_date: "2024-03-25"
-  }, {
-    id: '2',
-    title: "Session de formation en leadership",
-    summary: "Formation intensive sur le leadership transformationnel pour 15 membres.",
-    category: "Bouaké",
-    image_url: "/lovable-uploads/narcissek.jpeg",
-    published_date: "2024-03-20"
-  }, {
-    id: '3',
-    title: "Inauguration du bureau régional",
-    summary: "Ouverture officielle du nouveau bureau régional en présence du Préfet.",
-    category: "San-Pédro",
-    image_url: "/lovable-uploads/narcissek.jpeg",
-    published_date: "2024-03-15"
-  }, {
-    id: '4',
-    title: "Atelier sur la gestion publique",
-    summary: "Workshop sur les innovations en gestion publique locale.",
-    category: "Korhogo",
-    image_url: "/lovable-uploads/narcissek.jpeg",
-    published_date: "2024-03-10"
-  }];
+  // Fetch regions from database
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('echo_regions')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(3);
+
+        if (error) {
+          console.error('Error fetching regions:', error);
+          return;
+        }
+
+        setRegions(data || []);
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRegions();
+  }, []);
 
   // Auto-scroll for desktop only
   useEffect(() => {
-    if (!isMobile && !isTablet) {
+    if (!isMobile && !isTablet && regions.length > 0) {
       const interval = setInterval(() => {
-        setCurrentIndex(prevIndex => (prevIndex + 1) % regionalNews.length);
+        setCurrentIndex(prevIndex => (prevIndex + 1) % regions.length);
       }, 5000);
       return () => clearInterval(interval);
     }
-  }, [isMobile, isTablet]);
+  }, [isMobile, isTablet, regions.length]);
 
   const nextSlide = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % regionalNews.length);
+    setCurrentIndex(prevIndex => (prevIndex + 1) % regions.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex(prevIndex => prevIndex === 0 ? regionalNews.length - 1 : prevIndex - 1);
+    setCurrentIndex(prevIndex => prevIndex === 0 ? regions.length - 1 : prevIndex - 1);
   };
 
   // ===== SWIPE HOOK =====
@@ -68,46 +67,46 @@ const EchoRegionsSection = () => {
     threshold: 50
   });
 
-  const RegionalNewsCard = ({ item, variant = 'mobile' }) => {
+  const RegionCard = ({ item, variant = 'mobile' }) => {
     return (
       <Link to={`/echo-region/${item.id}`}>
         <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-200 h-full">
           <div className="aspect-[16/10] overflow-hidden relative">
             <img 
-              src={item.image_url} 
-              alt={item.title} 
+              src={item.image_url || '/lovable-uploads/narcissek.jpeg'} 
+              alt={`Région ${item.region}`} 
               className={`w-full h-full object-cover transition-transform duration-500 ${
                 variant === 'desktop' ? 'group-hover:scale-110' : 'group-hover:scale-105'
               }`} 
             />
             <div className="absolute top-4 left-4">
               <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
-                {item.category}
+                {item.region}
               </span>
             </div>
           </div>
           <CardContent className="p-6">
             <div className="flex items-center text-sm text-gray-500 gap-4 mb-3">
               <div className={`flex items-center ${variant !== 'mobile' ? 'bg-gray-50 px-2 py-1 rounded-md' : ''}`}>
-                <Calendar className={`${variant === 'mobile' ? 'h-4 w-4 mr-2' : 'h-3 w-3 mr-1'}`} />
-                {new Date(item.published_date).toLocaleDateString('fr-FR')}
+                <MapPin className={`${variant === 'mobile' ? 'h-4 w-4 mr-2' : 'h-3 w-3 mr-1'}`} />
+                {item.region}
               </div>
               <div className="flex items-center">
-                <Clock className={`${variant === 'mobile' ? 'h-4 w-4 mr-1' : 'h-3 w-3 mr-1'}`} />
-                <span>3 min</span>
+                <Users className={`${variant === 'mobile' ? 'h-4 w-4 mr-1' : 'h-3 w-3 mr-1'}`} />
+                <span>{item.membres} membres</span>
               </div>
             </div>
             <h3 className={`font-semibold text-primary leading-tight line-clamp-2 mb-3 ${
               variant === 'mobile' ? 'text-base' : 
               variant === 'tablet' ? 'text-lg' : 'text-lg'
             }`}>
-              {item.title}
+              Délégué: {item.delegue}
             </h3>
             <p className={`text-gray-700 line-clamp-3 leading-relaxed mb-4 ${
               variant === 'mobile' ? 'text-xs' : 
               variant === 'tablet' ? 'text-sm' : 'text-sm'
             }`}>
-              {item.summary}
+              {item.derniere_activite || 'Aucune activité récente signalée.'}
             </p>
           </CardContent>
         </Card>
@@ -132,66 +131,102 @@ const EchoRegionsSection = () => {
         {/* MOBILE VERSION */}
         {isMobile && (
           <div className="relative">
-            <div 
-              className="overflow-hidden"
-              {...swipeHandlers}
-            >
-              <div className="flex transition-transform duration-300 ease-in-out" style={{
-                transform: `translateX(-${currentIndex * 100}%)`
-              }}>
-                {regionalNews.map((news, index) => (
-                  <div key={index} className="w-full flex-shrink-0 px-0">
-                    <RegionalNewsCard item={news} variant="mobile" />
-                  </div>
-                ))}
+            {loading ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">Chargement des régions...</p>
               </div>
-            </div>
-            
-            {/* Navigation arrows */}
-            <div className="flex justify-center gap-4 mt-4">
-              <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
+            ) : regions.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-gray-500">Aucune région disponible pour le moment.</p>
+              </div>
+            ) : (
+              <>
+                <div 
+                  className="overflow-hidden"
+                  {...swipeHandlers}
+                >
+                  <div className="flex transition-transform duration-300 ease-in-out" style={{
+                    transform: `translateX(-${currentIndex * 100}%)`
+                  }}>
+                    {regions.map((region, index) => (
+                      <div key={index} className="w-full flex-shrink-0 px-0">
+                        <RegionCard item={region} variant="mobile" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Navigation arrows */}
+                <div className="flex justify-center gap-4 mt-4">
+                  <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         )}
 
         {/* TABLET VERSION */}
         {isTablet && !isMobile && (
           <div className="relative">
-            <div className="overflow-hidden">
-              <div className="flex transition-transform duration-300 ease-in-out" style={{
-                transform: `translateX(-${currentIndex * 50}%)`
-              }}>
-                {regionalNews.map((news, index) => (
-                  <div key={index} className="w-1/2 flex-shrink-0 px-2">
-                    <RegionalNewsCard item={news} variant="tablet" />
-                  </div>
-                ))}
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Chargement des régions...</p>
               </div>
-            </div>
-            
-            {/* Navigation arrows */}
-            <div className="flex justify-center gap-4 mt-6">
-              <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
+            ) : regions.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Aucune région disponible pour le moment.</p>
+              </div>
+            ) : (
+              <>
+                <div className="overflow-hidden">
+                  <div className="flex transition-transform duration-300 ease-in-out" style={{
+                    transform: `translateX(-${currentIndex * 50}%)`
+                  }}>
+                    {regions.map((region, index) => (
+                      <div key={index} className="w-1/2 flex-shrink-0 px-2">
+                        <RegionCard item={region} variant="tablet" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Navigation arrows */}
+                <div className="flex justify-center gap-4 mt-6">
+                  <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         )}
 
         {/* DESKTOP VERSION */}
         {!isMobile && !isTablet && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {regionalNews.map((news, index) => (
-              <RegionalNewsCard key={index} item={news} variant="desktop" />
-            ))}
+          <div>
+            {loading ? (
+              <div className="text-center py-16">
+                <p className="text-gray-500">Chargement des régions...</p>
+              </div>
+            ) : regions.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-gray-500">Aucune région disponible pour le moment.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {regions.map((region, index) => (
+                  <RegionCard key={index} item={region} variant="desktop" />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
