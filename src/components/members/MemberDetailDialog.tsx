@@ -41,7 +41,13 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  const handleSocialClick = (url: string) => {
+  const handleSocialClick = (url: string | boolean | null) => {
+    // Vérifier que l'URL est une string valide
+    if (!url || typeof url !== 'string' || url.trim() === '') {
+      console.warn('URL invalide:', url);
+      return;
+    }
+    
     // S'assurer que l'URL commence par http:// ou https://
     const fullUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
     // Forcer l'ouverture dans un nouvel onglet externe
