@@ -42,16 +42,17 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   };
 
   const handleSocialClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    // S'assurer que l'URL commence par http:// ou https://
+    const fullUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+    window.open(fullUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleWhatsAppClick = () => {
     if (whatsapp) {
-      // Nettoyer le numéro : enlever les espaces, tirets et autres caractères
+      // Nettoyer le numéro : enlever les espaces, tirets et autres caractères non numériques (sauf +)
       const cleanNumber = whatsapp.toString().replace(/[^\d+]/g, '');
-      // Si le numéro ne commence pas par +, on considère que c'est un numéro français
-      const formattedNumber = cleanNumber.startsWith('+') ? cleanNumber : `+33${cleanNumber}`;
-      const whatsappUrl = `https://wa.me/${formattedNumber}`;
+      // Le numéro est déjà formaté avec + dans la base de données
+      const whatsappUrl = `https://wa.me/${cleanNumber}`;
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     }
   };
