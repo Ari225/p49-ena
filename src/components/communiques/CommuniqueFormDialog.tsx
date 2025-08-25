@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Upload, X } from 'lucide-react';
-import { compressMediaFile } from '@/utils/mediaCompression';
+import { compressCommuniqueImage } from '@/utils/mediaCompression';
 import { toast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
@@ -90,7 +90,7 @@ const CommuniqueFormDialog: React.FC<CommuniqueFormDialogProps> = ({
     if (file) {
       setIsCompressing(true);
       try {
-        const compressedFile = await compressMediaFile(file);
+        const compressedFile = await compressCommuniqueImage(file);
         setSelectedImage(compressedFile);
         
         const reader = new FileReader();

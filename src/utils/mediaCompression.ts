@@ -12,11 +12,12 @@ export const compressImage = async (file: File, maxSizeMB: number = 5): Promise<
 
     const img = new Image();
     img.onload = () => {
-      // Calculate new dimensions while maintaining aspect ratio
-      const maxWidth = 1920;
-      const maxHeight = 1080;
+      // More aggressive compression for better web performance
+      const maxWidth = 1200; // Reduced from 1920 for faster loading
+      const maxHeight = 800;  // Reduced from 1080 for faster loading
       let { width, height } = img;
 
+      // Always resize if image is larger than reasonable web size
       if (width > maxWidth || height > maxHeight) {
         const ratio = Math.min(maxWidth / width, maxHeight / height);
         width *= ratio;
@@ -25,38 +26,69 @@ export const compressImage = async (file: File, maxSizeMB: number = 5): Promise<
 
       canvas.width = width;
       canvas.height = height;
+      
+      // Improve image quality before compression
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, width, height);
 
-      // Start with quality 0.8 and reduce if needed
-      let quality = 0.8;
-      const tryCompress = () => {
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              reject(new Error('Failed to compress image'));
-              return;
-            }
+      // Try WebP first (better compression), fallback to JPEG
+      const tryWebP = () => {
+        // Check if browser supports WebP
+        const testCanvas = document.createElement('canvas');
+        testCanvas.width = 1;
+        testCanvas.height = 1;
+        const supportsWebP = testCanvas.toDataURL('image/webp').indexOf('data:image/webp') === 0;
 
-            const sizeInMB = blob.size / (1024 * 1024);
-            
-            if (sizeInMB <= maxSizeMB || quality <= 0.1) {
-              // Create a new File object with the compressed blob
-              const compressedFile = new File([blob], file.name, {
-                type: 'image/jpeg',
-                lastModified: Date.now(),
-              });
-              resolve(compressedFile);
-            } else {
-              quality -= 0.1;
-              tryCompress();
-            }
-          },
-          'image/jpeg',
-          quality
-        );
+        if (supportsWebP) {
+          compressWithFormat('image/webp', 0.8);
+        } else {
+          compressWithFormat('image/jpeg', 0.85);
+        }
       };
 
-      tryCompress();
+      const compressWithFormat = (format: string, initialQuality: number) => {
+        let quality = initialQuality;
+        
+        const tryCompress = () => {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                // Fallback to JPEG if WebP fails
+                if (format === 'image/webp') {
+                  compressWithFormat('image/jpeg', 0.85);
+                  return;
+                }
+                reject(new Error('Failed to compress image'));
+                return;
+              }
+
+              const sizeInMB = blob.size / (1024 * 1024);
+              
+              if (sizeInMB <= maxSizeMB || quality <= 0.3) {
+                // Determine file extension based on format
+                const extension = format === 'image/webp' ? '.webp' : '.jpg';
+                const fileName = file.name.replace(/\.[^/.]+$/, '') + extension;
+                
+                const compressedFile = new File([blob], fileName, {
+                  type: format,
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                quality -= 0.1;
+                tryCompress();
+              }
+            },
+            format,
+            quality
+          );
+        };
+
+        tryCompress();
+      };
+
+      tryWebP();
     };
 
     img.onerror = () => reject(new Error('Failed to load image'));
@@ -113,7 +145,8 @@ export const compressVideo = async (file: File, maxSizeMB: number = 20): Promise
 
 export const compressMediaFile = async (file: File): Promise<File> => {
   if (file.type.startsWith('image/')) {
-    return compressImage(file, 5); // 5MB limit for images
+    // More aggressive compression for communiqués (2MB limit for faster web loading)
+    return compressImage(file, 2);
   } else if (file.type.startsWith('video/')) {
     return compressVideo(file, 20); // 20MB limit for videos
   } else if (file.type === 'application/pdf') {
@@ -121,6 +154,15 @@ export const compressMediaFile = async (file: File): Promise<File> => {
   }
   
   return file; // Return as-is for other file types
+};
+
+// Specific function for communiqué images with more aggressive compression
+export const compressCommuniqueImage = async (file: File): Promise<File> => {
+  if (file.type.startsWith('image/')) {
+    // Very aggressive compression for public communiqués (1.5MB limit)
+    return compressImage(file, 1.5);
+  }
+  return file;
 };
 
 export const formatFileSize = (bytes: number): string => {
