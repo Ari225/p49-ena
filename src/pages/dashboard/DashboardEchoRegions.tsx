@@ -47,7 +47,8 @@ const DashboardEchoRegions = () => {
     membres: 0,
     derniere_activite: '',
     actualites_recentes: [],
-    image_url: ''
+    image_url: '',
+    nouvelle_actualite: ''
   });
 
   useEffect(() => {
@@ -129,7 +130,8 @@ const DashboardEchoRegions = () => {
       membres: echo.membres || 0,
       derniere_activite: echo.derniere_activite || '',
       actualites_recentes: echo.actualites_recentes || [],
-      image_url: echo.image_url || ''
+      image_url: echo.image_url || '',
+      nouvelle_actualite: ''
     });
     setShowForm(true);
   };
@@ -141,7 +143,8 @@ const DashboardEchoRegions = () => {
       membres: 0,
       derniere_activite: '',
       actualites_recentes: [],
-      image_url: ''
+      image_url: '',
+      nouvelle_actualite: ''
     });
     setEditingEcho(null);
     setShowForm(false);
@@ -237,7 +240,7 @@ const DashboardEchoRegions = () => {
         {userIsAdmin ? <AdminSidebar /> : <EditorSidebar />}
         
         <Dialog open={showForm} onOpenChange={setShowForm}>
-          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-y-auto rounded-2xl mx-auto">
             <DialogHeader>
               <DialogTitle>
                 {editingEcho ? 'Modifier' : 'Créer'} un écho des régions
@@ -282,7 +285,7 @@ const DashboardEchoRegions = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="derniere_activite">Dernière activité</Label>
+                <Label htmlFor="derniere_activite">Nouvelle activité</Label>
                 <Textarea 
                   id="derniere_activite" 
                   value={formData.derniere_activite} 
@@ -291,19 +294,49 @@ const DashboardEchoRegions = () => {
                     derniere_activite: e.target.value
                   })} 
                   rows={3} 
+                  placeholder="Décrivez la nouvelle activité..."
                 />
               </div>
               <div>
-                <Label htmlFor="image_url">URL de l'image</Label>
-                <Input 
-                  id="image_url" 
-                  type="url" 
-                  value={formData.image_url} 
+                <Label htmlFor="nouvelle_actualite">Nouvelle actualité</Label>
+                <Textarea 
+                  id="nouvelle_actualite" 
+                  value={formData.nouvelle_actualite || ''} 
                   onChange={e => setFormData({
                     ...formData,
-                    image_url: e.target.value
+                    nouvelle_actualite: e.target.value
                   })} 
+                  rows={2} 
+                  placeholder="Ajoutez une nouvelle actualité..."
                 />
+              </div>
+              <div>
+                <Label htmlFor="image_file">Image</Label>
+                <Input 
+                  id="image_file" 
+                  type="file" 
+                  accept="image/*"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      // Créer une URL temporaire pour l'aperçu
+                      const imageUrl = URL.createObjectURL(file);
+                      setFormData({
+                        ...formData,
+                        image_url: imageUrl
+                      });
+                    }
+                  }}
+                />
+                {formData.image_url && (
+                  <div className="mt-2">
+                    <img 
+                      src={formData.image_url} 
+                      alt="Aperçu" 
+                      className="w-20 h-20 object-cover rounded-lg"
+                    />
+                  </div>
+                )}
               </div>
               <div className="flex gap-2">
                 <Button type="submit" className="flex-1">
@@ -413,7 +446,7 @@ const DashboardEchoRegions = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="derniere_activite">Dernière activité</Label>
+                <Label htmlFor="derniere_activite">Nouvelle activité</Label>
                 <Textarea 
                   id="derniere_activite" 
                   value={formData.derniere_activite} 
@@ -422,21 +455,49 @@ const DashboardEchoRegions = () => {
                     derniere_activite: e.target.value
                   })} 
                   rows={3} 
-                  placeholder="Description de la dernière activité..."
+                  placeholder="Décrivez la nouvelle activité..."
                 />
               </div>
               <div>
-                <Label htmlFor="image_url">URL de l'image</Label>
-                <Input 
-                  id="image_url" 
-                  type="url" 
-                  value={formData.image_url} 
+                <Label htmlFor="nouvelle_actualite">Nouvelle actualité</Label>
+                <Textarea 
+                  id="nouvelle_actualite" 
+                  value={formData.nouvelle_actualite || ''} 
                   onChange={e => setFormData({
                     ...formData,
-                    image_url: e.target.value
+                    nouvelle_actualite: e.target.value
                   })} 
-                  placeholder="https://exemple.com/image.jpg"
+                  rows={2} 
+                  placeholder="Ajoutez une nouvelle actualité..."
                 />
+              </div>
+              <div>
+                <Label htmlFor="image_file">Image</Label>
+                <Input 
+                  id="image_file" 
+                  type="file" 
+                  accept="image/*"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      // Créer une URL temporaire pour l'aperçu
+                      const imageUrl = URL.createObjectURL(file);
+                      setFormData({
+                        ...formData,
+                        image_url: imageUrl
+                      });
+                    }
+                  }}
+                />
+                {formData.image_url && (
+                  <div className="mt-2">
+                    <img 
+                      src={formData.image_url} 
+                      alt="Aperçu" 
+                      className="w-20 h-20 object-cover rounded-lg"
+                    />
+                  </div>
+                )}
               </div>
               <div className="flex gap-2">
                 <Button type="submit" className="flex-1">
@@ -541,7 +602,7 @@ const DashboardEchoRegions = () => {
               />
             </div>
             <div>
-              <Label htmlFor="derniere_activite">Dernière activité</Label>
+              <Label htmlFor="derniere_activite">Nouvelle activité</Label>
               <Textarea 
                 id="derniere_activite" 
                 value={formData.derniere_activite} 
@@ -550,21 +611,49 @@ const DashboardEchoRegions = () => {
                   derniere_activite: e.target.value
                 })} 
                 rows={3} 
-                placeholder="Description de la dernière activité..."
+                placeholder="Décrivez la nouvelle activité..."
               />
             </div>
             <div>
-              <Label htmlFor="image_url">URL de l'image</Label>
-              <Input 
-                id="image_url" 
-                type="url" 
-                value={formData.image_url} 
+              <Label htmlFor="nouvelle_actualite">Nouvelle actualité</Label>
+              <Textarea 
+                id="nouvelle_actualite" 
+                value={formData.nouvelle_actualite || ''} 
                 onChange={e => setFormData({
                   ...formData,
-                  image_url: e.target.value
+                  nouvelle_actualite: e.target.value
                 })} 
-                placeholder="https://exemple.com/image.jpg"
+                rows={2} 
+                placeholder="Ajoutez une nouvelle actualité..."
               />
+            </div>
+            <div>
+              <Label htmlFor="image_file">Image</Label>
+              <Input 
+                id="image_file" 
+                type="file" 
+                accept="image/*"
+                onChange={e => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    // Créer une URL temporaire pour l'aperçu
+                    const imageUrl = URL.createObjectURL(file);
+                    setFormData({
+                      ...formData,
+                      image_url: imageUrl
+                    });
+                  }
+                }}
+              />
+              {formData.image_url && (
+                <div className="mt-2">
+                  <img 
+                    src={formData.image_url} 
+                    alt="Aperçu" 
+                    className="w-20 h-20 object-cover rounded-lg"
+                  />
+                </div>
+              )}
             </div>
             <div className="flex gap-2">
               <Button type="submit" className="flex-1">
