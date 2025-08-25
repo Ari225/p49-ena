@@ -306,6 +306,19 @@ const DashboardEchoRegions = () => {
                   <p className="text-sm text-gray-500">Aucune actualité récente</p>
                 )}
               </div>
+              {!userIsAdmin && (
+                <div className="pt-3 border-t">
+                  <Button
+                    onClick={() => handleEdit(delegue)}
+                    variant="outline"
+                    size="sm"
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <Edit className="w-4 h-4" />
+                    Modifier
+                  </Button>
+                </div>
+              )}
           </div>
         </CardContent>
       </Card>
