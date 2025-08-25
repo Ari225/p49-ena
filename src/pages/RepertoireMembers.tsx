@@ -56,12 +56,12 @@ const RepertoireMembers = () => {
             position: member.emploi_fonction_publique || '',
             locality: member.lieu_exercice || '',
             photo: member.photo || '',
-            whatsapp: member.whatsapp ? 'true' : null,
+            whatsapp: member.whatsapp && member.whatsapp.toString().trim() !== '' ? member.whatsapp.toString() : null,
             matricule: member.matricule || '',
             socialMedia: {
-              facebook: member.facebook ? 'true' : null,
-              instagram: member.instagram ? 'true' : null,
-              linkedin: member.linkedin ? 'true' : null
+              facebook: member.facebook && member.facebook.trim() !== '' ? member.facebook : null,
+              instagram: member.instagram && member.instagram.trim() !== '' ? member.instagram : null,
+              linkedin: member.linkedin && member.linkedin.trim() !== '' ? member.linkedin : null
             }
           }))
           .filter(member => 
