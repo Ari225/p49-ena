@@ -1,60 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Users, Calendar, Award } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { supabase } from '@/integrations/supabase/client';
 const EchoRegions = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
-  const regions = [{
-    name: "Région du Centre",
-    chef_lieu: "Yamoussoukro",
-    representant: "Dr. Kouakou Marie",
-    membres: 120,
-    derniere_activite: "Formation sur la gouvernance locale - Mars 2024",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    actualites: ["Inauguration du nouveau siège régional", "Séminaire sur la digitalisation administrative", "Rencontre avec les autorités préfectorales"]
-  }, {
-    name: "Région de l'Ouest",
-    chef_lieu: "Man",
-    representant: "M. Traoré Seydou",
-    membres: 85,
-    derniere_activite: "Assemblée régionale - Février 2024",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    actualites: ["Projet de développement rural en cours", "Formation en management public", "Partenariat avec les collectivités locales"]
-  }, {
-    name: "Région du Sud",
-    chef_lieu: "Abidjan",
-    representant: "Mme. Assi Brigitte",
-    membres: 200,
-    derniere_activite: "Conférence sur l'innovation - Avril 2024",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    actualites: ["Lancement du hub d'innovation administrative", "Rencontre avec le secteur privé", "Programme de mentorat jeunes cadres"]
-  }, {
-    name: "Région du Nord",
-    chef_lieu: "Korhogo",
-    representant: "Dr. Ouattara Ibrahim",
-    membres: 65,
-    derniere_activite: "Mission d'évaluation des projets - Mars 2024",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    actualites: ["Évaluation des programmes de développement", "Renforcement des capacités locales", "Coordination avec les ONG"]
-  }, {
-    name: "Région de l'Est",
-    chef_lieu: "Abengourou",
-    representant: "M. Koffi Jean-Claude",
-    membres: 45,
-    derniere_activite: "Audit des services publics - Janvier 2024",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    actualites: ["Modernisation des services déconcentrés", "Formation en gestion budgétaire", "Amélioration de l'accueil citoyen"]
-  }, {
-    name: "Région du Centre-Ouest",
-    chef_lieu: "Daloa",
-    representant: "Mme. Bamba Fatou",
-    membres: 55,
-    derniere_activite: "Réunion de coordination - Février 2024",
-    image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop",
-    actualites: ["Coordination inter-services renforcée", "Programme de formation continue", "Amélioration des infrastructures"]
-  }];
+  const [regions, setRegions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch regions from database
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('echo_regions')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching regions:', error);
+          return;
+        }
+
+        setRegions(data || []);
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRegions();
+  }, []);
+
+  // Cache busting pour les images
+  const getImageWithCacheBusting = (imageUrl: string) => {
+    if (!imageUrl) return '/lovable-uploads/Pers49.webp';
+    
+    if (imageUrl.includes('?t=')) return imageUrl;
+    
+    const timestamp = Date.now();
+    return imageUrl.includes('?') 
+      ? `${imageUrl}&t=${timestamp}` 
+      : `${imageUrl}?t=${timestamp}`;
+  };
   return <Layout>
       {/* Header Section with Background Image */}
       <section className={`relative ${isMobile ? 'h-[30vh]' : isTablet ? 'h-[45vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
@@ -79,22 +70,34 @@ const EchoRegions = () => {
         <div className="container mx-auto px-0">
           <h2 className={`font-bold text-center text-primary mb-12 ${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'}`}>Délégations régionales</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {regions.map((region, index) => <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
+          {loading ? (
+            <div className="text-center py-8 col-span-full">
+              <p className="text-gray-500">Chargement des régions...</p>
+            </div>
+          ) : regions.length === 0 ? (
+            <div className="text-center py-8 col-span-full">
+              <p className="text-gray-500">Aucune région disponible pour le moment.</p>
+            </div>
+          ) : (
+            regions.map((region, index) => <Card key={index} className="hover:shadow-xl transition-shadow duration-300">
                 <div className="aspect-video overflow-hidden rounded-t-lg">
-                  <img src={region.image} alt={region.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  <img 
+                    src={getImageWithCacheBusting(region.image_url || '/lovable-uploads/Pers49.webp')} 
+                    alt={region.region} 
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/lovable-uploads/Pers49.webp';
+                    }}
+                  />
                 </div>
                 <CardHeader>
-                  <CardTitle className="text-primary text-xl">{region.name}</CardTitle>
-                  <div className="flex items-center text-gray-600 text-sm">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    {region.chef_lieu}
-                  </div>
+                  <CardTitle className="text-primary text-xl">{region.region}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Représentant:</span>
-                      <span className="font-medium text-primary">{region.representant}</span>
+                      <span className="text-sm text-gray-600">Délégué:</span>
+                      <span className="font-medium text-primary">{region.delegue}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600 flex items-center">
@@ -108,20 +111,26 @@ const EchoRegions = () => {
                         <Calendar className="w-4 h-4 mr-1" />
                         Dernière activité:
                       </div>
-                      <p className="text-sm font-medium text-primary">{region.derniere_activite}</p>
+                      <p className="text-sm">{region.derniere_activite}</p>
                     </div>
                     <div className="pt-2 border-t">
                       <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
-                      <ul className="space-y-1">
-                        {region.actualites.map((actualite, idx) => <li key={idx} className="text-xs text-gray-600 flex items-start">
-                            <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                            {actualite}
-                          </li>)}
-                      </ul>
+                      {region.actualites_recentes && region.actualites_recentes.length > 0 ? (
+                        <div className="space-y-1">
+                          {region.actualites_recentes.map((actualite: any, index: number) => (
+                            <div key={index} className="text-sm text-gray-600 border-l-2 border-blue-200 pl-2">
+                              <p>{actualite.contenu}</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">Aucune actualité récente</p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
-              </Card>)}
+              </Card>)
+          )}
           </div>
         </div>
       </section>
