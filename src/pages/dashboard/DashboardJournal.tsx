@@ -84,11 +84,11 @@ const DashboardJournal = () => {
         return <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">{status}</span>;
     }
   };
-  const handleDialogSuccess = () => {
+  const handleDialogSuccess = async () => {
     setDialogOpen(false);
     setEditDialogOpen(false);
     setSelectedEdition(null);
-    fetchEditions();
+    await fetchEditions(); // Ensure data is refreshed before closing
   };
   
   const handleView = (edition: JournalEdition) => {

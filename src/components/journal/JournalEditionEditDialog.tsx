@@ -124,7 +124,8 @@ const JournalEditionEditDialog = ({
         pdfFile: null
       });
       
-      onSuccess(); // This will close dialog and refresh data
+      onSuccess(); // This will refresh data and close dialog
+      onOpenChange(false); // Explicitly close the dialog
     } catch (error) {
       console.error('Error updating journal edition:', error);
       toast.error('Erreur lors de la modification de l\'édition');
