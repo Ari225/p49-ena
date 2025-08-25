@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import EditorSidebar from '@/components/EditorSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Plus, Edit, Eye, Trash2, X, CheckCircle, XCircle } from 'lucide-react';
+import { FileText, Plus, Edit, Eye, Trash2, X, CheckCircle, XCircle, PenTool } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import BlogFormDialog from '@/components/blog/BlogFormDialog';
 import { supabase } from '@/integrations/supabase/client';
@@ -295,7 +295,10 @@ const EditorDashboardBlog = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary">Mes Articles<br />de Blog</h1>
+            <h1 className="text-2xl font-bold text-primary flex items-center">
+              <PenTool className="mr-3 h-6 w-6" />
+              Liste des articles de blog ({posts.length})
+            </h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer vos articles de blog</p>
           </div>
 
@@ -309,87 +312,77 @@ const EditorDashboardBlog = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-lg">
-                <FileText className="mr-2 h-5 w-5" />
-                Mes Articles
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {posts.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8 text-sm">
-                    Aucun article créé
-                  </p>
-                ) : (
-                  posts.map((post) => (
-                    <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
-                      <div className="md:flex">
-                        {post.image_url && (
-                          <div className="md:w-48 h-48 md:h-auto">
-                            <img 
-                              src={post.image_url} 
-                              alt={post.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 p-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex-1">
-                              {post.category && (
-                                <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full mb-2">
-                                  {post.category}
-                                </span>
-                              )}
-                              <h3 className="font-semibold text-sm mb-2 line-clamp-2">{post.title}</h3>
-                              {post.summary && (
-                                <p className="text-xs text-gray-600 mb-3 line-clamp-2">{post.summary}</p>
-                              )}
-                              <div className="flex items-center justify-between text-xs text-gray-500">
-                                <div>
-                                  <span>Par {post.author}</span>
+          <div className="space-y-6">
+            {posts.length === 0 ? (
+              <p className="text-center text-gray-500 py-8 text-sm">
+                Aucun article créé
+              </p>
+            ) : (
+              posts.map((post) => (
+                <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                  <div className="md:flex">
+                    {post.image_url && (
+                      <div className="md:w-48 h-48 md:h-auto">
+                        <img 
+                          src={post.image_url} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          {post.category && (
+                            <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full mb-2">
+                              {post.category}
+                            </span>
+                          )}
+                          <h3 className="font-semibold text-sm mb-2 line-clamp-2">{post.title}</h3>
+                          {post.summary && (
+                            <p className="text-xs text-gray-600 mb-3 line-clamp-2">{post.summary}</p>
+                          )}
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <div>
+                              <span>Par {post.author}</span>
+                              <span className="mx-2">•</span>
+                              <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
+                              {post.reading_time && (
+                                <>
                                   <span className="mx-2">•</span>
-                                  <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
-                                  {post.reading_time && (
-                                    <>
-                                      <span className="mx-2">•</span>
-                                      <span>{post.reading_time} min de lecture</span>
-                                    </>
-                                  )}
-                                </div>
-                                {getStatusBadge(post.status)}
-                              </div>
+                                  <span>{post.reading_time} min de lecture</span>
+                                </>
+                              )}
                             </div>
-                          </div>
-                          <div className="flex justify-end space-x-2 mt-3">
-                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => handleToggleStatus(post)}
-                              className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
-                            >
-                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
-                            </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                            {getStatusBadge(post.status)}
                           </div>
                         </div>
                       </div>
+                      <div className="flex justify-end space-x-2 mt-3">
+                        <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleToggleStatus(post)}
+                          className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                        >
+                          {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <EditorSidebar />
         
@@ -470,7 +463,10 @@ const EditorDashboardBlog = () => {
       <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Mes Articles de Blog</h1>
+            <h1 className="text-3xl font-bold text-primary flex items-center">
+              <PenTool className="mr-3 h-7 w-7" />
+              Liste des articles de blog ({posts.length})
+            </h1>
             <p className="text-gray-600 mt-2">Gérer vos articles de blog</p>
           </div>
 
@@ -484,87 +480,77 @@ const EditorDashboardBlog = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Mes Articles
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {posts.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8">
-                    Aucun article créé
-                  </p>
-                ) : (
-                  posts.map((post) => (
-                    <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
-                      <div className="md:flex">
-                        {post.image_url && (
-                          <div className="md:w-48 h-48 md:h-auto">
-                            <img 
-                              src={post.image_url} 
-                              alt={post.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 p-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex-1">
-                              {post.category && (
-                                <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-2">
-                                  {post.category}
-                                </span>
-                              )}
-                              <h3 className="font-semibold text-base mb-2 line-clamp-2">{post.title}</h3>
-                              {post.summary && (
-                                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{post.summary}</p>
-                              )}
-                              <div className="flex items-center justify-between text-sm text-gray-500">
-                                <div>
-                                  <span>Par {post.author}</span>
+          <div className="space-y-6">
+            {posts.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">
+                Aucun article créé
+              </p>
+            ) : (
+              posts.map((post) => (
+                <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                  <div className="md:flex">
+                    {post.image_url && (
+                      <div className="md:w-48 h-48 md:h-auto">
+                        <img 
+                          src={post.image_url} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          {post.category && (
+                            <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-2">
+                              {post.category}
+                            </span>
+                          )}
+                          <h3 className="font-semibold text-base mb-2 line-clamp-2">{post.title}</h3>
+                          {post.summary && (
+                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">{post.summary}</p>
+                          )}
+                          <div className="flex items-center justify-between text-sm text-gray-500">
+                            <div>
+                              <span>Par {post.author}</span>
+                              <span className="mx-2">•</span>
+                              <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
+                              {post.reading_time && (
+                                <>
                                   <span className="mx-2">•</span>
-                                  <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
-                                  {post.reading_time && (
-                                    <>
-                                      <span className="mx-2">•</span>
-                                      <span>{post.reading_time} min de lecture</span>
-                                    </>
-                                  )}
-                                </div>
-                                {getStatusBadge(post.status)}
-                              </div>
+                                  <span>{post.reading_time} min de lecture</span>
+                                </>
+                              )}
                             </div>
-                          </div>
-                          <div className="flex justify-end space-x-2 mt-3">
-                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => handleToggleStatus(post)}
-                              className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
-                            >
-                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
-                            </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                            {getStatusBadge(post.status)}
                           </div>
                         </div>
                       </div>
+                      <div className="flex justify-end space-x-2 mt-3">
+                        <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleToggleStatus(post)}
+                          className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                        >
+                          {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <EditorSidebar />
         
@@ -647,7 +633,10 @@ const EditorDashboardBlog = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary">Mes Articles de Blog</h1>
+            <h1 className="text-3xl font-bold text-primary flex items-center">
+              <PenTool className="mr-3 h-8 w-8" />
+              Liste des articles de blog ({posts.length})
+            </h1>
             <p className="text-gray-600 mt-2">Gérer vos articles de blog</p>
           </div>
 
@@ -661,87 +650,77 @@ const EditorDashboardBlog = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="mr-2 h-5 w-5" />
-                Mes Articles
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {posts.length === 0 ? (
-                  <p className="text-center text-gray-500 py-8">
-                    Aucun article créé
-                  </p>
-                ) : (
-                  posts.map((post) => (
-                    <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
-                      <div className="md:flex">
-                        {post.image_url && (
-                          <div className="md:w-64 h-48 md:h-auto">
-                            <img 
-                              src={post.image_url} 
-                              alt={post.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-                        <div className="flex-1 p-6">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex-1">
-                              {post.category && (
-                                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-3">
-                                  {post.category}
-                                </span>
-                              )}
-                              <h3 className="font-semibold text-lg mb-3 line-clamp-2">{post.title}</h3>
-                              {post.summary && (
-                                <p className="text-gray-600 mb-4 line-clamp-2">{post.summary}</p>
-                              )}
-                              <div className="flex items-center justify-between text-sm text-gray-500">
-                                <div>
-                                  <span>Par {post.author}</span>
+          <div className="space-y-6">
+            {posts.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">
+                Aucun article créé
+              </p>
+            ) : (
+              posts.map((post) => (
+                <div key={post.id} className="bg-white rounded-lg shadow-sm border overflow-hidden">
+                  <div className="md:flex">
+                    {post.image_url && (
+                      <div className="md:w-64 h-48 md:h-auto">
+                        <img 
+                          src={post.image_url} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          {post.category && (
+                            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-3">
+                              {post.category}
+                            </span>
+                          )}
+                          <h3 className="font-semibold text-lg mb-3 line-clamp-2">{post.title}</h3>
+                          {post.summary && (
+                            <p className="text-gray-600 mb-4 line-clamp-2">{post.summary}</p>
+                          )}
+                          <div className="flex items-center justify-between text-sm text-gray-500">
+                            <div>
+                              <span>Par {post.author}</span>
+                              <span className="mx-2">•</span>
+                              <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
+                              {post.reading_time && (
+                                <>
                                   <span className="mx-2">•</span>
-                                  <span>{new Date(post.created_at).toLocaleDateString('fr-FR')}</span>
-                                  {post.reading_time && (
-                                    <>
-                                      <span className="mx-2">•</span>
-                                      <span>{post.reading_time} min de lecture</span>
-                                    </>
-                                  )}
-                                </div>
-                                {getStatusBadge(post.status)}
-                              </div>
+                                  <span>{post.reading_time} min de lecture</span>
+                                </>
+                              )}
                             </div>
-                          </div>
-                          <div className="flex justify-end space-x-2">
-                            <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              onClick={() => handleToggleStatus(post)}
-                              className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
-                            >
-                              {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
-                            </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
+                            {getStatusBadge(post.status)}
                           </div>
                         </div>
                       </div>
+                      <div className="flex justify-end space-x-2">
+                        <Button variant="outline" size="sm" onClick={() => handleViewArticle(post)}>
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleEditArticle(post)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleToggleStatus(post)}
+                          className={post.status === 'valide' || post.status === 'publie' ? 'text-orange-600 hover:text-orange-700' : 'text-green-600 hover:text-green-700'}
+                        >
+                          {post.status === 'valide' || post.status === 'publie' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" onClick={() => handleDeleteArticle(post.id)}>
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
       
