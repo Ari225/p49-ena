@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useSwipe } from '@/hooks/useSwipe';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, Clock, Users, MapPin } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -68,49 +68,73 @@ const EchoRegionsSection = () => {
   });
 
   const RegionCard = ({ item, variant = 'mobile' }) => {
+    // Ajouter cache busting pour les images avec timestamp
+    const getImageWithCacheBusting = (imageUrl: string) => {
+      if (!imageUrl) return '/lovable-uploads/Pers49.webp';
+      
+      // Si l'image contient déjà un paramètre de cache busting, l'utiliser
+      if (imageUrl.includes('?t=')) return imageUrl;
+      
+      // Sinon ajouter un timestamp pour forcer le refresh
+      const timestamp = Date.now();
+      return imageUrl.includes('?') 
+        ? `${imageUrl}&t=${timestamp}` 
+        : `${imageUrl}?t=${timestamp}`;
+    };
+
     return (
-      <Link to={`/echo-region/${item.id}`}>
-        <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer bg-white border border-gray-200 h-full">
-          <div className="aspect-[16/10] overflow-hidden relative">
-            <img 
-              src={item.image_url || '/lovable-uploads/narcissek.jpeg'} 
-              alt={`Région ${item.region}`} 
-              className={`w-full h-full object-cover transition-transform duration-500 ${
-                variant === 'desktop' ? 'group-hover:scale-110' : 'group-hover:scale-105'
-              }`} 
-            />
-            <div className="absolute top-4 left-4">
-              <span className="bg-primary text-white px-2 py-1 rounded text-xs font-medium">
-                {item.region}
+      <Card className="hover:shadow-xl transition-shadow duration-300 relative">
+        <div className="aspect-video overflow-hidden rounded-t-lg">
+          <img 
+            src={getImageWithCacheBusting(item.image_url || '/lovable-uploads/Pers49.webp')} 
+            alt={item.region} 
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              // Fallback en cas d'erreur de chargement
+              (e.target as HTMLImageElement).src = '/lovable-uploads/Pers49.webp';
+            }}
+          />
+        </div>
+        <CardHeader>
+          <CardTitle className="text-primary text-xl">{item.region}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Délégué:</span>
+              <span className="font-medium text-primary">{item.delegue}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600 flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                Membres:
               </span>
+              <span className="font-bold text-secondary">{item.membres}</span>
+            </div>
+            <div className="pt-2 border-t">
+              <div className="flex items-center text-sm text-gray-600 mb-2">
+                <Calendar className="w-4 h-4 mr-1" />
+                Dernière activité:
+              </div>
+              <p className="text-sm">{item.derniere_activite}</p>
+            </div>
+            <div className="pt-2 border-t">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
+              {item.actualites_recentes && item.actualites_recentes.length > 0 ? (
+                <div className="space-y-1">
+                  {item.actualites_recentes.slice(0, 3).map((actualite: any, index: number) => (
+                    <div key={index} className="text-sm text-gray-600 border-l-2 border-blue-200 pl-2">
+                      <p>{actualite.contenu}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">Aucune actualité récente</p>
+              )}
             </div>
           </div>
-          <CardContent className="p-6">
-            <div className="flex items-center text-sm text-gray-500 gap-4 mb-3">
-              <div className={`flex items-center ${variant !== 'mobile' ? 'bg-gray-50 px-2 py-1 rounded-md' : ''}`}>
-                <MapPin className={`${variant === 'mobile' ? 'h-4 w-4 mr-2' : 'h-3 w-3 mr-1'}`} />
-                {item.region}
-              </div>
-              <div className="flex items-center">
-                <Users className={`${variant === 'mobile' ? 'h-4 w-4 mr-1' : 'h-3 w-3 mr-1'}`} />
-                <span>{item.membres} membres</span>
-              </div>
-            </div>
-            <h3 className={`font-semibold text-primary leading-tight line-clamp-2 mb-3 ${
-              variant === 'mobile' ? 'text-base' : 
-              variant === 'tablet' ? 'text-lg' : 'text-lg'
-            }`}>
-              Délégué: {item.delegue}
-            </h3>
-            <p className={`text-gray-700 line-clamp-3 leading-relaxed mb-4 ${
-              variant === 'mobile' ? 'text-xs' : 
-              variant === 'tablet' ? 'text-sm' : 'text-sm'
-            }`}>
-              {item.derniere_activite || 'Aucune activité récente signalée.'}
-            </p>
-          </CardContent>
-        </Card>
-      </Link>
+        </CardContent>
+      </Card>
     );
   };
 
