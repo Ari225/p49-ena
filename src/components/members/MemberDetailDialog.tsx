@@ -44,7 +44,12 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   const handleSocialClick = (url: string) => {
     // S'assurer que l'URL commence par http:// ou https://
     const fullUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
-    window.open(fullUrl, '_blank', 'noopener,noreferrer');
+    // Forcer l'ouverture dans un nouvel onglet externe
+    const link = document.createElement('a');
+    link.href = fullUrl;
+    link.target = '_blank';
+    link.rel = 'noopener,noreferrer';
+    link.click();
   };
 
   const handleWhatsAppClick = () => {
