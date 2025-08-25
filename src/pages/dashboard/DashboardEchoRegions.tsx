@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Plus, Edit, MapPin, Calendar, Users } from 'lucide-react';
+import { Edit, MapPin, Calendar, Users } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDeleguesRegionaux } from '@/hooks/useDeleguesRegionaux';
@@ -208,12 +208,6 @@ const DashboardEchoRegions = () => {
             <p className="text-gray-600 mt-2 text-sm">Gérer les actualités régionales</p>
           </div>
 
-          <div className="mb-6">
-            <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90 w-full">
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvel écho des régions
-            </Button>
-          </div>
 
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-primary flex items-center">
@@ -362,12 +356,6 @@ const DashboardEchoRegions = () => {
             <p className="text-gray-600 mt-2">Gérer les actualités et informations régionales</p>
           </div>
 
-          <div className="mb-6">
-            <Button onClick={() => setShowForm(true)} className="bg-primary hover:bg-primary/90">
-              <Plus className="mr-2 h-4 w-4" />
-              Nouvel écho des régions
-            </Button>
-          </div>
 
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
