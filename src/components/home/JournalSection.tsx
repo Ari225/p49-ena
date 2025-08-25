@@ -57,6 +57,29 @@ const JournalSection = () => {
       </section>
     );
   }
+
+  if (!latestEdition) {
+    return (
+      <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${
+        isMobile ? 'px-[25px]' : 
+        isTab ? 'px-[50px]' :
+        'px-8 md:px-12 lg:px-[100px]'
+      }`}>
+        <div className="container mx-auto px-0">
+          <h2 className={`font-bold text-primary mb-[50px] ${
+            isMobile ? 'text-xl text-center' : 
+            isTab ? 'text-2xl text-center' :
+            'text-3xl text-center lg:text-left'
+          }`}>Notre journal</h2>
+          <div className="flex justify-center items-center py-20">
+            <div className="text-gray-500 text-center">
+              Aucune édition du journal n'a été publiée pour le moment.
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   
   return (
     <section className={`bg-accent/30 py-12 md:py-16 lg:py-[100px] ${
