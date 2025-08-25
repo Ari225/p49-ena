@@ -401,7 +401,7 @@ const EditorDashboardBlog = () => {
         />
 
         <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
-          <DialogContent className="sm:max-w-4xl max-h-[80vh] overflow-y-auto rounded-2xl">
+          <DialogContent className="sm:max-w-3xl max-h-[80vh] overflow-y-auto rounded-2xl">
             <DialogHeader>
               <DialogTitle className="flex items-center justify-between">
                 {viewingArticle?.title}
@@ -573,7 +573,7 @@ const EditorDashboardBlog = () => {
         />
 
         <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
-          <DialogContent className="sm:max-w-4xl max-h-[80vh] overflow-y-auto rounded-2xl">
+          <DialogContent className="sm:max-w-3xl max-h-[80vh] overflow-y-auto rounded-2xl">
             <DialogHeader>
               <DialogTitle className="flex items-center justify-between">
                 {viewingArticle?.title}
@@ -747,7 +747,7 @@ const EditorDashboardBlog = () => {
       />
 
         <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
-          <DialogContent className="sm:max-w-4xl max-h-[80vh] overflow-y-auto rounded-2xl">
+          <DialogContent className="sm:max-w-3xl max-h-[80vh] overflow-y-auto rounded-2xl">
             <DialogHeader>
               <DialogTitle className="flex items-center justify-between">
                 {viewingArticle?.title}
