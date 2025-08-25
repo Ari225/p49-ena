@@ -295,10 +295,7 @@ const EditorDashboardBlog = () => {
       <Layout>
         <div className="px-[25px] py-[50px] pb-20">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-primary flex items-center">
-              <PenTool className="mr-3 h-6 w-6" />
-              Liste des articles de blog ({posts.length})
-            </h1>
+            <h1 className="text-2xl font-bold text-primary">Blog</h1>
             <p className="text-gray-600 mt-1 text-sm">Gérer vos articles de blog</p>
           </div>
 
@@ -310,6 +307,13 @@ const EditorDashboardBlog = () => {
               <Plus className="mr-2 h-4 w-4" />
               Nouvel article
             </Button>
+          </div>
+
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold flex items-center">
+              <PenTool className="mr-2 h-5 w-5" />
+              Liste des articles de blog ({posts.length})
+            </h2>
           </div>
 
           <div className="space-y-6">
@@ -463,10 +467,7 @@ const EditorDashboardBlog = () => {
       <Layout>
         <div className="px-[30px] py-[40px] pb-20">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary flex items-center">
-              <PenTool className="mr-3 h-7 w-7" />
-              Liste des articles de blog ({posts.length})
-            </h1>
+            <h1 className="text-3xl font-bold text-primary">Blog</h1>
             <p className="text-gray-600 mt-2">Gérer vos articles de blog</p>
           </div>
 
@@ -478,6 +479,13 @@ const EditorDashboardBlog = () => {
               <Plus className="mr-2 h-4 w-4" />
               Nouvel article
             </Button>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold flex items-center">
+              <PenTool className="mr-2 h-5 w-5" />
+              Liste des articles de blog ({posts.length})
+            </h2>
           </div>
 
           <div className="space-y-6">
@@ -633,10 +641,7 @@ const EditorDashboardBlog = () => {
         
         <div className="flex-1 ml-64 p-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-primary flex items-center">
-              <PenTool className="mr-3 h-8 w-8" />
-              Liste des articles de blog ({posts.length})
-            </h1>
+            <h1 className="text-3xl font-bold text-primary">Blog</h1>
             <p className="text-gray-600 mt-2">Gérer vos articles de blog</p>
           </div>
 
@@ -648,6 +653,13 @@ const EditorDashboardBlog = () => {
               <Plus className="mr-2 h-4 w-4" />
               Nouvel article
             </Button>
+          </div>
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold flex items-center">
+              <PenTool className="mr-2 h-6 w-6" />
+              Liste des articles de blog ({posts.length})
+            </h2>
           </div>
 
           <div className="space-y-6">
