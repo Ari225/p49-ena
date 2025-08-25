@@ -43,104 +43,139 @@ const DashboardCarrieres = () => {
   };
 
   const renderAnnouncementCard = (announcement: CareerAnnouncement) => (
-    <Card key={announcement.id} className="hover:shadow-lg transition-shadow duration-300">
+    <Card key={announcement.id}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          {getCategoryIcon(announcement.category)}
+        <CardTitle className="text-lg flex items-center">
+          <Briefcase className="w-5 h-5 mr-2" />
           {announcement.title}
         </CardTitle>
-        <div className="flex flex-wrap gap-2 mt-2">
-          <span className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
-            {getCategoryLabel(announcement.category)}
-          </span>
-          {announcement.category === 'Formations' && announcement.niveau && (
-            <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-              Niveau: {announcement.niveau}
-            </span>
-          )}
-          {announcement.category === 'Formations' && announcement.type_formation && (
-            <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
-              {announcement.type_formation}
-            </span>
-          )}
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-primary">{announcement.category}</p>
+          <div className="flex items-center text-sm text-gray-500">
+            <Calendar className="w-4 h-4 mr-1" />
+            {new Date(announcement.published_date).toLocaleDateString('fr-FR')}
+          </div>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600 mb-4 line-clamp-3">{announcement.description}</p>
+        <p className="text-gray-600 mb-3">{announcement.description}</p>
         
-        {/* Informations spécifiques selon la catégorie */}
+        {/* Informations spécifiques à chaque catégorie */}
         <div className="space-y-2 mb-4">
+          {/* Formations */}
           {announcement.category === 'Formations' && (
-            <>
+            <div className="space-y-1">
+              {announcement.niveau && (
+                <div className="flex items-center text-sm">
+                  <GraduationCap className="w-4 h-4 mr-2 text-blue-500" />
+                  <strong>Niveau:</strong> <span className="ml-1">{announcement.niveau}</span>
+                </div>
+              )}
               {announcement.date_debut && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Début: {new Date(announcement.date_debut).toLocaleDateString('fr-FR')}
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-4 h-4 mr-2 text-green-500" />
+                  <strong>Date de début:</strong> <span className="ml-1">{new Date(announcement.date_debut).toLocaleDateString('fr-FR')}</span>
                 </div>
               )}
               {announcement.duree_formation && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Clock className="w-4 h-4 mr-2" />
-                  Durée: {announcement.duree_formation}
+                <div className="flex items-center text-sm">
+                  <Clock className="w-4 h-4 mr-2 text-orange-500" />
+                  <strong>Durée:</strong> <span className="ml-1">{announcement.duree_formation} jours</span>
+                </div>
+              )}
+              {announcement.type_formation && (
+                <div className="flex items-center text-sm">
+                  <span className="text-purple-500 mr-2">📍</span>
+                  <strong>Type:</strong> <span className="ml-1 capitalize">{announcement.type_formation}</span>
                 </div>
               )}
               {announcement.lieu && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <MapPin className="w-4 h-4 mr-2" />
-                  Lieu: {announcement.lieu}
+                <div className="flex items-center text-sm">
+                  <MapPin className="w-4 h-4 mr-2 text-red-500" />
+                  <strong>Lieu:</strong> <span className="ml-1">{announcement.lieu}</span>
                 </div>
               )}
-            </>
+            </div>
           )}
           
+          {/* Renforcement des capacités */}
+          {announcement.category === 'Renforcement des capacités' && announcement.points_renforcement && announcement.points_renforcement.length > 0 && (
+            <div>
+              <div className="flex items-center text-sm font-semibold mb-2">
+                <span className="text-blue-500 mr-2">💪</span>
+                Points de renforcement:
+              </div>
+              <ul className="ml-6 space-y-1">
+                {announcement.points_renforcement.map((point, index) => (
+                  <li key={index} className="text-sm flex items-start">
+                    <span className="text-primary mr-2">•</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          {/* Coaching & mentorat */}
           {announcement.category === 'Coaching & mentorat' && (
-            <>
+            <div className="space-y-1">
               {announcement.duree_coaching && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Clock className="w-4 h-4 mr-2" />
-                  Durée: {announcement.duree_coaching}
+                <div className="flex items-center text-sm">
+                  <Clock className="w-4 h-4 mr-2 text-blue-500" />
+                  <strong>Durée:</strong> <span className="ml-1">{announcement.duree_coaching}</span>
                 </div>
               )}
               {announcement.format && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Users className="w-4 h-4 mr-2" />
-                  Format: {announcement.format}
+                <div className="flex items-center text-sm">
+                  <span className="text-green-500 mr-2">📋</span>
+                  <strong>Format:</strong> <span className="ml-1">{announcement.format}</span>
                 </div>
               )}
-            </>
+            </div>
           )}
           
+          {/* Concours */}
           {announcement.category === 'Concours' && (
-            <>
+            <div className="space-y-1">
               {announcement.date_ouverture && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Ouverture: {new Date(announcement.date_ouverture).toLocaleDateString('fr-FR')}
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-4 h-4 mr-2 text-green-500" />
+                  <strong>Ouverture:</strong> <span className="ml-1">{new Date(announcement.date_ouverture).toLocaleDateString('fr-FR')}</span>
                 </div>
               )}
               {announcement.date_limite && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Limite: {new Date(announcement.date_limite).toLocaleDateString('fr-FR')}
+                <div className="flex items-center text-sm">
+                  <Calendar className="w-4 h-4 mr-2 text-red-500" />
+                  <strong>Date limite:</strong> <span className="ml-1">{new Date(announcement.date_limite).toLocaleDateString('fr-FR')}</span>
+                </div>
+              )}
+              {announcement.lieu && (
+                <div className="flex items-center text-sm">
+                  <MapPin className="w-4 h-4 mr-2 text-blue-500" />
+                  <strong>Lieu:</strong> <span className="ml-1">{announcement.lieu}</span>
                 </div>
               )}
               {announcement.nombre_places && (
-                <div className="flex items-center text-sm text-gray-500">
-                  <Users className="w-4 h-4 mr-2" />
-                  Places: {announcement.nombre_places}
+                <div className="flex items-center text-sm">
+                  <Users className="w-4 h-4 mr-2 text-purple-500" />
+                  <strong>Places:</strong> <span className="ml-1">{announcement.nombre_places}</span>
                 </div>
               )}
-            </>
+              {announcement.lien_concours && (
+                <div className="flex items-center text-sm">
+                  <Link className="w-4 h-4 mr-2 text-orange-500" />
+                  <strong>Lien:</strong> 
+                  <a href={announcement.lien_concours} target="_blank" rel="noopener noreferrer" className="ml-1 text-blue-600 hover:underline">
+                    Accéder au concours
+                  </a>
+                </div>
+              )}
+            </div>
           )}
         </div>
-
-        <div className="flex justify-end">
-          <Button 
-            size="sm" 
-            variant="outline" 
-            className="text-red-600 hover:bg-red-50"
-            onClick={() => deleteAnnouncement(announcement.id)}
-          >
+        
+        <div className="flex justify-end mt-4">
+          <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50" onClick={() => deleteAnnouncement(announcement.id)}>
             <Trash2 className="h-4 w-4 mr-1" />
             Supprimer
           </Button>
