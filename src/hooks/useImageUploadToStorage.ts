@@ -22,12 +22,7 @@ export const useImageUploadToStorage = () => {
     if (!file) return null;
 
     if (!isValidImageFile(file)) {
-      toast.error('Format d\'image non supporté. Utilisez JPG, PNG ou WebP.');
-      return null;
-    }
-
-    if (file.size > 10 * 1024 * 1024) { // 10MB max
-      toast.error('L\'image est trop volumineuse (max 10MB)');
+      toast.error("Format d'image non supporté. Utilisez JPG, PNG ou WebP.");
       return null;
     }
 
@@ -36,7 +31,7 @@ export const useImageUploadToStorage = () => {
       setUploadProgress(0);
 
       // Compresser l'image
-      console.log('📸 Compression de l\'image...');
+      console.log("📸 Compression de l'image...");
       const compressedBlob = await compressImage(file, {
         maxWidth: options.maxWidth || 800,
         maxHeight: options.maxHeight || 600,
@@ -68,7 +63,7 @@ export const useImageUploadToStorage = () => {
         console.error('❌ Erreur upload:', error);
         // Si le bucket n'existe pas, afficher un message plus explicite
         if (error.message.includes('The resource was not found')) {
-          toast.error('Erreur: Le dossier de stockage n\'existe pas. Contactez l\'administrateur.');
+          toast.error("Erreur: Le dossier de stockage n'existe pas. Contactez l'administrateur.");
         } else {
           toast.error(`Erreur upload: ${error.message}`);
         }
@@ -93,8 +88,8 @@ export const useImageUploadToStorage = () => {
       return cacheBustingUrl;
 
     } catch (error) {
-      console.error('💥 Erreur lors de l\'upload:', error);
-      toast.error('Erreur lors de l\'upload de l\'image');
+      console.error("💥 Erreur lors de l'upload:", error);
+      toast.error("Erreur lors de l'upload de l'image");
       return null;
     } finally {
       setIsUploading(false);
