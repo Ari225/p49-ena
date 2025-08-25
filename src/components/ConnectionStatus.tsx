@@ -9,8 +9,17 @@ const ConnectionStatus = () => {
   useEffect(() => {
     if (!isLoading) {
       setShowStatus(true);
+      
+      // Hide the status after 2 seconds if connected
+      if (isConnected) {
+        const timer = setTimeout(() => {
+          setShowStatus(false);
+        }, 2000);
+        
+        return () => clearTimeout(timer);
+      }
     }
-  }, [isLoading]);
+  }, [isLoading, isConnected]);
 
   if (!showStatus) return null;
 
