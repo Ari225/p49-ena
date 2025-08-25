@@ -85,12 +85,17 @@ const DashboardJournal = () => {
     }
   };
   const handleDialogSuccess = () => {
+    setDialogOpen(false);
+    setEditDialogOpen(false);
+    setSelectedEdition(null);
     fetchEditions();
   };
+  
   const handleView = (edition: JournalEdition) => {
     setSelectedEdition(edition);
     setPreviewDialogOpen(true);
   };
+  
   const handleEdit = (edition: JournalEdition) => {
     console.log('Editing edition:', edition); // Debug log
     setSelectedEdition(edition);
@@ -100,12 +105,15 @@ const DashboardJournal = () => {
   const handleDelete = async (edition: JournalEdition) => {
     console.log('Deleting edition:', edition); // Debug log
     try {
-      const {
-        error
-      } = await supabase.from('journal_editions').delete().eq('id', edition.id);
+      const { error } = await supabase
+        .from('journal_editions')
+        .delete()
+        .eq('id', edition.id);
+      
       if (error) throw error;
+      
       toast.success('Édition supprimée avec succès');
-      fetchEditions();
+      await fetchEditions(); // Ensure data is refreshed
     } catch (error) {
       console.error('Error deleting edition:', error);
       toast.error('Erreur lors de la suppression');

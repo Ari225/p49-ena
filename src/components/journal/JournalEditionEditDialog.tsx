@@ -114,8 +114,17 @@ const JournalEditionEditDialog = ({
       if (updateError) throw updateError;
 
       toast.success('Édition modifiée avec succès !');
-      onSuccess();
-      onOpenChange(false);
+      
+      // Reset form data
+      setFormData({
+        title: '',
+        summary: '',
+        status: 'brouillon',
+        coverImage: null,
+        pdfFile: null
+      });
+      
+      onSuccess(); // This will close dialog and refresh data
     } catch (error) {
       console.error('Error updating journal edition:', error);
       toast.error('Erreur lors de la modification de l\'édition');
@@ -136,8 +145,20 @@ const JournalEditionEditDialog = ({
 
   const isSubmitting = loading || imageUploading;
 
+  const handleClose = () => {
+    // Reset form data when closing
+    setFormData({
+      title: '',
+      summary: '',
+      status: 'brouillon',
+      coverImage: null,
+      pdfFile: null
+    });
+    onOpenChange(false);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl mx-auto my-auto">
         <DialogHeader>
           <DialogTitle>Modifier l'Édition</DialogTitle>
@@ -225,7 +246,7 @@ const JournalEditionEditDialog = ({
           </div>
 
           <div className="flex justify-end space-x-4">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button type="button" variant="outline" onClick={handleClose}>
               Annuler
             </Button>
             <Button type="submit" disabled={isSubmitting}>
