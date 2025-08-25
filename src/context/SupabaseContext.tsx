@@ -34,7 +34,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       
       console.log('Supabase connection successful');
       setIsConnected(true);
-      toast.success('Connexion à Supabase réussie');
       return true;
     } catch (err) {
       console.error('Network error:', err);
