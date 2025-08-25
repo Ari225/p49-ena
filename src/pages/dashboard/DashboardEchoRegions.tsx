@@ -271,14 +271,6 @@ const DashboardEchoRegions = () => {
         </div>
         <CardHeader>
           <CardTitle className="text-primary text-xl">{delegue.region}</CardTitle>
-          <Button
-            size="sm"
-            variant="outline"
-            className="absolute top-2 right-2 h-8 w-8 p-0"
-            onClick={() => handleEdit(delegue)}
-          >
-            <Edit className="h-4 w-4" />
-          </Button>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
