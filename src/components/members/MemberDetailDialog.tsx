@@ -42,14 +42,18 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
   };
 
   const handleSocialClick = (url: string | boolean | null) => {
-    // Vérifier que l'URL est une string valide
-    if (!url || typeof url !== 'string' || url.trim() === '') {
-      console.warn('URL invalide:', url);
+    console.log('handleSocialClick appelé avec:', { url, type: typeof url, value: JSON.stringify(url) });
+    
+    // Vérifier que l'URL est une string valide et non vide
+    if (!url || typeof url !== 'string' || url.trim() === '' || url === 'true' || url === 'false') {
+      console.warn('URL invalide ou vide:', url);
       return;
     }
     
     // S'assurer que l'URL commence par http:// ou https://
     const fullUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+    console.log('URL finale générée:', fullUrl);
+    
     // Forcer l'ouverture dans un nouvel onglet externe
     const link = document.createElement('a');
     link.href = fullUrl;
