@@ -176,147 +176,153 @@ const CommuniquesSection = () => {
         
         {isMobile ? (
           // Mobile layout: Image above selected communiqué with carousel
-          <div className="space-y-3">
-            {/* Show image above selected communiqué with swipe functionality */}
-            <div 
-              className="w-full bg-transparent shadow-xl p-4 rounded-lg mb-3 px-0 py-0"
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
-              <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-auto object-contain rounded-lg transition-all duration-300" />
+          communiques.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500 text-sm">Aucun communiqué disponible pour le moment.</p>
             </div>
-            
-            {/* Carousel for communiqués with swipe functionality */}
-            <div className="relative">
-              <div className="overflow-hidden">
-                <div 
-                  className="flex transition-transform duration-300 ease-in-out" 
-                  style={{
-                    transform: `translateX(-${currentSlideIndex * 100}%)`
-                  }}
-                  onTouchStart={onTouchStart}
-                  onTouchMove={onTouchMove}
-                  onTouchEnd={onTouchEnd}
-                >
-                  {communiques.map(communique => {
-                    const styles = getColorStyles(communique.urgency);
-                    return (
-                      <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
-                        <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
-                          <CardContent className="p-4 px-[24px] py-[20px] text-center">
-                            <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
-                              {communique.title}
-                            </h3>
-                            <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
-                              {communique.description}
-                            </p>
-                          </CardContent>
-                        </Card>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              
-              {/* Navigation arrows */}
-              <div className="flex justify-center gap-4 mt-4">
-                <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
-                  <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        ) : isTab ? (
-          // Tablet layout: Image on top, communiqués carousel below
-          <div className="flex flex-col gap-6">
-            {/* Image container with swipe functionality */}
-            <div className="w-full bg-transparent flex items-center justify-center">
+          ) : (
+            <div className="space-y-3">
+              {/* Show image above selected communiqué with swipe functionality */}
               <div 
-                className="w-full bg-white shadow-xl rounded-lg px-0 py-0"
+                className="w-full bg-transparent shadow-xl p-4 rounded-lg mb-3 px-0 py-0"
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
               >
-                <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
+                <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-auto object-contain rounded-lg transition-all duration-300" />
+              </div>
+              
+              {/* Carousel for communiqués with swipe functionality */}
+              <div className="relative">
+                <div className="overflow-hidden">
+                  <div 
+                    className="flex transition-transform duration-300 ease-in-out" 
+                    style={{
+                      transform: `translateX(-${currentSlideIndex * 100}%)`
+                    }}
+                    onTouchStart={onTouchStart}
+                    onTouchMove={onTouchMove}
+                    onTouchEnd={onTouchEnd}
+                  >
+                    {communiques.map(communique => {
+                      const styles = getColorStyles(communique.urgency);
+                      return (
+                        <div key={communique.id} className="w-full flex-shrink-0 px-0 rounded-lg">
+                          <Card className={`${styles.bg} ${styles.border} rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
+                            <CardContent className="p-4 px-[24px] py-[20px] text-center">
+                              <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
+                                {communique.title}
+                              </h3>
+                              <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                                {communique.description}
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                
+                {/* Navigation arrows */}
+                <div className="flex justify-center gap-4 mt-4">
+                  <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-            
-            {/* Communiqués carousel */}
-            <div className="relative">
-              <div className="overflow-hidden">
-                <div className="flex transition-transform duration-300 ease-in-out" style={{
-                  transform: `translateX(-${(currentSlideIndex - 1) * 33.333}%)`
-                }}>
-                  {communiques.map(communique => {
-                    const styles = getColorStyles(communique.urgency);
-                    return (
-                      <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
-                         <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
-                           <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between text-center">
-                             <h3 className={`${currentTextStyles.title} ${styles.textTitle} line-clamp-2`}>
-                               {communique.title}
-                             </h3>
-                             <p className={`${currentTextStyles.description} ${styles.textDesc} line-clamp-2`}>
-                               {communique.description}
-                             </p>
-                           </CardContent>
-                         </Card>
-                       </div>
-                     );
-                   })}
+          )
+        ) : isTab ? (
+          // Tablet layout: Image on top, communiqués carousel below
+          communiques.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-base">Aucun communiqué disponible pour le moment.</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-6">
+              {/* Image container with swipe functionality */}
+              <div className="w-full bg-transparent flex items-center justify-center">
+                <div 
+                  className="w-full bg-white shadow-xl rounded-lg px-0 py-0"
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                >
+                  <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
+                </div>
+              </div>
+              
+              {/* Communiqués carousel */}
+              <div className="relative">
+                <div className="overflow-hidden">
+                  <div className="flex transition-transform duration-300 ease-in-out" style={{
+                    transform: `translateX(-${(currentSlideIndex - 1) * 33.333}%)`
+                  }}>
+                    {communiques.map(communique => {
+                      const styles = getColorStyles(communique.urgency);
+                      return (
+                        <div key={communique.id} className="w-1/3 flex-shrink-0 px-2">
+                           <Card className={`h-32 ${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] ${selectedId === communique.id ? 'ring-0 ring-primary' : ''}`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
+                             <CardContent className="p-4 px-[16px] py-[16px] h-full flex flex-col justify-between text-center">
+                               <h3 className={`${currentTextStyles.title} ${styles.textTitle} line-clamp-2`}>
+                                 {communique.title}
+                               </h3>
+                               <p className={`${currentTextStyles.description} ${styles.textDesc} line-clamp-2`}>
+                                 {communique.description}
+                               </p>
+                             </CardContent>
+                           </Card>
+                         </div>
+                       );
+                     })}
+                   </div>
+                 </div>
+                 
+                 {/* Navigation arrows */}
+                 <div className="flex justify-center gap-4 mt-4">
+                   <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
+                     <ChevronLeft className="h-4 w-4" />
+                   </Button>
+                   <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
+                     <ChevronRight className="h-4 w-4" />
+                   </Button>
                  </div>
                </div>
-               
-               {/* Navigation arrows */}
-               <div className="flex justify-center gap-4 mt-4">
-                 <Button onClick={prevSlide} variant="outline" size="icon" className="rounded-full">
-                   <ChevronLeft className="h-4 w-4" />
-                 </Button>
-                 <Button onClick={nextSlide} variant="outline" size="icon" className="rounded-full">
-                   <ChevronRight className="h-4 w-4" />
-                 </Button>
-               </div>
              </div>
-           </div>
+           )
          ) : (
-           // Desktop layout: Original layout
-           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+           // Desktop layout
+           <div>
              {loading ? (
                <div className="flex items-center justify-center w-full h-64">
                  <Loader2 className="h-8 w-8 animate-spin" />
                </div>
+             ) : communiques.length === 0 ? (
+               <div className="text-center py-16">
+                 <p className="text-gray-500 text-lg">Aucun communiqué disponible pour le moment.</p>
+               </div>
              ) : (
-               <>
-                 {/* Image container */}
-                 <div className="w-full lg:w-[500px] bg-transparent flex items-center justify-center">
-                   <div className="w-full lg:w-[500px] bg-white shadow-xl rounded-lg px-0 py-0">
-                     <img alt="Communiqué sélectionné" src={selectedImage} className="w-full h-full object-cover rounded-lg transition-all duration-300" />
-                   </div>
-                 </div>
-                 
-                 {/* Communiqués stacked */}
-                 <div className="flex-1 space-y-3 md:space-y-4">
-                   {communiques.map(communique => {
-                     const styles = getColorStyles(communique.urgency);
-                     return (
-                       <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
-                         <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                           <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
-                             {communique.title}
-                           </h3>
-                           <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
-                             {communique.description}
-                           </p>
-                         </CardContent>
-                       </Card>
-                     );
-                   })}
-                 </div>
-               </>
+               <div className="flex-1 space-y-3 md:space-y-4">
+                 {communiques.map(communique => {
+                   const styles = getColorStyles(communique.urgency);
+                   return (
+                     <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
+                       <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
+                         <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
+                           {communique.title}
+                         </h3>
+                         <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                           {communique.description}
+                         </p>
+                       </CardContent>
+                     </Card>
+                   );
+                 })}
+               </div>
              )}
            </div>
          )}
