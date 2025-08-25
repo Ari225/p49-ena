@@ -9,7 +9,7 @@ import { FileText, Plus, Edit, Eye, Download, Trash2, Calendar, BookOpen } from 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 import JournalEditionDialog from '@/components/journal/JournalEditionDialog';
 import JournalEditionEditDialog from '@/components/journal/JournalEditionEditDialog';
 import JournalPreviewDialog from '@/components/journal/JournalPreviewDialog';
@@ -28,6 +28,7 @@ const DashboardJournal = () => {
     user
   } = useAuth();
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   const [editions, setEditions] = useState<JournalEdition[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -67,7 +68,11 @@ const DashboardJournal = () => {
       setEditions(data || []);
     } catch (error) {
       console.error('Error fetching journal editions:', error);
-      toast.error('Erreur lors du chargement des éditions');
+      toast({
+        title: "Erreur",
+        description: "Erreur lors du chargement des éditions",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
@@ -132,7 +137,10 @@ const DashboardJournal = () => {
       }
       
       console.log('DELETE SUCCESS - refreshing from database');
-      toast.success('Édition supprimée avec succès');
+      toast({
+        title: "Succès",
+        description: "Édition supprimée avec succès"
+      });
       
       // Force refresh from database
       setTimeout(() => {
@@ -141,7 +149,11 @@ const DashboardJournal = () => {
       
     } catch (error) {
       console.error('DELETE ERROR:', error);
-      toast.error('Erreur lors de la suppression: ' + (error as any)?.message);
+      toast({
+        title: "Erreur",
+        description: 'Erreur lors de la suppression: ' + (error as any)?.message,
+        variant: "destructive"
+      });
     }
   };
   const truncateText = (text: string, maxLength: number = 100) => {

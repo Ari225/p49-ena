@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Upload } from 'lucide-react';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { compressMediaFile } from '@/utils/mediaCompression';
@@ -33,6 +33,7 @@ const JournalEditionEditDialog = ({
   onSuccess,
   edition
 }: JournalEditionEditDialogProps) => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
@@ -61,7 +62,11 @@ const JournalEditionEditDialog = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!edition || !formData.title) {
-      toast.error('Veuillez remplir tous les champs obligatoires');
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs obligatoires",
+        variant: "destructive"
+      });
       return;
     }
 
@@ -113,7 +118,10 @@ const JournalEditionEditDialog = ({
 
       if (updateError) throw updateError;
 
-      toast.success('Édition modifiée avec succès !');
+      toast({
+        title: "Succès",
+        description: "Édition modifiée avec succès !"
+      });
       console.log('Edition updated successfully, closing dialog and resetting form');
       
       // Reset form data
@@ -132,7 +140,11 @@ const JournalEditionEditDialog = ({
       }, 100);
     } catch (error) {
       console.error('Error updating journal edition:', error);
-      toast.error('Erreur lors de la modification de l\'édition');
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la modification de l'édition",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
