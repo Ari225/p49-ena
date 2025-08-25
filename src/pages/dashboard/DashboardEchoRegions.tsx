@@ -53,9 +53,52 @@ const DashboardEchoRegions = () => {
 
   useEffect(() => {
     fetchEchoRegions();
+    // Synchroniser automatiquement les délégués avec echo_regions
+    syncDelegatesWithEchoRegions();
   }, []);
 
-  // Créer des cartes basées sur les délégués régionaux
+  // Configurer les mises à jour en temps réel pour instances_dir
+  useEffect(() => {
+    const channel = supabase
+      .channel('instances_dir_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'instances_dir',
+          filter: 'Position=eq.delegues_regionaux'
+        },
+        () => {
+          console.log('🔄 Changement détecté dans instances_dir - délégués régionaux');
+          syncDelegatesWithEchoRegions();
+          fetchEchoRegions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const syncDelegatesWithEchoRegions = async () => {
+    try {
+      console.log('🔄 Synchronisation des délégués avec echo_regions...');
+      const { error } = await supabase.rpc('sync_echo_regions_with_delegates');
+      
+      if (error) {
+        console.error('❌ Erreur lors de la synchronisation:', error);
+        toast.error('Erreur lors de la synchronisation des délégués');
+      } else {
+        console.log('✅ Synchronisation réussie');
+      }
+    } catch (error) {
+      console.error('❌ Erreur de synchronisation:', error);
+    }
+  };
+
+  // Créer des cartes de fallback basées sur les délégués régionaux si echo_regions est vide
   const delegueCards = delegues.map(delegue => ({
     id: delegue.id.toString(),
     region: delegue.region,
@@ -69,6 +112,9 @@ const DashboardEchoRegions = () => {
     updated_at: new Date().toISOString(),
     created_by: user?.id
   }));
+
+  // Utiliser les données de echo_regions s'il y en a, sinon utiliser les cartes de délégués
+  const displayCards = echoRegions.length > 0 ? echoRegions : delegueCards;
 
   const fetchEchoRegions = async () => {
     try {
@@ -210,22 +256,22 @@ const DashboardEchoRegions = () => {
 
 
           <div className="mb-4">
-            <h2 className="text-lg font-semibold text-primary flex items-center">
-              <MapPin className="mr-2 h-5 w-5" />
-              Liste des délégués régionaux ({delegues.length})
-            </h2>
+              <h2 className="text-lg font-semibold text-primary flex items-center">
+                <MapPin className="mr-2 h-5 w-5" />
+                Liste des délégués régionaux ({displayCards.length})
+              </h2>
           </div>
 
           {loadingDelegues ? (
             <div className="text-center py-8">Chargement...</div>
           ) : (
             <div className="space-y-4">
-              {delegues.length === 0 ? (
+              {displayCards.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   Aucun délégué régional trouvé
                 </div>
               ) : (
-                delegueCards.map(renderDelegueCard)
+                displayCards.map(renderDelegueCard)
               )}
             </div>
           )}
@@ -360,7 +406,7 @@ const DashboardEchoRegions = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <MapPin className="mr-2 h-5 w-5" />
-              Liste des délégués régionaux ({delegues.length})
+              Liste des délégués régionaux ({displayCards.length})
             </h2>
           </div>
 
@@ -370,14 +416,14 @@ const DashboardEchoRegions = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {delegues.length === 0 ? (
+              {displayCards.length === 0 ? (
                 <div className="col-span-full text-center py-12 text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                   <p className="text-lg font-medium">Aucun délégué régional</p>
                   <p>Les délégués régionaux apparaîtront ici automatiquement</p>
                 </div>
               ) : (
-                delegueCards.map(renderDelegueCard)
+                displayCards.map(renderDelegueCard)
               )}
             </div>
           )}
@@ -517,7 +563,7 @@ const DashboardEchoRegions = () => {
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-primary flex items-center">
               <MapPin className="mr-2 h-5 w-5" />
-              Liste des délégués régionaux ({delegues.length})
+              Liste des délégués régionaux ({displayCards.length})
             </h2>
           </div>
 
@@ -527,14 +573,14 @@ const DashboardEchoRegions = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {delegues.length === 0 ? (
+              {displayCards.length === 0 ? (
                 <div className="col-span-full text-center py-12 text-gray-500">
                   <MapPin className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                   <p className="text-lg font-medium">Aucun délégué régional</p>
                   <p>Les délégués régionaux apparaîtront ici automatiquement</p>
                 </div>
               ) : (
-                delegueCards.map(renderDelegueCard)
+                displayCards.map(renderDelegueCard)
               )}
             </div>
           )}
