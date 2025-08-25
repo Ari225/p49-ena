@@ -203,7 +203,7 @@ const DashboardJournal = () => {
                               Êtes-vous sûr de vouloir supprimer "{edition.title}" ? Cette action est irréversible.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
-                          <AlertDialogFooter>
+                          <AlertDialogFooter className="flex flex-row justify-end gap-2 space-y-0">
                             <AlertDialogCancel>Annuler</AlertDialogCancel>
                             <AlertDialogAction onClick={() => handleDelete(edition)} className="bg-red-600 hover:bg-red-700">
                               Supprimer
