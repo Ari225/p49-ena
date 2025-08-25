@@ -138,39 +138,80 @@ const DashboardEchoRegions = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log('📝 Données du formulaire avant traitement:', formData);
+    
     try {
+      // Préparer les données pour la base de données
+      const actualitesRecentes = [...(formData.actualites_recentes || [])];
+      
+      // Ajouter la nouvelle actualité si elle existe
+      if (formData.nouvelle_actualite && formData.nouvelle_actualite.trim()) {
+        actualitesRecentes.unshift({
+          date: new Date().toLocaleDateString('fr-FR'),
+          contenu: formData.nouvelle_actualite.trim()
+        });
+        
+        // Garder seulement les 3 dernières actualités
+        if (actualitesRecentes.length > 3) {
+          actualitesRecentes.splice(3);
+        }
+      }
+      
+      // Préparer les données pour Supabase (exclure les champs non-DB)
+      const dbData = {
+        region: formData.region,
+        delegue: formData.delegue,
+        delegue_id: editingEcho?.delegue_id || null,
+        membres: formData.membres,
+        derniere_activite: formData.derniere_activite,
+        actualites_recentes: actualitesRecentes,
+        image_url: formData.image_url
+      };
+      
+      console.log('💾 Données préparées pour la DB:', dbData);
+      
       if (editingEcho) {
         const { error } = await supabase
           .from('echo_regions')
           .update({
-            ...formData,
+            ...dbData,
             updated_at: new Date().toISOString()
           })
           .eq('id', editingEcho.id);
         
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Erreur mise à jour:', error);
+          throw error;
+        }
+        console.log('✅ Mise à jour réussie');
         toast.success('Écho des régions mis à jour avec succès');
       } else {
         const { error } = await supabase
           .from('echo_regions')
           .insert([{
-            ...formData,
+            ...dbData,
             created_by: user?.id
           }]);
         
-        if (error) throw error;
+        if (error) {
+          console.error('❌ Erreur création:', error);
+          throw error;
+        }
+        console.log('✅ Création réussie');
         toast.success('Écho des régions créé avec succès');
       }
       
       resetForm();
       fetchEchoRegions();
     } catch (error) {
-      console.error('Erreur:', error);
-      toast.error('Erreur lors de la sauvegarde');
+      console.error('💥 Erreur complète:', error);
+      toast.error(`Erreur lors de la sauvegarde: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     }
   };
 
   const handleEdit = (echo: EchoRegion) => {
+    console.log('✏️ Édition de:', echo);
     setEditingEcho(echo);
     setFormData({
       region: echo.region,
@@ -179,7 +220,7 @@ const DashboardEchoRegions = () => {
       derniere_activite: echo.derniere_activite || '',
       actualites_recentes: echo.actualites_recentes || [],
       image_url: echo.image_url || '',
-      nouvelle_actualite: ''
+      nouvelle_actualite: '' // Toujours vide pour l'édition
     });
     setShowForm(true);
   };
@@ -238,10 +279,21 @@ const DashboardEchoRegions = () => {
             </div>
             <p className="text-sm">{delegue.derniere_activite}</p>
           </div>
-          <div className="pt-2 border-t">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
-            <p className="text-sm text-gray-500">Aucune actualité récente</p>
-          </div>
+            <div className="pt-2 border-t">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
+              {delegue.actualites_recentes && delegue.actualites_recentes.length > 0 ? (
+                <div className="space-y-1">
+                  {delegue.actualites_recentes.slice(0, 3).map((actualite: any, index: number) => (
+                    <div key={index} className="text-sm text-gray-600 border-l-2 border-blue-200 pl-2">
+                      <span className="text-xs text-gray-500">{actualite.date}</span>
+                      <p>{actualite.contenu}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">Aucune actualité récente</p>
+              )}
+            </div>
         </div>
       </CardContent>
     </Card>
