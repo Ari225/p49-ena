@@ -30,7 +30,7 @@ import DashboardTextesOfficiels from '@/pages/dashboard/DashboardTextesOfficiels
 import DashboardMessaging from '@/pages/dashboard/DashboardMessaging';
 import DashboardSuggestions from '@/pages/dashboard/DashboardSuggestions';
 import EditorTextesOfficiels from '@/pages/dashboard/EditorTextesOfficiels';
-import EditorCarrieres from '@/pages/dashboard/EditorCarrieres';
+import CarrieresWrapper from '@/pages/dashboard/CarrieresWrapper';
 import SecurityDashboard from '@/components/dashboard/SecurityDashboard';
 import DashboardHome from './DashboardHome';
 
@@ -44,7 +44,7 @@ const DashboardRoutes = () => {
       <Route path="/journal" element={<DashboardJournal />} />
       <Route path="/communiques" element={<DashboardCommuniques />} />
       <Route path="/echo-regions" element={<DashboardEchoRegions />} />
-      <Route path="/carrieres" element={<EditorCarrieres />} />
+      <Route path="/carrieres" element={<CarrieresWrapper />} />
       <Route path="/temoignages" element={<DashboardTemoignages />} />
       <Route path="/evenements-sociaux" element={<DashboardEvenementsSociaux />} />
       <Route path="/activites" element={<DashboardActivites />} />
