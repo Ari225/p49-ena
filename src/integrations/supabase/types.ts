@@ -574,86 +574,47 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string | null
-          delegue: string | null
+          details: string | null
           id: string
-          image: string | null
-          last_activity: string | null
-          members_count: number | null
-          recent_news: Json | null
+          image_url: string | null
+          is_visible: boolean
+          published_by: string | null
+          published_date: string
+          reading_time: number | null
           region: string
+          summary: string | null
+          title: string
           updated_at: string
         }
         Insert: {
           created_at?: string
           created_by?: string | null
-          delegue?: string | null
+          details?: string | null
           id?: string
-          image?: string | null
-          last_activity?: string | null
-          members_count?: number | null
-          recent_news?: Json | null
+          image_url?: string | null
+          is_visible?: boolean
+          published_by?: string | null
+          published_date?: string
+          reading_time?: number | null
           region: string
+          summary?: string | null
+          title: string
           updated_at?: string
         }
         Update: {
           created_at?: string
           created_by?: string | null
-          delegue?: string | null
+          details?: string | null
           id?: string
-          image?: string | null
-          last_activity?: string | null
-          members_count?: number | null
-          recent_news?: Json | null
+          image_url?: string | null
+          is_visible?: boolean
+          published_by?: string | null
+          published_date?: string
+          reading_time?: number | null
           region?: string
+          summary?: string | null
+          title?: string
           updated_at?: string
-        }
-        Relationships: []
-      }
-      echo_regions_backup: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          details: string | null
-          id: string | null
-          image_url: string | null
-          is_visible: boolean | null
-          published_by: string | null
-          published_date: string | null
-          reading_time: number | null
-          region: string | null
-          summary: string | null
-          title: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          details?: string | null
-          id?: string | null
-          image_url?: string | null
-          is_visible?: boolean | null
-          published_by?: string | null
-          published_date?: string | null
-          reading_time?: number | null
-          region?: string | null
-          summary?: string | null
-          title?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          details?: string | null
-          id?: string | null
-          image_url?: string | null
-          is_visible?: boolean | null
-          published_by?: string | null
-          published_date?: string | null
-          reading_time?: number | null
-          region?: string | null
-          summary?: string | null
-          title?: string | null
-          updated_at?: string | null
         }
         Relationships: []
       }
