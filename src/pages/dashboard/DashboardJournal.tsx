@@ -196,7 +196,7 @@ const DashboardJournal = () => {
                             <Trash2 className="h-3 w-3" />
                           </Button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent>
+                        <AlertDialogContent className="w-[90vw] max-w-sm mx-auto rounded-2xl sm:w-full sm:max-w-lg sm:rounded-lg">
                           <AlertDialogHeader>
                             <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
                             <AlertDialogDescription>
