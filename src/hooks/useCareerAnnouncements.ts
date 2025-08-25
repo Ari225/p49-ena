@@ -235,12 +235,15 @@ export const useCareerAnnouncements = () => {
 
   const deleteAnnouncement = async (id: string) => {
     try {
-      const { error } = await supabase
+      const { error, data } = await supabase
         .from('career_announcements')
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur de suppression:', error);
+        throw error;
+      }
 
       // Mise à jour immédiate de la liste locale
       setAnnouncements(prev => prev.filter(announcement => announcement.id !== id));
@@ -255,7 +258,7 @@ export const useCareerAnnouncements = () => {
       console.error('Erreur lors de la suppression de l\'annonce:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de supprimer l\'annonce',
+        description: 'Impossible de supprimer l\'annonce: ' + (error as any).message,
         variant: 'destructive'
       });
       return false;
