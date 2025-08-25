@@ -235,14 +235,29 @@ export const useCareerAnnouncements = () => {
 
   const deleteAnnouncement = async (id: string) => {
     try {
-      const { error, data } = await supabase
-        .from('career_announcements')
-        .delete()
-        .eq('id', id);
+      const { data, error } = await supabase.rpc('delete_career_announcement_secure', {
+        announcement_id: id
+      });
 
       if (error) {
         console.error('Erreur de suppression:', error);
-        throw error;
+        toast({
+          title: 'Erreur',
+          description: 'Erreur technique: ' + error.message,
+          variant: 'destructive'
+        });
+        return false;
+      }
+
+      const result = data as { success: boolean; error?: string; message?: string };
+
+      if (!result.success) {
+        toast({
+          title: 'Erreur',
+          description: result.error || 'Erreur inconnue',
+          variant: 'destructive'
+        });
+        return false;
       }
 
       // Mise à jour immédiate de la liste locale
@@ -250,7 +265,7 @@ export const useCareerAnnouncements = () => {
 
       toast({
         title: 'Succès',
-        description: 'Annonce supprimée avec succès'
+        description: result.message || 'Annonce supprimée avec succès'
       });
 
       return true;
@@ -258,7 +273,7 @@ export const useCareerAnnouncements = () => {
       console.error('Erreur lors de la suppression de l\'annonce:', error);
       toast({
         title: 'Erreur',
-        description: 'Impossible de supprimer l\'annonce: ' + (error as any).message,
+        description: 'Erreur inattendue lors de la suppression',
         variant: 'destructive'
       });
       return false;

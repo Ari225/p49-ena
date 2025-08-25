@@ -1233,6 +1233,10 @@ export type Database = {
           testimonial_id: string
         }[]
       }
+      delete_career_announcement_secure: {
+        Args: { announcement_id: string }
+        Returns: Json
+      }
       delete_testimonial_secure: {
         Args: { testimonial_id: string }
         Returns: boolean
