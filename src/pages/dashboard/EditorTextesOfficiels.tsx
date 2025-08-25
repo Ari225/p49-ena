@@ -126,17 +126,7 @@ const EditorTextesOfficiels = () => {
     }
   };
 
-  const handleDelete = async (id: string, createdBy: string) => {
-    // Vérifier si l'utilisateur peut supprimer le document (éditeurs peuvent supprimer leurs propres documents)
-    if (createdBy !== user?.id) {
-      toast({
-        title: 'Erreur',
-        description: 'Vous ne pouvez supprimer que vos propres documents',
-        variant: 'destructive'
-      });
-      return;
-    }
-
+  const handleDelete = async (id: string) => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) return;
 
     try {
@@ -246,51 +236,46 @@ const EditorTextesOfficiels = () => {
             ) : documents.length === 0 ? (
               <p className="text-gray-500 text-center py-8">Aucun document trouvé</p>
             ) : (
-              documents.map((doc) => {
-                const canDelete = doc.created_by === user?.id;
-                return (
-                  <Card key={doc.id}>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg flex items-center justify-between">
-                        <span className="flex items-center">
-                          <FileText className="mr-2 h-5 w-5" />
-                          {doc.title}
-                        </span>
-                        <Badge variant="secondary">{doc.year}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-gray-500 flex items-center">
-                          <Calendar className="mr-1 h-3 w-3" />
-                          {new Date(doc.created_at).toLocaleDateString()}
-                        </span>
-                        <div className="flex space-x-2">
-                          <PDFViewer
-                            pdfUrl={doc.document_url}
-                            title={doc.title}
-                            triggerButton={
-                              <Button size="sm" variant="outline">
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                            }
-                          />
-                          {canDelete && (
-                            <Button 
-                              size="sm" 
-                              variant="destructive"
-                              onClick={() => handleDelete(doc.id, doc.created_by)}
-                            >
-                              <Trash2 className="h-4 w-4" />
+              documents.map((doc) => (
+                <Card key={doc.id}>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center justify-between">
+                      <span className="flex items-center">
+                        <FileText className="mr-2 h-5 w-5" />
+                        {doc.title}
+                      </span>
+                      <Badge variant="secondary">{doc.year}</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500 flex items-center">
+                        <Calendar className="mr-1 h-3 w-3" />
+                        {new Date(doc.created_at).toLocaleDateString()}
+                      </span>
+                      <div className="flex space-x-2">
+                        <PDFViewer
+                          pdfUrl={doc.document_url}
+                          title={doc.title}
+                          triggerButton={
+                            <Button size="sm" variant="outline">
+                              <Eye className="h-4 w-4" />
                             </Button>
-                          )}
-                        </div>
+                          }
+                        />
+                        <Button 
+                          size="sm" 
+                          variant="destructive"
+                          onClick={() => handleDelete(doc.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
-                    </CardContent>
-                  </Card>
-                );
-              })
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
             )}
           </div>
         </div>
@@ -381,51 +366,46 @@ const EditorTextesOfficiels = () => {
             ) : documents.length === 0 ? (
               <p className="text-gray-500 text-center py-8 col-span-full">Aucun document trouvé</p>
             ) : (
-              documents.map((doc) => {
-                const canDelete = doc.created_by === user?.id;
-                return (
-                  <Card key={doc.id}>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg flex items-center justify-between">
-                        <span className="flex items-center">
-                          <FileText className="mr-2 h-5 w-5" />
-                          {doc.title}
-                        </span>
-                        <Badge variant="secondary">{doc.year}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-gray-500 flex items-center">
-                          <Calendar className="mr-1 h-3 w-3" />
-                          {new Date(doc.created_at).toLocaleDateString()}
-                        </span>
-                        <div className="flex space-x-2">
-                          <PDFViewer
-                            pdfUrl={doc.document_url}
-                            title={doc.title}
-                            triggerButton={
-                              <Button size="sm" variant="outline">
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                            }
-                          />
-                          {canDelete && (
-                            <Button 
-                              size="sm" 
-                              variant="destructive"
-                              onClick={() => handleDelete(doc.id, doc.created_by)}
-                            >
-                              <Trash2 className="h-4 w-4" />
+              documents.map((doc) => (
+                <Card key={doc.id}>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center justify-between">
+                      <span className="flex items-center">
+                        <FileText className="mr-2 h-5 w-5" />
+                        {doc.title}
+                      </span>
+                      <Badge variant="secondary">{doc.year}</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500 flex items-center">
+                        <Calendar className="mr-1 h-3 w-3" />
+                        {new Date(doc.created_at).toLocaleDateString()}
+                      </span>
+                      <div className="flex space-x-2">
+                        <PDFViewer
+                          pdfUrl={doc.document_url}
+                          title={doc.title}
+                          triggerButton={
+                            <Button size="sm" variant="outline">
+                              <Eye className="h-4 w-4" />
                             </Button>
-                          )}
-                        </div>
+                          }
+                        />
+                        <Button 
+                          size="sm" 
+                          variant="destructive"
+                          onClick={() => handleDelete(doc.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
-                    </CardContent>
-                  </Card>
-                );
-              })
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
             )}
           </div>
         </div>
@@ -518,51 +498,46 @@ const EditorTextesOfficiels = () => {
             ) : documents.length === 0 ? (
               <p className="text-gray-500 text-center py-8 col-span-full">Aucun document trouvé</p>
             ) : (
-              documents.map((doc) => {
-                const canDelete = doc.created_by === user?.id;
-                return (
-                  <Card key={doc.id}>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg flex items-center justify-between">
-                        <span className="flex items-center">
-                          <FileText className="mr-2 h-5 w-5" />
-                          {doc.title}
-                        </span>
-                        <Badge variant="secondary">{doc.year}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-gray-500 flex items-center">
-                          <Calendar className="mr-1 h-3 w-3" />
-                          {new Date(doc.created_at).toLocaleDateString()}
-                        </span>
-                        <div className="flex space-x-2">
-                          <PDFViewer
-                            pdfUrl={doc.document_url}
-                            title={doc.title}
-                            triggerButton={
-                              <Button size="sm" variant="outline">
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                            }
-                          />
-                          {canDelete && (
-                            <Button 
-                              size="sm" 
-                              variant="destructive"
-                              onClick={() => handleDelete(doc.id, doc.created_by)}
-                            >
-                              <Trash2 className="h-4 w-4" />
+              documents.map((doc) => (
+                <Card key={doc.id}>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center justify-between">
+                      <span className="flex items-center">
+                        <FileText className="mr-2 h-5 w-5" />
+                        {doc.title}
+                      </span>
+                      <Badge variant="secondary">{doc.year}</Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-gray-600 mb-3">{doc.description}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500 flex items-center">
+                        <Calendar className="mr-1 h-3 w-3" />
+                        {new Date(doc.created_at).toLocaleDateString()}
+                      </span>
+                      <div className="flex space-x-2">
+                        <PDFViewer
+                          pdfUrl={doc.document_url}
+                          title={doc.title}
+                          triggerButton={
+                            <Button size="sm" variant="outline">
+                              <Eye className="h-4 w-4" />
                             </Button>
-                          )}
-                        </div>
+                          }
+                        />
+                        <Button 
+                          size="sm" 
+                          variant="destructive"
+                          onClick={() => handleDelete(doc.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
-                    </CardContent>
-                  </Card>
-                );
-              })
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
             )}
           </div>
         </div>
