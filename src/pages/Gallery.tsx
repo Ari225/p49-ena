@@ -156,7 +156,7 @@ const Gallery = () => {
 
         {/* Gallery Grid */}
         <section className={`py-16 bg-white ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             {loading ? <div className="flex justify-center items-center py-12">
                 <div className="text-gray-500 text-lg">Chargement des médias...</div>
               </div> : <>
