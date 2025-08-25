@@ -242,12 +242,14 @@ export const useCareerAnnouncements = () => {
 
       if (error) throw error;
 
+      // Mise à jour immédiate de la liste locale
+      setAnnouncements(prev => prev.filter(announcement => announcement.id !== id));
+
       toast({
         title: 'Succès',
         description: 'Annonce supprimée avec succès'
       });
 
-      await fetchAnnouncements();
       return true;
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'annonce:', error);
