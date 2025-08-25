@@ -178,16 +178,21 @@ const DashboardCommuniques = () => {
   const confirmDelete = async () => {
     if (selectedCommunique) {
       try {
-        const { error } = await supabase
-          .from('communiques')
-          .delete()
-          .eq('id', selectedCommunique.id);
+        const { data, error } = await supabase.rpc('delete_communique_secure', {
+          communique_id: selectedCommunique.id
+        });
 
         if (error) throw error;
 
+        const result = data as { success: boolean; error?: string; message?: string };
+        
+        if (!result.success) {
+          throw new Error(result.error || 'Erreur lors de la suppression');
+        }
+
         toast({
           title: "Communiqué supprimé",
-          description: "Le communiqué a été supprimé avec succès.",
+          description: result.message || "Le communiqué a été supprimé avec succès.",
         });
 
         // Recharger les données
@@ -196,7 +201,7 @@ const DashboardCommuniques = () => {
         console.error('Erreur lors de la suppression:', error);
         toast({
           title: "Erreur",
-          description: "Une erreur est survenue lors de la suppression.",
+          description: error instanceof Error ? error.message : "Une erreur est survenue lors de la suppression.",
           variant: "destructive"
         });
       }

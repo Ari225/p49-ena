@@ -1237,6 +1237,10 @@ export type Database = {
         Args: { announcement_id: string }
         Returns: Json
       }
+      delete_communique_secure: {
+        Args: { communique_id: string }
+        Returns: Json
+      }
       delete_testimonial_secure: {
         Args: { testimonial_id: string }
         Returns: boolean
