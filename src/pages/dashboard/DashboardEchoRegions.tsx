@@ -241,65 +241,85 @@ const DashboardEchoRegions = () => {
     setShowForm(false);
   };
 
-  const renderDelegueCard = (delegue: any) => (
-    <Card key={delegue.id} className="hover:shadow-xl transition-shadow duration-300 relative">
-      <div className="aspect-video overflow-hidden rounded-t-lg">
-        <img 
-          src="/lovable-uploads/Pers49.webp" 
-          alt={delegue.region} 
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
-        />
-      </div>
-      <CardHeader>
-        <CardTitle className="text-primary text-xl">{delegue.region}</CardTitle>
-        <Button
-          size="sm"
-          variant="outline"
-          className="absolute top-2 right-2 h-8 w-8 p-0"
-          onClick={() => handleEdit(delegue)}
-        >
-          <Edit className="h-4 w-4" />
-        </Button>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Délégué:</span>
-            <span className="font-medium text-primary">{delegue.delegue}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600 flex items-center">
-              <Users className="w-4 h-4 mr-1" />
-              Membres:
-            </span>
-            <span className="font-bold text-secondary">{delegue.membres}</span>
-          </div>
-          <div className="pt-2 border-t">
-            <div className="flex items-center text-sm text-gray-600 mb-2">
-              <Calendar className="w-4 h-4 mr-1" />
-              Dernière activité:
-            </div>
-            <p className="text-sm">{delegue.derniere_activite}</p>
-          </div>
-            <div className="pt-2 border-t">
-              <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
-              {delegue.actualites_recentes && delegue.actualites_recentes.length > 0 ? (
-                <div className="space-y-1">
-                  {delegue.actualites_recentes.slice(0, 3).map((actualite: any, index: number) => (
-                    <div key={index} className="text-sm text-gray-600 border-l-2 border-blue-200 pl-2">
-                      <span className="text-xs text-gray-500">{actualite.date}</span>
-                      <p>{actualite.contenu}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-gray-500">Aucune actualité récente</p>
-              )}
-            </div>
+  const renderDelegueCard = (delegue: any) => {
+    // Ajouter cache busting pour les images avec timestamp
+    const getImageWithCacheBusting = (imageUrl: string) => {
+      if (!imageUrl) return '/lovable-uploads/Pers49.webp';
+      
+      // Si l'image contient déjà un paramètre de cache busting, l'utiliser
+      if (imageUrl.includes('?t=')) return imageUrl;
+      
+      // Sinon ajouter un timestamp pour forcer le refresh
+      const timestamp = Date.now();
+      return imageUrl.includes('?') 
+        ? `${imageUrl}&t=${timestamp}` 
+        : `${imageUrl}?t=${timestamp}`;
+    };
+
+    return (
+      <Card key={delegue.id} className="hover:shadow-xl transition-shadow duration-300 relative">
+        <div className="aspect-video overflow-hidden rounded-t-lg">
+          <img 
+            src={getImageWithCacheBusting(delegue.image_url || '/lovable-uploads/Pers49.webp')} 
+            alt={delegue.region} 
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              // Fallback en cas d'erreur de chargement
+              (e.target as HTMLImageElement).src = '/lovable-uploads/Pers49.webp';
+            }}
+          />
         </div>
-      </CardContent>
-    </Card>
-  );
+        <CardHeader>
+          <CardTitle className="text-primary text-xl">{delegue.region}</CardTitle>
+          <Button
+            size="sm"
+            variant="outline"
+            className="absolute top-2 right-2 h-8 w-8 p-0"
+            onClick={() => handleEdit(delegue)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Délégué:</span>
+              <span className="font-medium text-primary">{delegue.delegue}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600 flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                Membres:
+              </span>
+              <span className="font-bold text-secondary">{delegue.membres}</span>
+            </div>
+            <div className="pt-2 border-t">
+              <div className="flex items-center text-sm text-gray-600 mb-2">
+                <Calendar className="w-4 h-4 mr-1" />
+                Dernière activité:
+              </div>
+              <p className="text-sm">{delegue.derniere_activite}</p>
+            </div>
+              <div className="pt-2 border-t">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
+                {delegue.actualites_recentes && delegue.actualites_recentes.length > 0 ? (
+                  <div className="space-y-1">
+                    {delegue.actualites_recentes.slice(0, 3).map((actualite: any, index: number) => (
+                      <div key={index} className="text-sm text-gray-600 border-l-2 border-blue-200 pl-2">
+                        <span className="text-xs text-gray-500">{actualite.date}</span>
+                        <p>{actualite.contenu}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500">Aucune actualité récente</p>
+                )}
+              </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
 
   if (isMobile) {
     return (
@@ -445,6 +465,11 @@ const DashboardEchoRegions = () => {
                       src={formData.image_url} 
                       alt="Aperçu" 
                       className="w-20 h-20 object-cover rounded-lg border"
+                      key={formData.image_url} // Force le re-render quand l'URL change
+                      onError={(e) => {
+                        console.error('Erreur de chargement de l\'image:', formData.image_url);
+                        (e.target as HTMLImageElement).src = '/lovable-uploads/Pers49.webp';
+                      }}
                     />
                     <p className="text-xs text-gray-500 mt-1">Image uploadée et optimisée</p>
                   </div>
