@@ -127,7 +127,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
               )}
 
               {/* Social Media Icons */}
-              {socialMedia.facebook && (
+              {socialMedia.facebook && typeof socialMedia.facebook === 'string' && socialMedia.facebook.trim() !== '' && (
                 <button
                   onClick={() => handleSocialClick(socialMedia.facebook!)}
                   className="p-2 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -136,7 +136,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   <Facebook className="h-4 w-4" />
                 </button>
               )}
-              {socialMedia.instagram && (
+              {socialMedia.instagram && typeof socialMedia.instagram === 'string' && socialMedia.instagram.trim() !== '' && (
                 <button
                   onClick={() => handleSocialClick(socialMedia.instagram!)}
                   className="p-2 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -145,7 +145,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   <Instagram className="h-4 w-4" />
                 </button>
               )}
-              {socialMedia.linkedin && (
+              {socialMedia.linkedin && typeof socialMedia.linkedin === 'string' && socialMedia.linkedin.trim() !== '' && (
                 <button
                   onClick={() => handleSocialClick(socialMedia.linkedin!)}
                   className="p-2 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -237,7 +237,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                 )}
 
                 {/* Social Media Icons */}
-                {socialMedia.facebook && (
+                {socialMedia.facebook && typeof socialMedia.facebook === 'string' && socialMedia.facebook.trim() !== '' && (
                   <button
                     onClick={() => handleSocialClick(socialMedia.facebook!)}
                     className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -246,7 +246,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                     <Facebook className="h-5 w-5" />
                   </button>
                 )}
-                {socialMedia.instagram && (
+                {socialMedia.instagram && typeof socialMedia.instagram === 'string' && socialMedia.instagram.trim() !== '' && (
                   <button
                     onClick={() => handleSocialClick(socialMedia.instagram!)}
                     className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -255,7 +255,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                     <Instagram className="h-5 w-5" />
                   </button>
                 )}
-                {socialMedia.linkedin && (
+                {socialMedia.linkedin && typeof socialMedia.linkedin === 'string' && socialMedia.linkedin.trim() !== '' && (
                   <button
                     onClick={() => handleSocialClick(socialMedia.linkedin!)}
                     className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -347,7 +347,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
               )}
 
               {/* Social Media Icons */}
-              {socialMedia.facebook && (
+              {socialMedia.facebook && typeof socialMedia.facebook === 'string' && socialMedia.facebook.trim() !== '' && (
                 <button
                   onClick={() => handleSocialClick(socialMedia.facebook!)}
                   className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -356,7 +356,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   <Facebook className="h-5 w-5" />
                 </button>
               )}
-              {socialMedia.instagram && (
+              {socialMedia.instagram && typeof socialMedia.instagram === 'string' && socialMedia.instagram.trim() !== '' && (
                 <button
                   onClick={() => handleSocialClick(socialMedia.instagram!)}
                   className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
@@ -365,7 +365,7 @@ const MemberDetailDialog: React.FC<MemberDetailDialogProps> = ({ member, isOpen,
                   <Instagram className="h-5 w-5" />
                 </button>
               )}
-              {socialMedia.linkedin && (
+              {socialMedia.linkedin && typeof socialMedia.linkedin === 'string' && socialMedia.linkedin.trim() !== '' && (
                 <button
                   onClick={() => handleSocialClick(socialMedia.linkedin!)}
                   className="p-3 text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded-lg hover:border-primary"
