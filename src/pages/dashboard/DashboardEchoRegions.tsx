@@ -200,20 +200,7 @@ const DashboardEchoRegions = () => {
           </div>
           <div className="pt-2 border-t">
             <h4 className="text-sm font-semibold text-gray-700 mb-2">Actualités récentes:</h4>
-            <ul className="space-y-1">
-              <li className="text-xs text-gray-600 flex items-start">
-                <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Délégué: {delegue.published_by}
-              </li>
-              <li className="text-xs text-gray-600 flex items-start">
-                <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Zone: {delegue.region}
-              </li>
-              <li className="text-xs text-gray-600 flex items-start">
-                <span className="w-1 h-1 bg-secondary rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                Statut: Actif
-              </li>
-            </ul>
+            
           </div>
         </div>
       </CardContent>
