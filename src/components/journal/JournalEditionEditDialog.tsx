@@ -114,6 +114,7 @@ const JournalEditionEditDialog = ({
       if (updateError) throw updateError;
 
       toast.success('Édition modifiée avec succès !');
+      console.log('Edition updated successfully, closing dialog and resetting form');
       
       // Reset form data
       setFormData({
@@ -124,8 +125,11 @@ const JournalEditionEditDialog = ({
         pdfFile: null
       });
       
-      onSuccess(); // This will refresh data and close dialog
-      onOpenChange(false); // Explicitly close the dialog
+      // Close dialog first, then call success callback
+      onOpenChange(false);
+      setTimeout(() => {
+        onSuccess(); // This will refresh data
+      }, 100);
     } catch (error) {
       console.error('Error updating journal edition:', error);
       toast.error('Erreur lors de la modification de l\'édition');

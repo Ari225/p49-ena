@@ -97,7 +97,7 @@ const DashboardJournal = () => {
   };
   
   const handleEdit = (edition: JournalEdition) => {
-    console.log('Editing edition:', edition); // Debug log
+    console.log('Opening edit dialog for edition:', edition);
     setSelectedEdition(edition);
     setEditDialogOpen(true);
   };
@@ -105,18 +105,32 @@ const DashboardJournal = () => {
   const handleDelete = async (edition: JournalEdition) => {
     console.log('Deleting edition:', edition); // Debug log
     try {
-      const { error } = await supabase
+      console.log('Starting delete operation for ID:', edition.id);
+      
+      const { data, error } = await supabase
         .from('journal_editions')
         .delete()
-        .eq('id', edition.id);
+        .eq('id', edition.id)
+        .select(); // Add select to get confirmation
       
-      if (error) throw error;
+      console.log('Delete result:', { data, error });
       
+      if (error) {
+        console.error('Supabase delete error:', error);
+        throw error;
+      }
+      
+      console.log('Delete successful, refreshing data...');
       toast.success('Édition supprimée avec succès');
-      await fetchEditions(); // Ensure data is refreshed
+      
+      // Force immediate state update
+      setEditions(prev => prev.filter(e => e.id !== edition.id));
+      
+      // Also refresh from database
+      await fetchEditions();
     } catch (error) {
       console.error('Error deleting edition:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error('Erreur lors de la suppression: ' + (error as any)?.message || 'Erreur inconnue');
     }
   };
   const truncateText = (text: string, maxLength: number = 100) => {
