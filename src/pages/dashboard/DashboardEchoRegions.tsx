@@ -16,6 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useDeleguesRegionaux } from '@/hooks/useDeleguesRegionaux';
 import { compressImage, isValidImageFile, formatFileSize } from '@/utils/imageCompression';
+import { useImageUploadToStorage } from '@/hooks/useImageUploadToStorage';
 
 interface EchoRegion {
   id: string;
@@ -52,6 +53,7 @@ const DashboardEchoRegions = () => {
     nouvelle_actualite: ''
   });
   const [isCompressing, setIsCompressing] = useState(false);
+  const { uploadImage, isUploading } = useImageUploadToStorage();
 
   useEffect(() => {
     fetchEchoRegions();
@@ -410,61 +412,41 @@ const DashboardEchoRegions = () => {
                   id="image_file" 
                   type="file" 
                   accept="image/*"
-                  disabled={isCompressing}
+                  disabled={isUploading}
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (!file) return;
 
-                    if (!isValidImageFile(file)) {
-                      toast.error('Format d\'image non supporté. Utilisez JPG, PNG ou WebP.');
-                      return;
-                    }
+                    const imageUrl = await uploadImage(file, {
+                      bucket: 'echo-regions',
+                      folder: 'delegues',
+                      maxWidth: 800,
+                      maxHeight: 600,
+                      quality: 0.8
+                    });
 
-                    if (file.size > 10 * 1024 * 1024) { // 10MB max
-                      toast.error('L\'image est trop volumineuse (max 10MB)');
-                      return;
-                    }
-
-                    try {
-                      setIsCompressing(true);
-                      console.log(`📸 Compression en cours... Taille originale: ${formatFileSize(file.size)}`);
-                      
-                      const compressedBlob = await compressImage(file, {
-                        maxWidth: 800,
-                        maxHeight: 600,
-                        quality: 0.8,
-                        format: 'jpeg'
-                      });
-
-                      const imageUrl = URL.createObjectURL(compressedBlob);
+                    if (imageUrl) {
                       setFormData({
                         ...formData,
                         image_url: imageUrl
                       });
-
-                      toast.success(`Image compressée: ${formatFileSize(file.size)} → ${formatFileSize(compressedBlob.size)}`);
-                    } catch (error) {
-                      console.error('Erreur de compression:', error);
-                      toast.error('Erreur lors de la compression de l\'image');
-                    } finally {
-                      setIsCompressing(false);
                     }
                   }}
                 />
-                {isCompressing && (
+                {isUploading && (
                   <div className="mt-2 text-sm text-blue-600 flex items-center">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-                    Compression en cours...
+                    Upload en cours...
                   </div>
                 )}
-                {formData.image_url && !isCompressing && (
+                {formData.image_url && !isUploading && (
                   <div className="mt-2">
                     <img 
                       src={formData.image_url} 
                       alt="Aperçu" 
                       className="w-20 h-20 object-cover rounded-lg border"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Image compressée et optimisée</p>
+                    <p className="text-xs text-gray-500 mt-1">Image uploadée et optimisée</p>
                   </div>
                 )}
               </div>
@@ -601,61 +583,41 @@ const DashboardEchoRegions = () => {
                 id="image_file" 
                 type="file" 
                 accept="image/*"
-                disabled={isCompressing}
+                disabled={isUploading}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
 
-                  if (!isValidImageFile(file)) {
-                    toast.error('Format d\'image non supporté. Utilisez JPG, PNG ou WebP.');
-                    return;
-                  }
+                  const imageUrl = await uploadImage(file, {
+                    bucket: 'echo-regions',
+                    folder: 'delegues',
+                    maxWidth: 800,
+                    maxHeight: 600,
+                    quality: 0.8
+                  });
 
-                  if (file.size > 10 * 1024 * 1024) { // 10MB max
-                    toast.error('L\'image est trop volumineuse (max 10MB)');
-                    return;
-                  }
-
-                  try {
-                    setIsCompressing(true);
-                    console.log(`📸 Compression en cours... Taille originale: ${formatFileSize(file.size)}`);
-                    
-                    const compressedBlob = await compressImage(file, {
-                      maxWidth: 800,
-                      maxHeight: 600,
-                      quality: 0.8,
-                      format: 'jpeg'
-                    });
-
-                    const imageUrl = URL.createObjectURL(compressedBlob);
+                  if (imageUrl) {
                     setFormData({
                       ...formData,
                       image_url: imageUrl
                     });
-
-                    toast.success(`Image compressée: ${formatFileSize(file.size)} → ${formatFileSize(compressedBlob.size)}`);
-                  } catch (error) {
-                    console.error('Erreur de compression:', error);
-                    toast.error('Erreur lors de la compression de l\'image');
-                  } finally {
-                    setIsCompressing(false);
                   }
                 }}
               />
-              {isCompressing && (
+              {isUploading && (
                 <div className="mt-2 text-sm text-blue-600 flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-                  Compression en cours...
+                  Upload en cours...
                 </div>
               )}
-              {formData.image_url && !isCompressing && (
+              {formData.image_url && !isUploading && (
                 <div className="mt-2">
                   <img 
                     src={formData.image_url} 
                     alt="Aperçu" 
                     className="w-20 h-20 object-cover rounded-lg border"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Image compressée et optimisée</p>
+                  <p className="text-xs text-gray-500 mt-1">Image uploadée et optimisée</p>
                 </div>
               )}
             </div>
@@ -793,61 +755,41 @@ const DashboardEchoRegions = () => {
                 id="image_file" 
                 type="file" 
                 accept="image/*"
-                disabled={isCompressing}
+                disabled={isUploading}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
 
-                  if (!isValidImageFile(file)) {
-                    toast.error('Format d\'image non supporté. Utilisez JPG, PNG ou WebP.');
-                    return;
-                  }
+                  const imageUrl = await uploadImage(file, {
+                    bucket: 'echo-regions',
+                    folder: 'delegues',
+                    maxWidth: 800,
+                    maxHeight: 600,
+                    quality: 0.8
+                  });
 
-                  if (file.size > 10 * 1024 * 1024) { // 10MB max
-                    toast.error('L\'image est trop volumineuse (max 10MB)');
-                    return;
-                  }
-
-                  try {
-                    setIsCompressing(true);
-                    console.log(`📸 Compression en cours... Taille originale: ${formatFileSize(file.size)}`);
-                    
-                    const compressedBlob = await compressImage(file, {
-                      maxWidth: 800,
-                      maxHeight: 600,
-                      quality: 0.8,
-                      format: 'jpeg'
-                    });
-
-                    const imageUrl = URL.createObjectURL(compressedBlob);
+                  if (imageUrl) {
                     setFormData({
                       ...formData,
                       image_url: imageUrl
                     });
-
-                    toast.success(`Image compressée: ${formatFileSize(file.size)} → ${formatFileSize(compressedBlob.size)}`);
-                  } catch (error) {
-                    console.error('Erreur de compression:', error);
-                    toast.error('Erreur lors de la compression de l\'image');
-                  } finally {
-                    setIsCompressing(false);
                   }
                 }}
               />
-              {isCompressing && (
+              {isUploading && (
                 <div className="mt-2 text-sm text-blue-600 flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-                  Compression en cours...
+                  Upload en cours...
                 </div>
               )}
-              {formData.image_url && !isCompressing && (
+              {formData.image_url && !isUploading && (
                 <div className="mt-2">
                   <img 
                     src={formData.image_url} 
                     alt="Aperçu" 
                     className="w-20 h-20 object-cover rounded-lg border"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Image compressée et optimisée</p>
+                  <p className="text-xs text-gray-500 mt-1">Image uploadée et optimisée</p>
                 </div>
               )}
             </div>

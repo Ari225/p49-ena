@@ -620,54 +620,6 @@ export type Database = {
           },
         ]
       }
-      echo_regions_backup: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          details: string | null
-          id: string | null
-          image_url: string | null
-          is_visible: boolean | null
-          published_by: string | null
-          published_date: string | null
-          reading_time: number | null
-          region: string | null
-          summary: string | null
-          title: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          details?: string | null
-          id?: string | null
-          image_url?: string | null
-          is_visible?: boolean | null
-          published_by?: string | null
-          published_date?: string | null
-          reading_time?: number | null
-          region?: string | null
-          summary?: string | null
-          title?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          details?: string | null
-          id?: string | null
-          image_url?: string | null
-          is_visible?: boolean | null
-          published_by?: string | null
-          published_date?: string | null
-          reading_time?: number | null
-          region?: string | null
-          summary?: string | null
-          title?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       happy_events: {
         Row: {
           category: string
