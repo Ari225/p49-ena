@@ -89,11 +89,13 @@ const DashboardJournal = () => {
         return <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">{status}</span>;
     }
   };
-  const handleDialogSuccess = async () => {
+  const handleDialogSuccess = () => {
+    console.log('Dialog success - refreshing editions');
     setDialogOpen(false);
     setEditDialogOpen(false);
     setSelectedEdition(null);
-    await fetchEditions(); // Ensure data is refreshed before closing
+    // Immediate refresh
+    fetchEditions();
   };
   
   const handleView = (edition: JournalEdition) => {
@@ -111,41 +113,31 @@ const DashboardJournal = () => {
     try {
       console.log('=== STARTING DELETE ===');
       console.log('Edition to delete:', edition);
-      console.log('User ID:', user?.id);
       
-      // Immediate optimistic update
-      setEditions(prev => {
-        const filtered = prev.filter(e => e.id !== edition.id);
-        console.log('Optimistic update - remaining editions:', filtered.length);
-        return filtered;
-      });
-      
-      // Delete from database
-      const { data, error } = await supabase
+      // Delete from database first
+      const { error } = await supabase
         .from('journal_editions')
         .delete()
-        .eq('id', edition.id)
-        .select();
-      
-      console.log('Delete response:', { data, error });
+        .eq('id', edition.id);
       
       if (error) {
         console.error('DELETE FAILED:', error);
-        // Revert optimistic update on error
-        await fetchEditions();
         throw error;
       }
       
-      console.log('DELETE SUCCESS - refreshing from database');
+      console.log('DELETE SUCCESS - updating UI immediately');
+      
+      // Update state immediately after successful delete
+      setEditions(prevEditions => {
+        const filtered = prevEditions.filter(e => e.id !== edition.id);
+        console.log('Updated editions count:', filtered.length);
+        return filtered;
+      });
+      
       toast({
         title: "Succès",
         description: "Édition supprimée avec succès"
       });
-      
-      // Force refresh from database
-      setTimeout(() => {
-        fetchEditions();
-      }, 100);
       
     } catch (error) {
       console.error('DELETE ERROR:', error);
