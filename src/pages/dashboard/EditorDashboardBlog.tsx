@@ -401,7 +401,7 @@ const EditorDashboardBlog = () => {
         />
 
         <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto rounded-2xl mx-4 sm:mx-6">
             <DialogHeader>
               <DialogTitle className="flex items-center justify-between">
                 {viewingArticle?.title}
@@ -573,7 +573,7 @@ const EditorDashboardBlog = () => {
         />
 
         <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
-          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto rounded-2xl mx-4 sm:mx-6">
             <DialogHeader>
               <DialogTitle className="flex items-center justify-between">
                 {viewingArticle?.title}
@@ -746,16 +746,16 @@ const EditorDashboardBlog = () => {
         editingArticle={editingArticle}
       />
 
-      <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-between">
-              {viewingArticle?.title}
-              <Button variant="ghost" size="sm" onClick={() => setViewingArticle(null)}>
-                <X className="h-4 w-4" />
-              </Button>
-            </DialogTitle>
-          </DialogHeader>
+        <Dialog open={!!viewingArticle} onOpenChange={() => setViewingArticle(null)}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto rounded-2xl mx-4 sm:mx-6">
+            <DialogHeader>
+              <DialogTitle className="flex items-center justify-between">
+                {viewingArticle?.title}
+                <Button variant="ghost" size="sm" onClick={() => setViewingArticle(null)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </DialogTitle>
+            </DialogHeader>
           {viewingArticle && (
             <div className="space-y-4">
               {viewingArticle.image_url && (
