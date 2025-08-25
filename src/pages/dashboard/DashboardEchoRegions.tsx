@@ -213,8 +213,7 @@ const DashboardEchoRegions = () => {
             onClick={() => handleEdit(echo)}
             className="ml-2"
           >
-            <Edit className="w-4 h-4 mr-1" />
-            Modifier
+            <Edit className="w-4 h-4" />
           </Button>
         </CardTitle>
       </CardHeader>
