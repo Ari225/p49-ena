@@ -103,34 +103,45 @@ const DashboardJournal = () => {
   };
   
   const handleDelete = async (edition: JournalEdition) => {
-    console.log('Deleting edition:', edition); // Debug log
     try {
-      console.log('Starting delete operation for ID:', edition.id);
+      console.log('=== STARTING DELETE ===');
+      console.log('Edition to delete:', edition);
+      console.log('User ID:', user?.id);
       
+      // Immediate optimistic update
+      setEditions(prev => {
+        const filtered = prev.filter(e => e.id !== edition.id);
+        console.log('Optimistic update - remaining editions:', filtered.length);
+        return filtered;
+      });
+      
+      // Delete from database
       const { data, error } = await supabase
         .from('journal_editions')
         .delete()
         .eq('id', edition.id)
-        .select(); // Add select to get confirmation
+        .select();
       
-      console.log('Delete result:', { data, error });
+      console.log('Delete response:', { data, error });
       
       if (error) {
-        console.error('Supabase delete error:', error);
+        console.error('DELETE FAILED:', error);
+        // Revert optimistic update on error
+        await fetchEditions();
         throw error;
       }
       
-      console.log('Delete successful, refreshing data...');
+      console.log('DELETE SUCCESS - refreshing from database');
       toast.success('Édition supprimée avec succès');
       
-      // Force immediate state update
-      setEditions(prev => prev.filter(e => e.id !== edition.id));
+      // Force refresh from database
+      setTimeout(() => {
+        fetchEditions();
+      }, 100);
       
-      // Also refresh from database
-      await fetchEditions();
     } catch (error) {
-      console.error('Error deleting edition:', error);
-      toast.error('Erreur lors de la suppression: ' + (error as any)?.message || 'Erreur inconnue');
+      console.error('DELETE ERROR:', error);
+      toast.error('Erreur lors de la suppression: ' + (error as any)?.message);
     }
   };
   const truncateText = (text: string, maxLength: number = 100) => {
