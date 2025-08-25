@@ -4,6 +4,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Preloader from './Preloader';
 import ScrollToTopButton from './ScrollToTopButton';
+import ConnectionStatus from './ConnectionStatus';
 import { useLocation } from 'react-router-dom';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 
@@ -26,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
       {!isDashboard && <Footer />}
       <ScrollToTopButton />
+      <ConnectionStatus />
     </div>
   );
 };
