@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import LazyImage from '@/components/ui/LazyImage';
+import { usePerformanceOptimization } from '@/hooks/usePerformanceOptimization';
 interface MediaItem {
   id: number;
   src: string;
@@ -31,9 +33,38 @@ const MediaPopup: React.FC<MediaPopupProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const { optimizeImage, preloadResources } = usePerformanceOptimization();
+  
   const canNavigate = allMediaItems.length > 1 && onNavigate;
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === allMediaItems.length - 1;
+
+  // Preload adjacent images for instant navigation
+  useEffect(() => {
+    if (!isOpen || !canNavigate || allMediaItems.length <= 1) return;
+
+    const imagesToPreload: string[] = [];
+    
+    // Preload previous image
+    if (currentIndex > 0) {
+      const prevItem = allMediaItems[currentIndex - 1];
+      if (prevItem?.type === 'image') {
+        imagesToPreload.push(prevItem.src);
+      }
+    }
+    
+    // Preload next image
+    if (currentIndex < allMediaItems.length - 1) {
+      const nextItem = allMediaItems[currentIndex + 1];
+      if (nextItem?.type === 'image') {
+        imagesToPreload.push(nextItem.src);
+      }
+    }
+
+    if (imagesToPreload.length > 0) {
+      preloadResources(imagesToPreload);
+    }
+  }, [isOpen, currentIndex, allMediaItems, canNavigate, preloadResources]);
 
   // Navigation handlers
   const handlePrevious = () => {
@@ -117,7 +148,13 @@ const MediaPopup: React.FC<MediaPopupProps> = ({
             {mediaItem.type === 'video' ? <video controls className="w-full h-auto max-h-[70vh]" poster={mediaItem.thumbnail}>
                 <source src={mediaItem.src} type="video/mp4" />
                 Votre navigateur ne supporte pas la vidéo.
-              </video> : <img src={mediaItem.src} alt={mediaItem.alt} className="w-full h-auto max-h-[70vh] object-contain" />}
+              </video> : <LazyImage 
+                src={mediaItem.src} 
+                alt={mediaItem.alt} 
+                className="w-full h-auto max-h-[70vh] object-contain"
+                quality={90}
+                format="auto"
+              />}
           </div>
           
           <div className="mt-4 text-center">
