@@ -326,7 +326,7 @@ const Auth = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen flex items-center justify-center px-4 py-6 md:py-12">
+      <div className="min-h-screen flex items-center justify-center px-4 py-12">
         <Card className={`w-full ${isMobile ? 'max-w-md' : 'max-w-2xl'}`}>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">Authentification</CardTitle>
