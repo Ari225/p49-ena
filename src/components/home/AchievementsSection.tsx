@@ -11,17 +11,17 @@ const AchievementsSection = () => {
     title: "Membres",
     description: "appartenant au réseau"
   }, {
-    number: "15",
+    number: "+13",
     title: "Années",
     description: "d'excellence et d'action"
   }, {
     number: "+50",
-    title: "Évènements",
-    description: "Régionales et réunions"
+    title: "Activités",
+    description: "tenues depuis la création"
   }, {
     number: "12",
-    title: "Sections",
-    description: "sur le territoire ivoirien"
+    title: "Délégations",
+    description: "régionales"
   }];
   
   return (
