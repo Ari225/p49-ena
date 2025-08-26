@@ -6,6 +6,7 @@ import { Download, Eye, FileText } from 'lucide-react';
 import PDFViewer from '@/components/PDFViewer';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useCurrentEditionData } from '@/hooks/useCurrentEditionData';
+
 const DerniereEdition = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -15,26 +16,13 @@ const DerniereEdition = () => {
     loading,
     error
   } = useCurrentEditionData();
-  if (loading) {
-    return <Layout>
-        <div className="bg-white min-h-screen flex items-center justify-center">
-          <p>Chargement des éditions...</p>
-        </div>
-      </Layout>;
-  }
-  if (error || !currentEdition) {
-    return <Layout>
-        <div className="bg-white min-h-screen flex items-center justify-center">
-          <p>Aucune édition publiée disponible.</p>
-        </div>
-      </Layout>;
-  }
 
   // Limiter les éditions récentes selon le device
   const displayedRecentEditions = isMobile ? recentEditions.slice(0, 1) : recentEditions.slice(0, 2);
+
   return <Layout>
       <div className="bg-white min-h-screen">
-        {/* Header Section */}
+        {/* Header Section - Always displayed */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img src="/lovable-uploads/archives.webp" alt="Background dernière édition" className="w-full h-full object-cover" />
@@ -49,84 +37,107 @@ const DerniereEdition = () => {
           </div>
         </section>
 
-        {/* Current Journal Section */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-0">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* PDF Viewer/Cover */}
-              <div className="space-y-6">
-                <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-                  <img src={currentEdition.cover_image_url || "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"} alt={currentEdition.title} className="w-full h-auto object-contain" />
-                </div>
-                
-                {/* Action Buttons - Mobile Only */}
-                {isMobile && <div className="flex space-x-2">
-                    <PDFViewer pdfUrl={currentEdition.pdf_url} title={currentEdition.title} triggerButton={<Button size="sm" className="bg-primary hover:bg-primary/90 flex-1">
-                          <Eye className="h-3 w-3 mr-1" />
-                          Lire
-                        </Button>} />
-                    <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white flex-1" onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = currentEdition.pdf_url;
-                  link.download = `${currentEdition.title}.pdf`;
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}>
-                      <Download className="h-3 w-3 mr-1" />
-                      PDF
-                    </Button>
-                  </div>}
-              </div>
+        {/* Loading State */}
+        {loading && (
+          <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+            <div className="container mx-auto px-0 text-center">
+              <p>Chargement des éditions...</p>
+            </div>
+          </section>
+        )}
 
-              {/* Journal Info */}
-              <div className="space-y-6">
-                <div>
-                  <h2 className="text-3xl font-bold text-primary mb-4">{currentEdition.title}</h2>
-                  <p className="text-gray-600 mb-2">
-                    Publié le {new Date(currentEdition.publish_date).toLocaleDateString('fr-FR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                  </p>
-                  {currentEdition.page_count > 0 && <p className="text-gray-600">{currentEdition.page_count} pages</p>}
-                </div>
-                
-                <div className="bg-accent/20 p-6 rounded-lg">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Résumé</h3>
-                  <p className={`text-gray-700 leading-relaxed text-left ${
-                    isMobile ? 'text-xs' : 
-                    isTablet ? 'text-sm' :
-                    'text-base md:text-base'
-                  }`}>{currentEdition.summary}</p>
-                </div>
-
-                {/* Action Buttons - Desktop Only */}
-                {!isMobile && <div className="flex space-x-2">
-                    <PDFViewer pdfUrl={currentEdition.pdf_url} title={currentEdition.title} triggerButton={<Button size="sm" className="bg-primary hover:bg-primary/90 flex-1">
-                          <Eye className="h-3 w-3 mr-1" />
-                          Lire
-                        </Button>} />
-                    <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white flex-1" onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = currentEdition.pdf_url;
-                  link.download = `${currentEdition.title}.pdf`;
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}>
-                      <Download className="h-3 w-3 mr-1" />
-                      PDF
-                    </Button>
-                  </div>}
+        {/* No Edition Available State */}
+        {!loading && (error || !currentEdition) && (
+          <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+            <div className="container mx-auto px-0 text-center">
+              <div className="bg-accent/10 p-8 rounded-lg">
+                <FileText className="h-16 w-16 text-primary mx-auto mb-4" />
+                <p className="text-lg text-gray-600">Aucune édition du journal n'a été publiée pour le moment.</p>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
+
+        {/* Current Journal Section */}
+        {!loading && currentEdition && (
+          <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+            <div className="container mx-auto px-0">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* PDF Viewer/Cover */}
+                <div className="space-y-6">
+                  <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+                    <img src={currentEdition.cover_image_url || "/lovable-uploads/ec8d10e9-3108-4b8f-9db7-6734f1399fcc.png"} alt={currentEdition.title} className="w-full h-auto object-contain" />
+                  </div>
+                  
+                  {/* Action Buttons - Mobile Only */}
+                  {isMobile && <div className="flex space-x-2">
+                      <PDFViewer pdfUrl={currentEdition.pdf_url} title={currentEdition.title} triggerButton={<Button size="sm" className="bg-primary hover:bg-primary/90 flex-1">
+                            <Eye className="h-3 w-3 mr-1" />
+                            Lire
+                          </Button>} />
+                      <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white flex-1" onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = currentEdition.pdf_url;
+                    link.download = `${currentEdition.title}.pdf`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}>
+                        <Download className="h-3 w-3 mr-1" />
+                        PDF
+                      </Button>
+                    </div>}
+                </div>
+
+                {/* Journal Info */}
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-3xl font-bold text-primary mb-4">{currentEdition.title}</h2>
+                    <p className="text-gray-600 mb-2">
+                      Publié le {new Date(currentEdition.publish_date).toLocaleDateString('fr-FR', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                    </p>
+                    {currentEdition.page_count > 0 && <p className="text-gray-600">{currentEdition.page_count} pages</p>}
+                  </div>
+                  
+                  <div className="bg-accent/20 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold text-primary mb-4">Résumé</h3>
+                    <p className={`text-gray-700 leading-relaxed text-left ${
+                      isMobile ? 'text-xs' : 
+                      isTablet ? 'text-sm' :
+                      'text-base md:text-base'
+                    }`}>{currentEdition.summary}</p>
+                  </div>
+
+                  {/* Action Buttons - Desktop Only */}
+                  {!isMobile && <div className="flex space-x-2">
+                      <PDFViewer pdfUrl={currentEdition.pdf_url} title={currentEdition.title} triggerButton={<Button size="sm" className="bg-primary hover:bg-primary/90 flex-1">
+                            <Eye className="h-3 w-3 mr-1" />
+                            Lire
+                          </Button>} />
+                      <Button size="sm" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white flex-1" onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = currentEdition.pdf_url;
+                    link.download = `${currentEdition.title}.pdf`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}>
+                        <Download className="h-3 w-3 mr-1" />
+                        PDF
+                      </Button>
+                    </div>}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Recent Journals Section */}
-        {displayedRecentEditions.length > 0 && <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
+        {!loading && displayedRecentEditions.length > 0 && <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
             <div className="container mx-auto px-4">
               <h2 className="text-3xl font-bold text-primary mb-8">Éditions Récentes</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -169,10 +180,8 @@ const DerniereEdition = () => {
               </div>
             </div>
           </section>}
-
-        {/* Archives Section */}
-        
       </div>
     </Layout>;
 };
+
 export default DerniereEdition;
