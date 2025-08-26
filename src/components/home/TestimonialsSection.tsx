@@ -71,7 +71,20 @@ const TestimonialsSection = () => {
       <section className="py-[75px] px-8 md:px-12 lg:py-[100px] lg:px-[100px] bg-white">
         <div className="container mx-auto px-0">
           <h2 className={`${getTitleClasses()} font-bold text-center text-primary mb-[50px] md:mb-[50px]`}>Témoignages</h2>
-          <div className="text-center text-gray-500">Aucun témoignage disponible pour aujourd'hui.</div>
+          <div className="text-center text-gray-500 mb-8">Aucun témoignage disponible pour aujourd'hui.</div>
+          
+          <div className="text-center">
+            <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${
+              isMobile ? 'w-full text-xs' : 
+              isTab ? 'px-8 py-3 text-sm' :
+              'text-sm md:text-sm' // Desktop
+            }`}>
+              <Link to="/temoignages" className="flex items-center justify-center">
+                Voir tous les témoignages
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
     );
