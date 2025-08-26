@@ -19,7 +19,7 @@ const AchievementsSection = () => {
     title: "Activités",
     description: "tenues depuis la création"
   }, {
-    number: "12",
+    number: "5",
     title: "Délégations",
     description: "régionales"
   }];
