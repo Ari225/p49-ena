@@ -36,7 +36,7 @@ const Regionales = () => {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img 
-          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} 
           alt={activity.title} 
           className="w-full h-32 object-cover" 
         />
@@ -103,7 +103,7 @@ const Regionales = () => {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img 
-          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} 
           alt={activity.title} 
           className="w-full h-40 object-cover" 
         />
@@ -170,7 +170,7 @@ const Regionales = () => {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         <img 
-          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
+          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} 
           alt={activity.title} 
           className="w-full h-48 object-cover" 
         />
