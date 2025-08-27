@@ -157,7 +157,7 @@ const Communiques = () => {
         } flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
-              src="/lovable-uploads/2b7ea072-aed2-4cb0-9d55-f1286499dc01.png" 
+              src="/lovable-uploads/comm.webp" 
               alt="Communiqués Hero" 
               className="w-full h-full object-cover"
             />
