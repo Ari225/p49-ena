@@ -87,7 +87,7 @@ const DepartsRetraite = () => {
         {/* Header Section with Background Image */}
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
-            <img src="/lovable-uploads/c88b877d-abfc-430e-a6d4-5a7bc89ff587.png" alt="Background départs retraite" className="w-full h-full object-cover" />
+            <img src="/lovable-uploads/retraite_bg.webp" alt="Background départs retraite" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
@@ -162,7 +162,7 @@ const DepartsRetraite = () => {
         </section>
 
         {/* Statistics Section */}
-        <section className={`bg-blue-50 py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
+        <section className={`bg-white py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
               Statistiques des départs
