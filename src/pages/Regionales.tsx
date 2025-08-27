@@ -466,7 +466,7 @@ const Regionales = () => {
             ====================== */}
         {isMobile && <section className="relative h-[30vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
-              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" alt="Background régionales" className="w-full h-full object-cover" />
+              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp" alt="Background régionales" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-primary/80"></div>
             </div>
             
@@ -485,7 +485,7 @@ const Regionales = () => {
             ====================== */}
         {isTablet && <section className="relative h-[45vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
-              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" alt="Background régionales" className="w-full h-full object-cover" />
+              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp" alt="Background régionales" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-primary/80"></div>
             </div>
             
@@ -504,7 +504,7 @@ const Regionales = () => {
             ====================== */}
         {!isMobile && !isTablet && <section className="relative h-[60vh] flex items-center justify-center text-white overflow-hidden">
             <div className="absolute inset-0">
-              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png" alt="Background régionales" className="w-full h-full object-cover" />
+              <img src="/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp" alt="Background régionales" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-primary/80"></div>
             </div>
             
