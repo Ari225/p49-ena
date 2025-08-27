@@ -14,7 +14,7 @@ const HistoriqueHero = () => {
     } flex items-center justify-center text-white overflow-hidden`}>
       <div className="absolute inset-0">
         <img 
-          src="/lovable-uploads/historique_bg.webp" 
+          src="/lovable-uploads/bg3.webp" 
           alt="Background historique" 
           className="w-full h-full object-cover" 
         />
