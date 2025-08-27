@@ -159,7 +159,7 @@ const Agenda = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-primary/5">
+      <div className="min-h-screen bg-white">
         <AgendaHeader />
 
         {/* Contenu principal redesigné */}
