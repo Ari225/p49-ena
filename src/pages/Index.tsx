@@ -23,10 +23,10 @@ const Index = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const backgroundImages = [
-    '/lovable-uploads/b85cd7b2-67e0-481b-9dec-dd22369d51c0.png',
-    '/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png',
-    '/lovable-uploads/Equipe1.jpg',
-    '/lovable-uploads/Equipe.jpg'
+    '/lovable-uploads/bg1.webp',
+    '/lovable-uploads/bg2.webp',
+    '/lovable-uploads/bg3.webp',
+    '/lovable-uploads/bg4.webp'
   ];
 
   // Effet pour ajuster le scroll pour les appareils mobiles et tablettes
