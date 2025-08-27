@@ -92,7 +92,7 @@ const Contact = () => {
       } flex items-center justify-center text-white overflow-hidden`}>
         <div className="absolute inset-0">
           <img 
-            src="/lovable-uploads/d0535478-3ab2-4846-a655-f5cd50daa143.png" 
+            src="/lovable-uploads/comm.webp" 
             alt="Background contact" 
             className="w-full h-full object-cover" 
           />
