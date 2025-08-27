@@ -8,7 +8,7 @@ const SupportResourcesSection = () => {
   const isMobile = useIsMobile();
 
   return (
-    <section className={`bg-gray-50 py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+    <section className={`bg-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
       <div className="container mx-auto px-4">
         <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
           Ressources de soutien
