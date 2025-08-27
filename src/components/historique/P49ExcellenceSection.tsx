@@ -16,7 +16,7 @@ const P49ExcellenceSection = () => {
             <div>
               <img 
                 alt="Logo P49" 
-                src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+                src="/lovable-uploads/excellence.webp" 
                 className="w-full h-full rounded-lg shadow-lg" 
               />
             </div>
@@ -46,7 +46,7 @@ const P49ExcellenceSection = () => {
             <div>
               <img 
                 alt="Logo P49" 
-                src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+                src="/lovable-uploads/excellence.webp" 
                 className="w-full h-full rounded-lg shadow-lg" 
               />
             </div>
@@ -70,7 +70,7 @@ const P49ExcellenceSection = () => {
           <div>
             <img 
               alt="Logo P49" 
-              src="/lovable-uploads/8cbb0164-0529-47c1-9caa-8244c17623b3.jpg" 
+              src="/lovable-uploads/excellence.webp" 
               className="w-full h-full rounded-lg shadow-lg" 
             />
           </div>
