@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,6 @@ import { toast } from '@/hooks/use-toast';
 import ContactMap from '@/components/ContactMap';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
-
 const Contact = () => {
   const isMobile = useIsMobile();
   const [formData, setFormData] = useState({
@@ -21,24 +19,22 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       // Insérer le message en base de données
-      const { error } = await supabase
-        .from('contacts')
-        .insert({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          ip_address: null, // Peut être ajouté côté serveur si nécessaire
-          user_agent: navigator.userAgent
-        });
-
+      const {
+        error
+      } = await supabase.from('contacts').insert({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        ip_address: null,
+        // Peut être ajouté côté serveur si nécessaire
+        user_agent: navigator.userAgent
+      });
       if (error) {
         throw error;
       }
@@ -52,7 +48,6 @@ const Contact = () => {
           message: formData.message
         }
       });
-
       toast({
         title: "Message envoyé avec succès",
         description: "Nous vous répondrons dans les plus brefs délais."
@@ -76,40 +71,25 @@ const Contact = () => {
       setIsSubmitting(false);
     }
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
-  return (
-    <Layout>
+  return <Layout>
       {/* Hero Section */}
-      <section className={`relative ${
-        isMobile ? 'h-[30vh]' : 'h-[60vh]'
-      } flex items-center justify-center text-white overflow-hidden`}>
+      <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
         <div className="absolute inset-0">
-          <img 
-            src="/lovable-uploads/comm.webp" 
-            alt="Background contact" 
-            className="w-full h-full object-cover" 
-          />
+          <img src="/lovable-uploads/comm.webp" alt="Background contact" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-primary/80"></div>
         </div>
         
-        <div className={`relative z-10 text-center ${
-          isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'
-        }`}>
-          <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${
-            isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'
-          }`}>
+        <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
+          <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'}`}>
             Contactez-nous
           </h1>
-          <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${
-            isMobile ? 'text-sm' : 'text-lg md:text-lg'
-          }`}>
+          <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${isMobile ? 'text-sm' : 'text-lg md:text-lg'}`}>
             Contactez-nous pour toute question ou suggestion. Nous sommes à l'écoute.
           </p>
         </div>
@@ -158,9 +138,7 @@ const Contact = () => {
                       Téléphone
                     </h3>
                     <div className="space-y-2">
-                      <a href="tel:+22501020304050" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">
-                        +225 01 02 03 04 05
-                      </a>
+                      <a href="tel:+22501020304050" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">+225 27 21 27 47 58</a>
                       <a href="tel:+22506070809000" className="block text-gray-600 hover:text-primary transition-colors text-sm font-medium">
                         +225 06 07 08 09 00
                       </a>
@@ -196,60 +174,22 @@ const Contact = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="name" className="text-gray-700 font-medium">Nom complet *</Label>
-                        <Input 
-                          id="name" 
-                          name="name" 
-                          value={formData.name} 
-                          onChange={handleChange} 
-                          required 
-                          className="border-gray-300 focus:border-primary focus:ring-primary"
-                          placeholder="Votre nom complet"
-                        />
+                        <Input id="name" name="name" value={formData.name} onChange={handleChange} required className="border-gray-300 focus:border-primary focus:ring-primary" placeholder="Votre nom complet" />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email" className="text-gray-700 font-medium">Email *</Label>
-                        <Input 
-                          id="email" 
-                          name="email" 
-                          type="email" 
-                          value={formData.email} 
-                          onChange={handleChange} 
-                          required 
-                          className="border-gray-300 focus:border-primary focus:ring-primary"
-                          placeholder="votre.email@example.com"
-                        />
+                        <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required className="border-gray-300 focus:border-primary focus:ring-primary" placeholder="votre.email@example.com" />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject" className="text-gray-700 font-medium">Sujet *</Label>
-                      <Input 
-                        id="subject" 
-                        name="subject" 
-                        value={formData.subject} 
-                        onChange={handleChange} 
-                        required 
-                        className="border-gray-300 focus:border-primary focus:ring-primary"
-                        placeholder="Sujet de votre message"
-                      />
+                      <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} required className="border-gray-300 focus:border-primary focus:ring-primary" placeholder="Sujet de votre message" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="message" className="text-gray-700 font-medium">Message *</Label>
-                      <Textarea 
-                        id="message" 
-                        name="message" 
-                        rows={8} 
-                        value={formData.message} 
-                        onChange={handleChange} 
-                        required 
-                        className="border-gray-300 focus:border-primary focus:ring-primary resize-none"
-                        placeholder="Décrivez votre demande en détail..."
-                      />
+                      <Textarea id="message" name="message" rows={8} value={formData.message} onChange={handleChange} required className="border-gray-300 focus:border-primary focus:ring-primary resize-none" placeholder="Décrivez votre demande en détail..." />
                     </div>
-                    <Button 
-                      type="submit" 
-                      disabled={isSubmitting}
-                      className="bg-primary hover:bg-primary/90 w-full py-3 text-lg font-semibold transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
+                    <Button type="submit" disabled={isSubmitting} className="bg-primary hover:bg-primary/90 w-full py-3 text-lg font-semibold transition-all duration-300 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
                       <Send className="h-5 w-5 mr-2" />
                       {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                     </Button>
@@ -260,8 +200,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 };
-
 export default Contact;
