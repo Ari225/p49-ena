@@ -118,7 +118,7 @@ const Blog = () => {
         </section>
 
         {/* Search Section */}
-        <section className={`py-8 bg-gray-50 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+        <section className={`py-8 bg-white ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
           <div className="container mx-auto px-4">
             <div className="flex justify-center">
               <div className="w-full max-w-md relative">
