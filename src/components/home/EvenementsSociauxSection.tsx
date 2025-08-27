@@ -17,7 +17,7 @@ const EvenementsSociauxSection = () => {
       icon: Heart,
       link: "/evenements-heureux",
       color: "bg-green-100 text-green-600",
-      backgroundImage: "/lovable-uploads/bonheur.jpg"
+      backgroundImage: "/lovable-uploads/bonheur.webp"
     },
     {
       title: "Départs à la retraite", 
@@ -25,15 +25,15 @@ const EvenementsSociauxSection = () => {
       icon: Users,
       link: "/departs-retraite",
       color: "bg-blue-100 text-blue-600",
-      backgroundImage: "/lovable-uploads/retraite.avif"
+      backgroundImage: "/lovable-uploads/retraite_bg.webp"
     },
     {
       title: "Évènements malheureux",
-      description: "Soutien et solidarité dans les moments difficiles",
+      description: "Soutien et solidarité dans les moments difficiles envers membres et familles",
       icon: Frown,
       link: "/evenements-malheureux",
       color: "bg-gray-100 text-gray-600", 
-      backgroundImage: "/lovable-uploads/malheur.jpg"
+      backgroundImage: "/lovable-uploads/malheur.webp"
     }
   ];
 
