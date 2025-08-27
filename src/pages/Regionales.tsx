@@ -538,9 +538,15 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-lg font-bold text-primary mb-4 text-center">Prochaines régionales</h2>
-                  <div className="flex justify-center">
-                    <RegionaleFutureCard />
-                  </div>
+                  {latestRegionale ? (
+                    <div className="flex justify-center">
+                      <RegionaleFutureCard />
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
+                    </div>
+                  )}
                 </div>}
 
               {selectedTab === 'passees' && (
@@ -581,9 +587,15 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
-                  <div className="flex justify-center">
-                    <RegionaleFutureCard />
-                  </div>
+                  {latestRegionale ? (
+                    <div className="flex justify-center">
+                      <RegionaleFutureCard />
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
+                    </div>
+                  )}
                 </div>}
 
               {selectedTab === 'passees' && (
@@ -624,9 +636,15 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
-                  <div className="flex justify-center">
-                    <RegionaleFutureCard />
-                  </div>
+                  {latestRegionale ? (
+                    <div className="flex justify-center">
+                      <RegionaleFutureCard />
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">Aucune activité "Les Régionales" programmée pour le moment.</p>
+                    </div>
+                  )}
                 </div>}
 
               {selectedTab === 'passees' && (
