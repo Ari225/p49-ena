@@ -7,7 +7,7 @@ const Preloader = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-    }, 3000);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -20,7 +20,7 @@ const Preloader = () => {
         {/* Logo */}
         <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
           <img 
-            src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
+            src="/lovable-uploads/logo.webp" 
             alt="P49 ENA Logo" 
             className="w-full h-full object-contain"
           />
