@@ -14,7 +14,7 @@ const AssembleesHeader = () => {
     } flex items-center justify-center text-white overflow-hidden`}>
       <div className="absolute inset-0">
         <img 
-          src="/lovable-uploads/ag_bg.webp" 
+          src="/lovable-uploads/bg1.webp" 
           alt="Background assemblées générales" 
           className="w-full h-full object-cover" 
         />
