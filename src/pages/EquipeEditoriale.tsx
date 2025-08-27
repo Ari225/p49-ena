@@ -100,7 +100,7 @@ const EquipeEditoriale = () => {
         </section>
 
         {/* Team Members */}
-        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-accent/10`}>
+        <section className={`py-12 ${isMobile ? 'px-[25px]' : 'px-[100px]'} bg-white`}>
           <div className="container mx-auto px-0">
             {loading ? <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
