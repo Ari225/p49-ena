@@ -10,7 +10,7 @@ const FooterLogo: React.FC<FooterLogoProps> = ({ variant = 'desktop' }) => {
     <div className="flex flex-col mb-8 lg:mb-0">
       <div className="flex items-center justify-center lg:justify-start mb-4 lg:mb-5">
         <img 
-          src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
+          src="/lovable-uploads/logo.webp" 
           alt="P49 ENA Logo" 
           className={`object-contain ${
             variant === 'mobile' ? 'h-10 w-10' :
