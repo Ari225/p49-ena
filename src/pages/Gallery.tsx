@@ -7,8 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Calendar, Eye, Search, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSupabase } from '@/context/SupabaseContext';
-import SupabaseConnectionTest from '@/components/SupabaseConnectionTest';
-import LoginTest from '@/components/LoginTest';
 import MediaPopup from '@/components/MediaPopup';
 interface MediaItem {
   id: string;
