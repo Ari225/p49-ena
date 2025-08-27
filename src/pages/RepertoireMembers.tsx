@@ -185,7 +185,7 @@ const RepertoireMembers = () => {
         <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img 
-              src="/lovable-uploads/674fac65-3da0-4339-8260-56ec359feae2.png" 
+              src="/lovable-uploads/674fac65-3da0-4339-8260-56ec359feae2.webp" 
               alt="Background répertoire membres" 
               className="w-full h-full object-cover" 
             />
