@@ -21,7 +21,7 @@ const Header = () => {
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center space-x-3">
                 <img 
-                  src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
+                  src="/lovable-uploads/logo.webp" 
                   alt="P49 ENA Logo" 
                   className="h-20 w-auto object-contain" 
                 />
@@ -49,7 +49,7 @@ const Header = () => {
               <div className="flex-shrink-0">
                 <Link to="/" className="flex items-center space-x-2">
                   <img 
-                    src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
+                    src="/lovable-uploads/logo.webp" 
                     alt="P49 ENA Logo" 
                     className="h-16 w-auto object-contain" 
                   />
@@ -78,7 +78,7 @@ const Header = () => {
             <div className="flex items-center space-x-2 flex-1">
               <Link to="/" className="flex items-center space-x-2">
                 <img 
-                  src="/lovable-uploads/a668606d-be7a-45cb-a8ce-e322a78234e8.png" 
+                  src="/lovable-uploads/logo.webp" 
                   alt="P49 ENA Logo" 
                   className="h-10 w-10" 
                 />
