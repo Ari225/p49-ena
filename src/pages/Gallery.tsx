@@ -143,7 +143,7 @@ const Gallery = () => {
 
         {/* Search Section */}
         <section className={`py-8 bg-white backdrop-blur-sm ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             <div className="max-w-md mx-auto relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input type="text" placeholder="Rechercher par titre ou catégorie..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-white/90 backdrop-blur-sm" />
