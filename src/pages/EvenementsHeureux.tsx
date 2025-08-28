@@ -66,13 +66,25 @@ const EvenementsHeureux = () => {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'Mariage':
-        return 'border-l-pink-500 bg-pink-50';
+        return 'border-l-pink-500 bg-white';
       case 'Promotion':
-        return 'border-l-yellow-500 bg-yellow-50';
+        return 'border-l-yellow-500 bg-white';
       case 'Distinction':
-        return 'border-l-purple-500 bg-purple-50';
+        return 'border-l-purple-500 bg-white';
       default:
-        return 'border-l-green-500 bg-green-50';
+        return 'border-l-green-500 bg-white';
+    }
+  };
+  const getCategoryTextColor = (category: string) => {
+    switch (category) {
+      case 'Mariage':
+        return 'text-pink-600';
+      case 'Promotion':
+        return 'text-yellow-600';
+      case 'Distinction':
+        return 'text-purple-600';
+      default:
+        return 'text-green-600';
     }
   };
   const formatEventDate = (dateStr: string) => {
@@ -115,7 +127,7 @@ const EvenementsHeureux = () => {
                         <img src={event.image_url || '/placeholder-image.jpg'} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                       </div>
                       <CardHeader>
-                        <CardTitle className={`text-green-800 ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
+                        <CardTitle className={`${getCategoryTextColor(event.category)} ${isMobile ? 'text-lg' : 'text-xl'} flex items-center`}>
                           <IconComponent className="w-5 h-5 mr-2" />
                           {event.title}
                         </CardTitle>
@@ -143,7 +155,7 @@ const EvenementsHeureux = () => {
                         </div>
                         {event.message && (
                           <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                            <p className={`${isMobile ? 'text-sm' : 'text-base'} text-green-800 italic`}>
+                            <p className={`${isMobile ? 'text-sm' : 'text-base'} ${getCategoryTextColor(event.category)} italic`}>
                               <Heart className="h-3 w-3 inline mr-1" />
                               {event.message}
                             </p>
@@ -217,7 +229,7 @@ const EvenementsHeureux = () => {
                      )}
                     {previewEvent.message && (
                       <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
-                        <p className="italic text-green-800">
+                        <p className={`italic ${getCategoryTextColor(previewEvent.category)}`}>
                           <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.message}
                         </p>
                       </div>
