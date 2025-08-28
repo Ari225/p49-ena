@@ -29,14 +29,18 @@ const EvenementsHeureux = () => {
     const fetchHappyEvents = async () => {
       try {
         const { data, error } = await supabase
-          .from('happy_events')
-          .select('id, title, description, event_date, location, category, member_name, message, image_url')
-          .order('event_date', { ascending: false });
+          .rpc('get_public_happy_events');
 
         if (error) {
           console.error('Error fetching happy events:', error);
         } else {
-          setHeureuxEvents(data || []);
+          // Trier les événements par ordre chronologique (plus récent d'abord)
+          const sortedEvents = (data || []).sort((a, b) => {
+            const dateA = new Date(a.event_date);
+            const dateB = new Date(b.event_date);
+            return dateB.getTime() - dateA.getTime();
+          });
+          setHeureuxEvents(sortedEvents);
         }
       } catch (error) {
         console.error('Error fetching happy events:', error);
