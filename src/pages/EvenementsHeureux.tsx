@@ -34,8 +34,13 @@ const EvenementsHeureux = () => {
         if (error) {
           console.error('Error fetching happy events:', error);
         } else {
-          // Les données sont maintenant directement utilisables sans transformation
-          setHeureuxEvents(data || []);
+          // Trier par ordre chronologique (le plus récent en premier)
+          const sortedData = (data || []).sort((a, b) => {
+            const dateA = new Date(a.event_date);
+            const dateB = new Date(b.event_date);
+            return dateB.getTime() - dateA.getTime();
+          });
+          setHeureuxEvents(sortedData);
         }
       } catch (error) {
         console.error('Error fetching happy events:', error);
@@ -132,9 +137,9 @@ const EvenementsHeureux = () => {
                       <CardContent>
                         <div className="space-y-2 mb-4">
                           <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                          {event.description && (
-                            <p className="text-sm text-gray-700"><strong>Description:</strong> {event.description}</p>
-                          )}
+                           {event.description && (
+                             <p className="text-sm text-gray-700">{event.description}</p>
+                           )}
                         </div>
                         {event.message && (
                           <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
@@ -205,11 +210,11 @@ const EvenementsHeureux = () => {
                     <div className="flex items-center mb-2">
                       <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
                     </div>
-                    {previewEvent.description && (
-                      <div className="mb-3">
-                        <p className="text-gray-700"><strong>Description:</strong> {previewEvent.description}</p>
-                      </div>
-                    )}
+                     {previewEvent.description && (
+                       <div className="mb-3">
+                         <p className="text-gray-700">{previewEvent.description}</p>
+                       </div>
+                     )}
                     {previewEvent.message && (
                       <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                         <p className="italic text-green-800">
