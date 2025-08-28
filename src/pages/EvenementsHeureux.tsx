@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface HappyEvent {
   id: string;
   title: string;
+  description?: string | null;
   event_date: string;
   location: string | null;
   category: string;
@@ -28,12 +29,13 @@ const EvenementsHeureux = () => {
     const fetchHappyEvents = async () => {
       try {
         const { data, error } = await supabase
-          .rpc('get_public_happy_events');
+          .from('happy_events')
+          .select('id, title, description, event_date, location, category, member_name, message, image_url')
+          .order('event_date', { ascending: false });
 
         if (error) {
           console.error('Error fetching happy events:', error);
         } else {
-          // Les données sont maintenant directement utilisables sans transformation
           setHeureuxEvents(data || []);
         }
       } catch (error) {
@@ -130,7 +132,10 @@ const EvenementsHeureux = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2 mb-4">
-                          <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                          <p className="text-sm"><strong>Type:</strong> {event.category}</p>
+                          {event.description && (
+                            <p className="text-sm"><strong>Description:</strong> {event.description}</p>
+                          )}
                         </div>
                         {event.message && (
                           <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
