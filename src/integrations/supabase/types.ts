@@ -1435,6 +1435,7 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: {
           category: string
+          description: string
           event_date: string
           id: string
           image_url: string

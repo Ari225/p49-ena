@@ -16,6 +16,7 @@ interface HappyEvent {
   member_name: string;
   message: string | null;
   image_url: string | null;
+  description: string | null;
 }
 
 const EvenementsHeureux = () => {
@@ -131,6 +132,9 @@ const EvenementsHeureux = () => {
                       <CardContent>
                         <div className="space-y-2 mb-4">
                           <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                          {event.description && (
+                            <p className="text-sm text-gray-700"><strong>Description:</strong> {event.description}</p>
+                          )}
                         </div>
                         {event.message && (
                           <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
@@ -201,6 +205,11 @@ const EvenementsHeureux = () => {
                     <div className="flex items-center mb-2">
                       <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
                     </div>
+                    {previewEvent.description && (
+                      <div className="mb-3">
+                        <p className="text-gray-700"><strong>Description:</strong> {previewEvent.description}</p>
+                      </div>
+                    )}
                     {previewEvent.message && (
                       <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                         <p className="italic text-green-800">
