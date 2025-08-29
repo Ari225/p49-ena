@@ -24,6 +24,8 @@ export const useUpcomingFormation = () => {
     try {
       setLoading(true);
       setError(null);
+      
+      console.log('🔍 Fetching upcoming formation...');
 
       const { data, error } = await supabase
         .from('career_announcements')
@@ -35,13 +37,16 @@ export const useUpcomingFormation = () => {
         .limit(1)
         .maybeSingle();
 
+      console.log('📊 Formation query result:', { data, error });
+
       if (error) {
         throw error;
       }
 
+      console.log('✅ Formation data loaded:', data);
       setFormation(data);
     } catch (err) {
-      console.error('Erreur lors du chargement de la formation:', err);
+      console.error('❌ Erreur lors du chargement de la formation:', err);
       setError('Erreur lors du chargement de la formation');
     } finally {
       setLoading(false);
