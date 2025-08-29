@@ -10,6 +10,9 @@ interface UpcomingFormation {
   date_ouverture: string | null;
   lieu: string | null;
   nombre_places: string | null;
+  duree_formation: string | null;
+  niveau: string | null;
+  type_formation: string | null;
 }
 
 export const useUpcomingFormation = () => {
@@ -24,7 +27,7 @@ export const useUpcomingFormation = () => {
 
       const { data, error } = await supabase
         .from('career_announcements')
-        .select('id, title, description, date_debut, date_limite, date_ouverture, lieu, nombre_places')
+        .select('id, title, description, date_debut, date_limite, date_ouverture, lieu, nombre_places, duree_formation, niveau, type_formation')
         .eq('category', 'Formations')
         .eq('is_active', true)
         .gte('date_debut', new Date().toISOString().split('T')[0]) // Only future formations

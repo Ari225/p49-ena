@@ -43,9 +43,13 @@ const CarrierePlusSection = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>Formation</h3>
-                  {formation && formation.date_limite && (
+                  {formation && formation.date_debut && (
                     <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>
-                      Jusqu'au {new Date(formation.date_limite).toLocaleDateString('fr-FR')}
+                      {new Date(formation.date_debut).toLocaleDateString('fr-FR', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                      })}
                     </p>
                   )}
                 </div>
@@ -66,11 +70,28 @@ const CarrierePlusSection = () => {
                     {formation.description}
                   </p>
                   <div className="bg-accent/30 p-3 rounded-lg">
-                    <p className="text-primary text-sm font-medium">
-                      {formation.date_debut ? `Début: ${new Date(formation.date_debut).toLocaleDateString('fr-FR')}` : 'Inscriptions ouvertes'}
-                    </p>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      {formation.duree_formation && (
+                        <div>
+                          <span className="text-gray-600 text-xs font-normal">Durée:</span>
+                          <p className="text-primary text-sm font-medium">{formation.duree_formation}</p>
+                        </div>
+                      )}
+                      {formation.niveau && (
+                        <div>
+                          <span className="text-gray-600 text-xs font-normal">Niveau:</span>
+                          <p className="text-primary text-sm font-medium">{formation.niveau}</p>
+                        </div>
+                      )}
+                      {formation.type_formation && (
+                        <div className="col-span-2">
+                          <span className="text-gray-600 text-xs font-normal">Type:</span>
+                          <p className="text-primary text-sm font-medium">{formation.type_formation}</p>
+                        </div>
+                      )}
+                    </div>
                     {formation.nombre_places && (
-                      <p className="text-gray-700 text-xs font-normal">
+                      <p className="text-gray-700 text-xs font-normal mb-1">
                         Places limitées - {formation.nombre_places}
                       </p>
                     )}
