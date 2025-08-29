@@ -5,10 +5,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { GraduationCap, Quote, TrendingUp, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
+import { useLatestCareerQuote } from '@/hooks/useLatestCareerQuote';
 
 const CarrierePlusSection = () => {
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
+  const { quote, loading, error } = useLatestCareerQuote();
 
   return (
     <section className={`bg-accent/30 py-[100px] ${
@@ -66,14 +68,33 @@ const CarrierePlusSection = () => {
               <div className="flex items-center justify-center mb-4">
                 <Quote className="w-5 h-5 text-secondary" />
               </div>
-              <blockquote className="text-lg font-bold mb-4">
-                "La formation continue est la clé de l'excellence dans le service public. 
-                Chaque jour est une opportunité d'apprendre et de grandir."
-              </blockquote>
-              <div className="border-t border-white/20 pt-4">
-                <p className={`font-semibold ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>Dr. Kouakou Marie-Claire</p>
-                <p className={`opacity-80 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Directrice Générale, Promotion 49</p>
-              </div>
+              {loading ? (
+                <div className="text-lg font-bold mb-4 text-center">
+                  Chargement...
+                </div>
+              ) : error ? (
+                <div className="text-lg font-bold mb-4 text-center">
+                  Aucune citation disponible
+                </div>
+              ) : quote ? (
+                <>
+                  <blockquote className="text-lg font-bold mb-4">
+                    "{quote.quote}"
+                  </blockquote>
+                  <div className="border-t border-white/20 pt-4">
+                    <p className={`font-semibold ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>
+                      {quote.member_first_name} {quote.member_name}
+                    </p>
+                    <p className={`opacity-80 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
+                      {quote.member_position || 'Membre Promotion 49'}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <div className="text-lg font-bold mb-4 text-center">
+                  Aucune citation disponible
+                </div>
+              )}
             </CardContent>
           </Card>
 
