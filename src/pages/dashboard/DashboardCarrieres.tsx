@@ -10,6 +10,7 @@ import { Briefcase, Trash2, MapPin, Calendar, List, Clock, Users, Link, Graduati
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { isAdmin } from '@/utils/roleUtils';
 import { useCareerAnnouncements, CareerAnnouncement } from '@/hooks/useCareerAnnouncements';
+import CareerQuoteStatsForm from '@/components/career/CareerQuoteStatsForm';
 
 const DashboardCarrieres = () => {
   const { user } = useAuth();
@@ -231,6 +232,10 @@ const DashboardCarrieres = () => {
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-primary">Gestion carrières+</h1>
             <p className="text-gray-600 mt-2">Gérer les annonces de carrière et opportunités</p>
+          </div>
+
+          <div className="mb-6 flex justify-end">
+            <CareerQuoteStatsForm />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

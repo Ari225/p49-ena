@@ -433,6 +433,72 @@ export type Database = {
         }
         Relationships: []
       }
+      career_quotes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          matricule: string
+          member_first_name: string
+          member_id: number
+          member_name: string
+          member_position: string | null
+          quote: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          matricule: string
+          member_first_name: string
+          member_id: number
+          member_name: string
+          member_position?: string | null
+          quote: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          matricule?: string
+          member_first_name?: string
+          member_id?: number
+          member_name?: string
+          member_position?: string | null
+          quote?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      career_statistics: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          formations_dispensees: number
+          id: string
+          personnes_formees: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          formations_dispensees?: number
+          id?: string
+          personnes_formees?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          formations_dispensees?: number
+          id?: string
+          personnes_formees?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       communiques: {
         Row: {
           created_at: string
