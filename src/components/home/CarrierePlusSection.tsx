@@ -5,14 +5,21 @@ import { Button } from '@/components/ui/button';
 import { GraduationCap, Quote, TrendingUp, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useLatestCareerQuote } from '@/hooks/useLatestCareerQuote';
+import { useUpcomingFormation } from '@/hooks/useUpcomingFormation';
 const CarrierePlusSection = () => {
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
   const {
     quote,
-    loading,
-    error
+    loading: quoteLoading,
+    error: quoteError
   } = useLatestCareerQuote();
+  
+  const {
+    formation,
+    loading: formationLoading,
+    error: formationError
+  } = useUpcomingFormation();
   return <section className={`bg-accent/30 py-[100px] ${isMobile ? 'px-[25px]' : isTab ? 'px-[50px]' : 'px-8 md:px-12 lg:px-[100px]' // Desktop
   }`}>
       <div className="container mx-auto px-0 font-normal text-base text-gray-700">
@@ -27,7 +34,7 @@ const CarrierePlusSection = () => {
         
         <div className={`grid gap-8 mb-12 ${isMobile ? 'grid-cols-1' : isTab ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' // Desktop
       }`}>
-          {/* Concours/Formation en vedette */}
+          {/* Formation en vedette */}
           <Card className="overflow-hidden">
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
@@ -36,17 +43,51 @@ const CarrierePlusSection = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>Formation</h3>
-                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>Jusqu'au 30 avril 2024</p>
+                  {formation && formation.date_limite && (
+                    <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>
+                      Jusqu'au {new Date(formation.date_limite).toLocaleDateString('fr-FR')}
+                    </p>
+                  )}
                 </div>
               </div>
-              <h4 className="font-bold mb-3 text-primary text-lg">Programme de Leadership Avancé</h4>
-              <p className="text-sm mb-4 text-gray-700 font-normal">
-                Formation intensive de 6 semaines sur le leadership transformationnel dans l'administration publique.
-              </p>
-              <div className="bg-accent/30 p-3 rounded-lg">
-                <p className="text-primary text-sm font-medium">Inscriptions ouvertes</p>
-                <p className="text-gray-700 text-xs font-normal">Places limitées - 20 participants</p>
-              </div>
+              
+              {formationLoading ? (
+                <div className="text-center py-4">
+                  <p className="text-gray-700 font-normal">Chargement...</p>
+                </div>
+              ) : formationError ? (
+                <div className="text-center py-4">
+                  <p className="text-gray-700 font-normal">Erreur de chargement</p>
+                </div>
+              ) : formation ? (
+                <>
+                  <h4 className="font-bold mb-3 text-primary text-lg">{formation.title}</h4>
+                  <p className="text-sm mb-4 text-gray-700 font-normal">
+                    {formation.description}
+                  </p>
+                  <div className="bg-accent/30 p-3 rounded-lg">
+                    <p className="text-primary text-sm font-medium">
+                      {formation.date_debut ? `Début: ${new Date(formation.date_debut).toLocaleDateString('fr-FR')}` : 'Inscriptions ouvertes'}
+                    </p>
+                    {formation.nombre_places && (
+                      <p className="text-gray-700 text-xs font-normal">
+                        Places limitées - {formation.nombre_places}
+                      </p>
+                    )}
+                    {formation.lieu && (
+                      <p className="text-gray-700 text-xs font-normal">
+                        Lieu: {formation.lieu}
+                      </p>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-4">
+                  <p className="text-gray-700 font-normal text-sm">
+                    Aucune formation future n'est enregistrée pour le moment.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -56,9 +97,9 @@ const CarrierePlusSection = () => {
               <div className="flex items-center justify-center mb-4">
                 <Quote className="w-5 h-5 text-secondary" />
               </div>
-              {loading ? <div className="text-lg font-bold mb-4 text-center">
+              {quoteLoading ? <div className="text-lg font-bold mb-4 text-center">
                   Chargement...
-                </div> : error ? <div className="text-lg font-bold mb-4 text-center">
+                </div> : quoteError ? <div className="text-lg font-bold mb-4 text-center">
                   Aucune citation disponible
                 </div> : quote ? <>
                   <blockquote className="text-lg font-bold mb-4">
