@@ -65,7 +65,7 @@ const CareerQuoteStatsForm: React.FC<CareerQuoteStatsFormProps> = ({ onSuccess }
           setMemberInfo({
             id: data.id,
             nom: data['Nom de famille'] || '',
-            prenoms: data['Prénoms'] || '',
+            prenoms: data['Pr�noms'] || data['Prénoms'] || '',
             fonction: data['Emploi fonction publique'] || ''
           });
         }
