@@ -163,7 +163,7 @@ const DepartsRetraite = () => {
 
         {/* Statistics Section */}
         <section className={`bg-white py-16 ${isMobile ? 'px-[15px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
               Statistiques des départs
             </h2>
