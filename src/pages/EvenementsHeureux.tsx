@@ -179,21 +179,21 @@ const EvenementsHeureux = () => {
               <Card className="text-center p-6 bg-white">
                 <Heart className="w-12 h-12 mx-auto mb-4 text-pink-600" />
                 <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-pink-800 mb-2`}>
-                  {heureuxEvents.filter(event => event.category === 'Mariage').length}
+                  {heureuxEvents.filter(event => event.category.toLowerCase() === 'mariage').length}
                 </h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-pink-700`}>Mariages célébrés</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Star className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
                 <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-yellow-800 mb-2`}>
-                  {heureuxEvents.filter(event => event.category === 'Promotion').length}
+                  {heureuxEvents.filter(event => event.category.toLowerCase() === 'promotion').length}
                 </h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-yellow-700`}>Promotions célébrées</p>
               </Card>
               <Card className="text-center p-6 bg-white">
                 <Award className="w-12 h-12 mx-auto mb-4 text-purple-600" />
                 <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-bold text-purple-800 mb-2`}>
-                  {heureuxEvents.filter(event => event.category === 'Distinction').length}
+                  {heureuxEvents.filter(event => event.category.toLowerCase() === 'distinction').length}
                 </h3>
                 <p className={`${isMobile ? 'text-sm' : 'text-base'} text-purple-700`}>Distinctions honorées</p>
               </Card>
