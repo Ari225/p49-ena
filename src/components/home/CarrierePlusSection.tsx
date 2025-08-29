@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -6,39 +5,28 @@ import { Button } from '@/components/ui/button';
 import { GraduationCap, Quote, TrendingUp, ChevronRight } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useLatestCareerQuote } from '@/hooks/useLatestCareerQuote';
-
 const CarrierePlusSection = () => {
   const isMobile = useIsMobile();
   const isTab = useIsTablet();
-  const { quote, loading, error } = useLatestCareerQuote();
-
-  return (
-    <section className={`bg-accent/30 py-[100px] ${
-      isMobile ? 'px-[25px]' : 
-      isTab ? 'px-[50px]' :
-      'px-8 md:px-12 lg:px-[100px]' // Desktop
-    }`}>
+  const {
+    quote,
+    loading,
+    error
+  } = useLatestCareerQuote();
+  return <section className={`bg-accent/30 py-[100px] ${isMobile ? 'px-[25px]' : isTab ? 'px-[50px]' : 'px-8 md:px-12 lg:px-[100px]' // Desktop
+  }`}>
       <div className="container mx-auto px-0 font-normal text-base text-gray-700">
         <div className="text-center mb-12">
-          <h2 className={`font-bold text-primary mb-[10px] md:mb-[10px] ${
-            isMobile ? 'text-xl' : 
-            isTab ? 'text-2xl' :
-            'text-2xl md:text-3xl' // Desktop
-          }`}>Carrières+</h2>
-          <p className={`text-gray-700 mb-[50px] md:mb-[50px] font-normal ${
-            isMobile ? 'text-xs' : 
-            isTab ? 'text-sm' :
-            'text-base' // Desktop
-          }`}>
+          <h2 className={`font-bold text-primary mb-[10px] md:mb-[10px] ${isMobile ? 'text-xl' : isTab ? 'text-2xl' : 'text-2xl md:text-3xl' // Desktop
+        }`}>Carrières+</h2>
+          <p className={`text-gray-700 mb-[50px] md:mb-[50px] font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-base' // Desktop
+        }`}>
             Des opportunités de formation et programmes d'accompagnement pour développer votre potentiel
           </p>
         </div>
         
-        <div className={`grid gap-8 mb-12 ${
-          isMobile ? 'grid-cols-1' : 
-          isTab ? 'grid-cols-2' :
-          'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' // Desktop
-        }`}>
+        <div className={`grid gap-8 mb-12 ${isMobile ? 'grid-cols-1' : isTab ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' // Desktop
+      }`}>
           {/* Concours/Formation en vedette */}
           <Card className="overflow-hidden">
             <CardContent className="p-6">
@@ -47,8 +35,8 @@ const CarrierePlusSection = () => {
                   <GraduationCap className="w-5 h-5 text-white" />
                 </div>
                 <div className="ml-4">
-                  <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>Formation en cours</h3>
-                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Jusqu'au 30 avril 2024</p>
+                  <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>Formation</h3>
+                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>Jusqu'au 30 avril 2024</p>
                 </div>
               </div>
               <h4 className="font-bold mb-3 text-primary text-lg">Programme de Leadership Avancé</h4>
@@ -68,68 +56,61 @@ const CarrierePlusSection = () => {
               <div className="flex items-center justify-center mb-4">
                 <Quote className="w-5 h-5 text-secondary" />
               </div>
-              {loading ? (
-                <div className="text-lg font-bold mb-4 text-center">
+              {loading ? <div className="text-lg font-bold mb-4 text-center">
                   Chargement...
-                </div>
-              ) : error ? (
-                <div className="text-lg font-bold mb-4 text-center">
+                </div> : error ? <div className="text-lg font-bold mb-4 text-center">
                   Aucune citation disponible
-                </div>
-              ) : quote ? (
-                <>
+                </div> : quote ? <>
                   <blockquote className="text-lg font-bold mb-4">
                     "{quote.quote}"
                   </blockquote>
                   <div className="border-t border-white/20 pt-4">
-                    <p className={`font-semibold ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>
+                    <p className={`font-semibold ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>
                       {quote.member_first_name} {quote.member_name}
                     </p>
-                    <p className={`opacity-80 ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>
+                    <p className={`opacity-80 ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>
                       {quote.member_position || 'Membre Promotion 49'}
                     </p>
                   </div>
-                </>
-              ) : (
-                <div className="text-lg font-bold mb-4 text-center">
+                </> : <div className="text-lg font-bold mb-4 text-center">
                   Aucune citation disponible
-                </div>
-              )}
+                </div>}
             </CardContent>
           </Card>
 
           {/* Statistiques */}
-          <Card className={`overflow-hidden ${
-            isTab ? 'col-span-2' : 
-            'md:col-span-2 lg:col-span-1'
-          }`}>
+          <Card className={`overflow-hidden ${isTab ? 'col-span-2' : 'md:col-span-2 lg:col-span-1'}`}>
             <CardContent className="p-6">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-secondary/80 rounded-full flex items-center justify-center">
                   <TrendingUp className="w-5 h-5 text-primary" />
                 </div>
                 <div className="ml-4">
-                  <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>Nos réussites</h3>
-                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Année 2024</p>
+                  <h3 className={`font-semibold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>Nos réussites</h3>
+                  <p className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>Année 2024</p>
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between items-center">
-                    <span className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Formations dispensées</span>
-                    <span className={`font-bold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>12</span>
+                    <span className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>Formations dispensées</span>
+                    <span className={`font-bold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>12</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                    <div className="bg-primary h-2 rounded-full" style={{width: '80%'}}></div>
+                    <div className="bg-primary h-2 rounded-full" style={{
+                    width: '80%'
+                  }}></div>
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between items-center">
-                    <span className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' :'text-sm md:text-sm'}`}>Membres formés</span>
-                    <span className={`font-bold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' :'text-base md:text-base'}`}>150+</span>
+                    <span className={`text-gray-700 font-normal ${isMobile ? 'text-xs' : isTab ? 'text-sm' : 'text-sm md:text-sm'}`}>Membres formés</span>
+                    <span className={`font-bold text-primary ${isMobile ? 'text-sm' : isTab ? 'text-base' : 'text-base md:text-base'}`}>150+</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                    <div className="bg-secondary h-2 rounded-full" style={{width: '90%'}}></div>
+                    <div className="bg-secondary h-2 rounded-full" style={{
+                    width: '90%'
+                  }}></div>
                   </div>
                 </div>
               </div>
@@ -138,11 +119,8 @@ const CarrierePlusSection = () => {
         </div>
         
         <div className="text-center">
-          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${
-            isMobile ? 'w-full text-xs' : 
-            isTab ? 'px-8 py-3 text-sm' :
-            'text-sm md:text-sm' // Desktop
-          }`}>
+          <Button asChild className={`bg-primary hover:bg-primary text-white py-[5px] px-[15px] transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg font-semibold ${isMobile ? 'w-full text-xs' : isTab ? 'px-8 py-3 text-sm' : 'text-sm md:text-sm' // Desktop
+        }`}>
             <Link to="/formations" className="flex items-center justify-center">
               Découvrir nos opportunités
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -150,8 +128,6 @@ const CarrierePlusSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CarrierePlusSection;
