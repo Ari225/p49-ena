@@ -1,15 +1,11 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Heart, AlertCircle, Stethoscope, Car } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-
 const SupportResourcesSection = () => {
   const isMobile = useIsMobile();
-
-  return (
-    <section className={`bg-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-      <div className="container mx-auto px-4">
+  return <section className={`bg-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
+      <div className="container mx-auto px-0">
         <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
           Ressources de soutien
         </h2>
@@ -36,8 +32,6 @@ const SupportResourcesSection = () => {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default SupportResourcesSection;
