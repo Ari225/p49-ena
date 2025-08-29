@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Quote, BarChart3, Loader2 } from 'lucide-react';
+import { Plus, BarChart3, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
@@ -52,7 +52,7 @@ const CareerQuoteStatsForm: React.FC<CareerQuoteStatsFormProps> = ({ onSuccess }
       try {
         const { data, error } = await supabase
           .from('members')
-          .select('id, "Nom de famille", "Prénoms", "Emploi fonction publique"')
+          .select('*')
           .eq('Matricule', value)
           .maybeSingle();
 
@@ -172,7 +172,7 @@ const CareerQuoteStatsForm: React.FC<CareerQuoteStatsFormProps> = ({ onSuccess }
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
-          <Quote className="h-4 w-4" />
+          <Plus className="h-4 w-4" />
           Citation et Stats
         </Button>
       </DialogTrigger>
@@ -224,7 +224,7 @@ const CareerQuoteStatsForm: React.FC<CareerQuoteStatsFormProps> = ({ onSuccess }
                 <Card>
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center gap-2">
-                      <Quote className="h-4 w-4 text-primary" />
+                      <Plus className="h-4 w-4 text-primary" />
                       Informations du membre
                     </CardTitle>
                   </CardHeader>
@@ -280,7 +280,7 @@ const CareerQuoteStatsForm: React.FC<CareerQuoteStatsFormProps> = ({ onSuccess }
               className="flex items-center gap-2"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {type === 'Citation' ? <Quote className="h-4 w-4" /> : <BarChart3 className="h-4 w-4" />}
+              {type === 'Citation' ? <Plus className="h-4 w-4" /> : <BarChart3 className="h-4 w-4" />}
               Enregistrer
             </Button>
           </div>

@@ -207,6 +207,10 @@ const DashboardCarrieres = () => {
             <p className="text-gray-600 mt-1 text-sm">Gérer les annonces</p>
           </div>
 
+          <div className="mb-4">
+            <CareerQuoteStatsForm />
+          </div>
+
           <div className="space-y-4">
             {announcements.map(renderAnnouncementCard)}
             {announcements.length === 0 && (
@@ -234,7 +238,7 @@ const DashboardCarrieres = () => {
             <p className="text-gray-600 mt-2">Gérer les annonces de carrière et opportunités</p>
           </div>
 
-          <div className="mb-6 flex justify-end">
+          <div className="mb-6">
             <CareerQuoteStatsForm />
           </div>
 
