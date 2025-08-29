@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Calendar, MapPin, Users, PartyPopper, Heart, Star, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
-
 interface HappyEvent {
   id: string;
   title: string;
@@ -18,19 +17,18 @@ interface HappyEvent {
   image_url: string | null;
   description: string | null;
 }
-
 const EvenementsHeureux = () => {
   const isMobile = useIsMobile();
   const [previewEvent, setPreviewEvent] = useState<HappyEvent | null>(null);
   const [heureuxEvents, setHeureuxEvents] = useState<HappyEvent[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchHappyEvents = async () => {
       try {
-        const { data, error } = await supabase
-          .rpc('get_public_happy_events');
-
+        const {
+          data,
+          error
+        } = await supabase.rpc('get_public_happy_events');
         if (error) {
           console.error('Error fetching happy events:', error);
         } else {
@@ -48,7 +46,6 @@ const EvenementsHeureux = () => {
         setLoading(false);
       }
     };
-
     fetchHappyEvents();
   }, []);
   const getCategoryIcon = (category: string) => {
@@ -110,19 +107,14 @@ const EvenementsHeureux = () => {
               </p>
             </div>
 
-            {loading ? (
-              <div className="text-center py-8">
+            {loading ? <div className="text-center py-8">
                 <p className="text-gray-600">Chargement des événements...</p>
-              </div>
-            ) : heureuxEvents.length === 0 ? (
-              <div className="text-center py-8">
+              </div> : heureuxEvents.length === 0 ? <div className="text-center py-8">
                 <p className="text-gray-600">Aucun événement heureux disponible pour le moment.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              </div> : <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {heureuxEvents.map(event => {
-                const IconComponent = getCategoryIcon(event.category);
-                return <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
+              const IconComponent = getCategoryIcon(event.category);
+              return <Card key={event.id} onClick={() => setPreviewEvent(event)} className={`overflow-hidden hover:shadow-xl transition-shadow duration-300 border-l-4 ${getCategoryColor(event.category)} cursor-pointer`}>
                       <div className="aspect-video overflow-hidden">
                         <img src={event.image_url || '/placeholder-image.jpg'} alt={event.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                       </div>
@@ -149,29 +141,24 @@ const EvenementsHeureux = () => {
                       <CardContent>
                         <div className="space-y-2 mb-4">
                           <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
-                           {event.description && (
-                             <p className="text-sm text-gray-700">{event.description}</p>
-                           )}
+                           {event.description && <p className="text-sm text-gray-700">{event.description}</p>}
                         </div>
-                        {event.message && (
-                          <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
+                        {event.message && <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                             <p className={`${isMobile ? 'text-sm' : 'text-base'} ${getCategoryTextColor(event.category)} italic`}>
                               <Heart className="h-3 w-3 inline mr-1" />
                               {event.message}
                             </p>
-                          </div>
-                        )}
+                          </div>}
                       </CardContent>
                     </Card>;
-              })}
-              </div>
-            )}
+            })}
+              </div>}
           </div>
         </section>
 
         {/* Statistics Section */}
         <section className={`bg-white py-16 ${isMobile ? 'px-[25px]' : 'px-[100px]'}`}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-0">
             <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-center text-primary mb-12`}>
               Nos bonheurs en chiffres
             </h2>
@@ -204,9 +191,7 @@ const EvenementsHeureux = () => {
       <Dialog open={!!previewEvent} onOpenChange={open => {
       if (!open) setPreviewEvent(null);
     }}>
-        <DialogContent
-          className="mx-auto w-[90vw] sm:mx-6 sm:w-auto max-w-[90vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto"
-        >
+        <DialogContent className="mx-auto w-[90vw] sm:mx-6 sm:w-auto max-w-[90vw] sm:max-w-xl md:max-w-2xl lg:max-w-3xl p-4 sm:p-6 md:p-6 rounded-xl md:rounded-2xl max-h-[90vh] overflow-y-auto">
               {previewEvent && <>
                 <DialogHeader>
                   <DialogTitle>{previewEvent.title}</DialogTitle>
@@ -222,18 +207,14 @@ const EvenementsHeureux = () => {
                     <div className="flex items-center mb-2">
                       <Users className="w-4 h-4 mr-2" /> {previewEvent.member_name}
                     </div>
-                     {previewEvent.description && (
-                       <div className="mb-3">
+                     {previewEvent.description && <div className="mb-3">
                          <p className="text-gray-700">{previewEvent.description}</p>
-                       </div>
-                     )}
-                    {previewEvent.message && (
-                      <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
+                       </div>}
+                    {previewEvent.message && <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
                         <p className={`italic ${getCategoryTextColor(previewEvent.category)}`}>
                           <Heart className="h-3 w-3 inline mr-1" /> {previewEvent.message}
                         </p>
-                      </div>
-                    )}
+                      </div>}
                   </div>
                 </div>
               </>}
