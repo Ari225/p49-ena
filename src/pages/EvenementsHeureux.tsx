@@ -93,6 +93,10 @@ const EvenementsHeureux = () => {
       day: 'numeric'
     });
   };
+
+  const capitalizeCategory = (category: string) => {
+    return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+  };
   return <Layout>
       <div className="bg-white min-h-screen">
         <EvenementsHeureuxHero />
@@ -140,7 +144,7 @@ const EvenementsHeureux = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2 mb-4">
-                          <p className="text-sm"><strong>Catégorie:</strong> {event.category}</p>
+                          <p className="text-sm"><strong>Catégorie:</strong> {capitalizeCategory(event.category)}</p>
                            {event.description && <p className="text-sm text-gray-700">{event.description}</p>}
                         </div>
                         {event.message && <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-200">
@@ -196,7 +200,7 @@ const EvenementsHeureux = () => {
                 <DialogHeader>
                   <DialogTitle>{previewEvent.title}</DialogTitle>
                   <DialogDescription>
-                    {previewEvent.category} • {formatEventDate(previewEvent.event_date)}{previewEvent.location ? ` • ${previewEvent.location}` : ''}
+                    {capitalizeCategory(previewEvent.category)} • {formatEventDate(previewEvent.event_date)}{previewEvent.location ? ` • ${previewEvent.location}` : ''}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
