@@ -3,10 +3,12 @@ import Layout from '@/components/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, MapPin, Users, Clock, Camera, Euro } from 'lucide-react';
+import { Calendar, MapPin, Users, Clock, Camera, Euro, Image as ImageIcon, Video } from 'lucide-react';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useActivities } from '@/hooks/useActivities';
 import { Activity } from '@/types/activity';
+import { supabase } from '@/integrations/supabase/client';
+import MediaPopup from '@/components/MediaPopup';
 const Regionales = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
@@ -18,6 +20,80 @@ const Regionales = () => {
   
   // Récupérer toutes les activités "Les Régionales"
   const allRegionales = activities.filter(activity => activity.category === 'Les Régionales');
+  
+  // État pour les médias
+  const [mediaItems, setMediaItems] = useState([]);
+  const [loadingMedia, setLoadingMedia] = useState(true);
+  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [allMedias, setAllMedias] = useState([]);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [isMediaPopupOpen, setIsMediaPopupOpen] = useState(false);
+
+  // Récupérer les médias "Les Régionales"
+  useEffect(() => {
+    const fetchMediaItems = async () => {
+      try {
+        setLoadingMedia(true);
+        const { data, error } = await supabase
+          .from('media_items')
+          .select('*')
+          .or('title.ilike.%Les Régionales%,category.ilike.%Les Régionales%')
+          .order('date', { ascending: false });
+
+        if (error) {
+          console.error('Erreur lors du chargement des médias:', error);
+          return;
+        }
+
+        setMediaItems(data || []);
+      } catch (err) {
+        console.error('Erreur:', err);
+      } finally {
+        setLoadingMedia(false);
+      }
+    };
+
+    fetchMediaItems();
+  }, []);
+
+  const handleMediaClick = (mediaItem) => {
+    // Construire un tableau de tous les médias individuels
+    const allMediasArray = [];
+    mediaItems.forEach((item) => {
+      if (item.media_urls && item.media_urls.length > 0) {
+        item.media_urls.forEach((url, index) => {
+          allMediasArray.push({
+            id: `${item.id}-${index}`,
+            src: url,
+            alt: `${item.title} - ${index + 1}`,
+            category: item.category || 'Les Régionales',
+            type: url.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? 'image' : 'video',
+            thumbnail: url
+          });
+        });
+      }
+    });
+
+    // Trouver l'index du média cliqué
+    const clickedIndex = allMediasArray.findIndex(media => 
+      media.src === mediaItem.media_urls[0]
+    );
+
+    setAllMedias(allMediasArray);
+    setCurrentMediaIndex(clickedIndex >= 0 ? clickedIndex : 0);
+    setSelectedMedia(allMediasArray[clickedIndex >= 0 ? clickedIndex : 0]);
+    setIsMediaPopupOpen(true);
+  };
+
+  const handleCloseMediaPopup = () => {
+    setIsMediaPopupOpen(false);
+    setSelectedMedia(null);
+  };
+
+  const handleNavigate = (newIndex) => {
+    setCurrentMediaIndex(newIndex);
+    setSelectedMedia(allMedias[newIndex]);
+  };
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Terminé':
@@ -665,8 +741,188 @@ const Regionales = () => {
             </div>
           </section>}
 
+        {/* ======================
+            GALERIE DES RÉGIONALES - MOBILE
+            ====================== */}
+        {isMobile && mediaItems.length > 0 && (
+          <section className="py-[50px] px-[25px] bg-accent/30">
+            <div className="container mx-auto px-0">
+              <h2 className="text-xl font-bold text-primary mb-6 text-center">
+                <Camera className="inline-block mr-2 h-5 w-5" />
+                Galerie des Régionales
+              </h2>
+              <div className="grid grid-cols-1 gap-4">
+                {mediaItems.map((media) => (
+                  <Card 
+                    key={media.id} 
+                    className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => handleMediaClick(media)}
+                  >
+                    <div className="relative h-40">
+                      {media.media_urls && media.media_urls[0] && (
+                        <>
+                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            <img 
+                              src={media.media_urls[0]} 
+                              alt={media.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                              <Video className="h-12 w-12 text-gray-400" />
+                            </div>
+                          )}
+                          {media.media_urls.length > 1 && (
+                            <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                              +{media.media_urls.length - 1}
+                            </Badge>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    <CardContent className="p-3">
+                      <h3 className="text-sm font-semibold text-primary mb-1">{media.title}</h3>
+                      <p className="text-xs text-gray-600 mb-2 line-clamp-2">{media.description}</p>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <span>{new Date(media.date).toLocaleDateString('fr-FR')}</span>
+                        <div className="flex items-center">
+                          <ImageIcon className="h-3 w-3 mr-1" />
+                          <span>{media.media_urls?.length || 0}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
+        {/* ======================
+            GALERIE DES RÉGIONALES - TABLET
+            ====================== */}
+        {isTablet && mediaItems.length > 0 && (
+          <section className="py-[50px] px-[50px] bg-accent/30">
+            <div className="container mx-auto px-4">
+              <h2 className="text-2xl font-bold text-primary mb-8 text-center">
+                <Camera className="inline-block mr-2 h-6 w-6" />
+                Galerie des Régionales
+              </h2>
+              <div className="grid grid-cols-2 gap-5">
+                {mediaItems.map((media) => (
+                  <Card 
+                    key={media.id} 
+                    className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => handleMediaClick(media)}
+                  >
+                    <div className="relative h-48">
+                      {media.media_urls && media.media_urls[0] && (
+                        <>
+                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            <img 
+                              src={media.media_urls[0]} 
+                              alt={media.title}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                              <Video className="h-16 w-16 text-gray-400" />
+                            </div>
+                          )}
+                          {media.media_urls.length > 1 && (
+                            <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                              +{media.media_urls.length - 1}
+                            </Badge>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="text-base font-semibold text-primary mb-2">{media.title}</h3>
+                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">{media.description}</p>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>{new Date(media.date).toLocaleDateString('fr-FR')}</span>
+                        <div className="flex items-center">
+                          <ImageIcon className="h-4 w-4 mr-1" />
+                          <span>{media.media_urls?.length || 0}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
+        {/* ======================
+            GALERIE DES RÉGIONALES - DESKTOP
+            ====================== */}
+        {!isMobile && !isTablet && mediaItems.length > 0 && (
+          <section className="py-[50px] px-[100px] bg-accent/30">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold text-primary mb-10 text-center">
+                <Camera className="inline-block mr-2 h-8 w-8" />
+                Galerie des Régionales
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {mediaItems.map((media) => (
+                  <Card 
+                    key={media.id} 
+                    className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                    onClick={() => handleMediaClick(media)}
+                  >
+                    <div className="relative h-56">
+                      {media.media_urls && media.media_urls[0] && (
+                        <>
+                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                            <img 
+                              src={media.media_urls[0]} 
+                              alt={media.title}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                              <Video className="h-20 w-20 text-gray-400" />
+                            </div>
+                          )}
+                          {media.media_urls.length > 1 && (
+                            <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                              +{media.media_urls.length - 1}
+                            </Badge>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    <CardContent className="p-5">
+                      <h3 className="text-lg font-semibold text-primary mb-2">{media.title}</h3>
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{media.description}</p>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>{new Date(media.date).toLocaleDateString('fr-FR')}</span>
+                        <div className="flex items-center">
+                          <ImageIcon className="h-4 w-4 mr-1" />
+                          <span>{media.media_urls?.length || 0}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Popup pour afficher les médias */}
+        {isMediaPopupOpen && selectedMedia && (
+          <MediaPopup
+            isOpen={isMediaPopupOpen}
+            onClose={handleCloseMediaPopup}
+            mediaItem={selectedMedia}
+            allMediaItems={allMedias}
+            currentIndex={currentMediaIndex}
+            onNavigate={handleNavigate}
+          />
+        )}
       </div>
     </Layout>;
 };

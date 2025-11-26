@@ -113,7 +113,8 @@ export const compressPDF = async (file: File, maxSizeMB: number = 10): Promise<F
       addDefaultPage: false,
     });
     
-    const compressedFile = new File([pdfBytes], file.name, {
+    // Convert to proper Blob format
+    const compressedFile = new File([new Uint8Array(pdfBytes)], file.name, {
       type: 'application/pdf',
       lastModified: Date.now(),
     });

@@ -540,7 +540,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           message: string
           name: string
           phone: string | null
@@ -555,7 +555,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           message: string
           name: string
           phone?: string | null
@@ -570,7 +570,7 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           message?: string
           name?: string
           phone?: string | null
@@ -1271,16 +1271,10 @@ export type Database = {
           username: string
         }[]
       }
-      can_access_full_member_data: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      can_manage_suggestions: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      can_access_full_member_data: { Args: never; Returns: boolean }
+      can_manage_suggestions: { Args: never; Returns: boolean }
       confirm_security_lockdown: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           security_metric: string
           status: string
@@ -1312,7 +1306,7 @@ export type Database = {
         Returns: boolean
       }
       final_security_check: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           check_name: string
           details: string
@@ -1321,7 +1315,7 @@ export type Database = {
         }[]
       }
       final_vulnerability_test: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           details: string
           result: string
@@ -1330,7 +1324,7 @@ export type Database = {
         }[]
       }
       get_all_members_public: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           date_naissance: string
           ecole: string
@@ -1353,7 +1347,7 @@ export type Database = {
         }[]
       }
       get_bureau_executif_members: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           id: number
           nom_prenoms: string
@@ -1361,7 +1355,7 @@ export type Database = {
         }[]
       }
       get_commissaires_members: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           id: number
           nom_prenoms: string
@@ -1369,7 +1363,7 @@ export type Database = {
         }[]
       }
       get_contact_messages: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           email: string
@@ -1386,12 +1380,9 @@ export type Database = {
           user_agent: string
         }[]
       }
-      get_current_user_role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_current_user_role: { Args: never; Returns: string }
       get_daily_testimonials: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           content: string
           created_at: string
@@ -1402,7 +1393,7 @@ export type Database = {
         }[]
       }
       get_editorial_team: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           email: string
@@ -1460,7 +1451,7 @@ export type Database = {
         }[]
       }
       get_member_directory: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           emploi_fonction_publique: string
           has_facebook: boolean
@@ -1476,7 +1467,7 @@ export type Database = {
         }[]
       }
       get_newsletter_subscribers: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           email: string
           id: string
@@ -1485,7 +1476,7 @@ export type Database = {
         }[]
       }
       get_public_difficult_events: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           category: string
           description: string
@@ -1498,7 +1489,7 @@ export type Database = {
         }[]
       }
       get_public_happy_events: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           category: string
           description: string
@@ -1512,7 +1503,7 @@ export type Database = {
         }[]
       }
       get_public_member_directory: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           emploi_fonction_publique: string
           has_facebook: boolean
@@ -1527,7 +1518,7 @@ export type Database = {
         }[]
       }
       get_public_retirement_departures: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           category: string
           department: string
@@ -1579,7 +1570,7 @@ export type Database = {
         Returns: Database["public"]["Enums"]["user_role"]
       }
       get_users_list: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           email: string
@@ -1604,7 +1595,7 @@ export type Database = {
         Returns: Json
       }
       security_audit_report: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           affected_count: number
           audit_category: string
@@ -1614,7 +1605,7 @@ export type Database = {
         }[]
       }
       security_monitor: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           active_threats: number
           recommendations: string[]
@@ -1623,7 +1614,7 @@ export type Database = {
         }[]
       }
       security_status_final: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           check_category: string
           details: string
@@ -1650,12 +1641,9 @@ export type Database = {
         }
         Returns: number
       }
-      sync_echo_regions_with_delegates: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      sync_echo_regions_with_delegates: { Args: never; Returns: undefined }
       test_user_rls_policies: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           message: string
           result: string
@@ -1690,7 +1678,7 @@ export type Database = {
         Returns: boolean
       }
       validate_user_security: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           details: string
           recommendation: string
