@@ -650,7 +650,7 @@ const Regionales = () => {
                     </div>
                     <CardContent className="p-3">
                       <h3 className="text-sm font-semibold text-primary mb-1">{media.title}</h3>
-                      <p className="text-xs text-gray-600 mb-2 line-clamp-2">{media.description}</p>
+                      <p className="text-xs text-gray-600 mb-2">{media.description}</p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
                         <span>{new Date(media.date).toLocaleDateString('fr-FR')}</span>
                         <div className="flex items-center">
@@ -687,7 +687,7 @@ const Regionales = () => {
                     </div>
                     <CardContent className="p-4">
                       <h3 className="text-base font-semibold text-primary mb-2">{media.title}</h3>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">{media.description}</p>
+                      <p className="text-sm text-gray-600 mb-2">{media.description}</p>
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <span>{new Date(media.date).toLocaleDateString('fr-FR')}</span>
                         <div className="flex items-center">
@@ -721,7 +721,7 @@ const Regionales = () => {
                     </div>
                     <CardContent className="p-5">
                       <h3 className="text-lg font-semibold text-primary mb-2">{media.title}</h3>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{media.description}</p>
+                      <p className="text-sm text-gray-600 mb-3">{media.description}</p>
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <span>{new Date(media.date).toLocaleDateString('fr-FR')}</span>
                         <div className="flex items-center">
