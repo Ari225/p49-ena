@@ -60,7 +60,14 @@ const Gallery = () => {
       fetchMediaItems();
     }
   }, [isConnected]);
-  const filteredItems = mediaItems.filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredItems = mediaItems
+    .filter(item => {
+      // Exclure les médias "Les Régionales"
+      const isRegionales = item.title.toLowerCase().includes('les régionales') || 
+                          item.category.toLowerCase().includes('les régionales');
+      return !isRegionales;
+    })
+    .filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()));
 
   // Préparer les médias pour le popup à partir d'un item spécifique
   const handleMediaClick = (item: MediaItem, mediaIndex: number = 0) => {
