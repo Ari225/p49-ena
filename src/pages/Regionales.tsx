@@ -13,14 +13,16 @@ const Regionales = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('futures');
-  const { activities } = useActivities();
-  
+  const {
+    activities
+  } = useActivities();
+
   // Récupérer la dernière activité "Les Régionales"
   const latestRegionale = activities.find(activity => activity.category === 'Les Régionales') || null;
-  
+
   // Récupérer toutes les activités "Les Régionales"
   const allRegionales = activities.filter(activity => activity.category === 'Les Régionales');
-  
+
   // État pour les médias
   const [mediaItems, setMediaItems] = useState([]);
   const [loadingMedia, setLoadingMedia] = useState(true);
@@ -34,17 +36,16 @@ const Regionales = () => {
     const fetchMediaItems = async () => {
       try {
         setLoadingMedia(true);
-        const { data, error } = await supabase
-          .from('media_items')
-          .select('*')
-          .or('title.ilike.%Les Régionales%,category.ilike.%Les Régionales%')
-          .order('date', { ascending: false });
-
+        const {
+          data,
+          error
+        } = await supabase.from('media_items').select('*').or('title.ilike.%Les Régionales%,category.ilike.%Les Régionales%').order('date', {
+          ascending: false
+        });
         if (error) {
           console.error('Erreur lors du chargement des médias:', error);
           return;
         }
-
         setMediaItems(data || []);
       } catch (err) {
         console.error('Erreur:', err);
@@ -52,14 +53,12 @@ const Regionales = () => {
         setLoadingMedia(false);
       }
     };
-
     fetchMediaItems();
   }, []);
-
-  const handleMediaClick = (mediaItem) => {
+  const handleMediaClick = mediaItem => {
     // Construire un tableau de tous les médias individuels
     const allMediasArray = [];
-    mediaItems.forEach((item) => {
+    mediaItems.forEach(item => {
       if (item.media_urls && item.media_urls.length > 0) {
         item.media_urls.forEach((url, index) => {
           allMediasArray.push({
@@ -75,22 +74,17 @@ const Regionales = () => {
     });
 
     // Trouver l'index du média cliqué
-    const clickedIndex = allMediasArray.findIndex(media => 
-      media.src === mediaItem.media_urls[0]
-    );
-
+    const clickedIndex = allMediasArray.findIndex(media => media.src === mediaItem.media_urls[0]);
     setAllMedias(allMediasArray);
     setCurrentMediaIndex(clickedIndex >= 0 ? clickedIndex : 0);
     setSelectedMedia(allMediasArray[clickedIndex >= 0 ? clickedIndex : 0]);
     setIsMediaPopupOpen(true);
   };
-
   const handleCloseMediaPopup = () => {
     setIsMediaPopupOpen(false);
     setSelectedMedia(null);
   };
-
-  const handleNavigate = (newIndex) => {
+  const handleNavigate = newIndex => {
     setCurrentMediaIndex(newIndex);
     setSelectedMedia(allMedias[newIndex]);
   };
@@ -108,17 +102,14 @@ const Regionales = () => {
   // ======================
   // MOBILE VERSION - ActivityRegionaleCard
   // ======================
-  const ActivityRegionaleCardMobile = ({ activity }: { activity: Activity }) => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+  const ActivityRegionaleCardMobile = ({
+    activity
+  }: {
+    activity: Activity;
+  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
-        <img 
-          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} 
-          alt={activity.title} 
-          className="w-full h-32 object-cover" 
-        />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${
-          activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-        }`}>
+        <img src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} alt={activity.title} className="w-full h-32 object-cover" />
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
           {activity.status}
         </Badge>
       </div>
@@ -130,17 +121,15 @@ const Regionales = () => {
           <div className="flex items-center text-xs text-gray-600">
             <Calendar className="h-3 w-3 mr-1" />
             {new Date(activity.date).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          })}
+            {activity.end_date && <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
               day: 'numeric',
               month: 'long',
               year: 'numeric'
-            })}
-            {activity.end_date && (
-              <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              })}</span>
-            )}
+            })}</span>}
           </div>
           <div className="flex items-center text-xs text-gray-600">
             <Clock className="h-3 w-3 mr-1" />
@@ -153,39 +142,31 @@ const Regionales = () => {
           </div>
         </div>
 
-        {activity.participation_fees && activity.participation_fees.length > 0 && (
-          <div className="mb-3">
+        {activity.participation_fees && activity.participation_fees.length > 0 && <div className="mb-3">
             <p className="text-xs font-medium text-gray-700 mb-1">
               Tarifs de participation :
             </p>
             <div className="space-y-0.5 text-xs text-gray-600">
-              {activity.participation_fees.map((fee, index) => (
-                <div key={index} className="flex justify-between">
+              {activity.participation_fees.map((fee, index) => <div key={index} className="flex justify-between">
                   <span>{fee.name}</span>
                   <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
-                </div>
-              ))}
+                </div>)}
             </div>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // ======================
   // TABLET VERSION - ActivityRegionaleCard
   // ======================
-  const ActivityRegionaleCardTablet = ({ activity }: { activity: Activity }) => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+  const ActivityRegionaleCardTablet = ({
+    activity
+  }: {
+    activity: Activity;
+  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
-        <img 
-          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} 
-          alt={activity.title} 
-          className="w-full h-40 object-cover" 
-        />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${
-          activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-        }`}>
+        <img src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} alt={activity.title} className="w-full h-40 object-cover" />
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
           {activity.status}
         </Badge>
       </div>
@@ -197,17 +178,15 @@ const Regionales = () => {
           <div className="flex items-center text-sm text-gray-600">
             <Calendar className="h-3.5 w-3.5 mr-1.5" />
             {new Date(activity.date).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          })}
+            {activity.end_date && <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
               day: 'numeric',
               month: 'long',
               year: 'numeric'
-            })}
-            {activity.end_date && (
-              <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              })}</span>
-            )}
+            })}</span>}
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-3.5 w-3.5 mr-1.5" />
@@ -220,39 +199,31 @@ const Regionales = () => {
           </div>
         </div>
 
-        {activity.participation_fees && activity.participation_fees.length > 0 && (
-          <div className="mb-3">
+        {activity.participation_fees && activity.participation_fees.length > 0 && <div className="mb-3">
             <p className="text-sm font-medium text-gray-700 mb-1.5">
               Tarifs de participation :
             </p>
             <div className="space-y-1 text-sm text-gray-600">
-              {activity.participation_fees.map((fee, index) => (
-                <div key={index} className="flex justify-between">
+              {activity.participation_fees.map((fee, index) => <div key={index} className="flex justify-between">
                   <span>{fee.name}</span>
                   <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
-                </div>
-              ))}
+                </div>)}
             </div>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // ======================
   // DESKTOP VERSION - ActivityRegionaleCard
   // ======================
-  const ActivityRegionaleCardDesktop = ({ activity }: { activity: Activity }) => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+  const ActivityRegionaleCardDesktop = ({
+    activity
+  }: {
+    activity: Activity;
+  }) => <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
-        <img 
-          src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} 
-          alt={activity.title} 
-          className="w-full h-48 object-cover" 
-        />
-        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${
-          activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-        }`}>
+        <img src={activity.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.webp"} alt={activity.title} className="w-full h-48 object-cover" />
+        <Badge className={`absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium ${activity.status === 'À venir' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
           {activity.status}
         </Badge>
       </div>
@@ -264,17 +235,15 @@ const Regionales = () => {
           <div className="flex items-center text-sm text-gray-600">
             <Calendar className="h-4 w-4 mr-2" />
             {new Date(activity.date).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          })}
+            {activity.end_date && <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
               day: 'numeric',
               month: 'long',
               year: 'numeric'
-            })}
-            {activity.end_date && (
-              <span> - {new Date(activity.end_date).toLocaleDateString('fr-FR', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-              })}</span>
-            )}
+            })}</span>}
           </div>
           <div className="flex items-center text-sm text-gray-600">
             <Clock className="h-4 w-4 mr-2" />
@@ -287,43 +256,32 @@ const Regionales = () => {
           </div>
         </div>
 
-        {activity.participation_fees && activity.participation_fees.length > 0 && (
-          <div className="mb-4">
+        {activity.participation_fees && activity.participation_fees.length > 0 && <div className="mb-4">
             <p className="text-sm font-medium text-gray-700 mb-2">
               Tarifs de participation :
             </p>
             <div className="space-y-1 text-sm text-gray-600">
-              {activity.participation_fees.map((fee, index) => (
-                <div key={index} className="flex justify-between">
+              {activity.participation_fees.map((fee, index) => <div key={index} className="flex justify-between">
                   <span>{fee.name}</span>
                   <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
-                </div>
-              ))}
+                </div>)}
             </div>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // ======================
   // MOBILE VERSION - RegionaleFutureCard
   // ======================
-  const RegionaleFutureCardMobile = () => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow w-full">
+  const RegionaleFutureCardMobile = () => <Card className="overflow-hidden hover:shadow-lg transition-shadow w-full">
       <div className="relative">
-        <img 
-          src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
-          alt={latestRegionale?.title || "Les Régionales"} 
-          className="w-full h-32 object-cover" 
-        />
+        <img src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} alt={latestRegionale?.title || "Les Régionales"} className="w-full h-32 object-cover" />
         <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
           À venir
         </Badge>
       </div>
       <CardContent className="p-3">
-        {latestRegionale ? (
-          <>
+        {latestRegionale ? <>
             <h3 className="text-lg font-semibold text-primary mb-2">{latestRegionale.title}</h3>
             <p className="text-gray-600 text-xs mb-3">{latestRegionale.brief_description}</p>
             
@@ -331,17 +289,15 @@ const Regionales = () => {
               <div className="flex items-center text-xs text-gray-600">
                 <Calendar className="h-3 w-3 mr-1" />
                 {new Date(latestRegionale.date).toLocaleDateString('fr-FR', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-                {latestRegionale.end_date && (
-                  <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  })}</span>
-                )}
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
+                {latestRegionale.end_date && <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>}
               </div>
               <div className="flex items-center text-xs text-gray-600">
                 <Clock className="h-3 w-3 mr-1" />
@@ -354,53 +310,39 @@ const Regionales = () => {
               </div>
             </div>
 
-            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
-              <div className="mb-3">
+            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && <div className="mb-3">
                 <p className="text-xs font-medium text-gray-700 mb-1 flex items-center">
                   Tarifs de participation :
                 </p>
                 <div className="space-y-0.5 text-xs text-gray-600">
-                  {latestRegionale.participation_fees.map((fee, index) => (
-                    <div key={index} className="flex justify-between">
+                  {latestRegionale.participation_fees.map((fee, index) => <div key={index} className="flex justify-between">
                       <span>{fee.name}</span>
                       <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
-              </div>
-            )}
+              </div>}
 
             <div className="mb-3">
               <p className="text-xs text-gray-700">{latestRegionale.description}</p>
             </div>
-          </>
-        ) : (
-          <div className="text-center py-4">
+          </> : <div className="text-center py-4">
             <p className="text-gray-500 text-xs">Aucune activité "Les Régionales" programmée pour le moment.</p>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // ======================
   // TABLET VERSION - RegionaleFutureCard
   // ======================
-  const RegionaleFutureCardTablet = () => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-sm mx-auto">
+  const RegionaleFutureCardTablet = () => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-sm mx-auto">
       <div className="relative">
-        <img 
-          src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
-          alt={latestRegionale?.title || "Les Régionales"} 
-          className="w-full h-40 object-cover" 
-        />
+        <img src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} alt={latestRegionale?.title || "Les Régionales"} className="w-full h-40 object-cover" />
         <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
           À venir
         </Badge>
       </div>
       <CardContent className="p-4">
-        {latestRegionale ? (
-          <>
+        {latestRegionale ? <>
             <h3 className="text-xl font-semibold text-primary mb-2">{latestRegionale.title}</h3>
             <p className="text-gray-600 text-sm mb-3">{latestRegionale.brief_description}</p>
             
@@ -408,17 +350,15 @@ const Regionales = () => {
               <div className="flex items-center text-sm text-gray-600">
                 <Calendar className="h-3.5 w-3.5 mr-1.5" />
                 {new Date(latestRegionale.date).toLocaleDateString('fr-FR', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-                {latestRegionale.end_date && (
-                  <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  })}</span>
-                )}
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
+                {latestRegionale.end_date && <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>}
               </div>
               <div className="flex items-center text-sm text-gray-600">
                 <Clock className="h-3.5 w-3.5 mr-1.5" />
@@ -431,49 +371,35 @@ const Regionales = () => {
               </div>
             </div>
 
-            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
-              <div className="mb-3">
+            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && <div className="mb-3">
                 <p className="text-sm font-medium text-gray-700 mb-1.5">
                   Tarifs de participation :
                 </p>
                 <div className="space-y-1 text-sm text-gray-600">
-                  {latestRegionale.participation_fees.map((fee, index) => (
-                    <div key={index} className="flex justify-between">
+                  {latestRegionale.participation_fees.map((fee, index) => <div key={index} className="flex justify-between">
                       <span>{fee.name}</span>
                       <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="text-center py-4">
+              </div>}
+          </> : <div className="text-center py-4">
             <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // ======================
   // DESKTOP VERSION - RegionaleFutureCard
   // ======================
-  const RegionaleFutureCardDesktop = () => (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-lg w-full">
+  const RegionaleFutureCardDesktop = () => <Card className="overflow-hidden hover:shadow-lg transition-shadow max-w-lg w-full">
       <div className="relative">
-        <img 
-          src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} 
-          alt={latestRegionale?.title || "Les Régionales"} 
-          className="w-full h-48 object-cover" 
-        />
+        <img src={latestRegionale?.image_url || "/lovable-uploads/3f8b5859-db9c-410f-857e-bad0765e7411.png"} alt={latestRegionale?.title || "Les Régionales"} className="w-full h-48 object-cover" />
         <Badge className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
           À venir
         </Badge>
       </div>
       <CardContent className="p-6">
-        {latestRegionale ? (
-          <>
+        {latestRegionale ? <>
             <h3 className="text-xl font-semibold text-primary mb-2">{latestRegionale.title}</h3>
             <p className="text-gray-600 text-sm mb-4">{latestRegionale.brief_description}</p>
             
@@ -481,17 +407,15 @@ const Regionales = () => {
               <div className="flex items-center text-sm text-gray-600">
                 <Calendar className="h-4 w-4 mr-2" />
                 {new Date(latestRegionale.date).toLocaleDateString('fr-FR', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-                {latestRegionale.end_date && (
-                  <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  })}</span>
-                )}
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
+                {latestRegionale.end_date && <span> - {new Date(latestRegionale.end_date).toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}</span>}
               </div>
               <div className="flex items-center text-sm text-gray-600">
                 <Clock className="h-4 w-4 mr-2" />
@@ -504,34 +428,26 @@ const Regionales = () => {
               </div>
             </div>
 
-            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && (
-              <div className="mb-4">
+            {latestRegionale.participation_fees && latestRegionale.participation_fees.length > 0 && <div className="mb-4">
                 <p className="text-sm font-medium text-gray-700 mb-2 flex items-center">
                   Tarifs de participation :
                 </p>
                 <div className="space-y-1 text-sm text-gray-600">
-                  {latestRegionale.participation_fees.map((fee, index) => (
-                    <div key={index} className="flex justify-between">
+                  {latestRegionale.participation_fees.map((fee, index) => <div key={index} className="flex justify-between">
                       <span>{fee.name}</span>
                       <span className="font-medium">{parseInt(fee.amount).toLocaleString('fr-FR')} FCFA</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
-              </div>
-            )}
+              </div>}
 
             <div className="mb-4">
               <p className="text-sm text-gray-700">{latestRegionale.description}</p>
             </div>
-          </>
-        ) : (
-          <div className="text-center py-8">
+          </> : <div className="text-center py-8">
             <p className="text-gray-500">Aucune activité "Les Régionales" programmée pour le moment.</p>
-          </div>
-        )}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 
   // Sélection du composant selon l'appareil
   const RegionaleFutureCard = isMobile ? RegionaleFutureCardMobile : isTablet ? RegionaleFutureCardTablet : RegionaleFutureCardDesktop;
@@ -614,32 +530,22 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-lg font-bold text-primary mb-4 text-center">Prochaines régionales</h2>
-                  {latestRegionale ? (
-                    <div className="flex justify-center">
+                  {latestRegionale ? <div className="flex justify-center">
                       <RegionaleFutureCard />
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
+                    </div> : <div className="text-center py-8">
                       <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
-                    </div>
-                  )}
+                    </div>}
                 </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => (
-                      <ActivityRegionaleCardMobile key={activity.id} activity={activity} />
-                    ))}
-                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
-                      <div className="text-center py-8">
+                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => <ActivityRegionaleCardMobile key={activity.id} activity={activity} />)}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && <div className="text-center py-8">
                         <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                      </div>
-                    )}
+                      </div>}
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>}
 
@@ -663,32 +569,22 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
-                  {latestRegionale ? (
-                    <div className="flex justify-center">
+                  {latestRegionale ? <div className="flex justify-center">
                       <RegionaleFutureCard />
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
+                    </div> : <div className="text-center py-8">
                       <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
-                    </div>
-                  )}
+                    </div>}
                 </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => (
-                      <ActivityRegionaleCardTablet key={activity.id} activity={activity} />
-                    ))}
-                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
-                      <div className="text-center py-8">
+                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => <ActivityRegionaleCardTablet key={activity.id} activity={activity} />)}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && <div className="text-center py-8">
                         <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                      </div>
-                    )}
+                      </div>}
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>}
 
@@ -712,73 +608,45 @@ const Regionales = () => {
               {/* Contenu des onglets */}
               {selectedTab === 'futures' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
-                  {latestRegionale ? (
-                    <div className="flex justify-center">
+                  {latestRegionale ? <div className="flex justify-center">
                       <RegionaleFutureCard />
-                    </div>
-                  ) : (
-                    <div className="text-center py-8">
+                    </div> : <div className="text-center py-8">
                       <p className="text-gray-500">Aucune activité "Les Régionales" programmée pour le moment.</p>
-                    </div>
-                  )}
+                    </div>}
                 </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => (
-                      <ActivityRegionaleCardDesktop key={activity.id} activity={activity} />
-                    ))}
-                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && (
-                       <div className="text-center py-8 lg:py-16 lg:col-span-3">
+                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => <ActivityRegionaleCardDesktop key={activity.id} activity={activity} />)}
+                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && <div className="text-center py-8 lg:py-16 lg:col-span-3">
                          <p className="text-gray-500">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                       </div>
-                    )}
+                       </div>}
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>}
 
         {/* ======================
             GALERIE DES RÉGIONALES - MOBILE
             ====================== */}
-        {isMobile && mediaItems.length > 0 && (
-          <section className="py-[50px] px-[25px] bg-accent/30">
+        {isMobile && mediaItems.length > 0 && <section className="py-[50px] px-[25px] bg-accent/30">
             <div className="container mx-auto px-0">
               <h2 className="text-xl font-bold text-primary mb-6 text-center">
                 <Camera className="inline-block mr-2 h-5 w-5" />
                 Galerie des Régionales
               </h2>
               <div className="grid grid-cols-1 gap-4">
-                {mediaItems.map((media) => (
-                  <Card 
-                    key={media.id} 
-                    className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => handleMediaClick(media)}
-                  >
+                {mediaItems.map(media => <Card key={media.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleMediaClick(media)}>
                     <div className="relative h-40">
-                      {media.media_urls && media.media_urls[0] && (
-                        <>
-                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                            <img 
-                              src={media.media_urls[0]} 
-                              alt={media.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      {media.media_urls && media.media_urls[0] && <>
+                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? <img src={media.media_urls[0]} alt={media.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                               <Video className="h-12 w-12 text-gray-400" />
-                            </div>
-                          )}
-                          {media.media_urls.length > 1 && (
-                            <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                            </div>}
+                          {media.media_urls.length > 1 && <Badge className="absolute top-2 right-2 bg-black/70 text-white">
                               +{media.media_urls.length - 1}
-                            </Badge>
-                          )}
-                        </>
-                      )}
+                            </Badge>}
+                        </>}
                     </div>
                     <CardContent className="p-3">
                       <h3 className="text-sm font-semibold text-primary mb-1">{media.title}</h3>
@@ -791,51 +659,31 @@ const Regionales = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
-          </section>
-        )}
+          </section>}
 
         {/* ======================
             GALERIE DES RÉGIONALES - TABLET
             ====================== */}
-        {isTablet && mediaItems.length > 0 && (
-          <section className="py-[50px] px-[50px] bg-accent/30">
+        {isTablet && mediaItems.length > 0 && <section className="py-[50px] px-[50px] bg-accent/30">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold text-primary mb-8 text-center">
                 <Camera className="inline-block mr-2 h-6 w-6" />
                 Galerie des Régionales
               </h2>
               <div className="grid grid-cols-2 gap-5">
-                {mediaItems.map((media) => (
-                  <Card 
-                    key={media.id} 
-                    className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => handleMediaClick(media)}
-                  >
+                {mediaItems.map(media => <Card key={media.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleMediaClick(media)}>
                     <div className="relative h-48">
-                      {media.media_urls && media.media_urls[0] && (
-                        <>
-                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                            <img 
-                              src={media.media_urls[0]} 
-                              alt={media.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      {media.media_urls && media.media_urls[0] && <>
+                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? <img src={media.media_urls[0]} alt={media.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                               <Video className="h-16 w-16 text-gray-400" />
-                            </div>
-                          )}
-                          {media.media_urls.length > 1 && (
-                            <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                            </div>}
+                          {media.media_urls.length > 1 && <Badge className="absolute top-2 right-2 bg-black/70 text-white">
                               +{media.media_urls.length - 1}
-                            </Badge>
-                          )}
-                        </>
-                      )}
+                            </Badge>}
+                        </>}
                     </div>
                     <CardContent className="p-4">
                       <h3 className="text-base font-semibold text-primary mb-2">{media.title}</h3>
@@ -848,51 +696,28 @@ const Regionales = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
-          </section>
-        )}
+          </section>}
 
         {/* ======================
             GALERIE DES RÉGIONALES - DESKTOP
             ====================== */}
-        {!isMobile && !isTablet && mediaItems.length > 0 && (
-          <section className="py-[50px] px-[100px] bg-accent/30">
+        {!isMobile && !isTablet && mediaItems.length > 0 && <section className="py-[50px] px-[100px] bg-accent/30">
             <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold text-primary mb-10 text-center">
-                <Camera className="inline-block mr-2 h-8 w-8" />
-                Galerie des Régionales
-              </h2>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mediaItems.map((media) => (
-                  <Card 
-                    key={media.id} 
-                    className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
-                    onClick={() => handleMediaClick(media)}
-                  >
+                {mediaItems.map(media => <Card key={media.id} className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer" onClick={() => handleMediaClick(media)}>
                     <div className="relative h-56">
-                      {media.media_urls && media.media_urls[0] && (
-                        <>
-                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
-                            <img 
-                              src={media.media_urls[0]} 
-                              alt={media.title}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      {media.media_urls && media.media_urls[0] && <>
+                          {media.media_urls[0].match(/\.(jpg|jpeg|png|gif|webp)$/i) ? <img src={media.media_urls[0]} alt={media.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" /> : <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                               <Video className="h-20 w-20 text-gray-400" />
-                            </div>
-                          )}
-                          {media.media_urls.length > 1 && (
-                            <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                            </div>}
+                          {media.media_urls.length > 1 && <Badge className="absolute top-2 right-2 bg-black/70 text-white">
                               +{media.media_urls.length - 1}
-                            </Badge>
-                          )}
-                        </>
-                      )}
+                            </Badge>}
+                        </>}
                     </div>
                     <CardContent className="p-5">
                       <h3 className="text-lg font-semibold text-primary mb-2">{media.title}</h3>
@@ -905,24 +730,13 @@ const Regionales = () => {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </div>
-          </section>
-        )}
+          </section>}
 
         {/* Popup pour afficher les médias */}
-        {isMediaPopupOpen && selectedMedia && (
-          <MediaPopup
-            isOpen={isMediaPopupOpen}
-            onClose={handleCloseMediaPopup}
-            mediaItem={selectedMedia}
-            allMediaItems={allMedias}
-            currentIndex={currentMediaIndex}
-            onNavigate={handleNavigate}
-          />
-        )}
+        {isMediaPopupOpen && selectedMedia && <MediaPopup isOpen={isMediaPopupOpen} onClose={handleCloseMediaPopup} mediaItem={selectedMedia} allMediaItems={allMedias} currentIndex={currentMediaIndex} onNavigate={handleNavigate} />}
       </div>
     </Layout>;
 };
