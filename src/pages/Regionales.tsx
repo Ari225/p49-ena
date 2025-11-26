@@ -704,7 +704,7 @@ const Regionales = () => {
         {/* ======================
             GALERIE DES RÉGIONALES - DESKTOP
             ====================== */}
-        {!isMobile && !isTablet && mediaItems.length > 0 && <section className="py-[50px] px-[100px] bg-accent/30">
+        {!isMobile && !isTablet && mediaItems.length > 0 && <section className="py-[50px] px-[100px] bg-white/30">
             <div className="container mx-auto px-4">
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
