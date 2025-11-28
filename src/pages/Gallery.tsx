@@ -68,7 +68,8 @@ const Gallery = () => {
                           item.category.toLowerCase().includes('les régionales');
       return !isRegionales;
     })
-    .filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()));
+    .filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   // Préparer les médias pour le popup à partir d'un item spécifique
   const handleMediaClick = (item: MediaItem, mediaIndex: number = 0) => {
