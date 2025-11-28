@@ -197,7 +197,7 @@ const ActivitesSection = () => {
             {upcomingActivities.slice(0, 2).map(activity => (
               <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
                 {(activity.image || activity.image_url) && (
-                  <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                  <div className="w-full aspect-square overflow-hidden rounded-t-lg">
                     <img src={activity.image || activity.image_url} alt={activity.title} className="w-full h-full object-cover" />
                   </div>
                 )}
