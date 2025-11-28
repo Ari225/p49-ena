@@ -23,7 +23,9 @@ const Header = () => {
                 <img 
                   src="/lovable-uploads/logo.webp" 
                   alt="P49 ENA Logo" 
-                  className="h-20 w-auto object-contain" 
+                  className="h-20 w-auto object-contain"
+                  width={80}
+                  height={80}
                 />
               </Link>
             </div>
@@ -51,7 +53,9 @@ const Header = () => {
                   <img 
                     src="/lovable-uploads/logo.webp" 
                     alt="P49 ENA Logo" 
-                    className="h-16 w-auto object-contain" 
+                    className="h-16 w-auto object-contain"
+                    width={64}
+                    height={64}
                   />
                 </Link>
               </div>
@@ -80,7 +84,9 @@ const Header = () => {
                 <img 
                   src="/lovable-uploads/logo.webp" 
                   alt="P49 ENA Logo" 
-                  className="h-10 w-10" 
+                  className="h-10 w-10"
+                  width={40}
+                  height={40}
                 />
               </Link>
             </div>

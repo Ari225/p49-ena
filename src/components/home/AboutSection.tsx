@@ -40,6 +40,9 @@ const AboutSection = () => {
                 isTab ? 'w-full h-full max-w-md' :
                 'w-full h-full' // Desktop
               }`}
+              width={500}
+              height={200}
+              loading="lazy"
             />
           </div>
           <div className={`${
