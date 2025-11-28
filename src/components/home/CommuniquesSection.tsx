@@ -306,19 +306,30 @@ const CommuniquesSection = () => {
                  <p className="text-gray-500 text-lg">Aucun communiqué disponible pour le moment.</p>
                </div>
              ) : (
-               <div className="flex-1 space-y-3 md:space-y-4">
+              <div className="flex-1 space-y-3 md:space-y-4">
                  {communiques.map(communique => {
                    const styles = getColorStyles(communique.urgency);
                    return (
-                     <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
-                       <CardContent className="p-4 md:p-6 px-[24px] py-[20px]">
-                         <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
-                           {communique.title}
-                         </h3>
-                         <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
-                           {communique.description}
-                         </p>
-                       </CardContent>
+                     <Card key={communique.id} className={`${styles.bg} ${styles.border} cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02] overflow-hidden`} onClick={() => handleCommuniqueClick(communique.image_url || '', communique.id)}>
+                       <div className="flex">
+                         {communique.image_url && (
+                           <div className="w-48 h-32 flex-shrink-0">
+                             <img 
+                               src={communique.image_url} 
+                               alt={communique.title}
+                               className="w-full h-full object-cover"
+                             />
+                           </div>
+                         )}
+                         <CardContent className="p-4 md:p-6 px-[24px] py-[20px] flex-1">
+                           <h3 className={`${currentTextStyles.title} ${styles.textTitle}`}>
+                             {communique.title}
+                           </h3>
+                           <p className={`${currentTextStyles.description} ${styles.textDesc}`}>
+                             {communique.description}
+                           </p>
+                         </CardContent>
+                       </div>
                      </Card>
                    );
                  })}
