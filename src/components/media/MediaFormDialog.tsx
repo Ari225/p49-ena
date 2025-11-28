@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Upload, X } from 'lucide-react';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -361,13 +361,11 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           
           <div className="space-y-2">
             <Label htmlFor="description" className="text-sm font-medium">Description *</Label>
-            <Textarea
-              id="description"
+            <RichTextEditor
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              rows={3}
-              className="w-full resize-none"
-              required
+              onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
+              placeholder="Décrivez le média..."
+              minHeight="100px"
             />
           </div>
           

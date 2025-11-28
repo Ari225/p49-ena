@@ -1,10 +1,10 @@
-
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, Image, Video, Calendar } from 'lucide-react';
 import LazyImage from '@/components/ui/LazyImage';
+import RichTextDisplay from '@/components/ui/RichTextDisplay';
 
 interface MediaItem {
   id: string;
@@ -122,9 +122,9 @@ const MediaCard = ({ media, onEdit, onDelete }: MediaCardProps) => {
             <h3 className="font-semibold text-foreground line-clamp-2 leading-tight mb-1">
               {media.title}
             </h3>
-            <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
-              {media.description}
-            </p>
+            <div className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+              <RichTextDisplay content={media.description} />
+            </div>
           </div>
           
           <div className="flex items-center justify-between pt-2">
