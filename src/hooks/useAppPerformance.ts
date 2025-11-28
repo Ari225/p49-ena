@@ -12,16 +12,15 @@ export const useAppPerformance = () => {
     // Preload critical resources based on connection type
     if (networkOptimizer.shouldPreload()) {
       const criticalResources = [
-        '/lovable-uploads/P49Grid.webp',
-        '/lovable-uploads/Pers49.webp',
-        '/lovable-uploads/A propos.webp'
+        '/lovable-uploads/bg1.webp',
+        '/lovable-uploads/P49Grid.webp'
       ];
       
       preloadResources(criticalResources);
       
       // Preload critical images
-      preloader.images(criticalResources.slice(0, 2)).catch(() => {
-        console.warn('Some critical images failed to preload');
+      preloader.images(criticalResources).catch(() => {
+        // Silently handle preload failures - not critical
       });
     }
 
