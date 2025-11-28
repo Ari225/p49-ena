@@ -74,8 +74,9 @@ export const useCurrentEditionData = () => {
         setRecentEditions(recentEditionsFormatted);
       }
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue';
       setError('Erreur lors du chargement des éditions');
-      console.error('Error fetching editions:', err);
+      console.error('Error fetching editions:', errorMessage);
     } finally {
       setLoading(false);
     }

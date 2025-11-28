@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { useCookieManager } from '@/hooks/useCookieManager';
 import WelcomeMessageContent from './president-modal/WelcomeMessageContent';
@@ -79,6 +80,9 @@ const PresidentWelcomeModal = () => {
     <>
       <Dialog open={isOpen} onOpenChange={() => {}}>
         <DialogContent className={`w-full bg-white p-0 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg border-2 border-gray-200 ${isMobile ? 'max-w-[calc(100vw-40px)] mx-auto' : isTablet ? 'max-w-[calc(100vw-80px)] max-h-[calc(100vh-80px)]' : 'max-w-[calc(100vw-200px)] max-h-[calc(100vh-100px)]'}`} hideCloseButton>
+          <VisuallyHidden>
+            <DialogTitle>Message de bienvenue de la Présidente</DialogTitle>
+          </VisuallyHidden>
           <div className={`flex w-full h-full rounded-lg overflow-hidden ${isMobile || isTablet ? 'flex-col' : 'flex-row md:flex-row'}`}>
             {/* President Photo */}
             <div className={`relative overflow-hidden ${isMobile ? 'h-[250px]' : isTablet ? 'h-[400px]' : 'md:w-1/3'}`}>
