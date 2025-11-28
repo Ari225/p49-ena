@@ -10,10 +10,10 @@ export function useIsMobile() {
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
     const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+      setIsMobile(mql.matches)
     }
     mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+    setIsMobile(mql.matches)
     return () => mql.removeEventListener("change", onChange)
   }, [])
 
@@ -27,10 +27,10 @@ export function useIsTablet() {
   React.useEffect(() => {
     const mql = window.matchMedia(`(min-width: ${MOBILE_BREAKPOINT}px) and (max-width: ${TABLET_BREAKPOINT - 1}px)`)
     const onChange = () => {
-      setIsTablet(window.innerWidth >= MOBILE_BREAKPOINT && window.innerWidth < TABLET_BREAKPOINT)
+      setIsTablet(mql.matches)
     }
     mql.addEventListener("change", onChange)
-    setIsTablet(window.innerWidth >= MOBILE_BREAKPOINT && window.innerWidth < TABLET_BREAKPOINT)
+    setIsTablet(mql.matches)
     return () => mql.removeEventListener("change", onChange)
   }, [])
 
@@ -44,10 +44,10 @@ export function useIsDesktop() {
   React.useEffect(() => {
     const mql = window.matchMedia(`(min-width: ${TABLET_BREAKPOINT}px)`)
     const onChange = () => {
-      setIsDesktop(window.innerWidth >= TABLET_BREAKPOINT)
+      setIsDesktop(mql.matches)
     }
     mql.addEventListener("change", onChange)
-    setIsDesktop(window.innerWidth >= TABLET_BREAKPOINT)
+    setIsDesktop(mql.matches)
     return () => mql.removeEventListener("change", onChange)
   }, [])
 
