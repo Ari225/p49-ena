@@ -190,7 +190,7 @@ const Agenda = () => {
                         return (
                           <Card key={activity.id} className={`hover:shadow-md transition-shadow ${isPast ? 'opacity-80' : ''}`}>
                             {(activity.image || activity.image_url) && (
-                              <div className="w-full h-32 overflow-hidden rounded-t-lg">
+                              <div className="w-full aspect-square overflow-hidden rounded-t-lg">
                                 <img 
                                   src={activity.image || activity.image_url} 
                                   alt={activity.title} 
