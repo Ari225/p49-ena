@@ -17,6 +17,9 @@ const FooterLogo: React.FC<FooterLogoProps> = ({ variant = 'desktop' }) => {
             variant === 'tablet' ? 'h-16 w-auto' :
             'h-10 w-10 lg:h-20 lg:w-auto'
           }`}
+          width={variant === 'tablet' ? 64 : 80}
+          height={variant === 'tablet' ? 64 : 80}
+          loading="lazy"
         />
       </div>
       <p className={`text-gray-300 leading-relaxed mb-2 text-center lg:text-left ${

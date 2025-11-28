@@ -37,7 +37,15 @@ const HeroSection = ({ backgroundImages }: HeroSectionProps) => {
               index === currentImageIndex ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <img src={image} alt={`Background ${index + 1}`} className="w-full h-full object-cover" />
+            <img 
+              src={image} 
+              alt={`Background ${index + 1}`} 
+              className="w-full h-full object-cover"
+              width={1920}
+              height={1080}
+              fetchPriority={index === 0 ? "high" : "low"}
+              decoding={index === 0 ? "sync" : "async"}
+            />
           </div>
         ))}
         <div className="absolute inset-0 bg-primary/80"></div>

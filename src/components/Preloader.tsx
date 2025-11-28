@@ -23,6 +23,8 @@ const Preloader = () => {
             src="/lovable-uploads/logo.webp" 
             alt="P49 ENA Logo" 
             className="w-full h-full object-contain"
+            width={128}
+            height={128}
           />
         </div>
         

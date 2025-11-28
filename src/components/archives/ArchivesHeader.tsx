@@ -16,7 +16,10 @@ const ArchivesHeader = () => {
         <img 
           src="/lovable-uploads/archives.webp" 
           alt="Background archives" 
-          className="w-full h-full object-cover" 
+          className="w-full h-full object-cover"
+          width={1920}
+          height={1080}
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-primary/80"></div>
       </div>
