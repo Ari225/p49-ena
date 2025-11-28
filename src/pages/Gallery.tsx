@@ -8,6 +8,7 @@ import { Calendar, Eye, Search, Play } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSupabase } from '@/context/SupabaseContext';
 import MediaPopup from '@/components/MediaPopup';
+import RichTextDisplay from '@/components/ui/RichTextDisplay';
 interface MediaItem {
   id: string;
   title: string;
@@ -197,7 +198,7 @@ const Gallery = () => {
                           </Badge>
                         </div>
                         <h3 className="text-xl font-semibold text-primary mb-2">{item.title}</h3>
-                        <p className="text-gray-600 text-sm mb-3">{item.description}</p>
+                        <RichTextDisplay content={item.description} className="text-gray-600 text-sm mb-3 line-clamp-2" />
                         <div className="flex items-center text-sm text-gray-500">
                           <Calendar className="w-4 h-4 mr-2" />
                           {formatDate(item.date)}
