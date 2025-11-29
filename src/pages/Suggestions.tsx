@@ -118,7 +118,7 @@ const Suggestions = () => {
           </div>
           
           <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'}`}>Faire des suggestions</h1>
+            <h1 className={`font-bold mb-[10px] md:mb-[10px] animate-fade-in ${isMobile ? 'text-2xl' : 'text-6xl md:text-6xl lg:text-6xl'}`}>Suggestions</h1>
             <p className={`italic mb-6 md:mb-8 animate-fade-in text-white font-normal ${isMobile ? 'text-sm' : 'text-lg md:text-lg'}`}>
               Proposez vos idées pour enrichir notre contenu éditorial
             </p>
