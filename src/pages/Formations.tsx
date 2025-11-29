@@ -39,10 +39,10 @@ const Formations = () => {
             </div>
             
             <div className="relative z-10 text-center px-[25px]">
-              <h1 className="text-2xl font-bold mb-2 animate-fade-in">
+              <h1 className="text-2xl font-bold mb-[10px] animate-fade-in">
                 Formations
               </h1>
-              <p className="text-sm italic mb-4 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+              <p className="text-sm italic mb-6 animate-fade-in text-white font-normal">
                 Développez vos compétences professionnelles avec nos programmes de formation adaptés
               </p>
             </div>
@@ -62,10 +62,10 @@ const Formations = () => {
             </div>
             
             <div className="relative z-10 text-center px-[50px]">
-              <h1 className="text-3xl font-bold mb-3 animate-fade-in">
+              <h1 className="text-4xl font-bold mb-[10px] animate-fade-in">
                 Formations
               </h1>
-              <p className="text-base italic mb-5 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+              <p className="text-base italic mb-8 animate-fade-in text-white font-normal">
                 Développez vos compétences professionnelles avec nos programmes de formation adaptés
               </p>
             </div>
@@ -85,10 +85,10 @@ const Formations = () => {
             </div>
             
             <div className="relative z-10 text-center px-8 lg:px-[100px]">
-              <h1 className="text-4xl md:text-5xl font-bold mb-2 md:mb-4 animate-fade-in">
+              <h1 className="text-6xl font-bold mb-[10px] animate-fade-in">
                 Formations
               </h1>
-              <p className="text-lg md:text-xl italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto">
+              <p className="text-lg italic mb-8 animate-fade-in text-white font-normal">
                 Développez vos compétences professionnelles avec nos programmes de formation adaptés
               </p>
             </div>
