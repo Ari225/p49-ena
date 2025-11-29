@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Mail, Briefcase, Crown, Shield, Edit } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useIsTablet } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { AppUser } from '@/types/user';
 const EquipeEditoriale = () => {
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const [editorialTeam, setEditorialTeam] = useState<AppUser[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -68,17 +69,33 @@ const EquipeEditoriale = () => {
   return <Layout>
       <div className="bg-white min-h-screen">
         {/* Header Section */}
-        <section className={`relative ${isMobile ? 'h-[30vh]' : 'h-[60vh]'} flex items-center justify-center text-white overflow-hidden`}>
+        <section className={`relative ${
+          isMobile ? 'h-[30vh]' : 
+          isTablet ? 'h-[45vh]' : 
+          'h-[60vh]'
+        } flex items-center justify-center text-white overflow-hidden`}>
           <div className="absolute inset-0">
             <img src="/lovable-uploads/archives.webp" alt="Background équipe éditoriale" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-primary/80"></div>
           </div>
           
-          <div className={`relative z-10 text-center ${isMobile ? 'px-[25px]' : 'px-8 lg:px-[100px]'}`}>
-            <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold mb-2 md:mb-4 animate-fade-in`}>
+          <div className={`relative z-10 text-center ${
+            isMobile ? 'px-[25px]' : 
+            isTablet ? 'px-[50px]' : 
+            'px-8 lg:px-[100px]'
+          }`}>
+            <h1 className={`font-bold mb-[10px] animate-fade-in ${
+              isMobile ? 'text-2xl' : 
+              isTablet ? 'text-4xl' : 
+              'text-6xl'
+            }`}>
               Équipe éditoriale
             </h1>
-            <p className={`${isMobile ? 'text-sm' : 'text-lg md:text-xl'} italic mb-4 md:mb-6 animate-fade-in text-white font-normal max-w-3xl mx-auto`}>
+            <p className={`italic animate-fade-in text-white font-normal ${
+              isMobile ? 'text-sm mb-6' : 
+              isTablet ? 'text-base mb-8' : 
+              'text-lg mb-8'
+            }`}>
               Rencontrez l'équipe qui donne vie à Perspectives 49
             </p>
           </div>
