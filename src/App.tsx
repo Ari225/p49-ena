@@ -10,6 +10,7 @@ import { SupabaseProvider } from "@/context/SupabaseContext";
 import { VisitorTrackingProvider } from "@/context/VisitorTrackingContext";
 import { CookieBanner } from "@/components/CookieBanner";
 import { useAppPerformance } from "@/hooks/useAppPerformance";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Pages
 import Index from "./pages/Index";
@@ -65,6 +66,7 @@ const AppContent = () => {
   
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Main Routes */}
         <Route path="/" element={<Index />} />
