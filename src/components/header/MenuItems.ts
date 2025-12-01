@@ -47,7 +47,7 @@ export const useMenuItems = () => {
         },
         {
           label: 'Médiathèque',
-          href: '/galerie'
+          href: '/gallery'
         }
       ]
     },
