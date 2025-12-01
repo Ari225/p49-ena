@@ -633,7 +633,7 @@ const Regionales = () => {
         {/* ======================
             GALERIE DES RÉGIONALES - TABLET
             ====================== */}
-        {isTablet && mediaItems.length > 0 && <section className="py-[50px] px-[50px] bg-accent/30">
+        {isTablet && mediaItems.length > 0 && <section className="py-[50px] px-[50px] bg-white">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold text-primary mb-8 text-center">
                 <Camera className="inline-block mr-2 h-6 w-6" />
