@@ -562,7 +562,7 @@ const Regionales = () => {
         {/* ======================
             GALERIE DES RÉGIONALES - MOBILE
             ====================== */}
-        {isMobile && mediaItems.length > 0 && <section className="py-[50px] px-[25px] bg-accent/30">
+        {isMobile && mediaItems.length > 0 && <section className="py-[50px] px-[25px] bg-white">
             <div className="container mx-auto px-0">
               <h2 className="text-xl font-bold text-primary mb-6 text-center">
                 <Camera className="inline-block mr-2 h-5 w-5" />
