@@ -552,41 +552,7 @@ const Regionales = () => {
         {/* ======================
             TABLET VERSION - Contenu principal
             ====================== */}
-        {isTablet && <section className="py-[50px] px-[50px] bg-white">
-            <div className="container mx-auto px-4">
-              {/* Onglets centrés */}
-              <div className="flex justify-center mb-[50px] md:mb-[50px]">
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
-                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-sm">
-                    À venir
-                  </Button>
-                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
-                    Passées
-                  </Button>
-                </div>
-              </div>
-
-              {/* Contenu des onglets */}
-              {selectedTab === 'futures' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-6 text-center">Prochaines régionales</h2>
-                  {latestRegionale ? <div className="flex justify-center">
-                      <RegionaleFutureCard />
-                    </div> : <div className="text-center py-8">
-                      <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
-                    </div>}
-                </div>}
-
-              {selectedTab === 'passees' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => <ActivityRegionaleCardTablet key={activity.id} activity={activity} />)}
-                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && <div className="text-center py-8">
-                        <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                      </div>}
-                  </div>
-                </div>}
-            </div>
-          </section>}
+        {isTablet}
 
         {/* ======================
             DESKTOP VERSION - Contenu principal
