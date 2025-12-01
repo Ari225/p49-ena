@@ -44,6 +44,10 @@ export const useMenuItems = () => {
         {
           label: t('menu.constitution_meetings'),
           href: '/reunions-constitution'
+        },
+        {
+          label: 'Médiathèque',
+          href: '/galerie'
         }
       ]
     },
