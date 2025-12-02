@@ -513,41 +513,7 @@ const Regionales = () => {
         {/* ======================
             MOBILE VERSION - Contenu principal
             ====================== */}
-        {isMobile && <section className="py-[50px] px-[25px] bg-white">
-            <div className="container mx-auto px-0">
-              {/* Onglets centrés */}
-              <div className="flex justify-center mb-[50px] md:mb-[50px]">
-                <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md">
-                  <Button variant={selectedTab === 'futures' ? 'default' : 'ghost'} onClick={() => setSelectedTab('futures')} className="flex-1 text-xs">
-                    À venir
-                  </Button>
-                  <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-xs">
-                    Passées
-                  </Button>
-                </div>
-              </div>
-
-              {/* Contenu des onglets */}
-              {selectedTab === 'futures' && <div>
-                  <h2 className="text-lg font-bold text-primary mb-4 text-center">Prochaines régionales</h2>
-                  {latestRegionale ? <div className="flex justify-center">
-                      <RegionaleFutureCard />
-                    </div> : <div className="text-center py-8">
-                      <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" programmée pour le moment.</p>
-                    </div>}
-                </div>}
-
-              {selectedTab === 'passees' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Régionales Passées</h2>
-                  <div className="grid grid-cols-1 gap-4">
-                    {allRegionales.filter(activity => activity.status === 'Terminé').map(activity => <ActivityRegionaleCardMobile key={activity.id} activity={activity} />)}
-                    {allRegionales.filter(activity => activity.status === 'Terminé').length === 0 && <div className="text-center py-8">
-                        <p className="text-gray-500 text-sm">Aucune activité "Les Régionales" terminée pour le moment.</p>
-                      </div>}
-                  </div>
-                </div>}
-            </div>
-          </section>}
+        {isMobile}
 
         {/* ======================
             TABLET VERSION - Contenu principal
