@@ -530,10 +530,7 @@ const Regionales = () => {
             ====================== */}
         {isMobile && mediaItems.length > 0 && <section className="py-[50px] px-[25px] bg-white">
             <div className="container mx-auto px-0">
-              <h2 className="text-xl font-bold text-primary mb-6 text-center">
-                <Camera className="inline-block mr-2 h-5 w-5" />
-                Galerie des Régionales
-              </h2>
+              
               <div className="grid grid-cols-1 gap-4">
                 {mediaItems.map(media => <Card key={media.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleMediaClick(media)}>
                     <div className="relative h-40">
