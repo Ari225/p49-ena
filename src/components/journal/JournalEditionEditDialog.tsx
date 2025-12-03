@@ -162,16 +162,18 @@ const JournalEditionEditDialog = ({
 
   const isSubmitting = loading || imageUploading;
 
-  const handleClose = () => {
-    // Reset form data when closing
-    setFormData({
-      title: '',
-      summary: '',
-      status: 'brouillon',
-      coverImage: null,
-      pdfFile: null
-    });
-    onOpenChange(false);
+  const handleClose = (isOpen: boolean) => {
+    if (!isOpen) {
+      // Reset form data only when closing
+      setFormData({
+        title: '',
+        summary: '',
+        status: 'brouillon',
+        coverImage: null,
+        pdfFile: null
+      });
+    }
+    onOpenChange(isOpen);
   };
 
   return (
@@ -264,7 +266,7 @@ const JournalEditionEditDialog = ({
             </div>
 
             <div className="flex justify-end space-x-2 pt-4 pb-2">
-              <Button type="button" variant="outline" onClick={handleClose}>
+              <Button type="button" variant="outline" onClick={() => handleClose(false)}>
                 Annuler
               </Button>
               <Button type="submit" disabled={isSubmitting}>
