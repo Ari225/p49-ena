@@ -530,7 +530,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
         )}
 
         {/* Boutons d'action */}
-        <div className="flex justify-end gap-3 pt-4 pb-6 border-t border-gray-200 sticky bottom-0 bg-background">
+        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
           <Button 
             type="button" 
             variant="outline" 
