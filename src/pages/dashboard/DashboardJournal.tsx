@@ -85,8 +85,6 @@ const DashboardJournal = () => {
     switch (status) {
       case 'publie':
         return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Publié</span>;
-      case 'brouillon':
-        return <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Brouillon</span>;
       case 'archive':
         return <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">Archivé</span>;
       default:
