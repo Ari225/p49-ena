@@ -96,9 +96,7 @@ const ReunionsConstitution = () => {
   };
   const MediaSection = () => <section className={`py-16 bg-white ${isMobile ? 'px-[25px]' : isTablet ? 'px-[50px]' : 'px-8 lg:px-[100px]'}`}>
       <div className="container mx-auto px-0">
-        <h2 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-8`}>
-          Médias des Réunions de constitution
-        </h2>
+        
         
         {loadingMedia ? <div className="text-center py-8 text-gray-500">Chargement des médias...</div> : mediaItems.length === 0 ? <div className="text-center py-8 text-gray-500">
             Aucun média disponible pour les réunions de constitution.
