@@ -155,9 +155,12 @@ const JournalEditionEditDialog = ({
         pdfFile: null
       });
       
-      // Call success callback first to refresh data, then close dialog
-      onSuccess();
+      // Close dialog first, then call success callback to refresh data
       onOpenChange(false);
+      // Small delay to ensure dialog closes smoothly before refresh
+      setTimeout(() => {
+        onSuccess();
+      }, 100);
     } catch (error) {
       console.error('Error updating journal edition:', error);
       toast({
