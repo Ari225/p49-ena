@@ -180,7 +180,7 @@ const AssembleesGenerales = () => {
           
 
           {/* Media Section Mobile */}
-          <MediaSection paddingClass="px-[25px]" />
+          <MediaSection paddingClass="px-[25px]" className="bg-white" />
         </div>
         
         <MediaPopup isOpen={isPopupOpen} onClose={handleClosePopup} mediaItem={selectedMedia} allMediaItems={allMediaForPopup} currentIndex={currentIndex} onNavigate={handleNavigate} />
