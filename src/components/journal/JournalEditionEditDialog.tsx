@@ -61,10 +61,33 @@ const JournalEditionEditDialog = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!edition || !formData.title || !formData.summary) {
+    
+    // Validate all required fields
+    const hasValidCoverImage = edition?.cover_image_url || formData.coverImage;
+    const hasValidPdf = edition?.pdf_url || formData.pdfFile;
+    
+    if (!edition || !formData.title || !formData.summary || !formData.status) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir tous les champs obligatoires (titre et résumé)",
+        description: "Veuillez remplir tous les champs obligatoires (titre, résumé et statut)",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!hasValidCoverImage) {
+      toast({
+        title: "Erreur",
+        description: "Une image de couverture est requise",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!hasValidPdf) {
+      toast({
+        title: "Erreur",
+        description: "Un fichier PDF est requis",
         variant: "destructive"
       });
       return;
@@ -122,7 +145,6 @@ const JournalEditionEditDialog = ({
         title: "Succès",
         description: "Édition modifiée avec succès !"
       });
-      console.log('Edition updated successfully, closing dialog and resetting form');
       
       // Reset form data
       setFormData({
@@ -133,11 +155,9 @@ const JournalEditionEditDialog = ({
         pdfFile: null
       });
       
-      // Close dialog first, then call success callback
+      // Call success callback first to refresh data, then close dialog
+      onSuccess();
       onOpenChange(false);
-      setTimeout(() => {
-        onSuccess(); // This will refresh data
-      }, 100);
     } catch (error) {
       console.error('Error updating journal edition:', error);
       toast({
@@ -213,8 +233,8 @@ const JournalEditionEditDialog = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Statut</label>
-              <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
+              <label className="block text-sm font-medium mb-2">Statut *</label>
+              <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))} required>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -227,8 +247,11 @@ const JournalEditionEditDialog = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Nouvelle image de couverture (optionnel)</label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+              <label className="block text-sm font-medium mb-2">
+                Image de couverture *
+                {edition?.cover_image_url && <span className="text-xs text-green-600 ml-2">(image existante)</span>}
+              </label>
+              <div className={`border-2 border-dashed rounded-lg p-4 text-center ${formData.coverImage ? 'border-green-500 bg-green-50' : edition?.cover_image_url ? 'border-green-300' : 'border-gray-300'}`}>
                 <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
                 <input
                   type="file"
@@ -238,17 +261,22 @@ const JournalEditionEditDialog = ({
                   id="cover-upload-edit"
                 />
                 <label htmlFor="cover-upload-edit" className="cursor-pointer">
-                  <span className="text-primary font-medium text-sm">Cliquez pour changer</span>
+                  <span className="text-primary font-medium text-sm">
+                    {edition?.cover_image_url ? 'Cliquez pour remplacer' : 'Cliquez pour ajouter'}
+                  </span>
                 </label>
                 {formData.coverImage && (
-                  <p className="mt-2 text-xs text-gray-600">{formData.coverImage.name}</p>
+                  <p className="mt-2 text-xs text-green-600 font-medium">{formData.coverImage.name}</p>
                 )}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Nouveau fichier PDF (optionnel)</label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+              <label className="block text-sm font-medium mb-2">
+                Fichier PDF *
+                {edition?.pdf_url && <span className="text-xs text-green-600 ml-2">(PDF existant)</span>}
+              </label>
+              <div className={`border-2 border-dashed rounded-lg p-4 text-center ${formData.pdfFile ? 'border-green-500 bg-green-50' : edition?.pdf_url ? 'border-green-300' : 'border-gray-300'}`}>
                 <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
                 <input
                   type="file"
@@ -258,10 +286,12 @@ const JournalEditionEditDialog = ({
                   id="pdf-upload-edit"
                 />
                 <label htmlFor="pdf-upload-edit" className="cursor-pointer">
-                  <span className="text-primary font-medium text-sm">Cliquez pour changer le PDF</span>
+                  <span className="text-primary font-medium text-sm">
+                    {edition?.pdf_url ? 'Cliquez pour remplacer le PDF' : 'Cliquez pour ajouter le PDF'}
+                  </span>
                 </label>
                 {formData.pdfFile && (
-                  <p className="mt-2 text-xs text-gray-600">{formData.pdfFile.name}</p>
+                  <p className="mt-2 text-xs text-green-600 font-medium">{formData.pdfFile.name}</p>
                 )}
               </div>
             </div>
