@@ -24,9 +24,7 @@ interface JournalEdition {
   status: string;
 }
 const DashboardJournal = () => {
-  const {
-    user
-  } = useAuth();
+  const { user } = useAuth();
   const isMobile = useIsMobile();
   const { toast } = useToast();
   const [editions, setEditions] = useState<JournalEdition[]>([]);
@@ -37,10 +35,12 @@ const DashboardJournal = () => {
   const [selectedEdition, setSelectedEdition] = useState<JournalEdition | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editionToDelete, setEditionToDelete] = useState<JournalEdition | null>(null);
-  if (!user || !isAdmin(user)) {
-    return <div>Non autorisé</div>;
-  }
+
+  const isAuthorized = user && isAdmin(user);
+
   useEffect(() => {
+    if (!isAuthorized) return;
+    
     fetchEditions();
 
     // Set up real-time subscription
@@ -51,10 +51,12 @@ const DashboardJournal = () => {
     }, () => {
       fetchEditions();
     }).subscribe();
+    
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [isAuthorized]);
+
   const fetchEditions = async () => {
     try {
       setLoading(true);
@@ -163,6 +165,12 @@ const DashboardJournal = () => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };
+
+  // Authorization check - must be after all hooks
+  if (!isAuthorized) {
+    return <div>Non autorisé</div>;
+  }
+
   if (loading) {
     if (isMobile) {
       return <Layout>
