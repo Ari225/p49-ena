@@ -123,8 +123,8 @@ const ActualiteDetail = () => {
           <article className="bg-white rounded-2xl shadow-sm overflow-hidden">
             {/* Hero Image */}
             <div className="relative">
-              <div className={`${isMobile ? 'h-48' : isTablet ? 'h-64' : 'h-80'} overflow-hidden`}>
-                <img src={actualite.image} alt={actualite.title} className="w-full h-full object-cover" />
+              <div className="overflow-hidden">
+                <img src={actualite.image} alt={actualite.title} className="max-w-full h-auto" />
               </div>
               {/* Category Badge */}
               <div className="absolute top-4 left-4">
