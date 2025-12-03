@@ -23,7 +23,7 @@ interface JournalEdition {
 interface JournalEditionEditDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSuccess: () => void;
+  onSuccess: () => void | Promise<void>;
   edition: JournalEdition | null;
 }
 
@@ -37,7 +37,7 @@ const JournalEditionEditDialog = ({
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
-    status: 'brouillon',
+    status: 'publie' as 'publie' | 'archive',
     coverImage: null as File | null,
     pdfFile: null as File | null
   });
@@ -52,7 +52,7 @@ const JournalEditionEditDialog = ({
       setFormData({
         title: edition.title,
         summary: edition.summary || '',
-        status: edition.status,
+        status: edition.status as 'publie' | 'archive',
         coverImage: null,
         pdfFile: null
       });
@@ -150,17 +150,14 @@ const JournalEditionEditDialog = ({
       setFormData({
         title: '',
         summary: '',
-        status: 'brouillon',
+        status: 'publie',
         coverImage: null,
         pdfFile: null
       });
       
-      // Close dialog first, then call success callback to refresh data
+      // Call success callback to refresh data, then close dialog
+      await onSuccess();
       onOpenChange(false);
-      // Small delay to ensure dialog closes smoothly before refresh
-      setTimeout(() => {
-        onSuccess();
-      }, 100);
     } catch (error) {
       console.error('Error updating journal edition:', error);
       toast({
@@ -191,7 +188,7 @@ const JournalEditionEditDialog = ({
       setFormData({
         title: '',
         summary: '',
-        status: 'brouillon',
+        status: 'publie',
         coverImage: null,
         pdfFile: null
       });
@@ -237,12 +234,11 @@ const JournalEditionEditDialog = ({
 
             <div>
               <label className="block text-sm font-medium mb-2">Statut *</label>
-              <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))} required>
+              <Select value={formData.status} onValueChange={(value: 'publie' | 'archive') => setFormData(prev => ({ ...prev, status: value }))} required>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="brouillon">Brouillon</SelectItem>
                   <SelectItem value="publie">Publié</SelectItem>
                   <SelectItem value="archive">Archivé</SelectItem>
                 </SelectContent>
