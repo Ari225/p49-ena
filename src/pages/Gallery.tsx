@@ -63,10 +63,11 @@ const Gallery = () => {
   }, [isConnected]);
   const filteredItems = mediaItems
     .filter(item => {
-      // Exclure les médias "Les Régionales"
+      // Exclure les médias "Les Régionales" et "Assemblées Générales"
       const isRegionales = item.title.toLowerCase().includes('les régionales') || 
                           item.category.toLowerCase().includes('les régionales');
-      return !isRegionales;
+      const isAssemblees = item.category === 'Assemblées Générales';
+      return !isRegionales && !isAssemblees;
     })
     .filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
