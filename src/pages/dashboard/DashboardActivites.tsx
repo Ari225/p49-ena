@@ -88,7 +88,7 @@ const DashboardActivites = () => {
                   Nouvelle activité
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-hidden rounded-lg mx-auto">
+              <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto p-4">
                 <DialogHeader>
                   <DialogTitle className="text-primary">Ajouter une activité</DialogTitle>
                 </DialogHeader>
@@ -102,7 +102,7 @@ const DashboardActivites = () => {
 
           {/* Dialog pour modification */}
           <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
-            <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-hidden rounded-lg mx-auto">
+            <DialogContent className="w-[95%] max-w-md max-h-[90vh] overflow-y-auto rounded-lg mx-auto p-4">
               <DialogHeader>
                 <DialogTitle className="text-primary">Modifier l'activité</DialogTitle>
               </DialogHeader>
@@ -169,7 +169,7 @@ const DashboardActivites = () => {
                   Nouvelle activité
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-hidden rounded-lg mx-auto">
+              <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto p-6">
                 <DialogHeader>
                   <DialogTitle className="text-primary text-xl">Ajouter une activité</DialogTitle>
                 </DialogHeader>
@@ -183,7 +183,7 @@ const DashboardActivites = () => {
 
           {/* Dialog pour modification */}
           <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
-            <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-hidden rounded-lg mx-auto">
+            <DialogContent className="w-[95%] max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg mx-auto p-6">
               <DialogHeader>
                 <DialogTitle className="text-primary text-xl">Modifier l'activité</DialogTitle>
               </DialogHeader>

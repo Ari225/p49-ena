@@ -139,7 +139,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
   };
 
   return (
-    <div className="max-h-[80vh] overflow-y-auto px-1">
+    <div className="overflow-y-auto px-1 pb-4">
       <form onSubmit={onSubmit} className="space-y-6">
         {/* Titre */}
         <div className="space-y-2">
@@ -530,7 +530,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
         )}
 
         {/* Boutons d'action */}
-        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+        <div className="flex justify-end gap-3 pt-4 pb-6 border-t border-gray-200 sticky bottom-0 bg-background">
           <Button 
             type="button" 
             variant="outline" 
