@@ -176,101 +176,103 @@ const JournalEditionEditDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl mx-auto my-auto">
-        <DialogHeader>
-          <DialogTitle>Modifier l'Édition</DialogTitle>
+      <DialogContent className="w-[95vw] max-w-md rounded-xl border-0 shadow-2xl mx-auto">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-lg">Modifier l'Édition</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">Titre *</label>
-            <Input
-              value={formData.title}
-              onChange={e => setFormData(prev => ({
-                ...prev,
-                title: e.target.value
-              }))}
-              placeholder="Ex: Perspectives 49 - Janvier 2024"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Résumé</label>
-            <Textarea
-              value={formData.summary}
-              onChange={e => setFormData(prev => ({
-                ...prev,
-                summary: e.target.value
-              }))}
-              placeholder="Résumé de cette édition..."
-              rows={4}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Statut</label>
-            <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="brouillon">Brouillon</SelectItem>
-                <SelectItem value="publie">Publié</SelectItem>
-                <SelectItem value="archive">Archivé</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Nouvelle image de couverture (optionnel)</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={e => handleFileChange(e, 'coverImage')}
-                className="hidden"
-                id="cover-upload-edit"
+        <div className="max-h-[70vh] overflow-y-auto px-1">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Titre *</label>
+              <Input
+                value={formData.title}
+                onChange={e => setFormData(prev => ({
+                  ...prev,
+                  title: e.target.value
+                }))}
+                placeholder="Ex: Perspectives 49 - Janvier 2024"
+                required
               />
-              <label htmlFor="cover-upload-edit" className="cursor-pointer">
-                <span className="text-primary font-medium">Cliquez pour changer</span>
-              </label>
-              {formData.coverImage && (
-                <p className="mt-2 text-sm text-gray-600">{formData.coverImage.name}</p>
-              )}
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">Nouveau fichier PDF (optionnel)</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={e => handleFileChange(e, 'pdfFile')}
-                className="hidden"
-                id="pdf-upload-edit"
+            <div>
+              <label className="block text-sm font-medium mb-2">Résumé</label>
+              <Textarea
+                value={formData.summary}
+                onChange={e => setFormData(prev => ({
+                  ...prev,
+                  summary: e.target.value
+                }))}
+                placeholder="Résumé de cette édition..."
+                rows={3}
               />
-              <label htmlFor="pdf-upload-edit" className="cursor-pointer">
-                <span className="text-primary font-medium">Cliquez pour changer le PDF</span>
-              </label>
-              {formData.pdfFile && (
-                <p className="mt-2 text-sm text-gray-600">{formData.pdfFile.name}</p>
-              )}
             </div>
-          </div>
 
-          <div className="flex justify-end space-x-4">
-            <Button type="button" variant="outline" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Modification...' : 'Modifier l\'édition'}
-            </Button>
-          </div>
-        </form>
+            <div>
+              <label className="block text-sm font-medium mb-2">Statut</label>
+              <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="brouillon">Brouillon</SelectItem>
+                  <SelectItem value="publie">Publié</SelectItem>
+                  <SelectItem value="archive">Archivé</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Nouvelle image de couverture (optionnel)</label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => handleFileChange(e, 'coverImage')}
+                  className="hidden"
+                  id="cover-upload-edit"
+                />
+                <label htmlFor="cover-upload-edit" className="cursor-pointer">
+                  <span className="text-primary font-medium text-sm">Cliquez pour changer</span>
+                </label>
+                {formData.coverImage && (
+                  <p className="mt-2 text-xs text-gray-600">{formData.coverImage.name}</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Nouveau fichier PDF (optionnel)</label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={e => handleFileChange(e, 'pdfFile')}
+                  className="hidden"
+                  id="pdf-upload-edit"
+                />
+                <label htmlFor="pdf-upload-edit" className="cursor-pointer">
+                  <span className="text-primary font-medium text-sm">Cliquez pour changer le PDF</span>
+                </label>
+                {formData.pdfFile && (
+                  <p className="mt-2 text-xs text-gray-600">{formData.pdfFile.name}</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-2 pt-4 pb-2">
+              <Button type="button" variant="outline" onClick={handleClose}>
+                Annuler
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Modification...' : 'Modifier l\'édition'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </DialogContent>
     </Dialog>
   );
