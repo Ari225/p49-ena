@@ -199,7 +199,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-md p-4' : 'w-[90vw] max-w-2xl p-6'} mx-auto rounded-xl max-h-[85vh] overflow-y-auto`}>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-md p-4' : 'max-w-2xl p-6'} rounded-2xl max-h-[85vh] overflow-y-auto`}>
         <DialogHeader>
           <DialogTitle>
             {editingNews ? 'Modifier l\'actualité' : 'Nouvelle actualité'}
