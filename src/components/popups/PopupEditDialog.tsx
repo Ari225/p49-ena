@@ -81,12 +81,13 @@ const PopupEditDialog: React.FC<PopupEditDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-md max-h-[80vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg' : 'max-w-md rounded-xl border-0 shadow-2xl'}`}>
         <DialogHeader className="pb-2">
           <DialogTitle className="text-lg">Modifier le Pop-up</DialogTitle>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="max-h-[70vh] overflow-y-auto px-1">
+          <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="title">Titre *</Label>
             <Input
@@ -183,15 +184,16 @@ const PopupEditDialog: React.FC<PopupEditDialogProps> = ({
             />
           </div>
 
-          <div className="flex justify-end space-x-2 pt-4">
-            <Button type="button" variant="outline" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button type="submit" disabled={isUploading}>
-              {isUploading ? 'Mise à jour...' : 'Mettre à jour'}
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-end space-x-2 pt-4 pb-2">
+              <Button type="button" variant="outline" onClick={handleClose}>
+                Annuler
+              </Button>
+              <Button type="submit" disabled={isUploading}>
+                {isUploading ? 'Mise à jour...' : 'Mettre à jour'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </DialogContent>
     </Dialog>
   );
