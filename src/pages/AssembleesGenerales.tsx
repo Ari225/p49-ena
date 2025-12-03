@@ -255,7 +255,7 @@ const AssembleesGenerales = () => {
           </section>
 
           {/* Media Section Tablet */}
-          <MediaSection paddingClass="px-[50px]" />
+          <MediaSection paddingClass="px-[50px]" className="bg-white" />
         </div>
         
         <MediaPopup isOpen={isPopupOpen} onClose={handleClosePopup} mediaItem={selectedMedia} allMediaItems={allMediaForPopup} currentIndex={currentIndex} onNavigate={handleNavigate} />
