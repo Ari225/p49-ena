@@ -63,11 +63,12 @@ const Gallery = () => {
   }, [isConnected]);
   const filteredItems = mediaItems
     .filter(item => {
-      // Exclure les médias "Les Régionales" et "Assemblées Générales"
+      // Exclure les médias "Les Régionales", "Assemblées Générales" et "Réunions de constitution"
       const isRegionales = item.title.toLowerCase().includes('les régionales') || 
                           item.category.toLowerCase().includes('les régionales');
       const isAssemblees = item.category === 'Assemblées Générales';
-      return !isRegionales && !isAssemblees;
+      const isReunionsConstitution = item.category === 'Réunions de constitution';
+      return !isRegionales && !isAssemblees && !isReunionsConstitution;
     })
     .filter(item => item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.category.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
