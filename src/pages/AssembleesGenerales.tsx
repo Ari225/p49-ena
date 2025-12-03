@@ -177,36 +177,7 @@ const AssembleesGenerales = () => {
           <AssembleesHeader />
 
           {/* Contenu principal Mobile */}
-          <section className="py-[50px] px-[25px]">
-            <div className="container mx-auto px-0">
-              {/* Onglets Mobile */}
-              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md mx-auto mb-[50px]">
-                <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-xs">
-                  Prochaines
-                </Button>
-                <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-xs">
-                  Passées
-                </Button>
-              </div>
-
-              {/* Contenu des onglets Mobile */}
-              {selectedTab === 'prochaines' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-md">
-                      {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
-                    </div>
-                  </div>
-                </div>}
-
-              {selectedTab === 'passees' && <div>
-                  <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
-                  <div className="grid grid-cols-1 gap-6">
-                    {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
-                  </div>
-                </div>}
-            </div>
-          </section>
+          
 
           {/* Media Section Mobile */}
           <MediaSection paddingClass="px-[25px]" />
