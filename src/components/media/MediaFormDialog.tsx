@@ -240,8 +240,9 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
   const categories = [
     'Évènement social',
     'Les Régionales',
-    'Réunions',
-    'Assemblée Générale',
+    'Réunion',
+    'Réunions de constitution',
+    'Assemblées Générales',
     'Formation',
     'Autre'
   ];
