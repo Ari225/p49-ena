@@ -135,9 +135,7 @@ const AssembleesGenerales = () => {
     paddingClass: string;
   }) => <section className={`py-[50px] ${paddingClass} bg-accent/30`}>
       <div className="container mx-auto px-0">
-        <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-6 text-center`}>
-          Médiathèque des Assemblées
-        </h2>
+        
         
         {loadingMedia ? <div className="flex justify-center items-center py-12">
             <div className="text-gray-500">Chargement des médias...</div>
