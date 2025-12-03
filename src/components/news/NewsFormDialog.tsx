@@ -207,7 +207,7 @@ const NewsFormDialog: React.FC<NewsFormDialogProps> = ({
         </DialogHeader>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto pb-20">
             <div className="space-y-2">
               <label className="text-sm font-medium">Image</label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
