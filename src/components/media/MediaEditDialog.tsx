@@ -202,11 +202,11 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-md max-h-[80vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg' : 'max-w-md rounded-xl border-0 shadow-2xl'}`}>
         <DialogHeader className="pb-2">
           <DialogTitle className="text-lg">Modifier le média</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`space-y-4 ${isMobile ? 'max-h-[70vh] overflow-y-auto pb-4' : 'max-h-[70vh] overflow-y-auto pb-20'}`}>
           <div className="space-y-2">
             <Label htmlFor="title">Titre *</Label>
             <Input
