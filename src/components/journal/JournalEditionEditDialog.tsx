@@ -61,10 +61,10 @@ const JournalEditionEditDialog = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!edition || !formData.title) {
+    if (!edition || !formData.title || !formData.summary) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir tous les champs obligatoires",
+        description: "Veuillez remplir tous les champs obligatoires (titre et résumé)",
         variant: "destructive"
       });
       return;
@@ -199,8 +199,9 @@ const JournalEditionEditDialog = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Résumé</label>
+              <label className="block text-sm font-medium mb-2">Résumé *</label>
               <Textarea
+                required
                 value={formData.summary}
                 onChange={e => setFormData(prev => ({
                   ...prev,

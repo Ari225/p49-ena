@@ -31,8 +31,8 @@ const JournalEditionDialog = ({
   } = useImageUpload();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.summary) {
-      toast.error('Veuillez remplir tous les champs obligatoires');
+    if (!formData.title || !formData.summary || !formData.coverImage || !formData.pdfFile) {
+      toast.error('Veuillez remplir tous les champs obligatoires (titre, résumé, image de couverture et PDF)');
       return;
     }
     setLoading(true);
@@ -134,27 +134,27 @@ const JournalEditionDialog = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Image de couverture</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <label className="block text-sm font-medium mb-2">Image de couverture *</label>
+            <div className={`border-2 border-dashed rounded-lg p-6 text-center ${!formData.coverImage ? 'border-gray-300' : 'border-green-500 bg-green-50'}`}>
               <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'coverImage')} className="hidden" id="cover-upload" />
+              <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'coverImage')} className="hidden" id="cover-upload" required />
               <label htmlFor="cover-upload" className="cursor-pointer">
                 <span className="text-primary font-medium">Cliquez pour uploader</span>
                 <span className="text-gray-500"> ou glissez-déposez</span>
               </label>
-              {formData.coverImage && <p className="mt-2 text-sm text-gray-600">{formData.coverImage.name}</p>}
+              {formData.coverImage && <p className="mt-2 text-sm text-green-600 font-medium">{formData.coverImage.name}</p>}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">Fichier PDF</label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <label className="block text-sm font-medium mb-2">Fichier PDF *</label>
+            <div className={`border-2 border-dashed rounded-lg p-6 text-center ${!formData.pdfFile ? 'border-gray-300' : 'border-green-500 bg-green-50'}`}>
               <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <input type="file" accept=".pdf" onChange={e => handleFileChange(e, 'pdfFile')} className="hidden" id="pdf-upload" />
+              <input type="file" accept=".pdf" onChange={e => handleFileChange(e, 'pdfFile')} className="hidden" id="pdf-upload" required />
               <label htmlFor="pdf-upload" className="cursor-pointer">
                 <span className="text-primary font-medium">Cliquez pour uploader le PDF</span>
               </label>
-              {formData.pdfFile && <p className="mt-2 text-sm text-gray-600">{formData.pdfFile.name}</p>}
+              {formData.pdfFile && <p className="mt-2 text-sm text-green-600 font-medium">{formData.pdfFile.name}</p>}
             </div>
           </div>
 
