@@ -12,7 +12,6 @@ import { Activity } from '@/types/activity';
 import { useSupabase } from '@/context/SupabaseContext';
 import MediaPopup from '@/components/MediaPopup';
 import RichTextDisplay from '@/components/ui/RichTextDisplay';
-
 interface MediaItem {
   id: string;
   title: string;
@@ -21,14 +20,18 @@ interface MediaItem {
   media_urls: string[];
   date: string;
 }
-
 const AssembleesGenerales = () => {
   const isMobile = useIsMobile();
   const isTablet = useIsTablet();
   const [selectedTab, setSelectedTab] = useState('prochaines');
-  const { activities } = useActivities();
-  const { selectData, isConnected } = useSupabase();
-  
+  const {
+    activities
+  } = useActivities();
+  const {
+    selectData,
+    isConnected
+  } = useSupabase();
+
   // Media state
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [loadingMedia, setLoadingMedia] = useState(true);
@@ -41,16 +44,17 @@ const AssembleesGenerales = () => {
   const fetchMediaItems = async () => {
     try {
       setLoadingMedia(true);
-      const { data, error } = await selectData('media_items', '*');
+      const {
+        data,
+        error
+      } = await selectData('media_items', '*');
       if (error) {
         console.error('Error fetching media items:', error);
         setMediaItems([]);
         return;
       }
       // Filter only "Assemblées Générales" category
-      const assembleesMedia = (data || []).filter(
-        (item: MediaItem) => item.category === 'Assemblées Générales'
-      ).sort((a: MediaItem, b: MediaItem) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      const assembleesMedia = (data || []).filter((item: MediaItem) => item.category === 'Assemblées Générales').sort((a: MediaItem, b: MediaItem) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setMediaItems(assembleesMedia);
     } catch (error) {
       console.error('Network error fetching media items:', error);
@@ -59,7 +63,6 @@ const AssembleesGenerales = () => {
       setLoadingMedia(false);
     }
   };
-
   useEffect(() => {
     if (isConnected) {
       fetchMediaItems();
@@ -86,17 +89,14 @@ const AssembleesGenerales = () => {
       setIsPopupOpen(true);
     }
   };
-
   const handleClosePopup = () => {
     setIsPopupOpen(false);
     setSelectedMedia(null);
   };
-
   const handleNavigate = (index: number) => {
     setCurrentIndex(index);
     setSelectedMedia(allMediaForPopup[index]);
   };
-
   const formatDate = (dateString: string) => {
     try {
       return new Date(dateString).toLocaleDateString('fr-FR');
@@ -110,7 +110,6 @@ const AssembleesGenerales = () => {
 
   // Récupérer les activités "Assemblées Générales" passées
   const assembleesPassees = activities.filter((activity: Activity) => activity.category === 'Assemblées Générales' && activity.status === 'Terminé').sort((a: Activity, b: Activity) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  
   const convertActivityToAssemblee = (activity: Activity) => ({
     id: parseInt(activity.id.slice(-8), 16),
     type: activity.title,
@@ -130,35 +129,24 @@ const AssembleesGenerales = () => {
   });
 
   // Media Section Component
-  const MediaSection = ({ paddingClass }: { paddingClass: string }) => (
-    <section className={`py-[50px] ${paddingClass} bg-accent/30`}>
+  const MediaSection = ({
+    paddingClass
+  }: {
+    paddingClass: string;
+  }) => <section className={`py-[50px] ${paddingClass} bg-accent/30`}>
       <div className="container mx-auto px-0">
         <h2 className={`${isMobile ? 'text-xl' : isTablet ? 'text-2xl' : 'text-3xl'} font-bold text-primary mb-6 text-center`}>
           Médiathèque des Assemblées
         </h2>
         
-        {loadingMedia ? (
-          <div className="flex justify-center items-center py-12">
+        {loadingMedia ? <div className="flex justify-center items-center py-12">
             <div className="text-gray-500">Chargement des médias...</div>
-          </div>
-        ) : mediaItems.length === 0 ? (
-          <div className="text-center py-12">
+          </div> : mediaItems.length === 0 ? <div className="text-center py-12">
             <p className="text-gray-500">Aucun média disponible pour le moment.</p>
-          </div>
-        ) : (
-          <div className={`grid ${isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-2' : 'grid-cols-3'} gap-6`}>
-            {mediaItems.map(item => (
-              <Card 
-                key={item.id} 
-                className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white"
-                onClick={() => handleMediaClick(item, 0)}
-              >
+          </div> : <div className={`grid ${isMobile ? 'grid-cols-1' : isTablet ? 'grid-cols-2' : 'grid-cols-3'} gap-6`}>
+            {mediaItems.map(item => <Card key={item.id} className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group bg-white" onClick={() => handleMediaClick(item, 0)}>
                 <div className="relative aspect-video overflow-hidden">
-                  <img 
-                    src={item.media_urls[0] || "https://images.unsplash.com/photo-1559223607-b4d0555ae227?w=400&h=300&fit=crop"} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                  />
+                  <img src={item.media_urls[0] || "https://images.unsplash.com/photo-1559223607-b4d0555ae227?w=400&h=300&fit=crop"} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <div className="flex items-center text-white">
                       <Eye className="w-5 h-5 mr-2" />
@@ -179,18 +167,14 @@ const AssembleesGenerales = () => {
                     {formatDate(item.date)}
                   </div>
                 </div>
-              </Card>
-            ))}
-          </div>
-        )}
+              </Card>)}
+          </div>}
       </div>
-    </section>
-  );
+    </section>;
 
   // Mobile Version
   if (isMobile) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="min-h-screen bg-white">
           <AssembleesHeader />
 
@@ -208,25 +192,21 @@ const AssembleesGenerales = () => {
               </div>
 
               {/* Contenu des onglets Mobile */}
-              {selectedTab === 'prochaines' && (
-                <div>
+              {selectedTab === 'prochaines' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="flex justify-center">
                     <div className="w-full max-w-md">
                       {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
                     </div>
                   </div>
-                </div>
-              )}
+                </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
                   <div className="grid grid-cols-1 gap-6">
                     {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>
 
@@ -234,22 +214,13 @@ const AssembleesGenerales = () => {
           <MediaSection paddingClass="px-[25px]" />
         </div>
         
-        <MediaPopup 
-          isOpen={isPopupOpen} 
-          onClose={handleClosePopup} 
-          mediaItem={selectedMedia} 
-          allMediaItems={allMediaForPopup} 
-          currentIndex={currentIndex} 
-          onNavigate={handleNavigate} 
-        />
-      </Layout>
-    );
+        <MediaPopup isOpen={isPopupOpen} onClose={handleClosePopup} mediaItem={selectedMedia} allMediaItems={allMediaForPopup} currentIndex={currentIndex} onNavigate={handleNavigate} />
+      </Layout>;
   }
 
   // Tablet Version
   if (isTablet) {
-    return (
-      <Layout>
+    return <Layout>
         <div className="min-h-screen bg-white">
           <AssembleesHeader />
 
@@ -267,25 +238,21 @@ const AssembleesGenerales = () => {
               </div>
 
               {/* Contenu des onglets Tablette */}
-              {selectedTab === 'prochaines' && (
-                <div>
+              {selectedTab === 'prochaines' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
                   <div className="flex justify-center">
                     <div className="w-full max-w-2xl">
                       {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
                     </div>
                   </div>
-                </div>
-              )}
+                </div>}
 
-              {selectedTab === 'passees' && (
-                <div>
+              {selectedTab === 'passees' && <div>
                   <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
                     {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
                   </div>
-                </div>
-              )}
+                </div>}
             </div>
           </section>
 
@@ -293,78 +260,23 @@ const AssembleesGenerales = () => {
           <MediaSection paddingClass="px-[50px]" />
         </div>
         
-        <MediaPopup 
-          isOpen={isPopupOpen} 
-          onClose={handleClosePopup} 
-          mediaItem={selectedMedia} 
-          allMediaItems={allMediaForPopup} 
-          currentIndex={currentIndex} 
-          onNavigate={handleNavigate} 
-        />
-      </Layout>
-    );
+        <MediaPopup isOpen={isPopupOpen} onClose={handleClosePopup} mediaItem={selectedMedia} allMediaItems={allMediaForPopup} currentIndex={currentIndex} onNavigate={handleNavigate} />
+      </Layout>;
   }
 
   // Desktop Version
-  return (
-    <Layout>
+  return <Layout>
       <div className="min-h-screen bg-white">
         <AssembleesHeader />
 
         {/* Contenu principal Desktop */}
-        <section className="py-[50px] px-[100px]">
-          <div className="container mx-auto px-4 max-w-6xl">
-            {/* Onglets Desktop */}
-            <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md mx-auto mb-[50px]">
-              <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-sm">
-                Prochaines
-              </Button>
-              <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
-                Passées
-              </Button>
-            </div>
-
-            {/* Contenu des onglets Desktop */}
-            {selectedTab === 'prochaines' && (
-              <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
-                <div className="flex justify-center">
-                  <div className="w-full max-w-2xl">
-                    {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {selectedTab === 'passees' && (
-              <div>
-                <h2 className="text-3xl font-bold text-primary mb-[10px] text-center">Assemblées passées</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                  {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : (
-                    <div className="lg:col-span-2 flex justify-center">
-                      <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+        
 
         {/* Media Section Desktop */}
         <MediaSection paddingClass="px-[100px]" />
       </div>
       
-      <MediaPopup 
-        isOpen={isPopupOpen} 
-        onClose={handleClosePopup} 
-        mediaItem={selectedMedia} 
-        allMediaItems={allMediaForPopup} 
-        currentIndex={currentIndex} 
-        onNavigate={handleNavigate} 
-      />
-    </Layout>
-  );
+      <MediaPopup isOpen={isPopupOpen} onClose={handleClosePopup} mediaItem={selectedMedia} allMediaItems={allMediaForPopup} currentIndex={currentIndex} onNavigate={handleNavigate} />
+    </Layout>;
 };
-
 export default AssembleesGenerales;
