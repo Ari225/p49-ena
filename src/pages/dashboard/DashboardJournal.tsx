@@ -35,6 +35,8 @@ const DashboardJournal = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
   const [selectedEdition, setSelectedEdition] = useState<JournalEdition | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editionToDelete, setEditionToDelete] = useState<JournalEdition | null>(null);
   if (!user || !isAdmin(user)) {
     return <div>Non autorisé</div>;
   }
@@ -89,13 +91,10 @@ const DashboardJournal = () => {
         return <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">{status}</span>;
     }
   };
-  const handleDialogSuccess = () => {
+  const handleDialogSuccess = async () => {
     console.log('Dialog success - refreshing editions');
-    setDialogOpen(false);
-    setEditDialogOpen(false);
-    setSelectedEdition(null);
-    // Immediate refresh
-    fetchEditions();
+    // Refresh data immediately
+    await fetchEditions();
   };
   
   const handleView = (edition: JournalEdition) => {
@@ -108,17 +107,30 @@ const DashboardJournal = () => {
     setSelectedEdition(edition);
     setEditDialogOpen(true);
   };
+
+  const handleEditDialogClose = (open: boolean) => {
+    setEditDialogOpen(open);
+    if (!open) {
+      setSelectedEdition(null);
+    }
+  };
+
+  const openDeleteDialog = (edition: JournalEdition) => {
+    setEditionToDelete(edition);
+    setDeleteDialogOpen(true);
+  };
   
-  const handleDelete = async (edition: JournalEdition) => {
+  const handleDelete = async () => {
+    if (!editionToDelete) return;
+    
     try {
       console.log('=== STARTING DELETE ===');
-      console.log('Edition to delete:', edition);
+      console.log('Edition to delete:', editionToDelete);
       
-      // Delete from database first
       const { error } = await supabase
         .from('journal_editions')
         .delete()
-        .eq('id', edition.id);
+        .eq('id', editionToDelete.id);
       
       if (error) {
         console.error('DELETE FAILED:', error);
@@ -128,11 +140,7 @@ const DashboardJournal = () => {
       console.log('DELETE SUCCESS - updating UI immediately');
       
       // Update state immediately after successful delete
-      setEditions(prevEditions => {
-        const filtered = prevEditions.filter(e => e.id !== edition.id);
-        console.log('Updated editions count:', filtered.length);
-        return filtered;
-      });
+      setEditions(prevEditions => prevEditions.filter(e => e.id !== editionToDelete.id));
       
       toast({
         title: "Succès",
@@ -146,6 +154,9 @@ const DashboardJournal = () => {
         description: 'Erreur lors de la suppression: ' + (error as any)?.message,
         variant: "destructive"
       });
+    } finally {
+      setDeleteDialogOpen(false);
+      setEditionToDelete(null);
     }
   };
   const truncateText = (text: string, maxLength: number = 100) => {
@@ -227,27 +238,9 @@ const DashboardJournal = () => {
                       <Button variant="outline" size="sm" onClick={() => handleEdit(edition)} className="text-xs">
                         <Edit className="h-3 w-3" />
                       </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 text-xs">
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="w-[90vw] max-w-sm mx-auto rounded-2xl sm:w-full sm:max-w-lg sm:rounded-lg">
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Êtes-vous sûr de vouloir supprimer "{edition.title}" ? Cette action est irréversible.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter className="flex flex-row justify-end gap-2 space-y-0">
-                            <AlertDialogCancel>Annuler</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(edition)} className="bg-red-600 hover:bg-red-700">
-                              Supprimer
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 text-xs" onClick={() => openDeleteDialog(edition)}>
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
                 </div>)}
@@ -257,9 +250,26 @@ const DashboardJournal = () => {
         
         <JournalEditionDialog open={dialogOpen} onOpenChange={setDialogOpen} onSuccess={handleDialogSuccess} />
         
-        <JournalEditionEditDialog open={editDialogOpen} onOpenChange={setEditDialogOpen} onSuccess={handleDialogSuccess} edition={selectedEdition} />
+        <JournalEditionEditDialog open={editDialogOpen} onOpenChange={handleEditDialogClose} onSuccess={handleDialogSuccess} edition={selectedEdition} />
         
         <JournalPreviewDialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen} edition={selectedEdition} />
+
+        <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+          <AlertDialogContent className="w-[90vw] max-w-sm mx-auto rounded-2xl sm:w-full sm:max-w-lg sm:rounded-lg">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
+              <AlertDialogDescription>
+                Êtes-vous sûr de vouloir supprimer "{editionToDelete?.title}" ? Cette action est irréversible.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="flex flex-row justify-end gap-2 space-y-0">
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <Button variant="destructive" onClick={handleDelete}>
+                Supprimer
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </Layout>;
   }
   return <Layout>
@@ -320,27 +330,9 @@ const DashboardJournal = () => {
                       <Button variant="outline" size="sm" onClick={() => handleEdit(edition)} title="Modifier">
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" title="Supprimer">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Êtes-vous sûr de vouloir supprimer "{edition.title}" ? Cette action est irréversible.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Annuler</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(edition)} className="bg-red-600 hover:bg-red-700">
-                              Supprimer
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700" title="Supprimer" onClick={() => openDeleteDialog(edition)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 </div>)}
@@ -350,9 +342,26 @@ const DashboardJournal = () => {
 
       <JournalEditionDialog open={dialogOpen} onOpenChange={setDialogOpen} onSuccess={handleDialogSuccess} />
       
-      <JournalEditionEditDialog open={editDialogOpen} onOpenChange={setEditDialogOpen} onSuccess={handleDialogSuccess} edition={selectedEdition} />
+      <JournalEditionEditDialog open={editDialogOpen} onOpenChange={handleEditDialogClose} onSuccess={handleDialogSuccess} edition={selectedEdition} />
       
       <JournalPreviewDialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen} edition={selectedEdition} />
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Supprimer l'édition</AlertDialogTitle>
+            <AlertDialogDescription>
+              Êtes-vous sûr de vouloir supprimer "{editionToDelete?.title}" ? Cette action est irréversible.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <Button variant="destructive" onClick={handleDelete}>
+              Supprimer
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>;
 };
 export default DashboardJournal;
