@@ -176,7 +176,7 @@ const CareerQuoteStatsForm: React.FC<CareerQuoteStatsFormProps> = ({ onSuccess }
           Citation et Stats
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-background rounded-xl mx-auto">
+      <DialogContent className="sm:max-w-[500px] bg-background rounded-xl mx-auto px-4 sm:px-6">
         <DialogHeader>
           <DialogTitle>Ajouter une Citation ou des Statistiques</DialogTitle>
         </DialogHeader>
