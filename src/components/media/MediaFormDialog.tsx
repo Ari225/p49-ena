@@ -369,19 +369,19 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
             />
           </div>
           
-          <div className={`flex pt-4 border-t ${isMobile ? 'flex-col gap-3' : 'justify-end gap-2'}`}>
+          <div className={`flex pt-4 border-t ${isMobile ? 'flex-row gap-3' : 'justify-end gap-2'}`}>
             <Button
               type="button"
               variant="outline"
               onClick={() => setOpen(false)}
-              className={isMobile ? 'w-full' : 'min-w-[80px]'}
+              className={isMobile ? 'flex-1' : 'min-w-[80px]'}
               disabled={loading}
             >
               Annuler
             </Button>
             <Button
               type="submit"
-              className={`bg-primary hover:bg-primary/90 ${isMobile ? 'w-full' : 'min-w-[80px]'}`}
+              className={`bg-primary hover:bg-primary/90 ${isMobile ? 'flex-1' : 'min-w-[80px]'}`}
               disabled={loading}
             >
               {loading ? 'Publication...' : 'Publier'}
