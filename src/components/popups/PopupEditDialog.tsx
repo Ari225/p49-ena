@@ -81,9 +81,9 @@ const PopupEditDialog: React.FC<PopupEditDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
-        <DialogHeader>
-          <DialogTitle>Modifier le Pop-up</DialogTitle>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-md max-h-[80vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-lg">Modifier le Pop-up</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
