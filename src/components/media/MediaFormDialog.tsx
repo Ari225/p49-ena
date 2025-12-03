@@ -258,11 +258,11 @@ const MediaFormDialog = ({ onSubmit }: MediaFormDialogProps) => {
           Nouveau média
         </Button>
       </DialogTrigger>
-      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-md'}`}>
-        <DialogHeader className="pb-4">
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg' : 'max-w-md rounded-xl border-0 shadow-2xl'}`}>
+        <DialogHeader className="pb-2">
           <DialogTitle className="text-lg">Ajouter un média</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={`space-y-4 ${isMobile ? 'max-h-[70vh] overflow-y-auto pb-4' : 'max-h-[70vh] overflow-y-auto pb-20'}`}>
           <div className="space-y-2">
             <Label htmlFor="title" className="text-sm font-medium">Titre *</Label>
             <Input
