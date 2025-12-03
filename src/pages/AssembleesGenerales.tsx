@@ -159,7 +159,7 @@ const AssembleesGenerales = () => {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-primary mb-2">{item.title}</h3>
-                  <RichTextDisplay content={item.description} className="text-gray-600 text-sm mb-3 line-clamp-2" />
+                  <RichTextDisplay content={item.description} className="text-gray-600 text-sm mb-3" />
                   <div className="flex items-center text-sm text-gray-500">
                     <Calendar className="w-4 h-4 mr-2" />
                     {formatDate(item.date)}
