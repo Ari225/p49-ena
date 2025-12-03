@@ -139,7 +139,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ onSuccess, onCancel }) => {
   };
 
   return (
-    <div className="overflow-y-auto px-1 pb-4">
+    <div className="max-h-[70vh] overflow-y-auto px-1 pb-20">
       <form onSubmit={onSubmit} className="space-y-6">
         {/* Titre */}
         <div className="space-y-2">
