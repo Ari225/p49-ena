@@ -11,10 +11,11 @@ import { PopupFormData } from '@/types/popup';
 
 interface PopupFormProps {
   onSubmit: (formData: PopupFormData, imagePreview: string | null) => void;
+  onCancel: () => void;
   isMobile: boolean;
 }
 
-const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
+const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, onCancel, isMobile }) => {
   const [formData, setFormData] = useState<PopupFormData>({
     title: '',
     message: '',
@@ -301,9 +302,14 @@ const PopupForm: React.FC<PopupFormProps> = ({ onSubmit, isMobile }) => {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isCompressing}>
-        {isCompressing ? 'Compression en cours...' : 'Créer le pop-up'}
-      </Button>
+      <div className="flex gap-3 pt-4 border-t">
+        <Button type="button" variant="outline" onClick={onCancel} className="flex-1" disabled={isCompressing}>
+          Annuler
+        </Button>
+        <Button type="submit" className="flex-1" disabled={isCompressing}>
+          {isCompressing ? 'Compression en cours...' : 'Créer le pop-up'}
+        </Button>
+      </div>
     </form>
   );
 };

@@ -101,7 +101,7 @@ const DashboardPopups = () => {
                 <DialogHeader>
                   <DialogTitle>Ajouter un pop-up</DialogTitle>
                 </DialogHeader>
-                <PopupForm onSubmit={handleFormSubmit} isMobile={true} />
+                <PopupForm onSubmit={handleFormSubmit} onCancel={() => setShowForm(false)} isMobile={true} />
               </DialogContent>
             </Dialog>
           </div>
@@ -186,7 +186,7 @@ const DashboardPopups = () => {
                 <DialogHeader>
                   <DialogTitle>Ajouter un pop-up</DialogTitle>
                 </DialogHeader>
-                <PopupForm onSubmit={handleFormSubmit} isMobile={false} />
+                <PopupForm onSubmit={handleFormSubmit} onCancel={() => setShowForm(false)} isMobile={false} />
               </DialogContent>
             </Dialog>
           </div>
