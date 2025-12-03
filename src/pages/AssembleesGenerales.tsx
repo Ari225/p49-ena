@@ -194,36 +194,7 @@ const AssembleesGenerales = () => {
           <AssembleesHeader />
 
           {/* Contenu principal Tablette */}
-          <section className="py-[50px] px-[50px]">
-            <div className="container mx-auto px-0 max-w-4xl">
-              {/* Onglets Tablette */}
-              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg max-w-md mx-auto mb-[50px]">
-                <Button variant={selectedTab === 'prochaines' ? 'default' : 'ghost'} onClick={() => setSelectedTab('prochaines')} className="flex-1 text-sm">
-                  Prochaines
-                </Button>
-                <Button variant={selectedTab === 'passees' ? 'default' : 'ghost'} onClick={() => setSelectedTab('passees')} className="flex-1 text-sm">
-                  Passées
-                </Button>
-              </div>
-
-              {/* Contenu des onglets Tablette */}
-              {selectedTab === 'prochaines' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Prochaines Assemblées</h2>
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-2xl">
-                      {prochainAssemblee ? <AssembleeCard key={prochainAssemblee.id} assemblee={convertActivityToAssemblee(prochainAssemblee)} /> : <p className="text-center text-gray-500">Aucune assemblée prévue pour le moment</p>}
-                    </div>
-                  </div>
-                </div>}
-
-              {selectedTab === 'passees' && <div>
-                  <h2 className="text-2xl font-bold text-primary mb-[10px] text-center">Assemblées Passées</h2>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                    {assembleesPassees.length > 0 ? assembleesPassees.map(activity => <AssembleeCard key={activity.id} assemblee={convertActivityToAssemblee(activity)} />) : <p className="text-center text-gray-500">Aucune assemblée passée trouvée</p>}
-                  </div>
-                </div>}
-            </div>
-          </section>
+          
 
           {/* Media Section Tablet */}
           <MediaSection paddingClass="px-[50px]" className="bg-white" />
