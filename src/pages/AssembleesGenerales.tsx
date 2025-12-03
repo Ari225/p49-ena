@@ -271,7 +271,7 @@ const AssembleesGenerales = () => {
         
 
         {/* Media Section Desktop */}
-        <MediaSection paddingClass="px-[100px]" />
+        <MediaSection paddingClass="px-[100px]" className="bg-white" />
       </div>
       
       <MediaPopup isOpen={isPopupOpen} onClose={handleClosePopup} mediaItem={selectedMedia} allMediaItems={allMediaForPopup} currentIndex={currentIndex} onNavigate={handleNavigate} />
