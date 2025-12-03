@@ -92,9 +92,24 @@ const DashboardJournal = () => {
     }
   };
   const handleDialogSuccess = async () => {
-    console.log('Dialog success - refreshing editions');
-    // Refresh data immediately
-    await fetchEditions();
+    console.log('=== Dialog success callback called ===');
+    try {
+      const { data, error } = await supabase
+        .from('journal_editions')
+        .select('*')
+        .order('publish_date', { ascending: false })
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error refreshing editions:', error);
+        throw error;
+      }
+      
+      console.log('Editions refreshed, count:', data?.length);
+      setEditions(data || []);
+    } catch (error) {
+      console.error('Error in handleDialogSuccess:', error);
+    }
   };
   
   const handleView = (edition: JournalEdition) => {
@@ -108,25 +123,31 @@ const DashboardJournal = () => {
     setEditDialogOpen(true);
   };
 
-  const handleEditDialogClose = (open: boolean) => {
+  const handleEditDialogChange = (open: boolean) => {
+    console.log('Edit dialog state change:', open);
     setEditDialogOpen(open);
     if (!open) {
-      setSelectedEdition(null);
+      // Clear selected edition when dialog closes
+      setTimeout(() => setSelectedEdition(null), 100);
     }
   };
 
   const openDeleteDialog = (edition: JournalEdition) => {
+    console.log('Opening delete dialog for edition:', edition);
     setEditionToDelete(edition);
     setDeleteDialogOpen(true);
   };
   
   const handleDelete = async () => {
-    if (!editionToDelete) return;
+    if (!editionToDelete) {
+      console.error('No edition to delete');
+      return;
+    }
+    
+    console.log('=== STARTING DELETE ===');
+    console.log('Edition to delete:', editionToDelete.id, editionToDelete.title);
     
     try {
-      console.log('=== STARTING DELETE ===');
-      console.log('Edition to delete:', editionToDelete);
-      
       const { error } = await supabase
         .from('journal_editions')
         .delete()
@@ -137,10 +158,10 @@ const DashboardJournal = () => {
         throw error;
       }
       
-      console.log('DELETE SUCCESS - updating UI immediately');
+      console.log('=== DELETE SUCCESSFUL ===');
       
-      // Update state immediately after successful delete
-      setEditions(prevEditions => prevEditions.filter(e => e.id !== editionToDelete.id));
+      // Update state immediately
+      setEditions(prev => prev.filter(e => e.id !== editionToDelete.id));
       
       toast({
         title: "Succès",
@@ -256,7 +277,7 @@ const DashboardJournal = () => {
         
         <JournalEditionDialog open={dialogOpen} onOpenChange={setDialogOpen} onSuccess={handleDialogSuccess} />
         
-        <JournalEditionEditDialog open={editDialogOpen} onOpenChange={handleEditDialogClose} onSuccess={handleDialogSuccess} edition={selectedEdition} />
+        <JournalEditionEditDialog open={editDialogOpen} onOpenChange={handleEditDialogChange} onSuccess={handleDialogSuccess} edition={selectedEdition} />
         
         <JournalPreviewDialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen} edition={selectedEdition} />
 
@@ -348,7 +369,7 @@ const DashboardJournal = () => {
 
       <JournalEditionDialog open={dialogOpen} onOpenChange={setDialogOpen} onSuccess={handleDialogSuccess} />
       
-      <JournalEditionEditDialog open={editDialogOpen} onOpenChange={handleEditDialogClose} onSuccess={handleDialogSuccess} edition={selectedEdition} />
+      <JournalEditionEditDialog open={editDialogOpen} onOpenChange={handleEditDialogChange} onSuccess={handleDialogSuccess} edition={selectedEdition} />
       
       <JournalPreviewDialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen} edition={selectedEdition} />
 
