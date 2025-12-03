@@ -130,7 +130,7 @@ const ReunionsConstitution = () => {
     </section>;
   return <Layout>
       <div className="min-h-screen bg-white">
-        <ReunionsConstitutionHero />
+        <ReunionsConstitutionHero className="bg-white" />
         
         <MediaSection />
       </div>
