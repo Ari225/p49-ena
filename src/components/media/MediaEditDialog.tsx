@@ -51,7 +51,7 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
         media_urls: [...media.media_urls]
       });
       // Si la catégorie n'est pas dans la liste prédéfinie, c'est une catégorie personnalisée
-      const predefinedCategories = ['Évènement social', 'Les Régionales', 'Réunions', 'Assemblée Générale', 'Formation', 'Autre'];
+      const predefinedCategories = ['Évènement social', 'Les Régionales', 'Réunion', 'Réunions de constitution', 'Assemblées Générales', 'Formation', 'Autre'];
       if (media.category && !predefinedCategories.includes(media.category)) {
         setCustomCategory(media.category);
         setFormData(prev => ({ ...prev, category: 'Autre' }));
@@ -62,8 +62,9 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
   const categories = [
     'Évènement social',
     'Les Régionales',
-    'Réunions',
-    'Assemblée Générale',
+    'Réunion',
+    'Réunions de constitution',
+    'Assemblées Générales',
     'Formation',
     'Autre'
   ];
@@ -201,11 +202,11 @@ const MediaEditDialog = ({ media, isOpen, onClose, onUpdate }: MediaEditDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
-        <DialogHeader>
-          <DialogTitle>Modifier le média</DialogTitle>
+      <DialogContent className={`${isMobile ? 'w-[95vw] max-w-[95vw] mx-auto rounded-lg max-h-[90vh] overflow-y-auto' : 'max-w-md max-h-[80vh] overflow-y-auto rounded-xl border-0 shadow-2xl'}`}>
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-lg">Modifier le média</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="title">Titre *</Label>
             <Input
